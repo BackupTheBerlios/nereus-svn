@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>MASIM - ein Multiagentensimulator</title>
+  <meta name="generator" content="amaya 8.0, see http://www.w3.org/Amaya/" />
+</head>
+
+<body>
+<h1>MASIM - ein Multiagentensimulator</h1>
+
+<h2>Einleitung: Die Idee</h2>
+
+<p>Der Multiagentensimulator soll eine Umgebung zur Entwicklung von Agenten
+sein. Er bietet die Möglichkeit Szenarien zu konzipieren, die den Agenten die
+Umgebung, und somit den Rahmen für deren lernerische Entwicklung,
+darstellen.</p>
+
+<p>Daniel Friedrich, der Entwickler des Simulators, befasste sich in seiner
+Diplomarbeit ausführlich mit verschiedenen lern- und somit auch
+kommunikations Mechanismen. Er testete die Konzepte an dem sogenannten
+IslandScenario.</p>
+
+<h2>Funktionen</h2>
+
+<h3>Grundlegende Funktionen</h3>
+<ul>
+  <li>Schnittstelle für die Visualisierung</li>
+  <li>graphisches Userinterface zum Anlegen eines neues Spiels</li>
+</ul>
+
+<h3>Agentenkommunikation</h3>
+
+<p>Im Package Speachacts bietet der Simulator verschiedene Typen von
+Kommunikation an.</p>
+
+<h3>Statistik</h3>
+
+<p>Der Simulator hat unter simulator.statistic eine abstrakte Klasse, die von
+lauffähigen Szenarien implementiert werden muss. Sie erfordert die
+grundlegenden Funktionen zur Erfassung des statistische Materials. Diese
+Informationen können vom Client visualisiert werden.</p>
+
+<h2>Betrieb</h2>
+<ul>
+  <li>Installation
+    <p>Server:</p>
+    <p>1. Kopie des Verzeichnisses runtime/server auf die Festplatte des
+    Serverrechners</p>
+    <p>2. Anpassen der Datei MASIMServer.sh, es müssen folgende Daten
+    angepaßt werden:</p>
+    <p>- rmi.server.hostname=&lt;rechnername des servers&gt;</p>
+    <p>- cp &lt;Pfad des server-Verzeichnisses&gt;/lib/weka.jar:</p>
+    <p>&lt;Pfad des server-Verzeichnisses&gt;/</p>
+    <p>- simulator.MASIMServer &lt;rechnername des servers&gt;</p>
+    <p>3. Anpassen der Permissions der Dartei MASIMServer.sh</p>
+    <p>4. Installation beendet.</p>
+    <p></p>
+    <p>Client:</p>
+    <p>1. Kopie des Verzeichnisses runtime/client auf die Festplatte des
+    Clientrechners</p>
+    <p>2. Anpassen der Datei MASIMClient.sh, es müssen folgende Daten
+    angepaßt werden:</p>
+    <p>- rmi.server.hostname=&lt;rechnername des servers&gt;</p>
+    <p>- cp &lt;Pfad des client-Verzeichnisses&gt;/lib/weka.jar:</p>
+    <p>&lt;Pfad des client-Verzeichnisses&gt;/lib/shared.jar:</p>
+    <p>&lt;Pfad des client-Verzeichnisses&gt;/</p>
+    <p>- client.MASIMCLIENT &lt;rechnername des servers&gt;</p>
+    <p>3. Anpassen der Datei webserver.sh, es müssen folgende Daten geändert
+    werden:</p>
+    <p>- cp &lt;Pfad zur /runime/client-kopie&gt;/</p>
+    <p>- webserver.ClassFileServer &lt;Portnummer&gt; &lt;Pfad des
+    Client-Verzeichnisses&gt;</p>
+    <p>4. Anpassen der Permissions der Dateien MASIMClient,
+    clientWebserver</p>
+    <p>4. Installation beendet.</p>
+    <p></p>
+  </li>
+  <li><p>Initiieren:</p>
+    <p>1. Den MASIM-Server mit ./MASIMServer.sh auf dem Serverrechner
+    starten</p>
+    <p>2. Den Client-Webserver mit ./clientWebserver.sh auf dem Clientrechner
+    starten</p>
+    <p>3. Den MASIM-Client mit ./MASIMClient.sh auf dem Clientrechner
+    starten.</p>
+    <p></p>
+  </li>
+  <li><p>Anlegen eines neuen Spiels:</p>
+    <p>1. "Neues Spiel"</p>
+    <p>2. Szenario auswählen, !!WICHTIG!! das fgml-Szenario dient nur dazu,
+    dass</p>
+    <p>noch das der Auswahlmechanismus gezeigt wird. Die Anforderung der</p>
+    <p>Szenario-Parameter funktioniert, beim fgml-Szenario nicht korrekt.</p>
+    <p>2. Die Parameter im GameTab (Spiel) ausfüllen und auf "Spiel anmelden"
+    drücken.</p>
+    <p>Wichtig ist, dass alle Parameter ausgefüllt sein müssen.</p>
+    <p>3. Die angegebene Anzahl an Agenten für das Spiel registrieren:</p>
+    <p>1. "Agent registrieren" drücken,</p>
+    <p>2. Agentennamen eingeben</p>
+    <p>3. Klasse des Agenten auswählen</p>
+    <p>4. Die URL des Webservers angeben, auf dem die Clientklassen liegen,
+    einfach</p>
+    <p>mit http://rechner-name:port/ !!WICHTIG!!</p>
+    <p>4. Wenn alle Agenten angemeldet sind, dann simulieren drücken. Das
+    Spiel wird</p>
+    <p>dann simuliert.</p>
+  </li>
+</ul>
+</body>
+</html>

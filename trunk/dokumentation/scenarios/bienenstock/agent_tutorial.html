@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Agenten Tutorial</title>
+  <meta name="generator" content="amaya 8.0, see http://www.w3.org/Amaya/" />
+</head>
+
+<body>
+<h1>Tutorial zur Erstellung von Agenten für das Bienenstockszenario</h1>
+
+<p></p>
+
+<h3>Einleitung</h3>
+
+<p>Ein Agent ist in dem Fall des Bienenstockszenarios eine "Biene". Er stellt
+ein selbstständig handelndes Objekt in der virtuellen Umgebung des
+Bienenstockes dar.</p>
+
+<p>Seine Aufgaben belaufen sich in erster Linie auf das Sammeln von
+Nektar.<br />
+In zweiter Linie soll eben das möglichst effektiv im Team geschehen, es wären
+also andere Aufgabenfelder,die zur Organisation des Teams beitragen,
+denkbar.</p>
+
+<h3>Regeln</h3>
+
+<p>Auf der virtuellen Blumenwiese darf sich der Agent innerhalb eines
+gewissen Regelsatzes frei bewegen.</p>
+
+<p>1. Es ist Agenten verboten direkt untereinander zu kommunizieren.<br />
+2. Jeder Agent darf pro Runde genau eine Aktion ausführen. Kündigt er keine
+Aktion an, wird er vom Szanrio die Runde lang als wartend betrachtet. Es kann
+zu Konflikten kommen, die vom Szenario geklärt werden. Ein Agent hat im
+Allgemeinen keinen Anpruch auf die Ausführung seiner Ankündigung, auch wenn
+das Szenario versucht allen wünschen gerecht zu werden. Kommt es aber doch zu
+Konflikten, so werden sie in einer zufälligen Reihenfolge gelöst.<br />
+3. Jede Aktion kostet eine bestimmte Menge Honig, die von der vom Agenten
+mitgeführten Menge abgezogen wird. Hat ein Agent zu einem Zeitpunkt nicht
+mehr genug Honig, um die von ihm geforderte Aktion auszuführen stirbt er,
+wird also aus der weiteren Simulation ausgeschlossen.<br />
+</p>
+
+<h3>Aktionen</h3>
+
+<p>Das Szenario stellt folgende Aktionen für Agenten zur verfügung:</p>
+<ul>
+  <li>Honig tanken: füllt den Tank einer Biene zu 100% mit Honig,
+    vorrausgesetzt im Bienenstock ist noch genügend vorhanden.<br />
+    Diese Aktion ist nur am Boden in einem Bienenstock des eigenen Volkes
+    möglich.</li>
+  <li>Nektar abliefern: leert den Nektartank des Agenten aus.
+    <p>Diese Aktion ist nur am Boden in einem Bienenstock des eigenen Volkes
+    möglich.</p>
+  </li>
+  <li>Nektar abbauen: Nimmt eine bestimmte Menge Naktar von einer Blume und
+    füllt sie in den Nektartank des Agenten. Die Menge ist abhängig vom Typ
+    der Blume. Diese Aktion ist nur am Boden befindlich auf einer Blume
+    möglich.</li>
+  <li>starten: lässt einen am Boden befindliche Agenten in die Luft
+  steigen.</li>
+  <li>landen: lässt einen fliegenden Agenten zu Boden sinken.</li>
+  <li>fliegen: beweget einen in der Luft befindlichen Agenten ein Feld weit.
+    Das Ziel muss dabei in den Nachbarfeldern der aktuellen Position
+    enthalten sein und von dem Agenten mitgegeben werden.</li>
+  <li>warten: belässt der Agenten in dem Zustand der letzten Runde.</li>
+  <li>tanzen: ein am Boden befindlicher Agent der tanzt stellt anderen auf
+    dem Feld befindlichen Agenten Informationen zu Blumen zur Verfügung.<br />
+    Der tanzende Agent muss dabei über zwei Boolean bestimmen welche
+    Informationen er zur Verfügung stellen will.<br />
+  </li>
+  <li>zuschauen: befindet sich auf einem Feld eine tanzende Biene, so kann
+    ein am Boden befindlicher Agent ihr zuschauen. Er bekommt dadurch
+    Informationen zu Richtung und/oder Entfernung von Blumen.</li>
+</ul>
+
+<p>Ein Agent kann sich zu jedem Zeitpunkt kostenfrei eine Ansicht, den
+sogenannten Ausschnitt, seiner Umgebung holen.<br />
+In nicht konsistenten Zuständen des Szenarios werden die Anfragen erst später
+beantwortet.</p>
+
+<p>In Bienenstöcken wird pro Runde eine bestimmte Menge Nektar zu Honig
+verarbeitet. Für diese Menge gibt es einen Maximalbetrag, sowie einen
+Umrechnungskurs. Es ist also ratsam, am Ende jeder Runde etwas Nektar im
+Bienenstock zu haben.<br />
+</p>
+
+<h3>technische Anforderungen</h3>
+
+<p>Ein Agent muss, um im Szenario zu funktionieren, die AbstrakteBiene
+extenden.<br />
+Dafür muss der Agent verschiedene Methoden bereit stellen:</p>
+<ul>
+  <li>AktionscodeSetzen: wird vom Szenario verwendet um den ersten
+    Aktionscode am Agenten zu setzen, gilt für den Agenten auch als
+    Startzeichen der Simulation.</li>
+  <li>setHandler: übergibt dem Agenten den BienenstockSzenarioHandler. Über
+    diesen kann der Agent seine Aktionen ankündigen.</li>
+  <li>isRunnableAgent: gibt true zurück, falls der Agent ein funktionierender
+    Agent ist.</li>
+</ul>
+
+<p>Es wird vom Simulator nur ein Konstuktor genutzt, der ohne Parameter
+auskommt.</p>
+</body>
+</html>
