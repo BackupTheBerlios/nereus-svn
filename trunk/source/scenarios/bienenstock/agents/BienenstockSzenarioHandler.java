@@ -31,9 +31,9 @@ import exceptions.InvalidElementException;
  * Sie stellt der Biene die Aktionen, die sie ausführen kann zur Verfügung. 
  */
 public class BienenstockSzenarioHandler extends AbstractScenarioHandler {
-    BienenstockScenario spielmeister;
+    Scenario spielmeister;
 
-    public BienenstockSzenarioHandler(BienenstockScenario meister) {
+    public BienenstockSzenarioHandler(Scenario meister) {
         spielmeister = meister;
     }
 
