@@ -97,11 +97,13 @@ public class Coordinator extends UnicastRemoteObject implements ICoordinator {
 	 * @throws <{java.rmi.RemoteException}>
 	 */
 	public Coordinator(
-		String hostname) throws RemoteException {
+		String hostname, 
+		String pathName) throws RemoteException {
 		super();
 		// starte den InformationHandler
 		this.startInformationHandler();
-		m_sInfoObject = ServerInfoObject.getInstance();
+		m_sInfoObject = ServerInfoObject.getInstance(pathName);
+		//m_sInfoObject = new ServerInfoObject(pathName);
 		
 		m_path = m_sInfoObject.getScenarioPath();
 		m_scenarioPath = m_sInfoObject.getScenarioPath();;
@@ -115,10 +117,11 @@ public class Coordinator extends UnicastRemoteObject implements ICoordinator {
 	 * @param port
 	 * @throws <{java.rmi.RemoteException}>
 	 */
-	public Coordinator(int port) throws RemoteException {
+	public Coordinator(int port,
+			String pathName) throws RemoteException {
 		super(port);
 		// starte den InformationHandler
-		m_sInfoObject = ServerInfoObject.getInstance();
+		m_sInfoObject = ServerInfoObject.getInstance(pathName);
 		
 		m_path = m_sInfoObject.getScenarioPath();
 		m_scenarioPath = m_sInfoObject.getScenarioPath();;

@@ -50,11 +50,11 @@ public class ServerInfoObject {
 	 * Konstruktor werden die ganzen Konf-Parameter bestimmt. 
 	 * 
 	 */
-	private ServerInfoObject() {
+	private ServerInfoObject(String pathName) {
 		super();
 		// Basispfad bestimmen.
 		File dFile = new File("");
-		String pathName = dFile.getAbsolutePath();
+		//String pathName = dFile.getAbsolutePath();
 		m_serverBasePath = new String(pathName);
 		System.out.println("Serverbasispfad: "+ m_serverBasePath);
 		// Pfadseparator bestimmen
@@ -98,10 +98,10 @@ public class ServerInfoObject {
 	 * 
 	 * @return ServerInfoObject
 	 */
-	public static ServerInfoObject getInstance() {
+	public static ServerInfoObject getInstance(String path) {
 		// wenn noch keine Instanz existiert, dann eine erstellen
 		if(m_instance == null) {
-			m_instance = new ServerInfoObject();
+			m_instance = new ServerInfoObject(path);
 		}
 		return m_instance;
 	}
