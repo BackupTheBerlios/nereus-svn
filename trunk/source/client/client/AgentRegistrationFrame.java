@@ -132,9 +132,10 @@ public class AgentRegistrationFrame extends JFrame {
   		Hashtable params, 
   		ICoordinator coordinator,
   		GameTab parent,
-  		String scenarioName) {
+  		String scenarioName,
+  		String pathName) {
   		// ClientInfoObject holen	
-  		m_clientInfoObject = ClientInfoObject.getInstance();	
+  		m_clientInfoObject = ClientInfoObject.getInstance(pathName);	
 		enableEvents(AWTEvent.WINDOW_EVENT_MASK);
 		try {
 			m_coordinator = coordinator;

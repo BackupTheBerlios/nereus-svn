@@ -44,6 +44,7 @@ import javax.swing.border.TitledBorder;
 import simulator.ICoordinator;
 import utils.DataTableModel;
 import utils.Id;
+import java.io.File;
 
 /**
  * Clientprogramm zur Steuerung und Verwaltung der Simulation von Spielen auf
@@ -192,6 +193,8 @@ public class MASIMClient extends JFrame {
 	 * Border für den Bereich
 	 */
 	private TitledBorder titledBorder1;
+	
+	private String pathName;
 
 
   	/**
@@ -200,9 +203,10 @@ public class MASIMClient extends JFrame {
 	 * @param hostname
 	 * @param agentPath
 	 */
-  	public MASIMClient(String hostname) {
+  	public MASIMClient(String hostname, String path) {
 		super();
 		m_serverName = hostname;
+		pathName = path;
 		/*
 		 * hole den Coordinator
 		 */
@@ -402,7 +406,7 @@ public class MASIMClient extends JFrame {
 			sdialog.show();
 			String scenario = (String)sdialog.getSelected();
 			// ClientInfoObject mit Servername und Agentenklassenpfad füllen
-			ClientInfoObject clientInfoObject = ClientInfoObject.getInstance();
+			ClientInfoObject clientInfoObject = ClientInfoObject.getInstance(pathName);
 			clientInfoObject.setServerName(m_serverName);
 			
 			if((scenario != null) 
@@ -518,7 +522,13 @@ public class MASIMClient extends JFrame {
 	public static void main(String[] args) {
 		if(args.length == 1) {			
 			System.out.println("Starte den MALClient");
-			MASIMClient client = new MASIMClient(args[0]);	
+			MASIMClient client = null;
+			if (args.length > 1) {
+				client = new MASIMClient(args[0], args[1]);	
+			} else {
+				File dFile = new File("");
+				client = new MASIMClient(args[0], dFile.getAbsolutePath());
+			}
 			client.setVisible(true);
 			Dimension dim = new Dimension(1054,700); 
 			client.setSize(dim);
