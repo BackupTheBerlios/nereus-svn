@@ -19,7 +19,7 @@ package scenario.bienenstock;
 import scenario.bienenstock.einfacheUmgebung.*;
 import simulator.AbstractScenarioHandler;
 import scenario.bienenstock.AbstrakteBiene;
-import scenario.bienenstock.BienenstockSzenarioHandler;
+import scenario.bienenstock.IBienenstockSzenarioHandler;
 import scenario.bienenstock.Koordinate;
 import scenario.bienenstock.Info;
 import utils.Id;
@@ -46,7 +46,7 @@ public class BienenstockAgent
     private long aktCode;
     private EinfacheKarte karte;
     private EinfacheBiene selbst;
-    private BienenstockSzenarioHandler handler;
+    private IBienenstockSzenarioHandler handler;
     private EinfachesFeld position;
     boolean erstenAktCodeBekommen = false;
 
@@ -81,7 +81,7 @@ public class BienenstockAgent
     public BienenstockAgent (String bName, AbstractScenarioHandler bHandler) {
     	super(bName, bHandler);
         name = bName;
-        handler = (BienenstockSzenarioHandler)bHandler;
+        handler = (IBienenstockSzenarioHandler)bHandler;
         volksID = 1;
         zufallsGenerator.setSeed(samen);
     }
@@ -102,7 +102,7 @@ public class BienenstockAgent
     }
 
     public void setHandler(AbstractScenarioHandler bHandler) {
-    	handler = (BienenstockSzenarioHandler)bHandler;
+    	handler = (IBienenstockSzenarioHandler)bHandler;
     }
     
     public boolean aktionscodeSetzen(long aktionsCode) {
