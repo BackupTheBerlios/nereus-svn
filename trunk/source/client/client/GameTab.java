@@ -67,6 +67,8 @@ public class GameTab extends JScrollPane {
 	 */
 	private String m_scenarioName = null;
 
+	private String pathName = null;
+	
   	/**
 	 * Konstruktor.
 	 * 
@@ -81,8 +83,10 @@ public class GameTab extends JScrollPane {
   		ICoordinator coordinator, 
   		JTabbedPane parent,
   		Component application,
-  		String scenarioName) {
+  		String scenarioName,
+  		String path) {
 	    super();
+	    pathName = path;
 		m_coordinator = coordinator;
 		m_parent = parent;
 		m_application = application;
@@ -109,9 +113,11 @@ public class GameTab extends JScrollPane {
   		Component application,
 		String scenarioName,
   		Hashtable parameter,
-  		String hostname) {
+  		String hostname,
+  		String path) {
   			
 		super();
+		pathName = path;
 		m_coordinator = coordinator;
 		m_parent = parent;
 		m_application = application;
@@ -140,7 +146,8 @@ public class GameTab extends JScrollPane {
 			m_coordinator,
 			this,
 			m_scenarioName,
-			m_parameter);
+			m_parameter,
+			pathName);
 		this.setAutoscrolls(true);
 		m_gpp.setMaximumSize(new Dimension(550, 5000));
 		m_gpp.setMinimumSize(new Dimension(550, 501));

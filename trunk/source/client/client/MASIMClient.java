@@ -416,7 +416,8 @@ public class MASIMClient extends JFrame {
 					m_coordinator, 
 					m_tabbedPane,
 					this,
-					scenario);
+					scenario, 
+					pathName);
 				m_gameTabs.addElement(tab);
 				m_tabbedPane.add(tab, "Spiel");
 				tab.setMaximumSize(new Dimension(550, 32767));
@@ -520,7 +521,7 @@ public class MASIMClient extends JFrame {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		if(args.length == 1) {			
+		if(args.length >= 1) {			
 			System.out.println("Starte den MALClient");
 			MASIMClient client = null;
 			if (args.length > 1) {
@@ -631,7 +632,8 @@ public class MASIMClient extends JFrame {
 					this,
 					scenario,
 					parameter,
-					m_serverName);
+					m_serverName,
+					pathName);
 				m_gameTabs.addElement(tab);
 				m_tabbedPane.add(tab, gameName);
 				tab.setMaximumSize(new Dimension(550, 32767));

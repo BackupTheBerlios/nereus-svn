@@ -160,6 +160,8 @@ public class GameParameterPanel
 	 */
 	private String m_scenarioName;
 	
+	private String pathName = null;
+	
   	/**
 	 * Konstruktor.
 	 * 
@@ -175,8 +177,10 @@ public class GameParameterPanel
 		GameTab parent,
 		//String path,
 		String scenarioName,
-		Hashtable parameter) {
+		Hashtable parameter,
+		String path) {
 	    super();
+	    pathName = path;
 	    m_coordinator = coordinator;
 	    m_parent = parent;
 		m_scenarioName = scenarioName;
@@ -468,7 +472,8 @@ public class GameParameterPanel
 					m_parameter,
 					m_coordinator,
 					m_parent,
-					m_scenarioName);  
+					m_scenarioName,
+					pathName);  
 				arf.show();
 			}else {
 				m_parent.writeStatusMessage(
