@@ -17,7 +17,12 @@
  */
 package scenario.bienenstock;
 
+import exceptions.InvalidActionKeyException;
+import exceptions.InvalidAgentException;
+import exceptions.InvalidElementException;
 import scenario.bienenstock.einfacheUmgebung.EinfacheKarte;
+import utils.ActionKey;
+import utils.Id;
 /**
  * ist das Interface für den Handler des Szenarios.
  * 
@@ -113,4 +118,10 @@ public interface IBienenstockSzenarioHandler {
      */
     long aktionNektarAbbauen(long aktCode,
                                     int menge);
+    
+    public Object getParameter(ActionKey key,
+            Id agentId, 
+            String name) throws InvalidAgentException,
+            InvalidActionKeyException,
+            InvalidElementException;
 }
