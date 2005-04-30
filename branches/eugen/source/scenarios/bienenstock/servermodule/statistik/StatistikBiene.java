@@ -1,19 +1,33 @@
 /*
+ * Dateiname      : StatistikBiene.java
  * Erzeugt        : 20. Januar 2005
  * Letzte Änderung: 14. Februar 2005 durch Philip Funck
+ * Autoren        : Philip Funck (mango.3@gmx.de)
+ *                  Samuel Walz (felix-kinkowski@gmx.net)
+ *                  
+ *                  
+ *                  
  *
- * Teil des Softwarepraktikums mit dem Titel
+ * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
+ * Die erste Version dieser Datei wurde erstellt im Rahmen eines
+ * Software-Praktikums von Philip Funck und Samuel Walz am Institut für
+ * Intelligente Systeme der Universität Stuttgart unter Betreuung von
+ * Dietmar Lippold (dietmar.lippold@informatik.uni-stuttgart.de).
  *
- *   "Design und Implementierung eines Szenarios für einen
- *    Multiagenten-Simulator"
  *
- * bei Dietmar Lippold (dietmar.lippold@informatik.uni-stuttgart.de)
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- * Autoren  : Philip Funck (mango.3@gmx.de)
- *            Samuel Walz (felix-kinkowski@gmx.net)
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * copyright: Institut für Intelligente Systeme, Universität Stuttgart (2004)
- *            http://www.iis.uni-stuttgart.de
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 package scenario.bienenstock.statistik;

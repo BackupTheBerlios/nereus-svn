@@ -1,14 +1,33 @@
 /*
- * Created on 05.08.2003
+ * Dateiname      : MALSIMClient_AboutBox.java
+ * Erzeugt        : 5. August 2003
+ * Letzte Änderung: 19. April 2004 durch Eugen Volk
+ * Autoren        : Daniel Friedrich
+ *                  Eugen Volk
+ *                  
  *
- * Part of the Diplomthesis with the title: 
- * 
- * "Identifikation von Lern- und Kommunikationsstrategie in einem Multiagenten-
- * Szenario."
+ * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
+ * Die erste Version dieser Datei wurde erstellt im Rahmen einer
+ * Diplomarbeit von Daniel Friedrich am Institut für Intelligente Systeme
+ * der Universität Stuttgart unter Betreuung von Dietmar Lippold
+ * (dietmar.lippold@informatik.uni-stuttgart.de).
  *
- * @author Daniel Friedrich
- * @copyright Institut für Intelligente Systeme, Universität Stuttgart (2003)
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+
 package client;
 
 import java.awt.*;
@@ -38,10 +57,10 @@ public class MALSIMClient_AboutBox extends JDialog implements ActionListener {
   BorderLayout borderLayout2 = new BorderLayout();
   FlowLayout flowLayout1 = new FlowLayout();
   GridLayout gridLayout1 = new GridLayout();
-  String product = "";
+  String product = " MASIM-Client ";
   String version = "1.0";
   String copyright = "Copyright (c) 2003";
-  String comments = "";
+  String comments = " ";
   public MALSIMClient_AboutBox(Frame parent) {
     super(parent);
     enableEvents(AWTEvent.WINDOW_EVENT_MASK);
@@ -58,8 +77,8 @@ public class MALSIMClient_AboutBox extends JDialog implements ActionListener {
 	  * @throws Exception
 	  */
 	 private void jbInit() throws Exception  {
-	 	image1 = new ImageIcon(client.MASIMClient.class.getResource("about.png"));
-	    imageLabel.setIcon(image1);
+	// 	image1 = new ImageIcon(client.MASIMClient.class.getResource("about.png"));
+	//    imageLabel.setIcon(image1);
 	    this.setTitle("About");
 	    panel1.setLayout(borderLayout1);
 	    panel2.setLayout(borderLayout2);
@@ -73,10 +92,10 @@ public class MALSIMClient_AboutBox extends JDialog implements ActionListener {
 	    label3.setText(copyright);
 	    label4.setText(comments);
 	    insetsPanel3.setLayout(gridLayout1);
-	    insetsPanel3.setBorder(BorderFactory.createEmptyBorder(10, 60, 10, 10));
+	    insetsPanel3.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 	    button1.setText("Ok");
 	    button1.addActionListener(this);
-	    insetsPanel2.add(imageLabel, null);
+	   // insetsPanel2.add(imageLabel, null);
 	    panel2.add(insetsPanel2, BorderLayout.WEST);
 	    this.getContentPane().add(panel1, null);
 	    insetsPanel3.add(label1, null);

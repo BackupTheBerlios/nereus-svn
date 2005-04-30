@@ -1,14 +1,33 @@
 /*
- * Created on 05.08.2003
+ * Dateiname      : GameTab.java
+ * Erzeugt        : 5. August 2003
+ * Letzte Änderung: 22. April 2004 durch Eugen Volk
+ * Autoren        : Daniel Friedrich
+ *                  Eugen Volk
+ *                  
  *
- * Part of the Diplomthesis with the title: 
- * 
- * "Identifikation von Lern- und Kommunikationsstrategie in einem Multiagenten-
- * Szenario."
+ * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
+ * Die erste Version dieser Datei wurde erstellt im Rahmen einer
+ * Diplomarbeit von Daniel Friedrich am Institut für Intelligente Systeme
+ * der Universität Stuttgart unter Betreuung von Dietmar Lippold
+ * (dietmar.lippold@informatik.uni-stuttgart.de).
  *
- * @author Daniel Friedrich
- * @copyright Institut für Intelligente Systeme, Universität Stuttgart (2003)
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+
 package client;
 
 import java.awt.Component;
@@ -16,6 +35,7 @@ import java.awt.Dimension;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+
 
 import simulator.ICoordinator;
 import utils.Id;
@@ -92,7 +112,7 @@ public class GameTab extends JScrollPane {
 		m_application = application;
 		m_scenarioName = scenarioName;
 	    this.jbInit();
-	    this.setVisible(true);
+            this.setVisible(true);
 		
   	}
   	
@@ -125,7 +145,7 @@ public class GameTab extends JScrollPane {
 		m_scenarioName = scenarioName;
 		this.jbInit();
 		this.setVisible(true);	
-		
+               
   	}
 
   	/**
@@ -149,13 +169,14 @@ public class GameTab extends JScrollPane {
 			m_parameter,
 			pathName);
 		this.setAutoscrolls(true);
-		m_gpp.setMaximumSize(new Dimension(550, 5000));
-		m_gpp.setMinimumSize(new Dimension(550, 501));
-		m_gpp.setPreferredSize(new Dimension(550, 501));
+                // Setzen der Größe des GameTab
+		m_gpp.setMaximumSize(new Dimension(545, 5000));
+		m_gpp.setMinimumSize(new Dimension(545, 600));
+		m_gpp.setPreferredSize(new Dimension(545, 600));
 
-
-    	//this.add(m_gpp,BorderLayout.CENTER);
-    	this.getViewport().add(m_gpp,null);
+        //  this.getViewport().add(m_gpp, BorderLayout.CENTER);        
+	this.getViewport().add(m_gpp,null);
+       
   	}
   	
   	
@@ -196,9 +217,15 @@ public class GameTab extends JScrollPane {
   		 * Hier kann automatisch immer null gewählt werden, da die Funktion nur
   		 * aufgerufen wird, wenn das Tab auch das aktuelle Tab ist.
   		 */
-  		m_parent.setTitleAt(0,name);
+                 
+  		// m_parent.setTitleAt(0,name);
+            
+                // geändert von Eugen 
+                int index=m_parent.getSelectedIndex();
+  		m_parent.setTitleAt(index,name);
+                
   	}
-
+        
 	/**
 	 * Liefert die Id des Spiels zurück, dass das GameTab enthält.
 	 * 
