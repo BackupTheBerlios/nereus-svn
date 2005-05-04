@@ -885,18 +885,32 @@ public class Karte extends AbstractEnviroment {
                 );
             }
         }
+        
+        if (neuesSpielfeld.size() != spielfeld.size()) {
+        	System.out.println(neuesSpielfeld.size() + " != " + spielfeld.size());
+        }
         //Nachbarfelder setzen
         VisFeld tmpVisFeld;
 
         alleFelder = spielfeld.elements();
         while (alleFelder.hasMoreElements()) {
             vollstFeld = (Feld) alleFelder.nextElement();
+            tmpVisFeld = (VisFeld)neuesSpielfeld.get(vollstFeld.gibPosition());
             Iterator originalNachbarfelder
                 = vollstFeld.gibNachbarfelder().iterator();
             while (originalNachbarfelder.hasNext()) {
-                ((Feld) neuesSpielfeld.get(
+            	Feld feld = (Feld)originalNachbarfelder.next();
+            	if (!neuesSpielfeld.containsKey(feld.gibPosition())) {
+            		System.out.println("feld nicht gefunden");
+            	} else {
+            		tmpVisFeld.trageNachbarfeldEin(
+            				(VisFeld)neuesSpielfeld.get(
+            						(feld.gibPosition())));
+            	}
+            	
+               /* ((Feld) neuesSpielfeld.get(
                         vollstFeld.gibPosition())).trageNachbarfeldEin(
-                                (Feld) originalNachbarfelder.next());
+                                (Feld) originalNachbarfelder.next());*/
             }
         }
         return new VisKarte(spielmeister.gibRundennummer(),
