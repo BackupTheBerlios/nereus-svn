@@ -40,6 +40,8 @@ import simulator.IInformationHandler;
 import utils.Id;
 import utils.ParameterDescription;
 
+import scenario.bienenstock.visualisierung.*;
+
 
 /**
  * steuert den Ablauf des Spiels.
@@ -57,6 +59,8 @@ public class Scenario
     static final long serialVersionUID = 1L; 
 
 
+    private Bienenstockvisualisierung vis;
+    
     /**
      * ist die Nummer der aktuellen Runde.
      */
@@ -291,6 +295,7 @@ public class Scenario
             statistik.neueWerteSetzen(
                     spielkarte.statistikBienenErstellen(statAgentIds));
         }
+        vis = new Bienenstockvisualisierung();
     }
 
     /**
@@ -313,6 +318,7 @@ public class Scenario
 
         // Flags setzen
         phase = Konstanten.WARTEPHASE;
+        vis.visualisiere(spielkarte.visualisieren());
         System.out.println("\n" + "Neue Runde Nr.: " + rundennummer);
 
         synchronized (verfruehteAnfragen) {
