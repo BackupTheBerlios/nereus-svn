@@ -109,8 +109,8 @@ public class Parameter {
      * 
      * @return Hashtable
      */
-    public Hashtable gibParameterHashTabelle () {
-        return (Hashtable) szenarioParameter.clone();
+    public HashMap gibParameterHashTabelle () {
+        return (HashMap)szenarioParameter.clone();
     }
 }
 
