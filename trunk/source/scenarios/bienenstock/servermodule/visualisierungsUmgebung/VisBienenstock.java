@@ -111,7 +111,7 @@ public class VisBienenstock extends VisFeld {
      *
      * @return ID des Bienenvolkes zu dem der Stock gehört
      */
-    int gibVolksID() {
+    public int gibVolksID() {
         return volksID;
     }
 
@@ -120,7 +120,7 @@ public class VisBienenstock extends VisFeld {
      *
      * @return Maximum an gelagerten Nektar
      */
-    int gibMaxGelagerterNektar() {
+    public int gibMaxGelagerterNektar() {
         return maximumGelagerterNektar;
     }
 
@@ -129,7 +129,7 @@ public class VisBienenstock extends VisFeld {
      *
      * @return vorhandener Nektar
      */
-    int gibVorhandenerNektar() {
+    public int gibVorhandenerNektar() {
         return vorhandenerNektar;
     }
 
@@ -139,7 +139,7 @@ public class VisBienenstock extends VisFeld {
      *
      * @return Maximum an Nektar der pro Runde zu Honig gemacht wird
      */
-    int gibMaxNektarZuHonigProRunde() {
+    public int gibMaxNektarZuHonigProRunde() {
         return maximumNektarZuHonigProRunde;
     }
 
@@ -148,7 +148,7 @@ public class VisBienenstock extends VisFeld {
      *
      * @return Wechselkurs von Nektar zu Honig
      */
-    int gibWechselkursNektarZuHonig() {
+    public int gibWechselkursNektarZuHonig() {
         return wechselkursNektarZuHonig;
     }
 
@@ -157,7 +157,7 @@ public class VisBienenstock extends VisFeld {
      *
      * @return vorhandener Honig
      */
-    int gibVorhandenerHonig() {
+    public int gibVorhandenerHonig() {
         return vorhandenerHonig;
     }
 

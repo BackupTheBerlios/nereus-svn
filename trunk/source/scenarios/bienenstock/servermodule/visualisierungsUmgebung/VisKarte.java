@@ -18,6 +18,7 @@
 
 package scenario.bienenstock.visualisierungsUmgebung;
 import java.util.Hashtable;
+import java.util.HashMap;
 import scenario.bienenstock.Koordinate;
 
 /**
@@ -48,7 +49,7 @@ public class VisKarte {
     /**
      * Liste aller Kosten für die Aktionen der Bienen.
      */
-    private Hashtable kosten;
+    private HashMap kosten;
 
     /**
      * Konstruktor.
@@ -61,7 +62,7 @@ public class VisKarte {
     public VisKarte(int runde,
                     Hashtable bienchen,
                     Hashtable feldchen,
-                    Hashtable kostenvoranschlag) {
+                    HashMap kostenvoranschlag) {
         rundennummer = runde;
         bienen = bienchen;
         spielfeld = feldchen;
@@ -73,7 +74,7 @@ public class VisKarte {
      *
      * @return Kosten  für die Aktionen
      */
-    public Hashtable gibHonigkosten() {
+    public HashMap gibHonigkosten() {
         return kosten;
     }
 
@@ -125,5 +126,9 @@ public class VisKarte {
      */
     public Hashtable gibFelder() {
         return spielfeld;
+    }
+    
+    public int gibRundennummer() {
+    	return rundennummer;
     }
 }

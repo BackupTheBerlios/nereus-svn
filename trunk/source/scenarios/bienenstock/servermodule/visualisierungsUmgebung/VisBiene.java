@@ -150,7 +150,7 @@ public class VisBiene {
      *
      * @return der aktuelle Zustand
      */
-    String gibZustand() {
+    public String gibZustand() {
         return zustand;
     }
 
@@ -159,7 +159,7 @@ public class VisBiene {
      *
      * @return die ID des Bienenvolkes dem sie angehört
      */
-    int gibBienenvolkID() {
+    public int gibBienenvolkID() {
         return bienenvolkID;
     }
 
@@ -168,7 +168,7 @@ public class VisBiene {
      *
      * @return die ID der Biene
      */
-    int gibBienenID() {
+    public int gibBienenID() {
         return bienenID;
     }
 
@@ -177,7 +177,7 @@ public class VisBiene {
      *
      * @return die Position der Biene
      */
-    Koordinate gibPosition() {
+    public Koordinate gibPosition() {
         return position;
     }
 
@@ -186,7 +186,7 @@ public class VisBiene {
      *
      * @return die geladenen Nektarmenge
      */
-    int gibGeladeneNektarmenge() {
+    public int gibGeladeneNektarmenge() {
         return geladeneNektarmenge;
     }
 
@@ -195,7 +195,7 @@ public class VisBiene {
      *
      * @return die geladenen Honigmenge
      */
-    int gibGeladeneHonigmenge() {
+    public int gibGeladeneHonigmenge() {
         return geladeneHonigmenge;
     }
 
@@ -204,7 +204,7 @@ public class VisBiene {
      *
      * @return das Maximum was sie an Nektar tragen kann
      */
-    int gibMaximumNektar() {
+    public int gibMaximumNektar() {
         return maximumGeladenerNektar;
     }
 
@@ -213,7 +213,7 @@ public class VisBiene {
      *
      * @return das Maximum, was sie an Honig tragen kann
      */
-    int gibMaximumHonig() {
+    public int gibMaximumHonig() {
         return maximumGeladenerHonig;
     }
 
@@ -223,7 +223,7 @@ public class VisBiene {
      * @return die Information, die sie trägt <code>null</code>, 
      *         wenn sie keine trägt
      */
-    Info gibInformation() {
+    public Info gibInformation() {
         return information;
     }
 }

@@ -100,7 +100,7 @@ public class VisBlume extends VisFeld {
      *
      * @return Merkmal der Blume
      */
-    int gibMerkmal() {
+    public int gibMerkmal() {
         return merkmal;
     }
 
@@ -109,7 +109,7 @@ public class VisBlume extends VisFeld {
      *
      * @return vorhandener Nektar
      */
-    int gibVorhandenerNektar() {
+    public int gibVorhandenerNektar() {
         return vorhandenerNektar;
     }
 
@@ -119,7 +119,7 @@ public class VisBlume extends VisFeld {
      *
      * @return Maximalabgabemenge Nektar
      */
-    int gibMaxNektarProRunde() {
+    public int gibMaxNektarProRunde() {
         return maximumNektarProRunde;
     }
 
@@ -128,7 +128,7 @@ public class VisBlume extends VisFeld {
      *
      * @return abbauende Bienen
      */
-    HashSet gibAbbauendeBienen() {
+    public HashSet gibAbbauendeBienen() {
         return (HashSet) abbauendeBienen.clone();
     }
 

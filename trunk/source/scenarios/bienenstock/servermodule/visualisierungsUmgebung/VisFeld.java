@@ -96,7 +96,7 @@ public class VisFeld {
      *
      * @return Position des Feldes
      */
-    Koordinate gibPosition() {
+    public Koordinate gibPosition() {
         return position;
     }
 
@@ -105,7 +105,7 @@ public class VisFeld {
      *
      * @return Nachbarfelder
      */
-    Hashtable gibNachbarfelder() {
+    public Hashtable gibNachbarfelder() {
         return (Hashtable) nachbarfelder.clone();
     }
 
@@ -114,7 +114,7 @@ public class VisFeld {
      *
      * @return Sichtweite am Boden
      */
-    int gibSichtweiteAmBoden() {
+    public int gibSichtweiteAmBoden() {
         return sichtweiteAmBoden;
     }
 
@@ -123,7 +123,7 @@ public class VisFeld {
      *
      * @return Sichtweite in der Luft
      */
-    int gibSichtweiteInDerLuft() {
+    public int gibSichtweiteInDerLuft() {
         return sichtweiteInDerLuft;
     }
 
@@ -132,7 +132,7 @@ public class VisFeld {
      * 
      * @return wartende Bienen
      */
-    HashSet gibWartendeBienen() {
+    public HashSet gibWartendeBienen() {
         return (HashSet) wartendeBienen.clone();
     }
 
@@ -141,7 +141,7 @@ public class VisFeld {
      * 
      * @return fliegende Bienen
      */
-    HashSet gibFliegendeBienen() {
+    public HashSet gibFliegendeBienen() {
         return (HashSet) fliegendeBienen.clone();
     }
 
@@ -150,7 +150,7 @@ public class VisFeld {
      * 
      * @return tanzende Bienen
      */
-    HashSet gibTanzendeBienen() {
+    public HashSet gibTanzendeBienen() {
         return (HashSet) tanzendeBienen.clone();
     }
 
@@ -160,6 +160,17 @@ public class VisFeld {
      * @param nachbarn die Nachbarfelder
      */
     void setzeNachbarfelder(Hashtable nachbarn) {
+    	if (nachbarn != null) {
         nachbarfelder = nachbarn;
+    	}
+    }
+    
+    public void trageNachbarfeldEin(VisFeld feld) {
+    	if (nachbarfelder == null) {
+    		nachbarfelder = new Hashtable();
+    	}
+    	if (feld != null) {
+    	nachbarfelder.put(feld.gibPosition(), feld);
+    	}
     }
 }
