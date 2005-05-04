@@ -14,6 +14,7 @@ package simulator;
 import java.rmi.Naming;
 import java.rmi.RMISecurityManager;
 import java.rmi.registry.LocateRegistry;
+import java.io.File;
 
 
 /**
@@ -51,7 +52,14 @@ public class MASIMServer {
 			}else {
 				name = "rmi://localhost/Coordinator";
 			}
-			m_coordinator = new Coordinator(hostname);
+			String pathName = null;
+			if (args.length > 1) {
+			pathName = args[1]; 
+			} else {
+				File dFile = new File("");
+				pathName = dFile.getAbsolutePath();
+			}
+			m_coordinator = new Coordinator(hostname, pathName);
 			Naming.rebind(name, m_coordinator);
 			System.out.println(
 				"MultiAgentSimulator: Coordinator wurde erfolgreich registriert.");
