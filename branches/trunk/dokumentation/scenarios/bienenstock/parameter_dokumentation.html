@@ -1,0 +1,299 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>Dokumentation der Parameter im Simulator</title>
+  <style type="text/css">
+        body {color: black; background: white; font-family: sans-serif}
+    </style>
+  <link>
+</head>
+
+<body lang="en">
+<h1>Dokumentation der Parameter im Simulator</h1>
+
+<h2>1. Inhalt</h2>
+
+<div class="toc">
+<ul>
+  <li><a href="#L357">2. Grunds&auml;tzliches</a></li>
+  <li><a href="#L390">3. Parameter setzen</a>
+    <ul>
+      <li><a href="#L438">3.1. Der Quellcode des Szenarios</a></li>
+      <li><a href="#L442">3.2. Die Konfigurationsdatei</a></li>
+      <li><a href="#L446">3.3. Der Client</a></li>
+    </ul>
+  </li>
+  <li><a href="#L450">4. Weg der Parameter</a></li>
+  <li><a href="#L645">5. Notwendige Parameter</a></li>
+  <li><a href="#L1916">6. Zusätzliche Parameter</a></li>
+  <li><a href="#L605">7. Die Kommandozeile</a></li>
+</ul>
+</div>
+
+<h2 id="L357">2. Grunds&auml;tzliches</h2>
+
+<p>Wir unterscheiden bei der Benutzung des Simulators vier Benutzertypen:</p>
+<ul>
+  <li>Szenario-Konstrukteur: Derjenige der das Szenario programmiert.</li>
+  <li>Kartenersteller: Die Person, die eine Karte f&uuml;r ein Szenario
+  erstellt.</li>
+  <li>Administrator: Verwaltet die Verzeichnisse des Simulators, pflegt neue
+    Szenarien ein und startet den Simulator.</li>
+  <li>Endbenutzer: Benutzt den Client um den Simulator zu verwenden.</li>
+</ul>
+
+<p>Des weiteren unterscheiden wir drei M&ouml;glichkeiten der Parametersetzung:
+</p>
+<ul>
+  <li>Im Quellcode des Szenarios.</li>
+  <li>&uuml;ber eine Konfigurationsdatei.</li>
+  <li>Mit Hilfe eines Clients.</li>
+</ul>
+
+<h2 id="L390">3. Parameter setzen</h2>
+
+<p>Die unterscheidlichen Benutzer k&ouml;nnen die M&uml;glichkeiten der
+Parametersetzung nur eingeschr&auml;nkt nutzen: </p>
+
+<table border="1">
+  <tbody>
+    <tr>
+      <th>Benutzertyp</th>
+      <th>Art der Einflussnahme</th>
+    </tr>
+    <tr>
+      <td>Szenario-Konstrukteur</td>
+      <td>Quellcode des Szenarios</td>
+    </tr>
+    <tr>
+      <td>Kartenersteller</td>
+      <td>Konfigurationsdatei</td>
+    </tr>
+    <tr>
+      <td>Administrator</td>
+      <td>Konfigurationsdatei</td>
+    </tr>
+    <tr>
+      <td>Endbenutzer</td>
+      <td>Mit Hilfe des Clients</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="L438">3.1. Der Quellcode des Szenarios</h3>
+
+<p>Hier müssen alle benötigten Parameter vom Szenario-Konstrukteur angelegt
+werden und können dort schon mit Defaultwerten belegt werden. Nur die hier
+angelegten Parameter werden in der Simulation berücksichtigt. Wird ein
+Parameter hier schon schreibgeschützt (bei "ScenarioName" ist dies der Fall),
+so kann er weder per Konfigurationsdatei verändert werden, noch über den
+Client. </p>
+
+<h3 id="L442">3.2. Die Konfigurationsdatei</h3>
+
+<p>Parameterwerte, die hier angegeben werden sind automatisch
+schreibgeschützt, können also über den Client nicht mehr festgelegt werden.
+</p>
+
+<h3 id="L446">3.3. Der Client</h3>
+
+<p>Hier bekommt der Endbenutzer eine Auflistung aller Parameter und kann
+diejenigen bestimmen, die nicht schreibgeschützt sind. </p>
+
+<h2 id="L450">4. Weg der Parameter</h2>
+
+<p>Soll ein neues Spiel gestartet werden, so müssen zu diesem zuerst die
+Parameter ermittelt werden. Dies geschieht folgendermassen: </p>
+<ul>
+  <li><a href="dokuDaniel/simulator/oordinator.html" target="_blank">Coordinator</a> erfragt &uuml;ber <a href="dokuDaniel/simulator/AbstractScenario.html" target="_blank">AbstractScenario.getParameter()</a>
+    die Liste der ben&ouml;tigten Parameter.</li>
+  <li>Die Methode <a href="dokuDaniel/simulator/AbstractScenario.html" target="_blank">getParameter()</a> nimmt ihre Parameter und pr&uuml;ft welche
+    von diesen in einer eventuell vorhandenen Konfigurationsdatei angegeben
+    sind. Diese werden &uuml;bernomen und schreibgesch&uuml;tzt. Anschliessend wird die
+    so erstellte Parameterliste an <a href="dokuDaniel/simulator/Coordinator.html" target="_blank">Coordinator</a> zur&uuml;ckgegeben.</li>
+  <li><a href="dokuDaniel/simulator/Coordinator.html" target="_blank">Coordinator</a> gibt die Liste an den Client weiter.</li>
+  <li>Der Client gibt die vom Benutzer modifizierte Liste zur&uuml;ck.
+    Schreibgesch&uuml;tzte Werte werden ignoriert, die restlichen &uuml;bernommen.</li>
+  <li>Die fertige Parameterliste wird an <a href="dokuDaniel/simulator/AbstractScenario.html" target="_blank">AbstractScenario</a> und an
+    <a href="dokuDaniel/simulator/Game.html" target="_blank">Game</a> &uuml;ber den Konstruktor weitergegeben.</li>
+</ul>
+
+<h2 id="L645">5. Notwendige Parameter</h2>
+
+<p>Um ein Spiel starten zu k&ouml;nnen, ben&ouml;tigt der Simulator zwingend folgende
+Parameter: </p>
+
+<table border="1">
+  <tbody>
+    <tr>
+      <th>Parametername</th>
+      <th>Funktion</th>
+      <th>Wird gesetzt durch</th>
+    </tr>
+    <tr>
+      <td>ScenarioName</td>
+      <td>Name des Szenarios</td>
+      <td>Szenario-Konstrukteur</td>
+    </tr>
+    <tr>
+      <td>StartEnergy</td>
+      <td>Startenergie eines Agenten</td>
+      <td>Szenario-Konstrukteur, Administrator, Endbenutzer</td>
+    </tr>
+    <tr>
+      <td>GameName</td>
+      <td>Name des Spiels</td>
+      <td>Endbenutzer</td>
+    </tr>
+    <tr>
+      <td>MaxAgents</td>
+      <td>Maximal anmeldbare Zahl an Agent</td>
+      <td>Administrator</td>
+    </tr>
+    <tr>
+      <td>MultipleGameTabsAllowed</td>
+      <td></td>
+      <td>Administrator, Endbenutzer</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="L1916">6. Zus&auml;tzliche Parameter</h2>
+
+<p>Das Szenario <span style="font-style: italic">bienenstock</span> besitzt
+zus&auml;tzlich noch folgende Parameter: (Energiekosten sind pro Runde
+angegeben.)</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parametername</th>
+      <th>Funktion</th>
+      <th>Wird gesetzt durch</th>
+    </tr>
+    <tr>
+      <td>honigStarten</td>
+      <td>Energiekosten f&uuml;r das Starten</td>
+      <td>Administrator, Endbenutzer</td>
+    </tr>
+    <tr>
+      <td>honigFliegen</td>
+      <td>Energiekosten f&uuml;r das Fliegen</td>
+      <td>Administrator, Endbenutzer</td>
+    </tr>
+    <tr>
+      <td>honigLanden</td>
+      <td>Energiekosten f&uuml;r das Landen</td>
+      <td>Administrator, Endbenutzer</td>
+    </tr>
+    <tr>
+      <td>honigWarten</td>
+      <td>Energiekosten f&uuml;r das Warten</td>
+      <td>Administrator, Endbenutzer</td>
+    </tr>
+    <tr>
+      <td>honigTanzenAlles</td>
+      <td>Energiekosten f&uuml;r das mitteilen der Richtung und Entfernung</td>
+      <td>Administrator, Endbenutzer</td>
+    </tr>
+    <tr>
+      <td>honigTanzenRichtung</td>
+      <td>Energiekosten f&uuml;r das mitteilen der Richtung</td>
+      <td>Administrator, Endbenutzer</td>
+    </tr>
+    <tr>
+      <td>honigTanzenEntfernung</td>
+      <td>Energiekosten f&uuml;r das mitteilen der Entfernung</td>
+      <td>Administrator, Endbenutzer</td>
+    </tr>
+    <tr>
+      <td>honigZuschauen</td>
+      <td>Energiekosten f&uuml;r das Zuschauen</td>
+      <td>Administrator, Endbenutzer</td>
+    </tr>
+    <tr>
+      <td>honigHonigTanken</td>
+      <td>Energiekosten f&uuml;r das Honig tanken</td>
+      <td>Administrator, Endbenutzer</td>
+    </tr>
+    <tr>
+      <td>honigNektarAbliefern</td>
+      <td>Energiekosten f&uuml;r das Nektar abliefern</td>
+      <td>Administrator, Endbenutzer</td>
+    </tr>
+    <tr>
+      <td>honigNektarAbbauen</td>
+      <td>Energiekosten f&uuml;r das Nektar abbauen</td>
+      <td>Administrator, Endbenutzer</td>
+    </tr>
+    <tr>
+      <td>startHonig</td>
+      <td>Honigmenge eines Agenten zu Beginn eines Spiels</td>
+      <td>Administrator, Endbenutzer</td>
+    </tr>
+    <tr>
+      <td>startNektar</td>
+      <td>Nektarmenge eines Agenten zu Beginn eines Spiels</td>
+      <td>Administrator, Endbenutzer</td>
+    </tr>
+    <tr>
+      <td>maxGelHonig</td>
+      <td>Honigkapazit&auml;t eines Agenten</td>
+      <td>Administrator, Endbenutzer</td>
+    </tr>
+    <tr>
+      <td>maxGelNektar</td>
+      <td>Nektarkapazit&auml;t eines Agenten</td>
+      <td>Administrator, Endbenutzer</td>
+    </tr>
+    <tr>
+      <td>timeout</td>
+      <td>Zeitspanne, die das Szenario auf Anfragen der Agenten wartet (Pro
+        Runde)</td>
+      <td>Administrator</td>
+    </tr>
+    <tr>
+      <td>kursNektarHonig</td>
+      <td>Der Kurs, zu dem in einem Bienenstock Nektar zu Honig umgewandelt
+        wird (Multiplikator)</td>
+      <td>Administrator, Endbenutzer</td>
+    </tr>
+    <tr>
+      <td>unsch&auml;rfeWinkel</td>
+      <td>Maximale Abf&auml;lschung eines mitgeteilten Winkels in Prozent (0.01 =
+        1% 0.1 = 10% 1 = 100%)</td>
+      <td>Administrator, Endbenutzer</td>
+    </tr>
+    <tr>
+      <td>unschaerfeEntfernung</td>
+      <td>Maximale Abf&auml;lschung einer mitgeteilten Entfernung in Prozent (0.01
+        = 1% 0.1 = 10% 1 = 100%)</td>
+      <td>Administrator, Endbenutzer</td>
+    </tr>
+    <tr>
+      <td>endbedingungMaxNektar</td>
+      <td>Nektarmenge in einem Bienenstock, ab der ein Spiel zuende ist</td>
+      <td>Administrator, Endbenutzer</td>
+    </tr>
+    <tr>
+      <td>endbedingungMaxHonig</td>
+      <td>Honigmenge in einem Bienenstock, ab der ein Spiel zuende ist</td>
+      <td>Administrator, Endbenutzer</td>
+    </tr>
+    <tr>
+      <td>endbedingungMaxRunden</td>
+      <td>Rundenanzahl, ab der ein Spiel zuende ist</td>
+      <td>Administrator</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="L605">7. Die Kommandozeile</h2>
+
+<p>Der Administrator kann dem Simulator beim Start &uuml;ber die Kommandozeile
+seinen hostname als Argument mit &uuml;bergeben. Dieser ist per Default
+"localhost". </p>
+</body>
+</html>

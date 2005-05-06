@@ -1,0 +1,1 @@
+java -Djava.rmi.server.hostname=localhost -Djava.security.policy=clientLocal.policy -cp E:\CD\runtime\client\;E:\CD\runtime\client\lib\shared.jar;E:\CD\runtime\client\lib\weka.jar; client.MASIMClient localhost
