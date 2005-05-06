@@ -1,6 +1,0 @@
-grant {
-	permission java.net.SocketPermission "192.168.1.202:1099", "connect,resolve";
-	permission java.net.SocketPermission "192.168.1.202:2002", "connect, resolve, accept";
-	permission java.net.SocketPermission "192.168.1.202:2003", "connect, resolve, accept";	
-	permission java.security.AllPermission;
-};
