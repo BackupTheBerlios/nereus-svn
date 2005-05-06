@@ -59,7 +59,7 @@ public class Scenario
     static final long serialVersionUID = 1L; 
 
 
-    private Bienenstockvisualisierung vis;
+    private Visualisierung vis;
     
     /**
      * ist die Nummer der aktuellen Runde.
@@ -295,7 +295,7 @@ public class Scenario
             statistik.neueWerteSetzen(
                     spielkarte.statistikBienenErstellen(statAgentIds));
         }
-        vis = new Bienenstockvisualisierung();
+        vis = new Visualisierung();
     }
 
     /**
@@ -342,6 +342,11 @@ public class Scenario
             //System.out.println(wartendeAnfragen.gibAnzahl() 
             //+ " Aktionen angefragt.");
         }
+        /*try {
+            this.wait(2000L);
+        } catch (InterruptedException e) {
+        }*/
+        
     }
 
     /**
