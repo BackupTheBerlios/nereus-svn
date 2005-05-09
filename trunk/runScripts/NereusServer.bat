@@ -1,1 +1,19 @@
-java -Djava.rmi.codebase=http:///localhost:2002/ -Djava.rmi.server.hostname=localhost -Djava.security.policy=serverLocal.policy simulator.MALServer localhost F:\Systeme\FGML\server\scenario\
+REM Startet den Server
+
+REM Benoetigte Umgebungsvariablen (CONFIG_DIR, JAVA,SERVER_HOST,
+REM BASIS_PFAD, DIST_DIR)
+REM werden gesetzt
+call setup.bat
+
+REM Datei in der die Rechte fuer den Server vergeben werden.
+set POLICY_CONF=server.policy
+
+REM Die Main-Klasse ist
+REM MAIN=nereus.simulator.MASIMServer
+set MAIN=nereus.simulator.MASIMServer
+
+REM die Parameter für die JVM
+set JVMPAR= -Djava.security.policy=%CONFIG_DIR%\%POLICY_CONF%
+set JVMPAR=%JVMPAR% -Djava.rmi.server.hostname=%SERVER_HOST%
+
+%JAVA% %JVMPAR% -cp %DIST_DIR%\Server.jar %MAIN% %SERVER_HOST% %BASIS_PFAD%

@@ -1,17 +1,14 @@
-zum kompilieren eines Szenarios ist folgender Befehl in <Pfad zum
-trunk>/source/server/ auszufuehren:
-"javac -classpath <Pfad zum trunk>/libs/weka.jar:<Pfad zum
-trunk>/libs/shared.jar:./ <Pfad zum Szenario>/Scenario.java"
+Zum compilieren der Distribution wir Ant benoetigt.
+Zum Compilieren im Verzeichnis in dem build.xml sich befindet
+einfach eingeben: ant allTar
+daraufhin werden zwei Tar-Files im Ordner /dist abgelegt: Client.tar.gz 
+und Server.tar.gz
 
-zum kompilieren des Clients sind folgende Befehle in <Pfad zum client>
-auszufuehren:
-"javac -classpath <Pfad zum trunk>/libs/weka.jar:<Pfad zum
-trunk>/libs/shared.jar:./ client/MASIMClient.java"
-"javac -classpath <Pfad zum trunk>/libs/weka.jar:<Pfad zum 
-trunk>/libs/shared.jar:./ webserver/ClassFileServer.java"
+Um neue Scenarien zu compilieren, müssen diese sich im Ordner:
+source/scenario befinden.
 
-zum kompilieren des BienenstockAgent ist folgender Befehl in <Pfad zum
-Client> auszufuehren:
-"javac -classpath <Pfad zum trunk>/libs/weka.jar:<Pfad zum
-trunk>/libs/shared.jar:<Pfad zum server>:./
-scenario/bienenstock/BienenstockAgent.java"
+Die Struktur eines Scenario muss wie folgt aussehen:
+Verzeichnis mit scenario/<scenario-name>/agents  enthält Agenten fuer den Client,
+wobei jeder lauffähige Agent mit "Agent" enden muss z.B: BienenstockAgent.java.
+Die Scenario.java muss sich in dem Hauptverzeichnis des scenario-Ordner befinden:
+d.h.: scenario/<scenario-name>/Scenario.java
