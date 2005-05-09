@@ -51,7 +51,7 @@
   <property name="runScripts" location="runScripts"/>
   <property name="scenarios" location="${source}/scenario"/>
   <property name="scenario" location="scenario"/>
-  <property name="documentation" location="dokumentation"/>
+  <property name="documentation" location="documentation"/>
   <property name="build" location="build"/>
   <property name="dist" location="dist"/>
   <property name="scenariosconfig" location="scenariosconfig"/>
