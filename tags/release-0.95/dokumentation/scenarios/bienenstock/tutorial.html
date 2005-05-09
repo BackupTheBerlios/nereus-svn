@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN"
+       "http://www.w3.org/TR/MathML2/dtd/xhtml-math11-f.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Tutorial: Entwicken eines Szenarios für MASIMl</title>
+  <meta name="generator" content="amaya 8.0, see http://www.w3.org/Amaya/" />
+</head>
+
+<body>
+<h1>Tutorial: Entwickeln eines Szenarios für MASIM</h1>
+
+<p>Die Entwicklung eines Szenarios für MASIM (Der Multi-Agenten-Simulator von
+Daniel) am Beispiel des Szenarios "Bienenstock" von Phlip Funck und Samuel
+Walz.</p>
+
+<h2>Einleitung</h2>
+
+<p>In diesem Dokument wird beschrieben, wie man vorgehen kann, um ein
+Szanario für MASIM zu programmieren - es verschafft einen groben Überblick
+über eine mögliche Vorgehensweise und ihren Aufwand.</p>
+
+<h3>Der Simulator</h3>
+
+<p>MASIM ist ein Multiagentensimulator - er wird in der <a
+href="diplomarbeit-final.pdf" target="_blank">Diplomarbeit</a> von Daniel
+Friedrich und in der beiliegenden Datei <a href="masim.html"
+target="_blank">masim.html</a> ausführlicher beschrieben.</p>
+
+<h3>Java</h3>
+
+<p><a href="http://java.sun.com/" target="_blank">Java</a> ist eine
+objektorientierte Programmiersprache, die von <a href="http://www.sun.com/"
+target="_blank">Sun</a> zum entwickeln von plattformunabhängigen Programmen
+erfunden wurde.</p>
+
+<p>Alle Komponenten von MASIM (Server, Client, Szenarios, Agenten) werden in
+dieser Sprache entwickelt.</p>
+
+<h3>Grundlagen der Entwicklung</h3>
+
+<p>Aufgrund immer größerer Projekte heisst "Softwareentwicklung" hutzutage
+nicht mehr nur "Einfach hinsetzen und mit dem Programmieren anfangen" -
+inzwischen wird hier viel mehr Wert auf einen gut geplanten Ablauf gelegt um
+zeitlich und qualitativ effizient arbeiten zu können - hierzu ein Kapitel aus
+einem Vorlesungsscript: <a href="softwareentwicklung.pdf"
+target="_blank">Software-Entwicklung als Problem</a>(Quelle:
+http://www.ifi.unizh.ch/groups/req/ftp/se_I/kapitel_1.pdf).</p>
+
+<h2>Das Spiel</h2>
+
+<p>Nachdem wir nun verstanden haben, was der Simulator macht und wie man mit
+Java Programme entwickelt, wenden wir uns nun unserem eigentlichen Vorhaben
+zu:</p>
+
+<p>Die Entwicklung eines Spiels für den Multiagentensimulator.</p>
+
+<h3>Ausarbeitung einer Spielidee</h3>
+
+<p>Der erste wichtige Schritt ist das Entwerfen einer Spielidee - hierbei
+werden grundlegende Ideen festgehalten, zB ob das Spiel in 2D oder 3D
+simuliert wird, was das Spielziel sein wird und welche Figuren Bestandteil
+des Spiels sein werden.</p>
+
+<p>Halten wir kurz die wichtigsten Punkte fest - zu überlegen sind unter
+anderem:</p>
+<ul>
+  <li>Ort des Geschehens (zB der Menschliche Körper, eine Schafsweide oder
+    ein Kaufhaus - oder, für Fortgeschrittene, auch gleich das gesamte
+    Universum)</li>
+  <li>Die teilnehmenden Spielfiguren (zB Abwehrkörper und Bakterien, Schafe
+    und Schäfer oder kaufwütige Menschen)</li>
+  <li>Das Spielziel (zB den Körper erfolgreich gesund zu halten, kein Schaf
+    entkommen zu lassen oder möglichst viel Geld auszugeben)</li>
+</ul>
+
+<p>Im Fall des Szenarios "Bienenstock" war die Spielidee folgende:</p>
+<ul>
+  <li>Ort des Geschehens ist eine große Wiese mit Blumen und
+  Bienenstöcken.</li>
+  <li>Die teilnehmenden Spielfiguren sind Bienen.</li>
+  <li>Ziel des Spiels wird es sein, daß die Bienen möglichst effizient Nektar
+    für ihren Bienenstock sammeln.</li>
+</ul>
+
+<h3>"Echtzeit" oder Rundenbasiert?</h3>
+
+<p>Eine weitere wichtige Überlegung ist es, ob das Spiel Echtzeit oder
+Rundenbasiert sein soll.</p>
+
+<p>Dies sind zwei verschiendene Konzepte, wie ein Spiel zeitlich ablaufen
+kann:</p>
+<dl>
+  <dt>Rundenbasiert</dt>
+    <dd>Die Teilnehmer an einem Spiel kommen in jeder Spielrunde nur einmal
+      zum Zug und einer nach dem anderen.
+      <p>Dieses Konzept ist recht einfach umzusetzen und es ist zudem ein
+      sehr gerechtes Prinzip (Chancengleichheit für alle Teilnehmer - jeder
+      kommt mal dran)</p>
+    </dd>
+  <dt>Echtzeit</dt>
+    <dd>Bei einem Spiel dieser Art gibt es keine Runden und jeder Teilnehmer
+      kann jederzeit einen Spielzug ausführen - wer am schnellsten ist, zieht
+      zuerst.
+      <p>Bei diesem Konzept sind zB langsame Agenten im Nachteil, weil andere
+      schnelle Agenten in der gleichen Zeitspanne viel öfter zum Zug kommen.
+      Zudem sind Echtzeitspiele viel aufwendiger zu programmieren, da es hier
+      im Programm viel mehr Konflikte zu lösen gilt.</p>
+    </dd>
+</dl>
+
+<p>Für das Szenario Bienenstock haben wir beschlossen ein Rundenbasiertes
+Spiel zu verwenden. So haben alle Agenten die gleiche Chance - auch wenn sie
+einmal etwas rechenintensiver sein sollten - und die Fehlersuche in
+Rundenbasierten Programmen gestaltet sich viel einfacher.</p>
+
+<h3>Festlegung von Spielregeln</h3>
+
+<p>Zu guter Letzt legen wir die Spielregeln für das Spiel fest um der ganzen
+Idee einen soliden Rahmen zu verpassen - wir machen unsere Idee "spielbar".
+Wichtig hierbei ist, das man noch nicht auf programmtechnische Details
+eingeht (zB: alle Einkäufer werden zusammen mit ihren Einkaufswägen in einem
+array von maximal drei feldern gespeichert...)!</p>
+
+<p>Die Spielregeln werden konzipiert, wie die eines Brettspieles - in der Tat
+sollte es möglich sein nur anhand der Spielregeln das Spiel spielen zu
+können.</p>
+
+<p>In den Spiel regeln wird alles, was für das Spiel entscheident ist,
+festgehalten:</p>
+<ul>
+  <li>Aufbau der Spielkarte (2D/3D, unterteilt in Felder welche
+    Quadrate/Fünfecke/etc. sind, gar nicht unterteilt,...)</li>
+  <li>Handlungsmöglichkeiten der teilnehmenden Spielfiguren (zB in welche
+    Richtungen sie sich bewegen können, wieviele Felder pro Runde)</li>
+  <li>Ablauf einer Spielrunde, falls das Spiel rundenbasiert ist (zB alle
+    Teilnehmer erhalten 100 Energieeinheiten, dann darf jeder ziehen und eine
+    zusätzliche Handlung ausführen)</li>
+  <li>Energiekosten für die jeweiligen Handlungen (es ist sinnvoll das
+    Handlungen Energie - oder eine vergleichbare Einheit - kosten, denn
+    dadurch werden effiziente Agenten gefördert, also Agenten, die versuchen
+    mit möglichst geringem Aufwand ihr Ziel zu erreichen)</li>
+  <li>Startzustand des Spiels (zB die Einkäufer starten alle am Eingang des
+    Kaufhauses, ihre Einkaufswagen sind leer und jeder hat die gleiche Menge
+    Kapital im Geldbeutel)</li>
+</ul>
+
+<p>In unserem Fall sehen die Regeln für das Szenario so aus:</p>
+<ul>
+  <li>Die Spielkarte ist 2D und in quadratische gleichgroße Felder
+    unterteilt, es gibt drei Typen von Feldern: Der Bienenstock, die Blume,
+    und der Platz</li>
+  <li>Die Bienen können pro Runde eine Handlung ausführen - die
+    Handlungsmöglichkeiten sind: starten, landen, warten, fliegen, nektar
+    tanken, nektar abliefern, honig tanken, tanzen und zuschauen -
+    <p>fliegen sie, so können sie maximal ein Feld weit pro Runde fliegen und
+    auf diesen weg nur direkt angrenzende Nachbarfelder erreichen</p>
+  </li>
+  <li>In einer Spielrunde kommen die Agenten nacheinander in einer zufälligen
+    Reihenfolge zum Zug</li>
+  <li>Alle Handlungen kosten eine bestimmte Menge Honig (unsere
+    Energiewährung) - die Kosten für die Handlungen werden zu Beginn des
+    Spiels einmal festgelegt und können danach nicht mehr verändert
+  werden.</li>
+  <li>Zu Beginn eines Spiels erhalten alle Bienen die gleiche Menge Honig und
+    werden in dem Bienenstock ihres Bienenvolks positioniert.</li>
+</ul>
+
+<p>Wie man leicht sehen kann, sind unsere Spielregeln noch nicht vollständig
+- sie wurden im Laufe unserer Entwicklung noch präziser formuliert und
+erweitert - dies ist völlig normal, denn kaum ein Mensch wird in der Lage
+sein an diesem Punkt der Szenarioentwicklung vollständige und einwandfrei
+funktionierende Spielregeln zu erfinden.</p>
+
+<h2>Die Umsetzung</h2>
+
+<p>Nun, da die Spielregeln niedergeschrieben sind, kann man sich an den
+eigentlichen Teil der Entwicklung machen - er wird mit der
+Zeitaufwendigste:</p>
+
+<p>Das Szenario wird nun programmiert.</p>
+
+<h3>Anforderungen des Simulators an ein Szenario</h3>
+
+<p>Damit das Szenario im Simulator laufen kann muss es seine Anforderungen an
+ein korrektes Szanario erfüllen. Hierfür ist es unerlässlich, das die
+Hauptklasse des Szanarios korrekt benannt ist (Scenario.java) und die Klasse
+<a href="dokuDaniel/simulator/AbstractScenario.html"
+target="_blank">AbstractScenario</a> erweitert. Optional kann die Hauptklasse
+auch die Klasse <a href="dokuDaniel/simulator/AbstractScenarioOptional.html"
+target="_blank">AbstractScenarioOptional</a> erweitern, so das sie
+zusätzliche sinnvolle - aber nicht notwendige - Methoden anbietet.</p>
+
+<p>Um den Simulator und seine Anforderungen besser verstehen zu können sollte
+man auch <a href="masim.html" target="_blank">masim.html</a> lesen.</p>
+
+<h3>Klassendiagramme</h3>
+
+<p>Bevor man sich daran macht die ersten Zeilen zu programmieren, sollte man
+sich erst einmal überlegen, aus welchen Klassen das Szenario bestehen wird,
+welche Klasse welche Aufgaben übernehmen wird und welche Klasse welche
+Methoden anbieten sollte.</p>
+
+<p>Am besten plant man solche Dinge vor der Programmierung mittels
+sogannanter Klassendiagramme - Programme wie zB Together (von Borland)
+unterstützen das erstellen von Klassendiagrammen sehr gut: sie legen zu jeder
+Klasse gleich die Klassendatei an und fügen in diese auch gleich die
+gewünschten Methoden und Attribute ein, so das man die schon vorhandenen
+Klassen nur noch ausprogrammieren muss.</p>
+
+<h3>Sicherheitskonzepte</h3>
+
+<p>Damit ein Szenario korrekt laufen kann, muss auch Betrug seitens der
+Agenten ausgeschlossen werden. Es wird davon ausgegangen, das jeder Agent dem
+Simulator und dem Szanario feindlich gesinnt ist - das er als alles versuchen
+wird, um die Regeln zu verletzen.</p>
+
+<p>Um sicherzugehen, das ein Agent nichts Verbotenes anstellen kann, werden
+die folgenden zwei Sicherheitsvorkehrungen empfohlen:</p>
+<ul>
+  <li>Der Agent erhält keinen direkten Zugriff auf irgendeine Komponente des
+    Simulators oder des Szanarios - ausser auf einen Handler des Szenarios,
+    der ausschliesslich Methoden anbietet, die der Agent benutzen darf.
+    <p>Dieser Handler leitet dann die Aufrufe an die entsprechenden Methoden
+    des Szenarios weiter.</p>
+  </li>
+  <li>Für jede Handlung muss der Agent einen eindeutigen Aktionscode
+    übergeben, anhand dessen er indentifiziert werden kann und der
+    sicherstellt, daß er nicht mehr Handlungen ausführt, als ihm erlaubt sind
+    (Ticketsystem).</li>
+</ul>
+
+<h3>Programmierung</h3>
+
+<p>Nachdem nun alles wohldurchdacht und geplant ist, kann man an die
+eigentliche Programmierung gehen - bei dieser sind, da wir Java als
+Programmiersprache gewählt haben, zwei Dinge zu berücksichtigen:</p>
+<ul>
+  <li>Ein sauberer Programmcode
+    <ul>
+      <li><a href="CodeConventions.pdf" target="_blank">Java Code
+        Conventions</a>(Quelle:
+        www.informatik.tu-cottbus.de/~alextov/info2-02/files/CodeConventions.pdf)</li>
+      <li><a href="http://gee.cs.oswego.edu/dl/html/javaCodingStd.html"
+        target="_blank">Draft Java Coding Standard</a></li>
+    </ul>
+  </li>
+  <li>Ein korrekter Javadoc-Kommentar (Javadoc-Kommentare sind eine
+    Besonderheit von Java)
+    <ul>
+      <li><a href="http://java.sun.com/j2se/javadoc/writingdoccomments/"
+        target="_blank">How to Write Doc Comments for the Javadoc(TM)
+      Tool</a></li>
+      <li><a
+        href="http://www-106.ibm.com/developerworks/library/j-jtp0821.html"
+        target="_blank">I have to document THAT?</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2>Testen des Szenarios</h2>
+
+<p>Abschliessend, wenn alles fertig programmiert ist, kommt noch der Test des
+Szenarios im Betrieb - das Szenario wird von einem Administrator in das
+korrekte Verzeichnis gelegt und steht nun auf der Clientseite zur Auswahl.</p>
+
+<h3>Testagenten</h3>
+
+<p>Für einen sinnvollen Test muss noch ein Testagent programmiert werden, der
+möglichst alle Methoden des Szenarios testet, die einem Agenten angeboten
+werden.</p>
+</body>
+</html>

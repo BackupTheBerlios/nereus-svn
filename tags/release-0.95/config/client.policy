@@ -1,0 +1,17 @@
+// Policy fuer den Client
+
+grant { 
+	// Verbindung zum Server herstellen
+	permission java.net.SocketPermission "localhost", "connect, resolve, accept, listen";
+	permission java.net.SocketPermission "127.0.0.1", "connect, resolve, accept, listen";
+
+	// Schreib und Lese-Rechte zum Einlesen der Agenten-Klassen und speichern der Ergebnisse
+	permission java.io.FilePermission "<<ALL FILES>>", "read, write";
+	
+	// Erlaubt den User-Verzeichnis auszulesen	
+	permission java.util.PropertyPermission "user.dir", "read";
+	permission java.util.PropertyPermission "user.home", "read";
+
+	// Versteckt den Banner mit dem Sicherheitshinweis
+	permission java.awt.AWTPermission "showWindowWithoutWarningBanner";
+};
