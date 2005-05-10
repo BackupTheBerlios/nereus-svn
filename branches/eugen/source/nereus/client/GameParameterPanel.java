@@ -31,7 +31,7 @@
 
 
 
-package nereus.client;
+package nereus.registrationgui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;

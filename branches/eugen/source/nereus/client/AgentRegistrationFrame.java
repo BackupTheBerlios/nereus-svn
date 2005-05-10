@@ -4,7 +4,7 @@
  * Letzte Änderung: 3. Mai 2005 durch Eugen Volk
  * Autoren        : Daniel Friedrich
  *                  Eugen Volk
- *                  
+ *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen einer
@@ -31,7 +31,7 @@
 
 
 
-package nereus.client;
+package nereus.registrationgui;
 
 import java.awt.AWTEvent;
 import java.awt.Dimension;
@@ -151,7 +151,7 @@ public class AgentRegistrationFrame extends JFrame {
      * agentenOrdner ist der Ordner in dem Agenten enthalten sind.
      * agentenOrdner befindet sich direkt unter SzenarioName
      */
-     private String AGENTENORDNER="agents";
+    private String AGENTENORDNER="agents";
     
     /**
      * Konstruktor.
@@ -306,10 +306,10 @@ public class AgentRegistrationFrame extends JFrame {
                 }else {
                     m_scenarioName = "island";
                 }
-                String agentClass = "scenario."
+                String agentClass = "agents."
                         + m_scenarioName
-                        + "."
-                        + AGENTENORDNER
+                       /* + "."
+                        + AGENTENORDNER */
                         + "."
                         + (String)m_agentClassCombo.getSelectedItem();
                 //+ ".class";
@@ -390,7 +390,7 @@ public class AgentRegistrationFrame extends JFrame {
                                 /*
                                  * Agent und Visualisierung registrieren
                                  */
-                 String agentClass = "scenario."
+                String agentClass = "scenario."
                         + m_scenarioName
                         + "."
                         + AGENTENORDNER
@@ -458,11 +458,16 @@ public class AgentRegistrationFrame extends JFrame {
                     m_clientInfoObject.getAgentClassesPath().length()-1)
                     + "."
                     + m_scenarioName;
-            String completeAgentClassPath =
+          /*  String completeAgentClassPath =
                     m_clientInfoObject.getAgentClassesPath()
                     + m_scenarioName
                     + m_clientInfoObject.getPathSeparator()
-                    + AGENTENORDNER 
+                    + AGENTENORDNER
+                    + m_clientInfoObject.getPathSeparator(); */
+            
+            String completeAgentClassPath =
+                    m_clientInfoObject.getAgentClassesPath()
+                    + m_scenarioName
                     + m_clientInfoObject.getPathSeparator();
             System.out.println("PackageName: " + packageName);
             System.out.println(
@@ -493,9 +498,9 @@ public class AgentRegistrationFrame extends JFrame {
                 //        File mFile=files[i];
                 //        String clName=files[i].getName().substring(0,files[i].getName().length()-6);
                 //        ClassLoader classLoader= this.getClass().getClassLoader();
-                //        Class agentClass2=Class.forName(clName, true, classLoader); 
-                        
-                        
+                //        Class agentClass2=Class.forName(clName, true, classLoader);
+            
+            
                         Class agentClass = Class.forName(
                                 packageName
                                 + "." + AGENTENORDNER + "."

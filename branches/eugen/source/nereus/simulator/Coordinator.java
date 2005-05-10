@@ -99,7 +99,7 @@ public class Coordinator extends UnicastRemoteObject implements ICoordinator {
 	/**
 	 * PackageName des Scenarios
 	 */
-	private String m_packageName = "scenario";
+	private String m_packageName = "scenarios";
 	
 	/**
 	 * Hashtable zum mappen der Spielnamen auf die dazugehörige Id.
@@ -194,7 +194,7 @@ public class Coordinator extends UnicastRemoteObject implements ICoordinator {
             System.out.println("Coordinator: versuche " + scenarioName
                     + "zu registrieren");
 			try {
-				Class scenarioClass = Class.forName("scenario." + scenarioName);
+				Class scenarioClass = Class.forName("scenarios." + scenarioName);
 				Constructor constructor =
 					scenarioClass.getConstructor(
 						new Class[] {
@@ -555,13 +555,13 @@ public class Coordinator extends UnicastRemoteObject implements ICoordinator {
 		String className = "Scenario";
 		System.out.println("Classname: " + className);
 		try {
-			System.out.println("Try: " + "scenario."
+			System.out.println("Try: " + "scenarios."
 			+ scenarioName
 			+ "."
 			+ className);
 			Class scenarioClass =
 				Class.forName(
-					"scenario."
+					"scenarios."
 						+ scenarioName //+ ".scenariomanagement"
 						+ "."
 						+ className);

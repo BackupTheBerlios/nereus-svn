@@ -9,7 +9,7 @@
  * @author Daniel Friedrich
  * @copyright Institut für Intelligente Systeme, Universität Stuttgart (2003)
  */
-package nereus.client;
+package nereus.registrationgui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;

@@ -1,10 +1,10 @@
 /*
  * Dateiname      : MASIMClient.java
  * Erzeugt        : 5. August 2003
- * Letzte Änderung: 22. April 2004 durch Eugen Volk
+ * Letzte Änderung: 11. Mai 2004 durch Eugen Volk
  * Autoren        : Daniel Friedrich
  *                  Eugen Volk
- *                  
+ *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen einer
@@ -28,7 +28,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package nereus.client;
+package nereus.registrationgui;
 
 import java.awt.AWTEvent;
 import java.awt.BorderLayout;
@@ -195,7 +195,7 @@ public class MASIMClient extends JFrame {
      * Unterer Bereich der GUI
      */
     private JPanel m_bottomPanel = new JPanel();
-     /**
+    /**
      * Unterer Bereich der GUI ScrollPan
      */
     private JScrollPane m_bottomScrollPane = new JScrollPane();
@@ -375,7 +375,7 @@ public class MASIMClient extends JFrame {
         m_openGamesTable.setModel(m_gtm);
         m_openGamesTable.createDefaultColumnsFromModel();
         m_openGamesTable.setRowSelectionAllowed(true);
-       // m_openGamesTable.setLayout(new BorderLayout());
+        // m_openGamesTable.setLayout(new BorderLayout());
         // Zusammenfügen Mittel-Pane
         m_openGamesScrollPane.getViewport().add(m_openGamesTable, BorderLayout.CENTER);
         m_middlePanel.add(m_openGamesScrollPane,BorderLayout.EAST);
@@ -393,14 +393,14 @@ public class MASIMClient extends JFrame {
         m_bottomPanel.setPreferredSize(new Dimension(1054,100));
         m_bottomPanel.setLayout(m_bottomPanelLayout);
         
-       
+        
         m_bottomScrollPane.setViewportView(m_bottomOutput);
         m_bottomOutput.setText("");
         m_bottomOutput.setEditable(false);
         m_bottomOutput.setSize(90,10);
         
-         m_bottomPanel.add(m_bottomScrollPane, BorderLayout.CENTER);
-   //     m_bottomPanel.add(m_bottomOutput, BorderLayout.CENTER);
+        m_bottomPanel.add(m_bottomScrollPane, BorderLayout.CENTER);
+        //     m_bottomPanel.add(m_bottomOutput, BorderLayout.CENTER);
         
         
                 /*
@@ -414,14 +414,14 @@ public class MASIMClient extends JFrame {
         jSplitPane1.setRightComponent(m_bottomPanel);
         
         jSplitPane1.setResizeWeight(0.8);
-
-    //    getContentPane().add(jSplitPane1, java.awt.BorderLayout.CENTER);
-         
+        
+        //    getContentPane().add(jSplitPane1, java.awt.BorderLayout.CENTER);
+        
         contentPane.add(m_headPanel, BorderLayout.NORTH);
         contentPane.add(jSplitPane1, java.awt.BorderLayout.CENTER);
         
-       // contentPane.add(m_middlePanel, BorderLayout.CENTER);
-       // contentPane.add(m_bottomPanel, BorderLayout.SOUTH);
+        // contentPane.add(m_middlePanel, BorderLayout.CENTER);
+        // contentPane.add(m_bottomPanel, BorderLayout.SOUTH);
         
         
         
@@ -467,7 +467,7 @@ public class MASIMClient extends JFrame {
                 tab.setMaximumSize(new Dimension(550, 32767));
                 tab.setMinimumSize(new Dimension(550, 5));
                 tab.setPreferredSize(new Dimension(550, 200));
-                m_tabbedPane.setSelectedComponent(tab);  
+                m_tabbedPane.setSelectedComponent(tab);
                 //tab.requestDefaultFocus();
             }
         }catch(Exception ex) {
@@ -497,16 +497,18 @@ public class MASIMClient extends JFrame {
                     boolean tmp = ((Boolean)m_coordinator.getParameter(
                             gameId,
                             "MultipleGameTabsAllowed")).booleanValue();
-                    if(tmp) {
+                    if(!tmp) {
                         m_coordinator.removeGame(gameId);
                     }
                 }catch(Exception ex) {
-                    System.out.println("Fehler: Das Spiel konnte nicht gelöscht"
+                    /* Exception wird nur dann ausgegeben, wenn das Spiel bereits
+                       geschlossen ist. Deswegen folgende Ausgabe als Kommentar. E.V.*/
+                /*    System.out.println("Fehler: Das Spiel konnte nicht gelöscht"
                             + " werden, bitte beachten sie die Statusmeldungen.");
                     ex.printStackTrace(System.out);
                     MessageDialog md = new MessageDialog("Fehler", "Das Spiel "
                             + gameId
-                            + " konnte nicht geschlossen werden");
+                            + " konnte nicht geschlossen werden");  */
                 }
             }
         }

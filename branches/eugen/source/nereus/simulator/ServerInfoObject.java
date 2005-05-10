@@ -98,7 +98,7 @@ public class ServerInfoObject {
 		// Scenario- und Umweltpfad bestimmen
 		if(m_serverBasePath.endsWith(m_pathSeparator)) {
 			// Scenariopfad festlegen.
-			m_scenarioPath = m_serverBasePath + "scenario" + m_pathSeparator;			
+			m_scenarioPath = m_serverBasePath + "scenarios" + m_pathSeparator;			
 			// Umweltpfad festlegen
 			m_enviromentsPath = 
 				m_serverBasePath 
@@ -110,7 +110,7 @@ public class ServerInfoObject {
 			m_scenarioPath =
 				m_serverBasePath 
 				+ m_pathSeparator
-				+ "scenario" 
+				+ "scenarios" 
 				+ m_pathSeparator;
 			// Umweltpfad festlegen	
 			m_enviromentsPath = 
