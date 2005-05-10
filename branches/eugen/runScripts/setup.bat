@@ -4,12 +4,14 @@ REM Diese Datei dient zum Setzen der Umgebungsvariablen von Nereus
 REM in den anderen Scripten. Alle relativen Pfade beziehen sich auf das
 REM Verzeichnis runScripts.
 
+
 REM Der Pfad zum JDK. Wird standardm‰ﬂig als ‰uﬂere Umgebungsvariable gesetzt.
 REM Kann hier aber auch explizit gesetzt werden.
-REM JAVA_HOME=/usr/java
+REM set JAVA_HOME=/usr/java
 
 REM Der Pfad zur JVM (default java aus dem %PATH%)
 set JAVA=java
+if not "%JAVA_HOME%"=="" set JAVA=%JAVA_HOME%/bin/java
 
 REM Das Verzeichnis mit den policy-, properties- und config-Dateien.
 set CONFIG_DIR=..\config
@@ -27,5 +29,4 @@ set SERVER_HOST=127.0.0.1
 
 REM Der Port, unter dem der ClassFileServer l‰uft.
 set CLASS_SERVER_PORT=2003
-
 
