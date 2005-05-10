@@ -6,7 +6,7 @@
  *
  * Dateiname      : build.xml
  * Erzeugt        : 29. April 2005
- * Letzte Änderung: 9. Mai 2005 durch Dietmar Lippold
+ * Letzte Änderung: 3. Mai 2005 durch Eugen Volk
  * Autoren        : Eugen Volk 
  *                  
  *
@@ -32,8 +32,6 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 -->
-
-
 <!-- Hinweise zur Benutzung werden nach Aufruf von "ant" ohne weitere -->
 <!-- Parameter ausgegeben.                                            -->
 
@@ -73,7 +71,7 @@
    </javac>
  </target>
 
- <!-- Compilieren Stub fuer die Klasse Coordinator in /simulator            -->
+  <!-- Compilieren Stub fuer die Klasse Coordinator in /simulator            -->
  <target name="_Stub" depends="compile"
          description="Erstellt die Stub-Dateien">
    <echo message="erstelle Stub-Datei fuer Coordinator"/>
@@ -249,7 +247,8 @@
       <tarfileset dir="${documentation}"
                   mode="644"
                   prefix="/server/">
-        <include name="Readme.txt, ReadmeServer.txt"/>
+        <include name="Readme.txt" />
+        <include name="ReadmeServer.txt"/>
       </tarfileset>
     </tar>
   </target>
@@ -281,8 +280,9 @@
       </tarfileset>
       <tarfileset dir="${documentation}"
                   mode="644"
-                  prefix="/client/">
-        <include name="Readme.txt, ReadmeClient.txt"/>
+                  prefix="/client">
+        <include name="Readme.txt" />
+        <include name="ReadmeClient.txt"/>
       </tarfileset>
     </tar>
   </target>
