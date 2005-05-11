@@ -1,7 +1,7 @@
 /*
  * Dateiname      : Scenario.java
  * Erzeugt        : 16. Oktober 2004
- * Letzte Änderung: 10. Mai 2005 durch Eugen Volk
+ * Letzte Änderung: 11. Mai 2005 durch Eugen Volk
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
  *                  Eugen Volk
@@ -248,6 +248,29 @@ public class Scenario
         this.gameConf=(GameConf)serverInfoObject.getGameConf(this.SZENARIONAME);
         this.KARTENDATEINAME=this.gameConf.getKartenDateiName();
         this.SZENARIOCONFIGDATEINAME=this.gameConf.getParameterDateiName();
+    }
+    
+   /**
+     * Initialisiert die Werte m_gameId, visHandler und parameter.
+     * Dient als ersatz des parametrisierten Konstruktors.
+     *
+     * @parm gameId Id des Spiels
+     * @param InformationHandler vishandler - InformationHandler
+     * @param Hashtable parameterTabelle - Spielparameter
+     */
+    public void initialize(
+            Id gameId,
+            IInformationHandler visHandler,
+            Hashtable parameterTabelle){
+        super.m_gameId = gameId;
+        super.m_visHandler = visHandler;
+        super.m_parameter = parameterTabelle;
+        
+        this.serverInfoObject=ServerInfoObject.m_instance;
+        this.gameConf=(GameConf)serverInfoObject.getGameConf(this.SZENARIONAME);
+        this.KARTENDATEINAME=this.gameConf.getKartenDateiName();
+        this.SZENARIOCONFIGDATEINAME=this.gameConf.getParameterDateiName();
+        setzeParameter(parameterTabelle);
     }
     
     

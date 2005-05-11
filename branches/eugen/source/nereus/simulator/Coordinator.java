@@ -1,8 +1,9 @@
 /*
  * Dateiname      : Coordinator.java
  * Erzeugt        : 13. Mai 2003
- * Letzte Änderung: 09. Mai 2005 durch Dietmar Lippold
+ * Letzte Änderung: 11. Mai 2005 durch Eugen Volk
  * Autoren        : Daniel Friedrich
+ *                  Eugen Volk
  *
  *
  *
@@ -161,7 +162,7 @@ public class Coordinator extends UnicastRemoteObject implements ICoordinator {
      * @param ssf
      * @throws <{java.rmi.RemoteException}>
      */
-    public Coordinator(
+  /*  public Coordinator(
             int port,
             RMIClientSocketFactory csf,
             RMIServerSocketFactory ssf)
@@ -169,7 +170,7 @@ public class Coordinator extends UnicastRemoteObject implements ICoordinator {
         super(port, csf, ssf);
         // starte den InformationHandler
         this.startInformationHandler();
-    }
+    } */
     
         /* (non-Javadoc)
          * @see jAgentSimulator.server.ICoordinator#registerGame(java.util.Hashtable)
@@ -195,18 +196,8 @@ public class Coordinator extends UnicastRemoteObject implements ICoordinator {
                     + " zu registrieren");
             try {
                 Class scenarioClass = Class.forName("scenarios." + scenarioName);
-                Constructor constructor =
-                        scenarioClass.getConstructor(
-                        new Class[] {
-                    Id.class,
-                            IInformationHandler.class,
-                            Hashtable.class });
-                            scenario =
-                                    (AbstractScenario) constructor.newInstance(
-                                    new Object[] {
-                                gameId,
-                                        m_informationHandler,
-                                        new Hashtable(dto)});
+                scenario = (AbstractScenario)scenarioClass.newInstance();
+                scenario.initialize(gameId, m_informationHandler, new Hashtable(dto));
             } catch (Exception e) {
                 e.printStackTrace(System.out);
             }

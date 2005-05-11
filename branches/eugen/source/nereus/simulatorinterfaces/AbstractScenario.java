@@ -1,8 +1,9 @@
 /*
  * Dateiname      : AbstractScenario.java
  * Erzeugt        : 13. Mai 2003
- * Letzte Änderung:
+ * Letzte Änderung: 11. Mai 2005 durch Euge Volk
  * Autoren        : Daniel Friedrich
+ *                  Eugen Volk
  *
  *
  *
@@ -108,6 +109,25 @@ public abstract class AbstractScenario implements Serializable {
     public AbstractScenario(){
         super();
     }
+    
+    
+    /**
+     * Initialisiert die Werte m_gameId, visHandler und parameter.
+     * Dient als ersatz des Parametrisierten Konstruktors.
+     *
+     * @parm gameId Id des Spiels
+     * @param InformationHandler vishandler - InformationHandler
+     * @param Hashtable parameter - Spielparameter
+     */
+    public void initialize(
+            Id gameId,
+            IInformationHandler visHandler,
+            Hashtable parameter){
+        m_gameId = gameId;
+        m_visHandler = visHandler;
+        m_parameter = parameter;
+    }
+    
     
     /**
      * Simuliert das komplette Spiel.
