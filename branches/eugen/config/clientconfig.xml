@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+    Document   : client.xml
+    Created on : 11. Mai 2005, 12:45
+    Author     : Eugen Volk
+    Description:
+        Diese Datei enthaelt Listen mit verfuegbaren Agenten.
+       
+-->
+
+<config>
+<scenario name="bienenstock">
+    <agent name="BienenstockAgent"/>
+</scenario>
+</config>

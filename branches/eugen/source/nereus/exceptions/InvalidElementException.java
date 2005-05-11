@@ -1,10 +1,10 @@
 /*
  * Dateiname      : InvaliElementException.java
  * Erzeugt        : 19. Juni 2003
- * Letzte Änderung: 
+ * Letzte Änderung:
  * Autoren        : Daniel Friedrich
- *                  
- *                  
+ *
+ *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen einer
@@ -30,66 +30,66 @@
 package nereus.exceptions;
 
 /**
- * Die Exception dient zum Melden, dass ein Element nicht existiert oder falsch 
+ * Die Exception dient zum Melden, dass ein Element nicht existiert oder falsch
  * verwendet wurde.
- * 
+ *
  * @author Daniel Friedrich
  */
 public class InvalidElementException extends InvalidException {
-
-	/**
-	 * Konstruktor.
-	 */
-	public InvalidElementException() {
-		super(
-			"Das verwendete Element exisitiert nicht oder wurde falsch "
-			+ "verwendet.");
-	}
-
-	/**
-	 * Konstruktor.
-	 * 
-	 * @param message
-	 */
-	public InvalidElementException(String message) {
-		super(
-			"Das verwendete Element " 
-			+ message 
-			+ " exisitiert nicht oder wurde falsch verwendet.");
-	}
-
-	/**
-	 * Konstruktor.
-	 *  
-	 * @param message
-	 * @param cause
-	 */
-	public InvalidElementException(
-		String message,
-		Throwable cause) {
-		super(
-			"Das verwendete Element " 
-			+ message + 
-			" existiert nicht oder wurde falsch verwendet.", cause);
-	}
-
-	/**
-	 * Konstruktor.
-	 * 
-	 * @param cause
-	 */
-	public InvalidElementException(Throwable cause) {
-		super(
-			"Das verwendete Element existiert nicht oder wurde falsch "
-			+ "verwendet.",
-			cause);
-	}
-	
-	/* (non-Javadoc)
-	 * @see java.lang.Throwable#getMessage()
-	 */
-	public String getMessage() {
-		return "Das verwendete Element exisitiert nicht oder wurde falsch "
-			+ "verwendet.";
-	}
+    
+    /**
+     * Konstruktor.
+     */
+    public InvalidElementException() {
+        super(
+                "Das verwendete Element exisitiert nicht oder wurde falsch "
+                + "verwendet.");
+    }
+    
+    /**
+     * Konstruktor.
+     *
+     * @param message
+     */
+    public InvalidElementException(String message) {
+        super(
+                "Das verwendete Element "
+                + message
+                + " exisitiert nicht oder wurde falsch verwendet.");
+    }
+    
+    /**
+     * Konstruktor.
+     *
+     * @param message
+     * @param cause
+     */
+    public InvalidElementException(
+            String message,
+            Throwable cause) {
+        super(
+                "Das verwendete Element "
+                + message +
+                " existiert nicht oder wurde falsch verwendet.", cause);
+    }
+    
+    /**
+     * Konstruktor.
+     *
+     * @param cause
+     */
+    public InvalidElementException(Throwable cause) {
+        super(
+                "Das verwendete Element existiert nicht oder wurde falsch "
+                + "verwendet.",
+                cause);
+    }
+    
+        /* (non-Javadoc)
+         * @see java.lang.Throwable#getMessage()
+         */
+    public String getMessage() {
+        return "Das verwendete Element exisitiert nicht oder wurde falsch "
+                + "verwendet.";
+    }
 }

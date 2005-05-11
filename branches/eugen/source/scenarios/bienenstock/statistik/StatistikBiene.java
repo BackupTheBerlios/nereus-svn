@@ -4,9 +4,9 @@
  * Letzte Änderung: 14. Februar 2005 durch Philip Funck
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
- *                  
- *                  
- *                  
+ *
+ *
+ *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen eines
@@ -43,32 +43,32 @@ import nereus.utils.Id;
  * @author Samuel Walz
  */
 public class StatistikBiene {
-
+    
     /**
      * ID der zugehörigen Biene.
      */
     private Id bienenID;
-
+    
     /**
      * Menge des geladenen Honigs.
      */
     private int honig;
-
+    
     /**
      * Menge des geladenen Nektars.
      */
     private int nektar;
-
+    
     /**
      * Nummer der aktuellen Runde.
      */
     private int runde;
-
+    
     /**
      * Zustand der zugehörigen Biene.
      */
     private String zustand;
-
+    
     /**
      * Der Konstruktor.
      *
@@ -83,7 +83,7 @@ public class StatistikBiene {
         bienenID = id;
         zustand = sZustand;
     }
-
+    
     /**
      * Konstruktor.
      *
@@ -95,7 +95,7 @@ public class StatistikBiene {
         nektar = 0;
         zustand = "";
     }
-
+    
     /**
      * gibt die Menge des geladenen Honigs zurück.
      *
@@ -104,7 +104,7 @@ public class StatistikBiene {
     public int gibHonig() {
         return honig;
     }
-
+    
     /**
      * gibt die Menge des geladenen Nektars zurück.
      *
@@ -113,7 +113,7 @@ public class StatistikBiene {
     public int gibNektar() {
         return nektar;
     }
-
+    
     /**
      * gibt die Position der Biene auf der Karte zurück.
      *
@@ -122,7 +122,7 @@ public class StatistikBiene {
     public Koordinate gibPosition() {
         return null;
     }
-
+    
     /**
      * gibt den Zustand der Biene zurück.
      *
@@ -131,7 +131,7 @@ public class StatistikBiene {
     public String gibZustand() {
         return zustand;
     }
-
+    
     /**
      * gibt die ID der zugehörigen Biene zurück.
      *
@@ -140,7 +140,7 @@ public class StatistikBiene {
     public Id gibID() {
         return bienenID;
     }
-
+    
     /**
      * enthält die Werte der zugehörigen Biene.
      *

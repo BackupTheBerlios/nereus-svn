@@ -4,9 +4,9 @@
  * Letzte Änderung: 26. Januar 2005 durch Samuel Walz
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
- *                  
- *                  
- *                  
+ *
+ *
+ *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen eines
@@ -40,22 +40,22 @@ import java.util.HashSet;
  * @author Philip Funck
  */
 public class VisBienenstock extends VisFeld {
-
+    
     /**
      * ist das Maximum des im Bienenstock lagerbaren Nektars.
      */
     private int maximumGelagerterNektar;
-
+    
     /**
      * ist der im Bienenstock vorhandene Nektar.
      */
     private int vorhandenerNektar;
-
+    
     /**
      * ist die Menge des Nektars der pro Runde zu Honig gemacht werden kann.
      */
     private int maximumNektarZuHonigProRunde;
-
+    
     /**
      * ist der Faktor, der angibt wieviel Honig aus einer
      * bestimmten Menge Nektar wird.
@@ -63,18 +63,18 @@ public class VisBienenstock extends VisFeld {
      * mengeNektar * wechselkursNektarZuHonig = mengeHonig
      */
     private int wechselkursNektarZuHonig;
-
+    
     /**
      * ist der im Bienenstock vorhandene Honig.
      */
     private int vorhandenerHonig;
-
+    
     /**
      * ist eine Nummer, die das Bienenvolk eindeutig kennzeichnet.
      */
     private int volksID;
-
-
+    
+    
     /**
      * Konstruktor.
      *
@@ -90,36 +90,36 @@ public class VisBienenstock extends VisFeld {
      * @param bienenvolksID Volks ID des Stockes
      */
     public VisBienenstock(Koordinate feldPosition,
-        int sichtBoden,
-        int sichtLuft,
-        HashSet wBienen,
-        HashSet fBienen,
-        HashSet tBienen,
-        int maxGelagerterNektar,
-        int vorhNektar,
-        int vorhHonig,
-        int bienenvolksID
-         ) {
+            int sichtBoden,
+            int sichtLuft,
+            HashSet wBienen,
+            HashSet fBienen,
+            HashSet tBienen,
+            int maxGelagerterNektar,
+            int vorhNektar,
+            int vorhHonig,
+            int bienenvolksID
+            ) {
         super(feldPosition,
-              sichtBoden,
-              sichtLuft,
-              wBienen,
-              fBienen,
-              tBienen);
-
+                sichtBoden,
+                sichtLuft,
+                wBienen,
+                fBienen,
+                tBienen);
+        
         /*position = feldPosition;
         sichtweiteAmBoden = sichtBoden;
         sichtweiteInDerLuft = sichtLuft;
         wartendeBienen = wBienen;
         fliegendeBienen = fBienen;
         tanzendeBienen = tBienen;*/
-
+        
         maximumGelagerterNektar = maxGelagerterNektar;
         vorhandenerNektar = vorhNektar;
         vorhandenerHonig = vorhHonig;
         volksID = bienenvolksID;
     }
-
+    
     /**
      * gibt die ID des zugehörigen Bienenvolks zurück.
      *
@@ -128,7 +128,7 @@ public class VisBienenstock extends VisFeld {
     int gibVolksID() {
         return volksID;
     }
-
+    
     /**
      * gibt die Obergrenze für die lagerbare Nektarmenge zurück.
      *
@@ -137,7 +137,7 @@ public class VisBienenstock extends VisFeld {
     int gibMaxGelagerterNektar() {
         return maximumGelagerterNektar;
     }
-
+    
     /**
      * gibt die Menge an vorhandenem Nektar zurück.
      *
@@ -146,7 +146,7 @@ public class VisBienenstock extends VisFeld {
     int gibVorhandenerNektar() {
         return vorhandenerNektar;
     }
-
+    
     /**
      * gibt zurück, wieviel Nektar pro Runde maximal in Honig
      * umgewandelt werden kann.
@@ -156,7 +156,7 @@ public class VisBienenstock extends VisFeld {
     int gibMaxNektarZuHonigProRunde() {
         return maximumNektarZuHonigProRunde;
     }
-
+    
     /**
      * gibt zurück, wieviel Honig man aus einer Einheit Nektar herstellen kann.
      *
@@ -165,7 +165,7 @@ public class VisBienenstock extends VisFeld {
     int gibWechselkursNektarZuHonig() {
         return wechselkursNektarZuHonig;
     }
-
+    
     /**
      * gibt zurück, wieviel Honig vorhanden ist.
      *
@@ -174,5 +174,5 @@ public class VisBienenstock extends VisFeld {
     int gibVorhandenerHonig() {
         return vorhandenerHonig;
     }
-
+    
 }

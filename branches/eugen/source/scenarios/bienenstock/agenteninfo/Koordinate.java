@@ -4,8 +4,8 @@
  * Letzte Änderung: 26. Januar 2005 durch Philip Funck
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
- *                  
- *                  
+ *
+ *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen eines
@@ -33,9 +33,9 @@ package scenarios.bienenstock.agenteninfo;
 
 /**
  * ist der Datentyp mit dem eine Position auf der Spielkarte angegeben wird.
- * 
+ *
  * @author Philip Funck
- * @author Samuel Walz 
+ * @author Samuel Walz
  */
 public class Koordinate {
     /**
@@ -47,10 +47,10 @@ public class Koordinate {
      * die Y-Koordinate.
      */
     private int yPosition;
-
+    
     /**
      * Der Konstruktor.
-     * 
+     *
      * @param x     Die X-Koordinate
      * @param y     Die Y-Koordinate
      */
@@ -58,38 +58,38 @@ public class Koordinate {
         xPosition = x;
         yPosition = y;
     }
-
+    
     /**
      * gibt die X-Koordinate zurück.
-     * 
+     *
      * @return int
      */
     public int gibXPosition() {
         return xPosition;
     }
-
+    
     /**
      * gibt die Y-Koordinate zurück.
-     * 
+     *
      * @return int
      */
     public int gibYPosition() {
         return yPosition;
     }
-
+    
     /**
      * vergleicht ein anderes Objekt auf Gleichheit mit sich selbst.
-     * 
+     *
      * Der Test verläuft erfolgreich bei gleichem Objekttyp und
      * gleichen Koordinaten.
-     * 
+     *
      * @param obj    das Objekt mi dem verglichen werden soll.
      * @return          true bei Gleichheit
      */
     public boolean equals(Object obj) {
         if (obj instanceof Koordinate) {
             return (xPosition == ((Koordinate) obj).gibXPosition())
-                && (yPosition == ((Koordinate) obj).gibYPosition());
+            && (yPosition == ((Koordinate) obj).gibYPosition());
         } else {
             return false;
         }
@@ -97,7 +97,7 @@ public class Koordinate {
     
     /**
      * generiert einen Hashcode für das Objekt.
-     * 
+     *
      * @return   X-Koordinate * 1000 + Y-Koordinate
      */
     public int hashCode() {

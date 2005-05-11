@@ -4,9 +4,9 @@
  * Letzte Änderung: 26. Januar 2005 durch Philip Funck
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
- *                  
- *                  
- *                  
+ *
+ *
+ *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen eines
@@ -38,61 +38,61 @@ import scenarios.bienenstock.agenteninfo.Info;
 /**
  * ist das Abbild des Agenten im Szenario.
  *
- * Dieses Abbild wird verwendet um die Werte der Agenten für etwaige 
- * Überprüfungen bereit zu halten. Dadurch werden beeinflussungen der Werte 
+ * Dieses Abbild wird verwendet um die Werte der Agenten für etwaige
+ * Überprüfungen bereit zu halten. Dadurch werden beeinflussungen der Werte
  * durch den jeweiligen Agenten ausgeschlossen.
  * @author Philip Funck
  */
 public class VisBiene {
-
+    
     /**
      * Der Zustand der Biene.
      */
     private String zustand;
-
+    
     /**
      * ist eine Nummer, die die Biene eindeutig kennzeichnet.
      * Ist identisch mit der Agent-ID die die Agenten im Simulator haben.
      */
     private int bienenID;
-
+    
     /**
      * ist eine Nummer,
      * die die Zugehörigkeit einer Biene zu einem Bienenvolk
      * eindeutig kennzeichnet.
      */
     private int bienenvolkID;
-
+    
     /**
      * Die Position der Biene auf der Spielkarte
      */
     private Koordinate position;
-
+    
     /**
      * Die aktuell geladene Honigmenge der Biene.
      */
     private int geladeneHonigmenge;
-
+    
     /**
      * Die aktuell geladene Nektarmenge der Biene
      */
     private int geladeneNektarmenge;
-
+    
     /**
      * Maximale Beladung mit Honig.
      */
     private int maximumGeladenerHonig;
-
+    
     /**
      * Maximale Beladung mit Nektar.
      */
     private int maximumGeladenerNektar;
-
+    
     /**
      * ZUletzt getanzte Information der Biene.
      */
     private Info information;
-
+    
     /**
      * Konstruktor.
      *
@@ -106,14 +106,14 @@ public class VisBiene {
      * @param maxGeladenerNektar    maximal gelagerter Nektar
      */
     public VisBiene(String aktZustand,
-                    int eigenID,
-                    int volkID,
-                    Koordinate bienePosition,
-                    int gelHonigmenge,
-                    int gelNektarmenge,
-                    int maxGeladenerHonig,
-                    int maxGeladenerNektar) {
-
+            int eigenID,
+            int volkID,
+            Koordinate bienePosition,
+            int gelHonigmenge,
+            int gelNektarmenge,
+            int maxGeladenerHonig,
+            int maxGeladenerNektar) {
+        
         zustand = aktZustand;
         bienenID = eigenID;
         bienenvolkID = volkID;
@@ -124,7 +124,7 @@ public class VisBiene {
         maximumGeladenerNektar = maxGeladenerNektar;
         information = null;
     }
-
+    
     /**
      * Konstruktor für die Repräsentation einer tanzenden Biene.
      *
@@ -139,15 +139,15 @@ public class VisBiene {
      * @param infoObjekt die Information, die sie trägt
      */
     public VisBiene(String aktZustand,
-                    int eigenID,
-                    int volkID,
-                    Koordinate bienePosition,
-                    int gelHonigmenge,
-                    int gelNektarmenge,
-                    int maxGeladenerHonig,
-                    int maxGeladenerNektar,
-                    Info infoObjekt) {
-
+            int eigenID,
+            int volkID,
+            Koordinate bienePosition,
+            int gelHonigmenge,
+            int gelNektarmenge,
+            int maxGeladenerHonig,
+            int maxGeladenerNektar,
+            Info infoObjekt) {
+        
         zustand = aktZustand;
         bienenID = eigenID;
         bienenvolkID = volkID;
@@ -158,7 +158,7 @@ public class VisBiene {
         maximumGeladenerNektar = maxGeladenerNektar;
         information = infoObjekt;
     }
-
+    
     /**
      * gibt den Zustand der Biene zurück.
      *
@@ -167,7 +167,7 @@ public class VisBiene {
     String gibZustand() {
         return zustand;
     }
-
+    
     /**
      * Gibt die ID des zugehörigen Bienenvolks zurück.
      *
@@ -176,7 +176,7 @@ public class VisBiene {
     int gibBienenvolkID() {
         return bienenvolkID;
     }
-
+    
     /**
      * Gibt die ID der Biene zurück.
      *
@@ -185,7 +185,7 @@ public class VisBiene {
     int gibBienenID() {
         return bienenID;
     }
-
+    
     /**
      * Gibt die Position der Biene auf der Spielkarte zurück.
      *
@@ -194,7 +194,7 @@ public class VisBiene {
     Koordinate gibPosition() {
         return position;
     }
-
+    
     /**
      * Gibt die geladene Nektarmenge der Biene zurück.
      *
@@ -203,7 +203,7 @@ public class VisBiene {
     int gibGeladeneNektarmenge() {
         return geladeneNektarmenge;
     }
-
+    
     /**
      * Gibt die geladeneHonigmenge der Biene zurück.
      *
@@ -212,7 +212,7 @@ public class VisBiene {
     int gibGeladeneHonigmenge() {
         return geladeneHonigmenge;
     }
-
+    
     /**
      * Gibt die maximal tragbare Nektarmenge zurück.
      *
@@ -221,7 +221,7 @@ public class VisBiene {
     int gibMaximumNektar() {
         return maximumGeladenerNektar;
     }
-
+    
     /**
      * Gibt die maximal tragbare Honigmenge zurück.
      *
@@ -230,11 +230,11 @@ public class VisBiene {
     int gibMaximumHonig() {
         return maximumGeladenerHonig;
     }
-
+    
     /**
      * Gibt die zuletzt getanzte Information der Biene zurück.
      *
-     * @return die Information, die sie trägt <code>null</code>, 
+     * @return die Information, die sie trägt <code>null</code>,
      *         wenn sie keine trägt
      */
     Info gibInformation() {

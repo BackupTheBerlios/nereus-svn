@@ -4,8 +4,8 @@
  * Letzte Änderung: 14. Februar 2005 durch Philip Funck
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
- *                  
- *                  
+ *
+ *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen eines
@@ -37,27 +37,27 @@ import scenarios.bienenstock.agenteninfo.Koordinate;
 
 /**
  * vereinfachte Darstellung des Platzes.
- * 
+ *
  * @author Philip Funck
  */
 public class EinfacherPlatz extends EinfachesFeld {
     
     /**
      * Konstruktor.
-     * 
+     *
      * @param pos       Position des Platzes auf der Karte
      * @param wBienen   am Platz wartende Bienen
      * @param fBienen   am Platz fliegende Bienen
      * @param tBienen   am Platz tanzende Bienen
      */
     public EinfacherPlatz(Koordinate pos,
-                         HashSet wBienen,
-                         HashSet fBienen,
-                         HashSet tBienen) {
+            HashSet wBienen,
+            HashSet fBienen,
+            HashSet tBienen) {
         super(pos,
-              wBienen,
-              fBienen,
-              tBienen);
+                wBienen,
+                fBienen,
+                tBienen);
         /*position = pos;
         wartendeBienen = wBienen;
         fliegendeBienen = fBienen;

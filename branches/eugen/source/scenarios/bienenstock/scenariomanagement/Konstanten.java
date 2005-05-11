@@ -4,8 +4,8 @@
  * Letzte Änderung: 26. Januar 2005 durch Philip Funck
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
- *                  
- *                  
+ *
+ *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen eines
@@ -33,12 +33,12 @@ package scenarios.bienenstock.scenariomanagement;
 
 /**
  * enthält alle Konstanten des Szenarios.
- * 
+ *
  * @author Philip Funck
  * @author Samuel Walz
  */
 public class Konstanten {
-
+    
     /**
      * Die Konstante für den Zustand "Fliegend".
      */
@@ -63,7 +63,7 @@ public class Konstanten {
      * Die Konstante für den Zustand "Abbauend".
      */
     public static final int ABBAUEND = 4;
-
+    
     /**
      * Die Konstante für die Startphase.
      */
@@ -83,7 +83,7 @@ public class Konstanten {
      * Die Konstante für die Endphase.
      */
     public static final int ENDPHASE = 3;
-
+    
     /**
      * Der Konstruktor.
      */

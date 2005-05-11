@@ -1,11 +1,11 @@
 /*
  * Dateiname      : IScenarioHandler.java
  * Erzeugt        : 18. Juli 2003
- * Letzte Änderung: 
+ * Letzte Änderung:
  * Autoren        : Daniel Friedrich
- *                  
- *                  
- *                  
+ *
+ *
+ *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen einer
@@ -38,40 +38,40 @@ import nereus.exceptions.InvalidAgentException;
 import nereus.exceptions.InvalidElementException;
 
 /**
- * Die Schnittstelle definiert alle Methoden, die ein Szenariohandler 
+ * Die Schnittstelle definiert alle Methoden, die ein Szenariohandler
  * implementieren muss.
- * 
+ *
  * @author Daniel Friedrich
  */
 public interface IScenarioHandler {
-
-	/**
-	 * Liefert einen Wert für einen angefragten Parameter zurück.
-	 * 
-	 * @param key - Identitätsschlüssel des Agenten
-	 * @param agentId - Id des Agenten
-	 * @param name - Name des Parameters
-	 * @return Object - Wert des Parameters
-	 * @throws InvalidAgentException
-	 * @throws InvalidActionKeyException
-	 * @throws InvalidElementException
-	 */
-	public Object getParameter(
-		ActionKey key, 
-		Id agentId, 
-		String name) 
-		throws InvalidAgentException,
-			InvalidActionKeyException,
-			InvalidElementException;	
-
-	/**
-	 * Erzeugt den gewünschten Sprechakt.
-	 * 
-	 * @param speachact - Klasse des gewünschten Sprechakts
-	 * @return Speachact - gewünschter Sprechakt.
-	 * @throws InvalidActionKeyException
-	 */
-	public Speachact createSpeachAct(Class speachact) 
-		throws InvalidActionKeyException,
-			   InvalidElementException;										
+    
+    /**
+     * Liefert einen Wert für einen angefragten Parameter zurück.
+     *
+     * @param key - Identitätsschlüssel des Agenten
+     * @param agentId - Id des Agenten
+     * @param name - Name des Parameters
+     * @return Object - Wert des Parameters
+     * @throws InvalidAgentException
+     * @throws InvalidActionKeyException
+     * @throws InvalidElementException
+     */
+    public Object getParameter(
+            ActionKey key,
+            Id agentId,
+            String name)
+            throws InvalidAgentException,
+            InvalidActionKeyException,
+            InvalidElementException;
+    
+    /**
+     * Erzeugt den gewünschten Sprechakt.
+     *
+     * @param speachact - Klasse des gewünschten Sprechakts
+     * @return Speachact - gewünschter Sprechakt.
+     * @throws InvalidActionKeyException
+     */
+    public Speachact createSpeachAct(Class speachact)
+    throws InvalidActionKeyException,
+            InvalidElementException;
 }

@@ -5,9 +5,9 @@
  *
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
- *                  
- *                  
- *                  
+ *
+ *
+ *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen eines
@@ -45,27 +45,27 @@ public class Bienenstock extends Feld {
      * ist das Maximum des im Bienenstock lagerbaren Nektars.
      */
     private int maximumGelagerterNektar;
-
+    
     /**
      * ist der im Bienenstock vorhandene Nektar.
      */
     private int vorhandenerNektar;
-
+    
     /**
      * ist die Menge des Nektars der pro Runde zu Honig gemacht werden kann.
      */
     private int maximumNektarZuHonigProRunde;
-
+    
     /**
      * ist der im Bienenstock vorhandene Honig.
      */
     private int vorhandenerHonig;
-
+    
     /**
      * ist eine Nummer, die das Bienenvolk eindeutig kennzeichnet.
      */
     private int volksID;
-
+    
     /**
      * Konstruktor.
      *
@@ -83,24 +83,24 @@ public class Bienenstock extends Feld {
      * @param maxTanzendeBienen maximum tanzende bienen
      */
     Bienenstock(int eigenID,
-        int sichtBoden,
-        int sichtLuft,
-        int maxGelagerterNektar,
-        int vorhNektar,
-        int maxNektarZuHonigProRunde,
-        int vorhHonig,
-        int maxWartendeBienen,
-        int maxFliegendeBienen,
-        int bienenvolksID,
-        Koordinate feldPosition,
-        int maxTanzendeBienen) {
+            int sichtBoden,
+            int sichtLuft,
+            int maxGelagerterNektar,
+            int vorhNektar,
+            int maxNektarZuHonigProRunde,
+            int vorhHonig,
+            int maxWartendeBienen,
+            int maxFliegendeBienen,
+            int bienenvolksID,
+            Koordinate feldPosition,
+            int maxTanzendeBienen) {
         super(eigenID,
-              sichtBoden,
-              sichtLuft,
-              maxWartendeBienen,
-              maxFliegendeBienen,
-              maxTanzendeBienen,
-              feldPosition);
+                sichtBoden,
+                sichtLuft,
+                maxWartendeBienen,
+                maxFliegendeBienen,
+                maxTanzendeBienen,
+                feldPosition);
         /*id = eigenID;
         sichtweiteAmBoden = sichtBoden;
         sichtweiteInDerLuft = sichtLuft;
@@ -108,14 +108,14 @@ public class Bienenstock extends Feld {
         maximumFliegendeBienen = maxFliegendeBienen;
         maximumTanzendeBienen = maxTanzendeBienen;
         position = feldPosition;*/
-
+        
         maximumGelagerterNektar = maxGelagerterNektar;
         vorhandenerNektar = vorhNektar;
         maximumNektarZuHonigProRunde = maxNektarZuHonigProRunde;
         vorhandenerHonig = vorhHonig;
         volksID = bienenvolksID;
     }
-
+    
     /**
      * macht aus einer Menge von Nektar Honig,
      * wobei pro Runde nur maximumNektarZuHonig viel Nektar
@@ -124,22 +124,22 @@ public class Bienenstock extends Feld {
      * @param wechselkursNektarZuHonig derkurs in dem nekatr in honig wandelt
      */
     void nektarZuHonigVerarbeiten(int maximumNektarZuHonigProRunde,
-                                  double wechselkursNektarZuHonig) {
-
+            double wechselkursNektarZuHonig) {
+        
         if (vorhandenerNektar > maximumNektarZuHonigProRunde) {
             vorhandenerHonig = vorhandenerHonig
-                                  + (int) ((double) maximumNektarZuHonigProRunde
-                                        * wechselkursNektarZuHonig);
+                    + (int) ((double) maximumNektarZuHonigProRunde
+                    * wechselkursNektarZuHonig);
             vorhandenerNektar = vorhandenerNektar
-                                - maximumNektarZuHonigProRunde;
+                    - maximumNektarZuHonigProRunde;
         } else {
             vorhandenerHonig = vorhandenerHonig
-                               + (int) ((double) vorhandenerNektar
-                                       * wechselkursNektarZuHonig);
+                    + (int) ((double) vorhandenerNektar
+                    * wechselkursNektarZuHonig);
             vorhandenerNektar = 0;
         }
     }
-
+    
     /**
      * verringert <code>vorhandenerHonig</code> um
      * <code>gewuenschteHonigmenge</code> und gibt
@@ -151,7 +151,7 @@ public class Bienenstock extends Feld {
     int honigAbgeben(int gewuenschteHonigmenge) {
         if (vorhandenerHonig < gewuenschteHonigmenge) {
             int abgabemenge = vorhandenerHonig;
-
+            
             vorhandenerHonig = 0;
             return abgabemenge;
         } else {
@@ -159,7 +159,7 @@ public class Bienenstock extends Feld {
             return gewuenschteHonigmenge;
         }
     }
-
+    
     /**
      * fügt <code>vorhandenerNektar</code> Nektarmenge hinzu,
      * bis <code>maximumgelagerterNektar</code> ereicht ist
@@ -171,7 +171,7 @@ public class Bienenstock extends Feld {
     int nektarAbnehmen(int nektarmenge) {
         if (nektarmenge + vorhandenerNektar > maximumGelagerterNektar) {
             int aufnahmemenge = maximumGelagerterNektar - vorhandenerNektar;
-
+            
             vorhandenerNektar = maximumGelagerterNektar;
             return aufnahmemenge;
         } else {
@@ -179,7 +179,7 @@ public class Bienenstock extends Feld {
             return nektarmenge;
         }
     }
-
+    
     /**
      * gibt zurück, wieviel Nektar maximal gelagert werden kann.
      *
@@ -188,7 +188,7 @@ public class Bienenstock extends Feld {
     int gibMaxGelagerterNektar() {
         return maximumGelagerterNektar;
     }
-
+    
     /**
      * gibt zurück, wieviel Nektar pro Runde maximal zu Honig umgewandelt
      * werden kann.
@@ -198,7 +198,7 @@ public class Bienenstock extends Feld {
     int gibMaximumNektarZuHonig() {
         return maximumNektarZuHonigProRunde;
     }
-
+    
     /**
      * gibt zurück, wieviel Honig vorhanden ist.
      *
@@ -207,7 +207,7 @@ public class Bienenstock extends Feld {
     public int gibVorhandenerHonig() {
         return vorhandenerHonig;
     }
-
+    
     /**
      * gibt zurück, wieviel Nektar vorhanden ist.
      *
@@ -216,7 +216,7 @@ public class Bienenstock extends Feld {
     public int gibVorhandenerNektar() {
         return vorhandenerNektar;
     }
-
+    
     /**
      * gibt die ID des dem Stock angehörigen Bienenvolks zurück.
      *

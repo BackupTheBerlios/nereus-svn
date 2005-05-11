@@ -1,10 +1,10 @@
 /*
  * Dateiname      : IMessagingAgent.java
- * Erzeugt        : 20.Juni 2003 
- * Letzte Änderung: 
+ * Erzeugt        : 20.Juni 2003
+ * Letzte Änderung:
  * Autoren        : Daniel Friedrich
- *                 
- *                  
+ *
+ *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen einer
@@ -32,19 +32,19 @@ package nereus.communication.interfaces;
 import nereus.communication.speachacts.Speachact;
 
 /**
- * Das Interface beschreibt die Methode, die ein Agent implementieren muss, 
+ * Das Interface beschreibt die Methode, die ein Agent implementieren muss,
  * damit er an der Kommunikation über den MessagingServer teilnehmen kann.
- * 
+ *
  * @author Daniel Friedrich
  */
 public interface IMessagingAgent {
-	
-	/**
-	 * Die Methode muss implementiert sein, damit ein Agent Nachrichten senden
-	 * und empfangen kann.
-	 * 
-	 * @param act - Sprechakt der empfangen wird.
-	 * @return Speachact - Antwort auf den empfangenen Sprechakt
-	 */
-	public Speachact receiveMessage(Speachact act);
+    
+    /**
+     * Die Methode muss implementiert sein, damit ein Agent Nachrichten senden
+     * und empfangen kann.
+     *
+     * @param act - Sprechakt der empfangen wird.
+     * @return Speachact - Antwort auf den empfangenen Sprechakt
+     */
+    public Speachact receiveMessage(Speachact act);
 }

@@ -35,13 +35,12 @@ import java.net.*;
  * @see ClassFileServer
  */
 public abstract class ClassServer
-
-implements Runnable
-{
-
+        
+        implements Runnable {
+    
     private ServerSocket server = null;
     private int port;
-
+    
     /**
      * Constructs a ClassServer that listens on <b>port</b> and
      * obtains a class's bytecodes using the method <b>getBytes</b>.
@@ -50,13 +49,12 @@ implements Runnable
      * @exception IOException if the ClassServer could not listen
      *            on <b>port</b>.
      */
-    protected ClassServer(int port) throws IOException
-    {
+    protected ClassServer(int port) throws IOException {
         this.port = port;
         server = new ServerSocket(port);
         newListener();
     }
-
+    
     /**
      * Returns an array of bytes containing the bytecodes for
      * the class represented by the argument <b>path</b>.
@@ -69,129 +67,104 @@ implements Runnable
      * @exception IOException if error occurs reading the class
      */
     public abstract byte[] getBytes(String path) throws IOException, ClassNotFoundException;
-
+    
     /**
      * The "listen" thread that accepts a connection to the
      * server, parses the header to obtain the class file name
      * and sends back the bytecodes for the class (or error
      * if the class is not found or the response was malformed).
      */
-    public void run()
-    {
+    public void run() {
         Socket socket;
-
+        
         // accept a connection
-        try
-        {
+        try {
             socket = server.accept();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             System.out.println("Class Server died: " + e.getMessage());
             e.printStackTrace();
             return;
         }
-
+        
         // create a new thread to accept the next connection
         newListener();
-
-        try
-        {
+        
+        try {
             DataOutputStream out =
-                new DataOutputStream(socket.getOutputStream());
-            try
-            {
+                    new DataOutputStream(socket.getOutputStream());
+            try {
                 // get path to class file from header
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 String path = getPath(in);
                 // retrieve bytecodes
                 byte[] bytecodes = getBytes(path);
                 // send bytecodes in response (assumes HTTP/1.0 or later)
-                try
-                {
+                try {
                     out.writeBytes("HTTP/1.0 200 OK\r\n");
                     out.writeBytes("Content-Length: " + bytecodes.length + "\r\n");
                     out.writeBytes("Content-Type: application/java\r\n\r\n");
                     out.write(bytecodes);
                     out.flush();
-                }
-                catch (IOException ie)
-                {
+                } catch (IOException ie) {
                     return;
                 }
-
-            }
-            catch (Exception e)
-            {
+                
+            } catch (Exception e) {
                 // write out error response
                 out.writeBytes("HTTP/1.0 400 " + e.getMessage() + "\r\n");
                 out.writeBytes("Content-Type: text/html\r\n\r\n");
                 out.flush();
             }
-
-        }
-        catch (IOException ex)
-        {
+            
+        } catch (IOException ex) {
             // eat exception (could log error to log file, but
             // write out to stdout for now).
             System.out.println("error writing response: " + ex.getMessage());
             ex.printStackTrace();
-
-        }
-        finally
-        {
-            try
-            {
+            
+        } finally {
+            try {
                 socket.close();
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
             }
         }
     }
-
+    
     /**
      * Create a new thread to listen.
      */
-    private void newListener()
-    {
+    private void newListener() {
         (new Thread(this)).start();
     }
-
+    
     /**
      * Returns the path to the class file obtained from
      * parsing the HTML header.
      */
-    private static String getPath(BufferedReader in)     throws IOException
-    {
+    private static String getPath(BufferedReader in)     throws IOException {
         String line = in.readLine();
         String path = "";
-
+        
         // extract class from GET line
-        if (line.startsWith("GET /"))
-        {
+        if (line.startsWith("GET /")) {
             line = line.substring(5, line.length()-1).trim();
-
+            
             int index = line.indexOf(".class ");
-            if (index != -1)
-            {
+            if (index != -1) {
                 path = line.substring(0, index).replace('/', '.');
             }
         }
-
+        
         // eat the rest of header
         do
         {
             line = in.readLine();
-
+            
         } while ((line.length() != 0) && (line.charAt(0) != '\r') && (line.charAt(0) != '\n'));
-
-        if (path.length() != 0)
-        {
+        
+        if (path.length() != 0) {
             return path;
-        }
-        else
-        {
+        } else {
             throw new IOException("Malformed Header");
         }
     }

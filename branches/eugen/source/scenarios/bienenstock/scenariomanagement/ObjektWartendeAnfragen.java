@@ -4,8 +4,8 @@
  * Letzte Änderung: 26. Januar 2005 durch Philip Funck
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
- *                  
- *                  
+ *
+ *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen eines
@@ -33,32 +33,32 @@ package scenarios.bienenstock.scenariomanagement;
 
 /**
  * dient als Warteschlange für die Anfragen der Agenten.
- * 
+ *
  * @author Philip Funck
  * @author Samuel Walz
  */
 public class ObjektWartendeAnfragen {
-
+    
     /**
      * Anzahl der wartenden Agentenanfragen.
      */
     private int anzahl = 0;
-
+    
     /**
      * Konstruktor.
      */
     public ObjektWartendeAnfragen() {
     }
-
+    
     /**
      * gibt die Anzahl der wartenden Anfragen zurück.
-     * 
+     *
      * @return int
      */
     public int gibAnzahl() {
         return anzahl;
     }
-
+    
     /**
      * erhöht die Anzahl der wartenden Anfragen um 1.
      */
@@ -72,7 +72,7 @@ public class ObjektWartendeAnfragen {
     public void setzeNull() {
         anzahl = 0;
     }
-
+    
 }
 
 

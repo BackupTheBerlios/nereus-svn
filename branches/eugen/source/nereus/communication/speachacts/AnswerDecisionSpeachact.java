@@ -1,10 +1,10 @@
 /*
  * Dateiname      : AnswerDecisionSpeachact.java
  * Erzeugt        : 5. September 2003
- * Letzte Änderung: 
+ * Letzte Änderung:
  * Autoren        : Daniel Friedrich
- *                  
- *                  
+ *
+ *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen einer
@@ -38,42 +38,42 @@ import nereus.exceptions.InvalidElementException;
 
 /**
  * Spreachakt zum Antworten von Entscheidungen.
- * 
- * Die Klasse ist nicht durch Vererbung erweiterbar, damit es den Agenten nicht 
+ *
+ * Die Klasse ist nicht durch Vererbung erweiterbar, damit es den Agenten nicht
  * möglich ist, einen Sprechakt einzusetzen, der sich als Subklasse dieses
- * Sprechaktes tarnt. Wenn eine Hierarchie unter dieser Klasse eingeführt werden 
- * soll, dann muss der Sprechakt als abstract definiert werden und die 
+ * Sprechaktes tarnt. Wenn eine Hierarchie unter dieser Klasse eingeführt werden
+ * soll, dann muss der Sprechakt als abstract definiert werden und die
  * Subklassen dann wieder final.
- * 
+ *
  * @author Daniel Friedrich
  */
-public final class AnswerDecisionSpeachact extends AnswerSpeachact {		
-
-	/**
-	 * Konstruktor.
-	 * 
-	 * @param parameters
-	 */
-	public AnswerDecisionSpeachact(Hashtable parameters) {
-		super(parameters);
-	}
-
-	/**
-	 * Setzt den Inhalt der Nachricht.
-	 * 
-	 * Für diesen Sprechakt gibt es die Beschränkung, dass einzelne Booleans
-	 * oder Vectoren mit Booleans als Inhalt erlaubt sind.
-	 * 
-	 * @param Object content
-	 */
-	public void setContent(Object content) 
-		throws InvalidElementException	{
-		if((content == null) 
-			|| (content instanceof Vector)
-			|| (content instanceof Boolean)) {
-			m_content = content;	
-		}else {
-			throw new InvalidElementException();
-		}
-	}
+public final class AnswerDecisionSpeachact extends AnswerSpeachact {
+    
+    /**
+     * Konstruktor.
+     *
+     * @param parameters
+     */
+    public AnswerDecisionSpeachact(Hashtable parameters) {
+        super(parameters);
+    }
+    
+    /**
+     * Setzt den Inhalt der Nachricht.
+     *
+     * Für diesen Sprechakt gibt es die Beschränkung, dass einzelne Booleans
+     * oder Vectoren mit Booleans als Inhalt erlaubt sind.
+     *
+     * @param Object content
+     */
+    public void setContent(Object content)
+    throws InvalidElementException	{
+        if((content == null)
+        || (content instanceof Vector)
+        || (content instanceof Boolean)) {
+            m_content = content;
+        }else {
+            throw new InvalidElementException();
+        }
+    }
 }

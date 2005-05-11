@@ -5,9 +5,9 @@
  *
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
- *                  
- *                  
- *                  
+ *
+ *
+ *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen eines
@@ -49,12 +49,12 @@ import nereus.utils.Id;
  * @author Philip Funck
  */
 public class Biene {
-
+    
     /**
      * beschreibt, ob die Biene am Boden ist oder nicht.
      */
     private boolean amBoden;
-
+    
     /**
      * beschreibt die aktuell ausgeführte Aktion.
      *
@@ -62,50 +62,50 @@ public class Biene {
      * eindeutig gekennzeichnet.
      */
     private int listenKennung;
-
+    
     /**
      * ist eine Nummer, die die Biene eindeutig kennzeichnet.
      * Ist identisch mit der Agent-ID die die Agenten im Simulator haben.
      */
     private int bienenID;
-
+    
     /**
      * ist eine Nummer, die die Zugehörigkeit
      * einer Biene zu einem Bienenvolk eindeutig kennzeichnet.
      */
     private int bienenvolkID;
-
+    
     /**
      * Position der Biene auf der Spielkarte.
      */
     private Koordinate position;
-
+    
     /**
      * ist der Code, der vom Agenten benötigt wird um eine Aktion auszuführen.
      */
     private long aktionsCode;
-
+    
     /**
      * Menge des aktuell geladenen Honigs.
      *
      */
     private int geladeneHonigmenge;
-
+    
     /**
      * Menge des aktuell geladenen Nektars.
      */
     private int geladeneNektarmenge;
-
+    
     /**
      * zuletzt per Tanz mitgeteilte Information der Biene.
      */
     private Info information;
-
+    
     /**
      * Die ID, unter der die Biene im Simulator verwaltet wird.
      */
     private Id simulatorId;
-
+    
     /**
      * instanziiert eine neue Biene.
      *
@@ -124,12 +124,12 @@ public class Biene {
      * @param simId die ID im simulator
      */
     public Biene(int eigenID,
-        int volkID,
-        Koordinate bienePosition,
-        int startHonig,
-        int startNektar,
-        Id simId) {
-
+            int volkID,
+            Koordinate bienePosition,
+            int startHonig,
+            int startNektar,
+            Id simId) {
+        
         amBoden = true;
         listenKennung = Konstanten.WARTEND;
         bienenID = eigenID;
@@ -139,7 +139,7 @@ public class Biene {
         geladeneNektarmenge = startNektar;
         simulatorId = simId;
     }
-
+    
     /**
      * gibt zurück, ob sich eine Biene am Boden befindet.
      *
@@ -149,7 +149,7 @@ public class Biene {
     boolean gibAmBoden() {
         return amBoden;
     }
-
+    
     /**
      * gibt die Kennung der Liste, in der sie sich befindet.
      *
@@ -159,7 +159,7 @@ public class Biene {
     int gibListenKennung() {
         return listenKennung;
     }
-
+    
     /**
      * gibt den Aktionscode der Biene zurück.
      *
@@ -169,7 +169,7 @@ public class Biene {
     long gibAktionsCode() {
         return aktionsCode;
     }
-
+    
     /**
      * gibt die ID des Bienenvolks zurück, dem die Biene angehört.
      *
@@ -178,7 +178,7 @@ public class Biene {
     int gibBienenvolkID() {
         return bienenvolkID;
     }
-
+    
     /**
      * gibt die ID der Biene zurück.
      *
@@ -187,7 +187,7 @@ public class Biene {
     int gibBienenID() {
         return bienenID;
     }
-
+    
     /**
      * gibt die aktuelle Position der Biene zurück.
      *
@@ -197,7 +197,7 @@ public class Biene {
     Koordinate gibPosition() {
         return position;
     }
-
+    
     /**
      * gibt die geladene Nektarmenge der Biene zurück.
      *
@@ -206,7 +206,7 @@ public class Biene {
     int gibGeladeneNektarmenge() {
         return geladeneNektarmenge;
     }
-
+    
     /**
      * gibt die geladene Honigmenge der Biene zurück.
      *
@@ -215,7 +215,7 @@ public class Biene {
     int gibGeladeneHonigmenge() {
         return geladeneHonigmenge;
     }
-
+    
     /**
      * gibt die zuletzt per Tanz mitgeteilte Information zurück.
      *
@@ -224,16 +224,16 @@ public class Biene {
     Info gibInformation() {
         return information;
     }
-
+    
     /**
      * gibt die Id innerhalb des Simulators zurück
      *
      * @return simId Id innerhalb des Simulators
      */
     Id gibSimId() {
-    return simulatorId;
+        return simulatorId;
     }
-
+    
     /**
      * setzt die Attribute listenKennung und amBoden auf den Wert, der
      * durch <code>liste</code> bestimmt wird.
@@ -259,16 +259,16 @@ public class Biene {
             amBoden = true;
         }
     }
-
+    
     /**
      * setzt den Aktionscode auf <code>aktCode</code>.
      *
      * @param aktCode    der neue Aktionscode.
      */
     void setzeAktionsCode(long aktCode) {
-            aktionsCode = aktCode;
+        aktionsCode = aktCode;
     }
-
+    
     /**
      * setzt die ID der Biene auf <code>eigenID</code>.
      *
@@ -277,7 +277,7 @@ public class Biene {
     void setzeBienenID(int eigenID) {
         bienenID = eigenID;
     }
-
+    
     /**
      * setzt die bienenvolkID auf <code>volkID</code>.
      *
@@ -286,7 +286,7 @@ public class Biene {
     void setzeBienenvolkID(int volkID) {
         bienenvolkID = volkID;
     }
-
+    
     /**
      * setzt die aktuelle Position der Biene auf <code>bienePosition</code>.
      *
@@ -295,7 +295,7 @@ public class Biene {
     void setzePosition(Koordinate bienePosition) {
         position = bienePosition;
     }
-
+    
     /**
      * setzt die Menge an geladenem Nektar auf <code>nektarmenge</code>.
      *
@@ -304,7 +304,7 @@ public class Biene {
     void setzeGeladeneNektarmenge(int nektarmenge) {
         geladeneNektarmenge = nektarmenge;
     }
-
+    
     /**
      * setzt die geladeneHonigmenge auf <code>honigmenge</code>.
      *
@@ -313,7 +313,7 @@ public class Biene {
     void setzeGeladeneHonigmenge(int honigmenge) {
         geladeneHonigmenge = honigmenge;
     }
-
+    
     /**
      * setzt eine neue per Tanz mitgeteilte Information.
      *

@@ -4,8 +4,8 @@
  * Letzte Änderung: 14. Februar 2005 durch Samuel Walz
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
- *                  
- *                  
+ *
+ *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen eines
@@ -40,7 +40,7 @@ import scenarios.bienenstock.agenteninfo.Koordinate;
 
 /**
  * ist das Interface für den Handler des Szenarios.
- * 
+ *
  * @author Philip Funck
  * @author Samuel Walz
  */
@@ -49,44 +49,44 @@ public interface IBienenstockSzenarioHandler {
     /**
      * gibt dem Agenten den Teil der Spielkarte zurück, den er
      * wahrnehmen kann.
-     * 
+     *
      * @param aktCode       Der Aktionscode des Agenten
      * @return              Der sichtbare Ausschnitt der Spielkarte
      *                      für den anfragenden Agenten
      */
     EinfacheKarte infoAusschnittHolen(long aktCode);
-
+    
     /**
-     * 
+     *
      * @param aktCode       Der Aktionscode des Agenten
      * @return              Der neue Aktionscode
      */
     long aktionStarten(long aktCode);
-
+    
     /**
-     * 
+     *
      * @param aktCode       Der Aktionscode des Agenten
      * @param ziel          Das gewünschte Flugziel
      * @return              Der neue Aktionscode
      */
     long aktionFliegen(long aktCode,
-                              Koordinate ziel);
+            Koordinate ziel);
     /**
-     * 
+     *
      * @param aktCode       Der Aktionscode des Agenten
      * @return              Der neue Aktionscode
      */
     long aktionLanden(long aktCode);
-
+    
     /**
-     * 
+     *
      * @param aktCode       Der Aktionscode des Agenten
      * @return              Der neue Aktionscode
      */
     long aktionWarten(long aktCode);
-
+    
     /**
-     * 
+     *
      * @param aktCode       Der Aktionscode des Agenten
      * @param zielX         Die mitzuteilende X-Koordinate
      * @param zielY         Die Mitzuteilende Y-Koordinate
@@ -95,47 +95,47 @@ public interface IBienenstockSzenarioHandler {
      * @return              Der neue Aktionscode
      */
     long aktionTanzen(long aktCode,
-                             int zielX,
-                             int zielY,
-                             boolean richtung, 
-                             boolean entfernung);
-
+            int zielX,
+            int zielY,
+            boolean richtung,
+            boolean entfernung);
+    
     /**
-     * 
+     *
      * @param aktCode       Der Aktionscode des Agenten
      * @param tanzendeBieneID   Die ID der Biene, der der Agent zuschauen möchte
      * @return              Der neue Aktionscode
      */
     long aktionZuschauen(long aktCode,
-                                int tanzendeBieneID);
-
+            int tanzendeBieneID);
+    
     /**
-     * 
+     *
      * @param aktCode       Der Aktionscode des Agenten
      * @param menge         Die gewünschte Honigmenge
      * @return              Der neue Aktionscode
      */
     long aktionHonigTanken(long aktCode,
-                                  int menge);
-
+            int menge);
+    
     /**
-     * 
+     *
      * @param aktCode       Der Aktionscode des Agenten
      * @return              Der neue Aktionscode
      */
     long aktionNektarAbliefern(long aktCode);
-
+    
     /**
-     * 
+     *
      * @param aktCode       Der Aktionscode des Agenten
      * @param menge         Die gewünschte Nektarmenge
      * @return              Der neue Aktionscode
      */
     long aktionNektarAbbauen(long aktCode,
-                                    int menge);
+            int menge);
     
     public Object getParameter(ActionKey key,
-            Id agentId, 
+            Id agentId,
             String name) throws InvalidAgentException,
             InvalidActionKeyException,
             InvalidElementException;

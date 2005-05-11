@@ -1,10 +1,10 @@
 /*
  * Dateiname      : DenyAnswerSpeachact.java
  * Erzeugt        : 29. Juli 2003
- * Letzte Änderung: 
+ * Letzte Änderung:
  * Autoren        : Daniel Friedrich
- *                  
- *                  
+ *
+ *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen einer
@@ -35,35 +35,35 @@ import nereus.exceptions.InvalidElementException;
 
 
 /**
- * Sprechakt um Anfragen abzulehnen. Der Sprechakt kann keine Inhalte 
+ * Sprechakt um Anfragen abzulehnen. Der Sprechakt kann keine Inhalte
  * transportieren, kostet dafür aber auch nichts, wenn die für Antworten
  * extra Kosten erhoben werden.
- * 
- * Die Klasse ist nicht durch Vererbung erweiterbar, damit es den Agenten nicht 
+ *
+ * Die Klasse ist nicht durch Vererbung erweiterbar, damit es den Agenten nicht
  * möglich ist, einen Sprechakt einzusetzen, der sich als Subklasse dieses
- * Sprechaktes tarnt. Wenn eine Hierarchie unter dieser Klasse eingeführt werden 
- * soll, dann muss der Sprechakt als abstract definiert werden und die 
+ * Sprechaktes tarnt. Wenn eine Hierarchie unter dieser Klasse eingeführt werden
+ * soll, dann muss der Sprechakt als abstract definiert werden und die
  * Subklassen dann wieder final.
- * 
+ *
  * @author Daniel Friedrich
  */
 public final class DenyAnswerSpeachact extends AnswerSpeachact {
-
-	/**
-	 * @param parameters
-	 */
-	public DenyAnswerSpeachact(Hashtable parameters) {
-		super(parameters);
-	}
-
-	/**
-	 * Die Methode erlaubt kein Setzen eines Inhaltes.
-	 */
-	public final void setContent(Object content) 
-		throws InvalidElementException {
-		if(content != null) {
-			throw new InvalidElementException();
-		}
-		m_content = null;
-	}
+    
+    /**
+     * @param parameters
+     */
+    public DenyAnswerSpeachact(Hashtable parameters) {
+        super(parameters);
+    }
+    
+    /**
+     * Die Methode erlaubt kein Setzen eines Inhaltes.
+     */
+    public final void setContent(Object content)
+    throws InvalidElementException {
+        if(content != null) {
+            throw new InvalidElementException();
+        }
+        m_content = null;
+    }
 }

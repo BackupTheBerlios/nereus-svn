@@ -4,8 +4,8 @@
  * Letzte Änderung: 14. Februar 2005 durch Samuel Walz
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
- *                  
- *                  
+ *
+ *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen eines
@@ -36,12 +36,12 @@ import java.util.HashMap;
 
 /**
  * speichert die Parameter für das Szenario.
- * 
+ *
  * @author Philip Funck
  * @author Samuel Walz
  */
 public class Parameter {
-
+    
     /**
      * enthält die Parameter.
      */
@@ -51,23 +51,23 @@ public class Parameter {
      * enthält die Information, welche Parameter schreibgeschützt sind.
      */
     private Hashtable szenarioParameterSchreibschutz = new Hashtable();
-
+    
     /**
      * Der Konstruktor.
      */
     public Parameter() {
     }
-
+    
     /**
      * setzt einen Parameterwert, wenn dieser nicht schreibgeschützt ist.
-     * 
+     *
      * @param schluessel    der Name des Parameters
      * @param wert          der Wert für den Parameter
      */
-    public void setzeWert (String schluessel, Object wert) {
+    public void setzeWert(String schluessel, Object wert) {
         if (szenarioParameterSchreibschutz.containsKey(schluessel)) {
             if (!((Boolean) szenarioParameterSchreibschutz.get(
-                                schluessel)).booleanValue()) {
+                    schluessel)).booleanValue()) {
                 szenarioParameter.put(schluessel, wert);
             }
         } else {
@@ -75,17 +75,17 @@ public class Parameter {
             szenarioParameter.put(schluessel, wert);
         }
     }
-
+    
     /**
      * gibt den Wert eine statics Parameters als Objekt zurück.
-     * 
-     * Ist der Parameter nicht vorhanden, so wird <code>null</code> 
+     *
+     * Ist der Parameter nicht vorhanden, so wird <code>null</code>
      * zurückgegeben.
-     * 
+     *
      * @param schluessel    der Name des Parameters
      * @return              der zugehörige Wert als Objekt
      */
-    public Object gibWert (String schluessel) {
+    public Object gibWert(String schluessel) {
         if (szenarioParameter.containsKey(schluessel)) {
             return szenarioParameter.get(schluessel);
         } else {
@@ -94,36 +94,36 @@ public class Parameter {
             return null;
         }
     }
-
+    
     /**
      * setzt für einen Parameter den Schreibschutz.
-     * 
+     *
      * Einmal gesetzt, kann der Schreibschutz nicht mehr entfernt werden.
-     * 
+     *
      * @param schluessel    der Name des Parameters, der Schreibschutz erhalten
      *                      soll
      */
-    public void setzeSchreibschutz (String schluessel) {
+    public void setzeSchreibschutz(String schluessel) {
         szenarioParameterSchreibschutz.put(schluessel, new Boolean(true));
     }
-
+    
     /**
      * gibt zurück, ob für einen Parameter ein Schreibschutz gesetzt ist.
-     * 
+     *
      * @param schluessel    der Name des fraglichen Parameters
      * @return boolean
      */
-    public boolean gibSchreibschutz (String schluessel) {
+    public boolean gibSchreibschutz(String schluessel) {
         return ((Boolean) szenarioParameterSchreibschutz.get(
-                                schluessel)).booleanValue();
+                schluessel)).booleanValue();
     }
     
     /**
      * Gibt die Liste der Parameter zurück.
-     * 
+     *
      * @return Hashtable
      */
-    public Hashtable gibParameterHashTabelle () {
+    public Hashtable gibParameterHashTabelle() {
         return (Hashtable) szenarioParameter.clone();
     }
 }

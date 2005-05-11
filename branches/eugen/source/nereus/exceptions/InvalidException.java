@@ -1,10 +1,10 @@
 /*
  * Dateiname      : InvalidException.java
  * Erzeugt        : 7. September 2003
- * Letzte Änderung: 
+ * Letzte Änderung:
  * Autoren        : Daniel Friedrich
- *                  
- *                  
+ *
+ *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen einer
@@ -30,36 +30,36 @@
 package nereus.exceptions;
 
 /**
- * Superklasse in der Hierarchie der Invalid..Exception. 
- * 
+ * Superklasse in der Hierarchie der Invalid..Exception.
+ *
  * @author Daniel Friedrich
  */
 public class InvalidException extends Exception {
-
-	/**
-	 * Konstruktor.
-	 */
-	public InvalidException() {
-		super();
-	}
-	
-	/**
-	 * Konstruktor.
-	 * 
-	 * @param messageText
-	 */
-	public InvalidException(String messageText) {
-		super(messageText);
-	}
-	
-	/**
-	 * Konstruktor.
-	 * 
-	 * @param messageText
-	 * @param cause
-	 */
-	public InvalidException(String messageText, Throwable cause) {
-		super(messageText, cause);
-	}
-
+    
+    /**
+     * Konstruktor.
+     */
+    public InvalidException() {
+        super();
+    }
+    
+    /**
+     * Konstruktor.
+     *
+     * @param messageText
+     */
+    public InvalidException(String messageText) {
+        super(messageText);
+    }
+    
+    /**
+     * Konstruktor.
+     *
+     * @param messageText
+     * @param cause
+     */
+    public InvalidException(String messageText, Throwable cause) {
+        super(messageText, cause);
+    }
+    
 }

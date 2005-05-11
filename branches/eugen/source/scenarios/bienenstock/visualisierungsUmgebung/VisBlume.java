@@ -4,9 +4,9 @@
  * Letzte Änderung: 26. Januar 2005 durch Philip Funck
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
- *                  
- *                  
- *                  
+ *
+ *
+ *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen eines
@@ -41,28 +41,28 @@ import java.util.HashSet;
  * @author Philip Funck
  */
 public class VisBlume extends VisFeld {
-
+    
     /**
      * ist das äußere Merkmal der Blume.
      */
     private int merkmal;
-
+    
     /**
      * ist die vorhandene Nektarmenge.
      */
     private int vorhandenerNektar;
-
+    
     /**
      * ist das Maximum, das von einer Biene pro Runde bezogen werden kann.
      */
     private int maximumNektarProRunde;
-
+    
     /**
      * ist ene Liste aller zur Zeit Nektar abbauenden Bienen.
      * @associates VisBiene
      */
     private HashSet abbauendeBienen;
-
+    
     /**
      * Konstruktor.
      *
@@ -78,37 +78,37 @@ public class VisBlume extends VisFeld {
      * @param aBienen   abbauende Bienen
      */
     public VisBlume(
-        Koordinate feldPosition,
-        int sichtBoden,
-        int sichtLuft,
-        HashSet wBienen,
-        HashSet fBienen,
-        HashSet tBienen,
-        int blumenMerkmal,
-        int vorhNektar,
-        int maxNektarProRunde,
-        HashSet aBienen
-         ) {
+            Koordinate feldPosition,
+            int sichtBoden,
+            int sichtLuft,
+            HashSet wBienen,
+            HashSet fBienen,
+            HashSet tBienen,
+            int blumenMerkmal,
+            int vorhNektar,
+            int maxNektarProRunde,
+            HashSet aBienen
+            ) {
         super(feldPosition,
-              sichtBoden,
-              sichtLuft,
-              wBienen,
-              fBienen,
-              tBienen);
-
+                sichtBoden,
+                sichtLuft,
+                wBienen,
+                fBienen,
+                tBienen);
+        
         /*position = feldPosition;
         sichtweiteAmBoden = sichtBoden;
         sichtweiteInDerLuft = sichtLuft;
         wartendeBienen = wBienen;
         fliegendeBienen = fBienen;
         tanzendeBienen = tBienen;*/
-
+        
         merkmal = blumenMerkmal;
         vorhandenerNektar = vorhNektar;
         maximumNektarProRunde = maxNektarProRunde;
         abbauendeBienen = aBienen;
     }
-
+    
     /**
      * gibt das Merkmal der Blume zurück.
      *
@@ -117,7 +117,7 @@ public class VisBlume extends VisFeld {
     int gibMerkmal() {
         return merkmal;
     }
-
+    
     /**
      * gibt zurück, wieviel Nektar vorhanden ist.
      *
@@ -126,7 +126,7 @@ public class VisBlume extends VisFeld {
     int gibVorhandenerNektar() {
         return vorhandenerNektar;
     }
-
+    
     /**
      * gibt zurück, wieviel Nektar pro Runde und Biene maximal
      * abgegeben werden kann.
@@ -136,7 +136,7 @@ public class VisBlume extends VisFeld {
     int gibMaxNektarProRunde() {
         return maximumNektarProRunde;
     }
-
+    
     /**
      * gibt eine Liste aller an dieser Blume abbauenden Bienen zurück.
      *
@@ -145,5 +145,5 @@ public class VisBlume extends VisFeld {
     HashSet gibAbbauendeBienen() {
         return (HashSet) abbauendeBienen.clone();
     }
-
+    
 }

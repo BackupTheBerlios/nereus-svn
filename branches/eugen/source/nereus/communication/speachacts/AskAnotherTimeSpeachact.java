@@ -1,10 +1,10 @@
 /*
  * Dateiname      : AskAnotherTimeSpeachact.java
  * Erzeugt        : 29. Juli 2003
- * Letzte Änderung: 
+ * Letzte Änderung:
  * Autoren        : Daniel Friedrich
- *                  
- *                  
+ *
+ *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen einer
@@ -37,26 +37,26 @@ import nereus.exceptions.InvalidElementException;
 /**
  * Sprechakt soll anfragendem Agenten mitteilen, dass der Agent die Anfrage gerne
  * beantwortetn würde, ihm aber im Moment die Sachkenntnis dazu fehlt.
- * 
+ *
  * @author Daniel Friedrich
  */
 public final class AskAnotherTimeSpeachact extends AnswerSpeachact {
-
-	/**
-	 * Konstruktor.
-	 * 
-	 * @param parameters
-	 */
-	public AskAnotherTimeSpeachact(Hashtable parameters) {
-		super(parameters);
-	}
-
-	/* (non-Javadoc)
-	 * @see speachacts.Speachact#setContent(java.lang.Object)
-	 */
-	public void setContent(Object content) throws InvalidElementException {
-		if(content != null) {
-			throw new InvalidElementException();	
-		}
-	}
+    
+    /**
+     * Konstruktor.
+     *
+     * @param parameters
+     */
+    public AskAnotherTimeSpeachact(Hashtable parameters) {
+        super(parameters);
+    }
+    
+        /* (non-Javadoc)
+         * @see speachacts.Speachact#setContent(java.lang.Object)
+         */
+    public void setContent(Object content) throws InvalidElementException {
+        if(content != null) {
+            throw new InvalidElementException();
+        }
+    }
 }

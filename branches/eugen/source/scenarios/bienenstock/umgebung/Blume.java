@@ -5,9 +5,9 @@
  *
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
- *                  
- *                  
- *                  
+ *
+ *
+ *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen eines
@@ -42,33 +42,33 @@ import java.util.HashSet;
  * @author Samuel Walz
  */
 public class Blume extends Feld {
-
+    
     /**
      * ist das äußere Merkmal der Blume.
      */
     private int merkmal;
-
+    
     /**
      * ist die vorhandene Nektarmenge.
      */
     private int vorhandenerNektar;
-
+    
     /**
      * ist das Maximum, das von einer Biene pro Runde bezogen werden kann.
      */
     private int maximumNektarProRunde;
-
+    
     /**
      * ist das Maximum an Bienen, die Zeitgleich Nektar abbauen können.
      */
     private int maximumAbbauendeBienen;
-
+    
     /**
      * ist ene Liste aller zur Zeit Nektar abbauenden Bienen.
      * @associates scenario.bienenstock.umgebung.Biene
      */
     private HashSet abbauendeBienen = new HashSet();
-
+    
     /**
      * Konstruktor.
      *
@@ -85,23 +85,23 @@ public class Blume extends Feld {
      * @param maxTanzendeBienen maximum der tanzenden Bienen
      */
     Blume(int eigenID,
-        int sichtBoden,
-        int sichtLuft,
-        int vorhNektar,
-        int maxNektarProRunde,
-        int maxAbbauendeBienen,
-        int maxWartendeBienen,
-        int maxFliegendeBienen,
-        int blumenMerkmal,
-        Koordinate feldPosition,
-        int maxTanzendeBienen) {
+            int sichtBoden,
+            int sichtLuft,
+            int vorhNektar,
+            int maxNektarProRunde,
+            int maxAbbauendeBienen,
+            int maxWartendeBienen,
+            int maxFliegendeBienen,
+            int blumenMerkmal,
+            Koordinate feldPosition,
+            int maxTanzendeBienen) {
         super(eigenID,
-              sichtBoden,
-              sichtLuft,
-              maxWartendeBienen,
-              maxFliegendeBienen,
-              maxTanzendeBienen,
-              feldPosition);
+                sichtBoden,
+                sichtLuft,
+                maxWartendeBienen,
+                maxFliegendeBienen,
+                maxTanzendeBienen,
+                feldPosition);
         /*id = eigenID;
         sichtweiteAmBoden = sichtBoden;
         sichtweiteInDerLuft = sichtLuft;
@@ -109,13 +109,13 @@ public class Blume extends Feld {
         maximumFliegendeBienen = maxFliegendeBienen;
         maximumTanzendeBienen = maxTanzendeBienen;
         position = feldPosition;*/
-
+        
         merkmal = blumenMerkmal;
         vorhandenerNektar = vorhNektar;
         maximumNektarProRunde = maxNektarProRunde;
         maximumAbbauendeBienen = maxAbbauendeBienen;
     }
-
+    
     /**
      * fordert von der Blume Nektar an.
      * Bucht die entsprechende Menge Nektar ab.
@@ -126,33 +126,33 @@ public class Blume extends Feld {
      */
     int nektarAbgeben(int gewuenschteNektarMenge) {
         int abgabemenge = 0;
-
+        
         //Ermitteln der zulaessigen Abgabemenge
         if (gewuenschteNektarMenge > maximumNektarProRunde
                 && gewuenschteNektarMenge > vorhandenerNektar) {
-
+            
             if (maximumNektarProRunde > vorhandenerNektar) {
                 abgabemenge = vorhandenerNektar;
             } else {
                 abgabemenge = maximumNektarProRunde;
             }
         } else if (gewuenschteNektarMenge > maximumNektarProRunde
-                    && gewuenschteNektarMenge < vorhandenerNektar) {
-
+                && gewuenschteNektarMenge < vorhandenerNektar) {
+            
             abgabemenge = maximumNektarProRunde;
         } else if (gewuenschteNektarMenge < maximumNektarProRunde
-                    && gewuenschteNektarMenge > vorhandenerNektar) {
-
+                && gewuenschteNektarMenge > vorhandenerNektar) {
+            
             abgabemenge = vorhandenerNektar;
         } else {
             abgabemenge = gewuenschteNektarMenge;
         }
-
+        
         //Abbuchen der zulaessigen Menge
         vorhandenerNektar = vorhandenerNektar - abgabemenge;
         return abgabemenge;
     }
-
+    
     /**
      * prüft ob die Kapazität der abbauenden Binen noch nicht voll ist,
      * und fügt gegebenenfalls der Liste abbauendeBienen die
@@ -167,13 +167,13 @@ public class Blume extends Feld {
             abbauendeBienen.add(abbauendeBiene);
             return true;
         } else if (abbauendeBienen.size() < maximumAbbauendeBienen) {
-                abbauendeBienen.add(abbauendeBiene);
+            abbauendeBienen.add(abbauendeBiene);
             return true;
         } else {
             return false;
         }
     }
-
+    
     /**
      * prüft ob die abbauendeBiene in der Liste abbauendeBienen
      * vorhanden ist und entfernt sie gegebenenfalls aus dieser.
@@ -184,13 +184,13 @@ public class Blume extends Feld {
      * @throws RuntimeException Fehler
      */
     void entferneAbbauendeBiene(Biene abbauendeBiene)
-        throws RuntimeException {
+    throws RuntimeException {
         if (!abbauendeBienen.remove(abbauendeBiene)) {
             throw new RuntimeException("Abbauende Biene existiert nicht" +
                     " - kann nicht gelöscht werden.");
         }
     }
-
+    
     /**
      * gibt den vorhandenen Nektar zurück.
      *
@@ -199,7 +199,7 @@ public class Blume extends Feld {
     int gibVorhandenerNektar() {
         return vorhandenerNektar;
     }
-
+    
     /**
      * gibt das Merkmal der Blume zurück.
      *
@@ -208,7 +208,7 @@ public class Blume extends Feld {
     int gibMerkmal() {
         return merkmal;
     }
-
+    
     /**
      * gibt zurück, wieviel Nektar die Blume maxmimal pro Biene
      * und Runde abgeben kann.
@@ -218,7 +218,7 @@ public class Blume extends Feld {
     int gibMaxNektarProRunde() {
         return maximumNektarProRunde;
     }
-
+    
     /**
      * gibt eine Liste aller zur Zeit auf dieser Blume abbauenden Bienen zurück.
      *

@@ -5,9 +5,9 @@
  *
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
- *                  
- *                  
- *                  
+ *
+ *
+ *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen eines
@@ -47,64 +47,64 @@ public class Feld {
      * Die IDdes Feldes
      */
     private int id;
-
+    
     /**
      * Die Position des Feldes auf der Spielkarte.
      */
     private Koordinate position;
-
+    
     /**
      * ist eine Liste de Angrenzenden Felder.
      *
      * @associates umgebung.Feld
      */
     private HashSet nachbarfelder = new HashSet();
-
+    
     /**
      * legt fest, wie weit die Biene am Boden sehen kann.
      */
     private int sichtweiteAmBoden;
-
+    
     /**
      * legt fest, wie weit die Biene in der Luft sehen kann.
      */
     private int sichtweiteInDerLuft;
-
+    
     /**
      * beschreibt das Maximum der zeitgleich wartenden Biene auf dem Feld.
      */
     private int maximumWartendeBienen;
-
+    
     /**
      * beschreibt das Maximum der zeitgleich fliegenden Biene auf dem Feld.
      */
     private int maximumFliegendeBienen;
-
+    
     /**
      * beschreibt das Maximum der zeitgleich tanzenden Biene auf dem Feld.
      */
     private int maximumTanzendeBienen;
-
+    
     /**
      * ist eien Liste der auf dem Feld Wartenden oder zuhörenden Bienen.
      *
      * @associates scenario.bienenstock.umgebung.Biene
      */
     private HashSet wartendeBienen = new HashSet();
-
+    
     /**
      * ist eine Liste der über dem Feld fliegenden Bienen.
      * @associates scenario.bienenstock.umgebung.Biene
      */
     private HashSet fliegendeBienen = new HashSet();
-
+    
     /**
      * ist eine Liste der auf dem Feld tanzenden Bienen.
      *
      * @associates scenario.bienenstock.umgebung.Biene
      */
     private HashSet tanzendeBienen = new HashSet();
-
+    
     /**
      * Konstruktor.
      *
@@ -131,7 +131,7 @@ public class Feld {
         maximumTanzendeBienen = maxTanzendeBienen;
         position = feldPosition;
     }
-
+    
     /**
      * trägt die Nachbarfelder des Feldes ein.
      *
@@ -140,7 +140,7 @@ public class Feld {
     void trageNachbarfeldEin(Feld nachbarfeld) {
         nachbarfelder.add(nachbarfeld);
     }
-
+    
     /**
      * trägt die an dem Feld wartenden Bienen ein.
      *
@@ -158,7 +158,7 @@ public class Feld {
             return false;
         }
     }
-
+    
     /**
      * trägt die über dem Feld fliegenden Bienen ein.
      *
@@ -176,7 +176,7 @@ public class Feld {
             return false;
         }
     }
-
+    
     /**
      * trägt die auf dem Feld tanzenden Bienen ein.
      *
@@ -194,7 +194,7 @@ public class Feld {
             return false;
         }
     }
-
+    
     /**
      * prüft ob die entsprechende Biene auf der Liste wartendeBienen
      * eingetragen ist und entfernt sie gegebenenfalls.
@@ -205,13 +205,13 @@ public class Feld {
      * @throws RuntimeException Biene konnte nicht gelöscht werden
      */
     void entferneWartendeBiene(Biene wartendeBiene)
-        throws RuntimeException {
+    throws RuntimeException {
         if (!wartendeBienen.remove(wartendeBiene)) {
             throw new RuntimeException("Wartende Biene existiert nicht "
                     + "- kann nicht geloescht werden.");
         }
     }
-
+    
     /**
      * prüft ob die entsprechende Biene auf der Liste fliegendeBienen
      * eingetragen ist und entfernt sie gegebenenfalls.
@@ -222,13 +222,13 @@ public class Feld {
      * @throws RuntimeException konnte nicht eingetragen werden
      */
     void entferneFliegendeBiene(Biene fliegendeBiene)
-        throws RuntimeException {
+    throws RuntimeException {
         if (!fliegendeBienen.remove(fliegendeBiene)) {
             throw new RuntimeException("Fliegende Biene existiert nicht "
                     + "- kann nicht geloescht werden.");
         }
     }
-
+    
     /**
      * prüft ob die entsprechende Biene auf der Liste tanzendeBienen
      * eingetragen ist und entfernt sie gegebenenfalls.
@@ -239,13 +239,13 @@ public class Feld {
      * @throws RuntimeException konnte nicht eingtragen werden
      */
     void entferneTanzendeBiene(Biene tanzendeBiene)
-        throws RuntimeException {
+    throws RuntimeException {
         if (!tanzendeBienen.remove(tanzendeBiene)) {
             throw new RuntimeException("Tanzende Biene existiert nicht "
                     + "- kann nicht geloescht werden.");
         }
     }
-
+    
     /**
      * gibt die Sichtweite am Boden zurück.
      *
@@ -254,7 +254,7 @@ public class Feld {
     int gibSichtweiteAmBoden() {
         return sichtweiteAmBoden;
     }
-
+    
     /**
      * gibt die Sichtweite in der Luft zurück.
      *
@@ -263,7 +263,7 @@ public class Feld {
     int gibSichtweiteInDerLuft() {
         return sichtweiteInDerLuft;
     }
-
+    
     /**
      * gibt eine Liste der dort wartenden Bienen zurück.
      *
@@ -272,7 +272,7 @@ public class Feld {
     HashSet gibWartendeBienen() {
         return (HashSet) wartendeBienen.clone();
     }
-
+    
     /**
      * gibt eine Liste der dort fliegenden Bienen zurück.
      *
@@ -281,7 +281,7 @@ public class Feld {
     HashSet gibFliegendeBienen() {
         return (HashSet) fliegendeBienen.clone();
     }
-
+    
     /**
      * gibt eine Liste der dort tanzenden Bienen zurück.
      *
@@ -290,7 +290,7 @@ public class Feld {
     HashSet gibTanzendeBienen() {
         return (HashSet) tanzendeBienen.clone();
     }
-
+    
     /**
      * gibt die ID des Feldes zurück.
      *
@@ -299,7 +299,7 @@ public class Feld {
     int gibID() {
         return id;
     }
-
+    
     /**
      * gibt die Position des Feldes auf der Spielkarte zurück.
      *
@@ -308,7 +308,7 @@ public class Feld {
     Koordinate gibPosition() {
         return position;
     }
-
+    
     /**
      * gibt die direkt angrenzenden Nachbarfelder des Feldes zurück.
      *
@@ -317,7 +317,7 @@ public class Feld {
     HashSet gibNachbarfelder() {
         return (HashSet) nachbarfelder.clone();
     }
-
+    
     /**
      * trägt die Biene unter allen Umständen in das Feld ein.
      *
@@ -326,16 +326,16 @@ public class Feld {
     void unbedingtesEintragen(Biene einzutragendeBiene) {
         wartendeBienen.add(einzutragendeBiene);
     }
-
+    
     /**
-    * sucht ein Feld in den Nachbarfeldern
-    *
-    * @param zuSuchen zu suchende Feld als Koordinate
-    * @return   gibt das Feld zurück
-    * @throws java.lang.RuntimeException    Fehler
-    */
-     Feld feldInNachbarfeldernSuchen(Koordinate zuSuchen)
-        throws java.lang.RuntimeException {
+     * sucht ein Feld in den Nachbarfeldern
+     *
+     * @param zuSuchen zu suchende Feld als Koordinate
+     * @return   gibt das Feld zurück
+     * @throws java.lang.RuntimeException    Fehler
+     */
+    Feld feldInNachbarfeldernSuchen(Koordinate zuSuchen)
+    throws java.lang.RuntimeException {
         Iterator zugriffNachbarfelder = nachbarfelder.iterator();
         while (zugriffNachbarfelder.hasNext()) {
             Feld aktuellesFeld = (Feld) zugriffNachbarfelder.next();
@@ -343,8 +343,8 @@ public class Feld {
                 return aktuellesFeld;
             }
         }
-
+        
         //Wird Feld nicht gefunden, so gib nichts zurück (null)
         return null;
-     }
+    }
 }

@@ -5,9 +5,9 @@
  *
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
- *                  
- *                  
- *                  
+ *
+ *
+ *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen eines
@@ -47,7 +47,7 @@ public class AusstehendeAktion {
      * id der zugehörigen Biene
      */
     private int id;
-
+    
     /**
      * Konstruktor.
      *
@@ -57,7 +57,7 @@ public class AusstehendeAktion {
         id = ident;
         ausstehend = true;
     }
-
+    
     /**
      * gibt die ID der zugehörigen Biene zurück.
      *
@@ -66,7 +66,7 @@ public class AusstehendeAktion {
     public int gibID() {
         return id;
     }
-
+    
     /**
      * gibt zurück, ob die Aktion noch aussteht.
      *
@@ -75,14 +75,14 @@ public class AusstehendeAktion {
     public boolean gibAusstehend() {
         return ausstehend;
     }
-
+    
     /**
      * setzt es auf wahr, das die aktionnoch austeht.
      */
     public void setzeFalse() {
         ausstehend = false;
     }
-
+    
     /**
      * setzt es auf falsch, das die aktion noch aussteht.
      *

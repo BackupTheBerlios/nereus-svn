@@ -1,10 +1,10 @@
 /*
  * Dateiname      : InvalidSpeachactException.java
  * Erzeugt        : 23. November 2003
- * Letzte Änderung: 
+ * Letzte Änderung:
  * Autoren        : Daniel Friedrich
- *                  
- *                  
+ *
+ *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen einer
@@ -30,62 +30,62 @@
 package nereus.exceptions;
 
 /**
- * Die Exception dient zum Melden, dass ein Sprechakt nicht verwendet werden 
+ * Die Exception dient zum Melden, dass ein Sprechakt nicht verwendet werden
  * darf.
- * 
+ *
  * @author Daniel Friedrich
  */
 public class InvalidSpeachactException extends InvalidException {
-	/**
-	 * Konstruktor.
-	 */
-	public InvalidSpeachactException() {
-		super("Der verwendete Sprechakt ist nicht zur Verwendung erlaubt.");
-	}
-
-	/**
-	 * Konstruktor.
-	 * 
-	 * @param message
-	 */
-	public InvalidSpeachactException(String message) {
-		super(
-			"Der verwendete Sprechakt " 
-			+ message 
-			+ " ist nicht zur Verwendung erlaubt.");
-	}
-
-	/**
-	 * Konstruktor.
-	 *  
-	 * @param message
-	 * @param cause
-	 */
-	public InvalidSpeachactException(
-		String message,
-		Throwable cause) {
-		super(
-			"Der verwendete Sprechakt " 
-			+ message + 
-			" ist nicht zur Verwendung erlaubt.", cause);
-	}
-
-	/**
-	 * Konstruktor.
-	 * 
-	 * @param cause
-	 */
-	public InvalidSpeachactException(Throwable cause) {
-		super(
-			"Der verwendete Sprechakt ist nicht zur Verwendung erlaubt.",
-			cause);
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Throwable#getMessage()
-	 */
-	public String getMessage() {
-		return "Der verwendete Sprechakt ist nicht zur Verwendung erlaubt.";
-	}
+    /**
+     * Konstruktor.
+     */
+    public InvalidSpeachactException() {
+        super("Der verwendete Sprechakt ist nicht zur Verwendung erlaubt.");
+    }
+    
+    /**
+     * Konstruktor.
+     *
+     * @param message
+     */
+    public InvalidSpeachactException(String message) {
+        super(
+                "Der verwendete Sprechakt "
+                + message
+                + " ist nicht zur Verwendung erlaubt.");
+    }
+    
+    /**
+     * Konstruktor.
+     *
+     * @param message
+     * @param cause
+     */
+    public InvalidSpeachactException(
+            String message,
+            Throwable cause) {
+        super(
+                "Der verwendete Sprechakt "
+                + message +
+                " ist nicht zur Verwendung erlaubt.", cause);
+    }
+    
+    /**
+     * Konstruktor.
+     *
+     * @param cause
+     */
+    public InvalidSpeachactException(Throwable cause) {
+        super(
+                "Der verwendete Sprechakt ist nicht zur Verwendung erlaubt.",
+                cause);
+    }
+    
+        /* (non-Javadoc)
+         * @see java.lang.Throwable#getMessage()
+         */
+    public String getMessage() {
+        return "Der verwendete Sprechakt ist nicht zur Verwendung erlaubt.";
+    }
 }
 

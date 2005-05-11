@@ -4,8 +4,8 @@
  * Letzte Änderung: 25. Januar 2005 durch Samuel Walz
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
- *                  
- *                  
+ *
+ *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen eines
@@ -35,8 +35,8 @@ import nereus.simulatorinterfaces.AbstractScenarioHandler;
 import nereus.utils.Id;
 
 /**
- * 
- * 
+ *
+ *
  * @author Philip Funck
  * @author Samuel Walz
  */
@@ -50,22 +50,22 @@ public abstract class AbstrakteBiene extends AbstractAgent {
      * Der Konstruktor.
      */
     public AbstrakteBiene() {
-    super();
+        super();
     }
     
     /**
      * Der Konstruktor.
-     * 
+     *
      * @param name          Name des Agenten
      * @param handler       Szenariohandler für den Agenten
      */
     public AbstrakteBiene(String name, AbstractScenarioHandler handler) {
         super(name, handler);
-        }
+    }
     
     /**
      * Der Konstruktor.
-     * 
+     *
      * @param id            Id des Agenten
      * @param name          Name des Agenten
      */
@@ -75,14 +75,14 @@ public abstract class AbstrakteBiene extends AbstractAgent {
     
     /**
      * Setzt den Szenariohandler für den Agenten.
-     * 
+     *
      * @param bHandler      Der Szenariohandler für den Agenten
      */
-    public abstract void setHandler (AbstractScenarioHandler bHandler);
+    public abstract void setHandler(AbstractScenarioHandler bHandler);
     
     /**
      * Setzt für den Agenten einen neuen Aktionscode.
-     * 
+     *
      * @param neuerAktionscode  Der neue Aktionscode für den Agenten
      * @return              Ein Boolean-Wert, der das geglückte setzen
      *                      des Aktionscodes bestätigt
@@ -91,7 +91,7 @@ public abstract class AbstrakteBiene extends AbstractAgent {
     
     /**
      * Gibt die ID des Bienenvolkes zurück, zu dem der Agent gehört.
-     * 
+     *
      * @return              Die ID des Bienenvolkes, dem der Agent
      *                      angehört
      */

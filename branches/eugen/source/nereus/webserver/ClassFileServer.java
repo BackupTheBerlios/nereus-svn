@@ -20,24 +20,21 @@ import java.io.*;
  * server.
  */
 public class ClassFileServer
-
-extends ClassServer
-{
+        extends ClassServer {
     private String classpath;
-
+    
     private static int DefaultServerPort = 2001;
-
+    
     /**
      * Constructs a ClassFileServer.
      *
      * @param classpath the classpath where the server locates classes
      */
-    public ClassFileServer(int port, String classpath) throws IOException
-    {
+    public ClassFileServer(int port, String classpath) throws IOException {
         super(port);
         this.classpath = classpath;
     }
-
+    
     /**
      * Returns an array of bytes containing the bytecodes for
      * the class represented by the argument <b>path</b>.
@@ -48,34 +45,30 @@ extends ClassServer
      * @exception ClassNotFoundException if the class corresponding
      * to <b>path</b> could not be loaded.
      */
-    public byte[] getBytes(String path)  throws IOException, ClassNotFoundException
-    {
+    public byte[] getBytes(String path)  throws IOException, ClassNotFoundException {
         System.out.println("reading: " + path);
         String tmpPath;
         if(path.endsWith(".class")) {
-        	tmpPath = path.substring(0,path.length()-6);
+            tmpPath = path.substring(0,path.length()-6);
         }else {
-        	tmpPath = path;
+            tmpPath = path;
         }
         File f = new File(classpath + File.separator +  tmpPath.replace('.', '/') + ".class");
         int length = (int)(f.length());
-
-        if (length == 0)
-        {
+        
+        if (length == 0) {
             System.out.println( "Zero length file" );
             throw new IOException("File length is zero: " + path);
-        }
-        else
-        {
+        } else {
             FileInputStream fin = new FileInputStream(f);
             DataInputStream in = new DataInputStream(fin);
-
+            
             byte[] bytecodes = new byte[length];
             in.readFully(bytecodes);
             return bytecodes;
         }
     }
-
+    
     /**
      * Main method to create the class server that reads
      * class files. This takes two command line arguments, the
@@ -100,28 +93,22 @@ extends ClassServer
      * <code>   new ClassFileServer(port, classpath);
      * </code>
      */
-    public static void main(String args[])
-    {
+    public static void main(String args[]) {
         int port = DefaultServerPort;
         String classpath = "";
-
-        if (args.length >= 1)
-        {
+        
+        if (args.length >= 1) {
             port = Integer.parseInt(args[0]);
         }
-
-        if (args.length >= 2)
-        {
+        
+        if (args.length >= 2) {
             classpath = args[1];
         }
-
-        try
-        {
-			ClassFileServer cfs = new ClassFileServer(port, classpath);
+        
+        try {
+            ClassFileServer cfs = new ClassFileServer(port, classpath);
             System.out.println("ClassFileServer started...");
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             System.out.println("Unable to start ClassServer: " + e.getMessage());
             e.printStackTrace();
         }

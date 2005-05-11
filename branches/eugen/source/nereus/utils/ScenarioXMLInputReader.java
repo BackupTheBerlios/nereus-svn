@@ -61,7 +61,7 @@ public class ScenarioXMLInputReader {
         try{
             //Parser wird erstellt
             SAXParser parser=factory.newSAXParser();
-                     
+            
             //Parsen, das ergebnis steht im handler
             parser.parse(uri,handler);
         } catch (IOException ioex){

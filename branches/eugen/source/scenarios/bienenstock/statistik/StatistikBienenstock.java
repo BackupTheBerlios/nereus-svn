@@ -4,9 +4,9 @@
  * Letzte Änderung: 20. Januar 2005
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
- *                  
- *                  
- *                  
+ *
+ *
+ *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen eines
@@ -47,33 +47,33 @@ import scenarios.bienenstock.agenteninfo.Koordinate;
 public class StatistikBienenstock {
     public StatistikBienenstock(int bieneID) {
     }
-
+    
     public int gelagerterHonig(int runde) {
         return 0;
     }
-
+    
     public int gelagerterNektar(int runde) {
         return 0;
     }
-
+    
     public Koordinate position(int runde) {
         return null;
     }
-
+    
     /**
      * liest von der zu beobachtenden Biene die Werte ein und speichert diese in einem neuen Eintrag.
      */
     public void rundenwerteSetzen(    ) {
     }
-
+    
     public int volksID() {
         return 0;
     }
-
+    
     private ArrayList werteliste;
     private Bienenstock zuBeobachtenderStock;
     private int volksID;
-
+    
     public class werteBienenstock {
         private int gelagerterHonig;
         private int gelagerterNektar;

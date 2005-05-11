@@ -1,10 +1,10 @@
 /*
  * Dateiname      : AskForHypothesisSpeachact.java
  * Erzeugt        : 29. Juli 2003
- * Letzte Änderung: 
+ * Letzte Änderung:
  * Autoren        : Daniel Friedrich
- *                  
- *                  
+ *
+ *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen einer
@@ -34,34 +34,34 @@ import java.util.Hashtable;
 
 /**
  * Sprechakt zur Anfrage nach einer Hypothese.
- * 
- * Die Klasse ist nicht durch Vererbung erweiterbar, damit es den Agenten nicht 
+ *
+ * Die Klasse ist nicht durch Vererbung erweiterbar, damit es den Agenten nicht
  * möglich ist, einen Sprechakt einzusetzen, der sich als Subklasse dieses
- * Sprechaktes tarnt. Wenn eine Hierarchie unter dieser Klasse eingeführt werden 
- * soll, dann muss der Sprechakt als abstract definiert werden und die 
+ * Sprechaktes tarnt. Wenn eine Hierarchie unter dieser Klasse eingeführt werden
+ * soll, dann muss der Sprechakt als abstract definiert werden und die
  * Subklassen dann wieder final.
- * 
+ *
  * @author Daniel Friedrich
  */
 public final class AskForHypothesisSpeachact extends AskSpeachact {
-
-	/**
-	 * Konstante zum Durchreichen des Hypothesenfaktors. 
-	 */
-	public final String HYPOTHESISFACTOR = "HypothesisFactor";
-
-	/**
-	 * Berechnungsfaktor für Hypothesen, wird mit den Basiskosten 
-	 * multipliziert zum Berechnen der Kosten für eine Nachricht.
-	 */
-	private final double m_hypothesisFactor = 0.5;
-
-	/**
-	 * Konstruktor.
-	 * 
-	 * @param parameters
-	 */
-	public AskForHypothesisSpeachact(Hashtable parameters) {
-		super(parameters);
-	}
+    
+    /**
+     * Konstante zum Durchreichen des Hypothesenfaktors.
+     */
+    public final String HYPOTHESISFACTOR = "HypothesisFactor";
+    
+    /**
+     * Berechnungsfaktor für Hypothesen, wird mit den Basiskosten
+     * multipliziert zum Berechnen der Kosten für eine Nachricht.
+     */
+    private final double m_hypothesisFactor = 0.5;
+    
+    /**
+     * Konstruktor.
+     *
+     * @param parameters
+     */
+    public AskForHypothesisSpeachact(Hashtable parameters) {
+        super(parameters);
+    }
 }

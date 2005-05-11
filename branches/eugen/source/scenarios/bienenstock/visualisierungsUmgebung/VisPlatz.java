@@ -4,9 +4,9 @@
  * Letzte Änderung: 26. Januar 2005 durch Philip Funck
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
- *                  
- *                  
- *                  
+ *
+ *
+ *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen eines
@@ -42,7 +42,7 @@ import java.util.HashSet;
  * @author Philip Funck
  */
 public class VisPlatz extends VisFeld {
-
+    
     /**
      * Konstruktor.
      *
@@ -59,13 +59,13 @@ public class VisPlatz extends VisFeld {
             HashSet wBienen,
             HashSet fBienen,
             HashSet tBienen
-         ) {
+            ) {
         super(feldPosition,
-              sichtBoden,
-              sichtLuft,
-              wBienen,
-              fBienen,
-              tBienen);
+                sichtBoden,
+                sichtLuft,
+                wBienen,
+                fBienen,
+                tBienen);
         /*position = feldPosition;
         sichtweiteAmBoden = sichtBoden;
         sichtweiteInDerLuft = sichtLuft;
@@ -73,5 +73,5 @@ public class VisPlatz extends VisFeld {
         fliegendeBienen = fBienen;
         tanzendeBienen = tBienen;*/
     }
-
+    
 }

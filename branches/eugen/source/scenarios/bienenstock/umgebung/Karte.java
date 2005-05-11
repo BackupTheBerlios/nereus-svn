@@ -5,8 +5,8 @@
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
  *                  Eugen Volk
- *                  
- *                  
+ *
+ *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen eines
@@ -73,66 +73,66 @@ import scenarios.bienenstock.visualisierungsUmgebung.VisBlume;
  * @author Samuel Walz
  */
 public class Karte extends AbstractEnviroment {
-
+    
     /**
      * speichert die in einer Runde noch ausstehenden Aktionen
      */
     private HashMap ausstehendeAktionen;
-
-     /**
+    
+    /**
      * Alle angemeldeten Bienen sortiert nach ihrem Aktionscode.
      * @associates scenario.bienenstock.umgebung.Biene
      */
     private HashMap bienenNachAC; // = new HashMap();
-
+    
     /**
      * Alle angemeldeten Bienen sortiert nach ihrer ID.
      */
     private HashMap bienenNachID; // = new HashMap();
-
+    
     /**
      * Alle Aktionscodes, die in der aktuellen Spielrunde
      * schon verwendet wurden.
      */
     private HashSet verwendeteAktionscodes = new HashSet();
-
+    
     /**
      * Die gültigen Aktionscodes für die aktuelle Runde.
      */
     private HashSet gueltigeAktionscodes = new HashSet();
-
+    
     /**
      * Alle Bienenstöcke die sich auf dem Spielfeld befinden.
      */
     private HashSet bienenstoecke = new HashSet();
-
+    
     /**
      * Zahl zur initialisierung des Zufallsgenerators.
      */
     private final long samen = System.currentTimeMillis();
-
+    
     /**
      * Wird zur erzeugung der Aktionscodes benötigt.
      */
     private Random zufallsGenerator = new Random();
-
+    
     /**
      * Die Parameter für das aktuelle Spiel.
      */
     private Parameter parameter;
-
+    
     /**
      * Der Spielmeister des aktuellen Spiels.
      */
     private Scenario spielmeister;
-
-
+    
+    
     /**
      * Alle Felder die die aktuelle Spielkarte ausmachen.
      * @associates umgebung.Feld
      */
     private Hashtable spielfeld;
-
+    
     /**
      * Erstellt eine neue Instanz der Karte, bekommt mitgeteilt,
      * wo sich die gewünschte GML-Datei befindet und
@@ -141,22 +141,22 @@ public class Karte extends AbstractEnviroment {
      * @param meister   ein Verweis auf den Spielmeister
      */
     public Karte(String gmlDateiname, Scenario meister) {
-
+        
         spielmeister = meister;
         GMLParser kartenZeichner = new GMLParser(gmlDateiname);
         spielfeld = kartenZeichner.gibSpielfeld();
         parameter = spielmeister.gibParameter();
-
+        
         bienenstoecke = bienenstoeckeSuchen();
-
+        
         bienenNachAC = new HashMap();
         bienenNachID = new HashMap();
         ausstehendeAktionen = new HashMap();
-
+        
         zufallsGenerator.setSeed(samen);
-
+        
     }
-
+    
     /**
      * Nimmt die mitgeteilte Position eines Feldes und verfälscht diese.
      * @return Info
@@ -167,37 +167,37 @@ public class Karte extends AbstractEnviroment {
      * @param entfernungMitteilen ob die Entfernung mitgeteilt werden soll
      */
     private Info konvertiereInfo(Koordinate pos,
-                                 int infoX,
-                                 int infoY,
-                                 boolean richtungMitteilen,
-                                 boolean entfernungMitteilen) {
-
+            int infoX,
+            int infoY,
+            boolean richtungMitteilen,
+            boolean entfernungMitteilen) {
+        
         double relativX = (double) pos.gibXPosition() - (double) infoX;
         double relativY = (double) pos.gibYPosition() - (double) infoY;
         double entfernung;
         double richtung;
-
+        
         double zufallsZahl = ((zufallsGenerator.nextDouble() * 2.00) - 1.00);
         entfernung = Math.sqrt((relativX * relativX) + (relativY * relativY));
         entfernung = entfernung
-                     + (entfernung
-                        * zufallsZahl
-                        * ((Double) parameter.gibWert(
-                                "unschaerfeEntfernung")).doubleValue());
-
+                + (entfernung
+                * zufallsZahl
+                * ((Double) parameter.gibWert(
+                "unschaerfeEntfernung")).doubleValue());
+        
         zufallsZahl = ((zufallsGenerator.nextDouble() * 2.00) - 1.00);
         richtung = Math.atan(relativY / relativX);
         richtung = richtung
-                   + (richtung
-                        * zufallsZahl
-                        * ((Double) parameter.gibWert(
-                                "unschaerfeWinkel")).doubleValue());
-
+                + (richtung
+                * zufallsZahl
+                * ((Double) parameter.gibWert(
+                "unschaerfeWinkel")).doubleValue());
+        
         if (richtungMitteilen && entfernungMitteilen) {
             return new scenarios.bienenstock.agenteninfo.Info(richtung,
-                                                 entfernung,
-                                                 true,
-                                                 true);
+                    entfernung,
+                    true,
+                    true);
         } else if (richtungMitteilen) {
             return new scenarios.bienenstock.agenteninfo.Info(richtung, 0, true, false);
         } else if (entfernungMitteilen) {
@@ -206,7 +206,7 @@ public class Karte extends AbstractEnviroment {
             return new scenarios.bienenstock.agenteninfo.Info(0, 0, false, false);
         }
     }
-
+    
     /**
      * Extrahiert die IDs der Bienen in einem HashSet und gibt diese zurück.
      *
@@ -221,7 +221,7 @@ public class Karte extends AbstractEnviroment {
         }
         return idHash;
     }
-
+    
     /**
      * Wandelt einenPlatz in einen einfachen Platz um.
      *
@@ -230,14 +230,14 @@ public class Karte extends AbstractEnviroment {
      */
     private EinfacherPlatz konvertierePlatz(Platz vollstFeld) {
         return new EinfacherPlatz(
-            new Koordinate(vollstFeld.gibPosition().gibXPosition(),
-                            vollstFeld.gibPosition().gibYPosition()),
-            konvertiereHash(vollstFeld.gibWartendeBienen()),
-            konvertiereHash(vollstFeld.gibFliegendeBienen()),
-            konvertiereHash(vollstFeld.gibTanzendeBienen())
+                new Koordinate(vollstFeld.gibPosition().gibXPosition(),
+                vollstFeld.gibPosition().gibYPosition()),
+                konvertiereHash(vollstFeld.gibWartendeBienen()),
+                konvertiereHash(vollstFeld.gibFliegendeBienen()),
+                konvertiereHash(vollstFeld.gibTanzendeBienen())
                 );
     }
-
+    
     /**
      * Wandelt eine Blume in eine einfache Blume um.
      *
@@ -246,16 +246,16 @@ public class Karte extends AbstractEnviroment {
      */
     private EinfacheBlume konvertiereBlume(Blume vollstFeld) {
         return new EinfacheBlume(
-            new Koordinate(vollstFeld.gibPosition().gibXPosition(),
-                            vollstFeld.gibPosition().gibYPosition()),
-            konvertiereHash(vollstFeld.gibWartendeBienen()),
-            konvertiereHash(vollstFeld.gibFliegendeBienen()),
-            konvertiereHash(vollstFeld.gibTanzendeBienen()),
-            vollstFeld.gibMerkmal(),
-            konvertiereHash(vollstFeld.gibAbbauendeBienen())
+                new Koordinate(vollstFeld.gibPosition().gibXPosition(),
+                vollstFeld.gibPosition().gibYPosition()),
+                konvertiereHash(vollstFeld.gibWartendeBienen()),
+                konvertiereHash(vollstFeld.gibFliegendeBienen()),
+                konvertiereHash(vollstFeld.gibTanzendeBienen()),
+                vollstFeld.gibMerkmal(),
+                konvertiereHash(vollstFeld.gibAbbauendeBienen())
                 );
     }
-
+    
     /**
      * Wandelt einen Bienenstock in einen einfachen Bienenstock um.
      * @return EinfacherBienenstock
@@ -264,15 +264,15 @@ public class Karte extends AbstractEnviroment {
     private EinfacherBienenstock konvertiereBienenstock
             (Bienenstock vollstFeld) {
         return new EinfacherBienenstock(
-            new Koordinate(vollstFeld.gibPosition().gibXPosition(),
-                            vollstFeld.gibPosition().gibYPosition()),
-            konvertiereHash(vollstFeld.gibWartendeBienen()),
-            konvertiereHash(vollstFeld.gibFliegendeBienen()),
-            konvertiereHash(vollstFeld.gibTanzendeBienen()),
-            vollstFeld.gibVolksID()
+                new Koordinate(vollstFeld.gibPosition().gibXPosition(),
+                vollstFeld.gibPosition().gibYPosition()),
+                konvertiereHash(vollstFeld.gibWartendeBienen()),
+                konvertiereHash(vollstFeld.gibFliegendeBienen()),
+                konvertiereHash(vollstFeld.gibTanzendeBienen()),
+                vollstFeld.gibVolksID()
                 );
     }
-
+    
     /**
      * Sucht auf der Karte alle Felder zusammen,
      * die von einem bestimmten Ausgangsfeld aus zu sehen sind.
@@ -282,29 +282,29 @@ public class Karte extends AbstractEnviroment {
      * @param alleSichtbarenFelder rekursiver Übergabeparameter
      */
     private void rekursivNachbarfelderEintragen(int tiefe,
-                                                Feld ursprung,
-                                                Hashtable alleSichtbarenFelder
-                                                ) {
+            Feld ursprung,
+            Hashtable alleSichtbarenFelder
+            ) {
         Iterator nachbarn = ursprung.gibNachbarfelder().iterator();
         Feld nachbar;
-
+        
         //wenn es nicht enthalten ist, dann eintragen
         if (!alleSichtbarenFelder.contains(ursprung)) {
             alleSichtbarenFelder.put(
-                ursprung.gibPosition(),
-                ursprung);
+                    ursprung.gibPosition(),
+                    ursprung);
             //wenn die Rekursionstiefe größer 0 ist rekursiv weitermachen
             if (tiefe > 0) {
                 while (nachbarn.hasNext()) {
                     rekursivNachbarfelderEintragen(
-                        tiefe - 1,
-                        (Feld) nachbarn.next(),
-                        alleSichtbarenFelder);
-                    }
+                            tiefe - 1,
+                            (Feld) nachbarn.next(),
+                            alleSichtbarenFelder);
                 }
             }
         }
-
+    }
+    
     /**
      * Gibt eine Liste von Bienen für die Visualisierung zurück.
      *
@@ -314,50 +314,50 @@ public class Karte extends AbstractEnviroment {
     private Hashtable konvertiereBienenHash(HashMap originalSet) {
         Iterator original = originalSet.values().iterator();
         Hashtable neuesTable = new Hashtable();
-
+        
         while (original.hasNext()) {
             Biene originalBiene = (Biene) original.next();
-
+            
             VisBiene visSelbst;
-
+            
             if (originalBiene.gibListenKennung() == Konstanten.ZUSCHAUEND
                     | originalBiene.gibListenKennung() == Konstanten.TANZEND
                     ) {
                 visSelbst = new VisBiene(
-                    konvertiereZustand(originalBiene.gibListenKennung()),
-                    originalBiene.gibBienenID(),
-                    originalBiene.gibBienenvolkID(),
-                    new Koordinate(
+                        konvertiereZustand(originalBiene.gibListenKennung()),
+                        originalBiene.gibBienenID(),
+                        originalBiene.gibBienenvolkID(),
+                        new Koordinate(
                         originalBiene.gibPosition().gibXPosition(),
                         originalBiene.gibPosition().gibYPosition()),
-                    originalBiene.gibGeladeneHonigmenge(),
-                    originalBiene.gibGeladeneNektarmenge(),
-                    ((Integer) parameter.gibWert("maxGelHonig")).intValue(),
-                    ((Integer) parameter.gibWert("maxGelNektar")).intValue(),
-                    ((Info) originalBiene.gibInformation()).klonen());
-
-
+                        originalBiene.gibGeladeneHonigmenge(),
+                        originalBiene.gibGeladeneNektarmenge(),
+                        ((Integer) parameter.gibWert("maxGelHonig")).intValue(),
+                        ((Integer) parameter.gibWert("maxGelNektar")).intValue(),
+                        ((Info) originalBiene.gibInformation()).klonen());
+                
+                
             } else {
                 visSelbst = new VisBiene(
-                    konvertiereZustand(originalBiene.gibListenKennung()),
-                    originalBiene.gibBienenID(),
-                    originalBiene.gibBienenvolkID(),
-                    new Koordinate(
+                        konvertiereZustand(originalBiene.gibListenKennung()),
+                        originalBiene.gibBienenID(),
+                        originalBiene.gibBienenvolkID(),
+                        new Koordinate(
                         originalBiene.gibPosition().gibXPosition(),
                         originalBiene.gibPosition().gibYPosition()),
-                    originalBiene.gibGeladeneHonigmenge(),
-                    originalBiene.gibGeladeneNektarmenge(),
-                    ((Integer) parameter.gibWert("maxGelHonig")).intValue(),
-                    ((Integer) parameter.gibWert("maxGelNektar")).intValue());
+                        originalBiene.gibGeladeneHonigmenge(),
+                        originalBiene.gibGeladeneNektarmenge(),
+                        ((Integer) parameter.gibWert("maxGelHonig")).intValue(),
+                        ((Integer) parameter.gibWert("maxGelNektar")).intValue());
             }
-
+            
             neuesTable.put(
-                new Integer(originalBiene.gibBienenID()),
-                visSelbst);
+                    new Integer(originalBiene.gibBienenID()),
+                    visSelbst);
         }
         return neuesTable;
     }
-
+    
     /**
      * Gibt eine Liste von Bienen für die Visualisierung zurück.
      *
@@ -367,46 +367,46 @@ public class Karte extends AbstractEnviroment {
     private HashSet konvertiereBienenHash(HashSet originalSet) {
         Iterator original = originalSet.iterator();
         HashSet neuesSet = new HashSet();
-
+        
         while (original.hasNext()) {
             Biene originalBiene = (Biene) original.next();
-
+            
             VisBiene visSelbst;
-
+            
             if (originalBiene.gibListenKennung() == Konstanten.ZUSCHAUEND
-                | originalBiene.gibListenKennung() == Konstanten.TANZEND) {
+                    | originalBiene.gibListenKennung() == Konstanten.TANZEND) {
                 visSelbst = new VisBiene(
-                    konvertiereZustand(originalBiene.gibListenKennung()),
-                    originalBiene.gibBienenID(),
-                    originalBiene.gibBienenvolkID(),
-                    new Koordinate(
+                        konvertiereZustand(originalBiene.gibListenKennung()),
+                        originalBiene.gibBienenID(),
+                        originalBiene.gibBienenvolkID(),
+                        new Koordinate(
                         originalBiene.gibPosition().gibXPosition(),
                         originalBiene.gibPosition().gibYPosition()),
-                    originalBiene.gibGeladeneHonigmenge(),
-                    originalBiene.gibGeladeneNektarmenge(),
-                    ((Integer) parameter.gibWert("maxGelHonig")).intValue(),
-                    ((Integer) parameter.gibWert("maxGelNektar")).intValue(),
-                    ((Info) originalBiene.gibInformation()).klonen()
-                    );
+                        originalBiene.gibGeladeneHonigmenge(),
+                        originalBiene.gibGeladeneNektarmenge(),
+                        ((Integer) parameter.gibWert("maxGelHonig")).intValue(),
+                        ((Integer) parameter.gibWert("maxGelNektar")).intValue(),
+                        ((Info) originalBiene.gibInformation()).klonen()
+                        );
             } else {
-            visSelbst = new VisBiene(
-                    konvertiereZustand(originalBiene.gibListenKennung()),
-                    originalBiene.gibBienenID(),
-                    originalBiene.gibBienenvolkID(),
-                    new Koordinate(
+                visSelbst = new VisBiene(
+                        konvertiereZustand(originalBiene.gibListenKennung()),
+                        originalBiene.gibBienenID(),
+                        originalBiene.gibBienenvolkID(),
+                        new Koordinate(
                         originalBiene.gibPosition().gibXPosition(),
                         originalBiene.gibPosition().gibYPosition()),
-                    originalBiene.gibGeladeneHonigmenge(),
-                    originalBiene.gibGeladeneNektarmenge(),
-                    ((Integer) parameter.gibWert("maxGelHonig")).intValue(),
-                    ((Integer) parameter.gibWert("maxGelNektar")).intValue());
-        }
-
+                        originalBiene.gibGeladeneHonigmenge(),
+                        originalBiene.gibGeladeneNektarmenge(),
+                        ((Integer) parameter.gibWert("maxGelHonig")).intValue(),
+                        ((Integer) parameter.gibWert("maxGelNektar")).intValue());
+            }
+            
             neuesSet.add(visSelbst);
         }
         return neuesSet;
     }
-
+    
     /**
      * lässt die Biene eine alternative Aktion ausführen.
      * Wird nur genutzt, wenn die Biene die gewünschte
@@ -420,11 +420,11 @@ public class Karte extends AbstractEnviroment {
     private void alternativeAktionAusfuehrenLassen(Biene zielBiene) {
         //Feld der Biene
         Feld zielFeld = feldSuchen(zielBiene.gibPosition());
-
+        
         //Letzte Aktion überprüfen
         if (zielBiene.gibAmBoden()) {
             if (zielBiene.gibGeladeneHonigmenge()
-                    < ((Integer) parameter.gibWert("honigWarten")).intValue()) {
+            < ((Integer) parameter.gibWert("honigWarten")).intValue()) {
                 bieneLoeschen(zielBiene.gibAktionsCode());
             } else {
                 //Biene aus der ursprünglichen Liste entfernen
@@ -436,34 +436,34 @@ public class Karte extends AbstractEnviroment {
                 zielBiene.setzeGeladeneHonigmenge(
                         zielBiene.gibGeladeneHonigmenge()
                         - ((Integer) parameter.gibWert(
-                                "honigWarten")).intValue());
+                        "honigWarten")).intValue());
             }
-
+            
         } else {
             /*
-            * Ist die Biene in der Luft, so fliegt sie auch weiterhin
-            * solange sie dafür ausreichend Honig hat
-            */
+             * Ist die Biene in der Luft, so fliegt sie auch weiterhin
+             * solange sie dafür ausreichend Honig hat
+             */
             if (zielBiene.gibGeladeneHonigmenge()
-                    < ((Integer) parameter.gibWert(
-                            "honigFliegen")).intValue()) {
+            < ((Integer) parameter.gibWert(
+                    "honigFliegen")).intValue()) {
                 bieneLoeschen(zielBiene.gibAktionsCode());
             } else {
                 /*
-                * Nachdem die Biene schon in der Luft ist, wird nur noch
-                * der Zustand gesetzt und die Energie angerechnet
-                */
+                 * Nachdem die Biene schon in der Luft ist, wird nur noch
+                 * der Zustand gesetzt und die Energie angerechnet
+                 */
                 zielBiene.setzeZustand(Konstanten.FLIEGEND);
                 //Honigverbrauch anrechnen
                 zielBiene.setzeGeladeneHonigmenge(
                         zielBiene.gibGeladeneHonigmenge()
                         - ((Integer) parameter.gibWert(
-                                "honigFliegen")).intValue());
+                        "honigFliegen")).intValue());
             }
-
+            
         }
     }
-
+    
     /**
      * Trägt eine Biene in ein gewünschtes Feld ein.
      * Ist die Biene dort schon eingetragen,
@@ -475,7 +475,7 @@ public class Karte extends AbstractEnviroment {
      */
     private boolean bieneInFeldEintragen(Biene zielBiene, int liste) {
         Feld zielFeld = feldSuchen(zielBiene.gibPosition());
-
+        
         switch (liste) {
             case Konstanten.FLIEGEND:
                 //Testen
@@ -484,21 +484,21 @@ public class Karte extends AbstractEnviroment {
                 } else {
                     return zielFeld.trageFliegendeBieneEin(zielBiene);
                 }
-
+                
             case Konstanten.WARTEND:
                 if (zielFeld.gibWartendeBienen().contains(zielBiene)) {
                     return true;
                 } else {
                     return zielFeld.trageWartendeBieneEin(zielBiene);
                 }
-
+                
             case Konstanten.TANZEND:
                 if (zielFeld.gibTanzendeBienen().contains(zielBiene)) {
                     return true;
                 } else {
                     return zielFeld.trageTanzendeBieneEin(zielBiene);
                 }
-
+                
             case Konstanten.ABBAUEND:
                 if (((Blume) zielFeld).gibAbbauendeBienen().contains(
                         zielBiene)) {
@@ -506,13 +506,13 @@ public class Karte extends AbstractEnviroment {
                 } else {
                     return ((Blume) zielFeld).trageAbbauendeBieneEin(zielBiene);
                 }
-
+                
             default:
                 return false;
         }
-
+        
     }
-
+    
     /**
      * Löscht eine Biene aus einem Feld. Muss dazu wissen,
      * in welcher Liste innerhalb des Feldes sich die Biene befindet.
@@ -522,37 +522,37 @@ public class Karte extends AbstractEnviroment {
      *
      */
     private void bieneAusFeldLoeschen(Biene zielBiene, int liste) {
-
+        
         switch (liste) {
             case Konstanten.FLIEGEND:
                 feldSuchen(zielBiene.gibPosition()).entferneFliegendeBiene(
                         zielBiene);
                 break;
-
+                
             case Konstanten.WARTEND:
                 feldSuchen(zielBiene.gibPosition()).entferneWartendeBiene(
                         zielBiene);
                 break;
-
+                
             case Konstanten.TANZEND:
                 feldSuchen(zielBiene.gibPosition()).entferneTanzendeBiene(
                         zielBiene);
                 break;
-
+                
             case Konstanten.ABBAUEND:
                 ((Blume) feldSuchen(
                         zielBiene.gibPosition())).entferneAbbauendeBiene(
-                                zielBiene);
+                        zielBiene);
                 break;
-
+                
             case Konstanten.ZUSCHAUEND:
                 feldSuchen(zielBiene.gibPosition()).entferneWartendeBiene(
                         zielBiene);
                 break;
         }
-
+        
     }
-
+    
     /**
      * gibt eine Biene zurück,
      * in der Liste liste mit der ID bieneID zu finden ist.
@@ -565,11 +565,11 @@ public class Karte extends AbstractEnviroment {
         if (bienenNachID.containsKey(new Integer(bieneID))) {
             return (Biene) bienenNachID.get(new Integer(bieneID));
         } else {
-        //Wurde Biene nicht gefunden, so gib nichts zurück (null)
-        return null;
+            //Wurde Biene nicht gefunden, so gib nichts zurück (null)
+            return null;
         }
     }
-
+    
     /**
      * gibt eine Biene aus der Liste liste zurück,
      * die den Aktionscode aktCode hat.
@@ -579,13 +579,13 @@ public class Karte extends AbstractEnviroment {
      */
     private Biene bieneSuchen(long aktCode) {
         if (bienenNachAC.containsKey(new Long(aktCode))) {
-            return (Biene) bienenNachAC.get(new Long (aktCode));
+            return (Biene) bienenNachAC.get(new Long(aktCode));
         } else {
-        //Wurde Biene nicht gefunden, so gib nichts zurück (null)
-        return null;
+            //Wurde Biene nicht gefunden, so gib nichts zurück (null)
+            return null;
         }
     }
-
+    
     /**
      * gibt ein Feld mit den Koordinaten ort zurück.
      *
@@ -596,11 +596,11 @@ public class Karte extends AbstractEnviroment {
         if (spielfeld.containsKey(ort)) {
             return (Feld) spielfeld.get(ort);
         } else {
-        //Wurde das Feld nicht gefunden, so gib nichts zurück (null)
-        return null;
+            //Wurde das Feld nicht gefunden, so gib nichts zurück (null)
+            return null;
         }
     }
-
+    
     /**
      * Sucht den Bienenstock eines bestimmten Bienenvolkes.
      *
@@ -619,7 +619,7 @@ public class Karte extends AbstractEnviroment {
         }
         return null;
     }
-
+    
     /**
      * Gibt für die Zustandskennung einen lesbaren String zurück.
      *
@@ -640,21 +640,21 @@ public class Karte extends AbstractEnviroment {
                 return "abbauend";
             default:
                 return "FEHLER";
-            }
         }
-
-
+    }
+    
+    
     /**
      * setzt die Aktion in der KArte als ausgeführt
      *
      * @param id die ID der Biene, die die Aktion ausgeführt hat
      */
     private void aktionAusgefuehrt(int id) {
-       synchronized (ausstehendeAktionen) {
-           ausstehendeAktionen.put(new Integer(id), Boolean.FALSE);
-       }
+        synchronized (ausstehendeAktionen) {
+            ausstehendeAktionen.put(new Integer(id), Boolean.FALSE);
+        }
     }
-
+    
     /**
      * Sucht alle Bienenstöcke, die im aktuellen Spielfeld enthalten sind.
      *
@@ -672,17 +672,17 @@ public class Karte extends AbstractEnviroment {
         }
         return stoecke;
     }
-
+    
     /**
      * Prüft, ob noch Bienen leben.
      *
      * @return ob alle Bienen verstorben sind
      */
-    public boolean alleBienenTot () {
+    public boolean alleBienenTot() {
         return bienenNachAC.isEmpty();
     }
-
-
+    
+    
     /**
      * gibt einen Ausschnitt der Karte zurück,
      * der über Schnittstelle.infoAusschnittHolen an
@@ -692,133 +692,133 @@ public class Karte extends AbstractEnviroment {
      * @return den zu erstellenden Ausschnitt
      */
     public EinfacheKarte ausschnittErstellen(long aktCode) {
-
+        
         if (bienenNachAC.containsKey(new Long(aktCode))) {
-
-        Biene sehendeBiene = bieneSuchen(aktCode);
-        Hashtable alleSichtbarenFelder = new Hashtable();
-        Hashtable einfacheSichtbareFelder = new Hashtable();
-
-        Feld aktuellesFeld = feldSuchen(sehendeBiene.gibPosition());
-
-        //Sichtweite berechnen
-        int sichtweite;
-        if (sehendeBiene.gibAmBoden()) {
-            sichtweite = aktuellesFeld.gibSichtweiteAmBoden();
-        } else {
-            sichtweite = aktuellesFeld.gibSichtweiteInDerLuft();
-        }
-
-        //Alle sichtbaren Felder in alleFelder eintragen
-        rekursivNachbarfelderEintragen(
-            sichtweite,
-            aktuellesFeld,
-            alleSichtbarenFelder);
-
-        //Felder konvertieren
-        Enumeration aSiFelder = alleSichtbarenFelder.elements();
-        while (aSiFelder.hasMoreElements()) {
-            Feld feldTmp = (Feld) aSiFelder.nextElement();
-            if (feldTmp instanceof Blume) {
-                einfacheSichtbareFelder.put(
-                    feldTmp.gibPosition(),
-                    konvertiereBlume((Blume) feldTmp));
-            } else if (feldTmp instanceof Bienenstock) {
-                einfacheSichtbareFelder.put(
-                    feldTmp.gibPosition(),
-                    konvertiereBienenstock((Bienenstock) feldTmp));
+            
+            Biene sehendeBiene = bieneSuchen(aktCode);
+            Hashtable alleSichtbarenFelder = new Hashtable();
+            Hashtable einfacheSichtbareFelder = new Hashtable();
+            
+            Feld aktuellesFeld = feldSuchen(sehendeBiene.gibPosition());
+            
+            //Sichtweite berechnen
+            int sichtweite;
+            if (sehendeBiene.gibAmBoden()) {
+                sichtweite = aktuellesFeld.gibSichtweiteAmBoden();
             } else {
-                einfacheSichtbareFelder.put(
-                    feldTmp.gibPosition(),
-                    konvertierePlatz((Platz) feldTmp));
+                sichtweite = aktuellesFeld.gibSichtweiteInDerLuft();
             }
-        }
-
-        //Nachbarfelder setzen
-        Enumeration eSiFelder = einfacheSichtbareFelder.elements();
-        //System.out.println("NEUE WHILE");
-        //über alle sichtbaren Felder gehen
-        while (eSiFelder.hasMoreElements()) {
-            //System.out.println("am anfang der while");
-            EinfachesFeld eFeldTmp = (EinfachesFeld) eSiFelder.nextElement();
-            Iterator nachbarn =
-                ((HashSet) feldSuchen(
-                        eFeldTmp.gibPosition()).gibNachbarfelder()).iterator();
-            //die Hashtable, die eingetragen wird
-            HashMap nachbarfelder = new HashMap();
-            //System.out.println("vor der inneren while");
-            //über alle Nachbarfelder gehen
-            while (nachbarn.hasNext()) {
-                Feld feldTmp = (Feld) nachbarn.next();
-                //System.out.println("neues feldtmp gesetzt");
-                Koordinate koordTmp = null;
-                if (feldTmp == null) {
-                    System.out.println("feldTmp == null");
+            
+            //Alle sichtbaren Felder in alleFelder eintragen
+            rekursivNachbarfelderEintragen(
+                    sichtweite,
+                    aktuellesFeld,
+                    alleSichtbarenFelder);
+            
+            //Felder konvertieren
+            Enumeration aSiFelder = alleSichtbarenFelder.elements();
+            while (aSiFelder.hasMoreElements()) {
+                Feld feldTmp = (Feld) aSiFelder.nextElement();
+                if (feldTmp instanceof Blume) {
+                    einfacheSichtbareFelder.put(
+                            feldTmp.gibPosition(),
+                            konvertiereBlume((Blume) feldTmp));
+                } else if (feldTmp instanceof Bienenstock) {
+                    einfacheSichtbareFelder.put(
+                            feldTmp.gibPosition(),
+                            konvertiereBienenstock((Bienenstock) feldTmp));
                 } else {
-                    koordTmp = feldTmp.gibPosition();
+                    einfacheSichtbareFelder.put(
+                            feldTmp.gibPosition(),
+                            konvertierePlatz((Platz) feldTmp));
                 }
-                if (einfacheSichtbareFelder.size() == 0) {
-                    System.out.println("einfSichtbFelder.size == 0");
-                }
-                nachbarfelder.put(
-                    koordTmp,
-                    einfacheSichtbareFelder.get(koordTmp));
-                //System.out.println("zu nachbarn hinzugefuegt");
             }
-            //System.out.println("nach der inneren while");
-            //Nachbarfelder eintragen
-            eFeldTmp.setzeNachbarfelder(nachbarfelder);
-            //System.out.println("nachbarfelder gesetzt");
-        }
-
-
-        EinfacheBiene einfachSelbst;
-
+            
+            //Nachbarfelder setzen
+            Enumeration eSiFelder = einfacheSichtbareFelder.elements();
+            //System.out.println("NEUE WHILE");
+            //über alle sichtbaren Felder gehen
+            while (eSiFelder.hasMoreElements()) {
+                //System.out.println("am anfang der while");
+                EinfachesFeld eFeldTmp = (EinfachesFeld) eSiFelder.nextElement();
+                Iterator nachbarn =
+                        ((HashSet) feldSuchen(
+                        eFeldTmp.gibPosition()).gibNachbarfelder()).iterator();
+                //die Hashtable, die eingetragen wird
+                HashMap nachbarfelder = new HashMap();
+                //System.out.println("vor der inneren while");
+                //über alle Nachbarfelder gehen
+                while (nachbarn.hasNext()) {
+                    Feld feldTmp = (Feld) nachbarn.next();
+                    //System.out.println("neues feldtmp gesetzt");
+                    Koordinate koordTmp = null;
+                    if (feldTmp == null) {
+                        System.out.println("feldTmp == null");
+                    } else {
+                        koordTmp = feldTmp.gibPosition();
+                    }
+                    if (einfacheSichtbareFelder.size() == 0) {
+                        System.out.println("einfSichtbFelder.size == 0");
+                    }
+                    nachbarfelder.put(
+                            koordTmp,
+                            einfacheSichtbareFelder.get(koordTmp));
+                    //System.out.println("zu nachbarn hinzugefuegt");
+                }
+                //System.out.println("nach der inneren while");
+                //Nachbarfelder eintragen
+                eFeldTmp.setzeNachbarfelder(nachbarfelder);
+                //System.out.println("nachbarfelder gesetzt");
+            }
+            
+            
+            EinfacheBiene einfachSelbst;
+            
         /*if (sehendeBiene == null) {
             System.out.println("sehendeBiene == null");
         }*/
-        if (sehendeBiene.gibListenKennung() == Konstanten.ZUSCHAUEND) {
-            //System.out.println("biene zuschauend");
-            einfachSelbst = new EinfacheBiene(
-                    spielmeister.gibRundennummer(),
-                    konvertiereZustand(sehendeBiene.gibListenKennung()),
-                    sehendeBiene.gibBienenID(),
-                    sehendeBiene.gibBienenvolkID(),
-                    new Koordinate(
+            if (sehendeBiene.gibListenKennung() == Konstanten.ZUSCHAUEND) {
+                //System.out.println("biene zuschauend");
+                einfachSelbst = new EinfacheBiene(
+                        spielmeister.gibRundennummer(),
+                        konvertiereZustand(sehendeBiene.gibListenKennung()),
+                        sehendeBiene.gibBienenID(),
+                        sehendeBiene.gibBienenvolkID(),
+                        new Koordinate(
                         sehendeBiene.gibPosition().gibXPosition(),
                         sehendeBiene.gibPosition().gibYPosition()),
-                    sehendeBiene.gibAktionsCode(),
-                    sehendeBiene.gibGeladeneHonigmenge(),
-                    sehendeBiene.gibGeladeneNektarmenge(),
-                    sehendeBiene.gibInformation().klonen());
-
-        } else {
-            //System.out.println("nicht zuschauend");
-            einfachSelbst = new EinfacheBiene(
-                    spielmeister.gibRundennummer(),
-                    konvertiereZustand(sehendeBiene.gibListenKennung()),
-                    sehendeBiene.gibBienenID(),
-                    sehendeBiene.gibBienenvolkID(),
-                    new Koordinate(
+                        sehendeBiene.gibAktionsCode(),
+                        sehendeBiene.gibGeladeneHonigmenge(),
+                        sehendeBiene.gibGeladeneNektarmenge(),
+                        sehendeBiene.gibInformation().klonen());
+                
+            } else {
+                //System.out.println("nicht zuschauend");
+                einfachSelbst = new EinfacheBiene(
+                        spielmeister.gibRundennummer(),
+                        konvertiereZustand(sehendeBiene.gibListenKennung()),
+                        sehendeBiene.gibBienenID(),
+                        sehendeBiene.gibBienenvolkID(),
+                        new Koordinate(
                         sehendeBiene.gibPosition().gibXPosition(),
                         sehendeBiene.gibPosition().gibYPosition()),
-                    sehendeBiene.gibAktionsCode(),
-                    sehendeBiene.gibGeladeneHonigmenge(),
-                    sehendeBiene.gibGeladeneNektarmenge());
-        }
-
-        //System.out.println("vor dem zurueckgeben");
-
-        //einface Karte instanziieren und zurückgeben
-        return new EinfacheKarte(
-            einfachSelbst,
-            einfacheSichtbareFelder
-            );
+                        sehendeBiene.gibAktionsCode(),
+                        sehendeBiene.gibGeladeneHonigmenge(),
+                        sehendeBiene.gibGeladeneNektarmenge());
+            }
+            
+            //System.out.println("vor dem zurueckgeben");
+            
+            //einface Karte instanziieren und zurückgeben
+            return new EinfacheKarte(
+                    einfachSelbst,
+                    einfacheSichtbareFelder
+                    );
         } else {
             System.out.println("ungueltiger aktCode: " + aktCode);
             return null;}
     }
-
+    
     /**
      * erstellt die Bienen für die Statistikkomponente
      *
@@ -838,9 +838,9 @@ public class Karte extends AbstractEnviroment {
                         konvertiereZustand(tmp.gibListenKennung())));
             }
         }
-    return statBienen;
+        return statBienen;
     }
-
+    
     /**
      * Gibt einen Schnappschuss der gesamten Karte
      * speziell für die Visualisierung zurück.
@@ -848,39 +848,39 @@ public class Karte extends AbstractEnviroment {
      * @return eine visualisierungs Implementierung der Karte
      */
     public VisKarte visualisieren() {
-
+        
         Hashtable bienen = new Hashtable();
         Enumeration alleFelder = spielfeld.elements();
         Hashtable neuesSpielfeld = new Hashtable();
         Feld vollstFeld;
-
+        
         //instanziieren aller Bienen
         bienen = konvertiereBienenHash(bienenNachID);
-
+        
         //instanziieren aller Felder
         while (alleFelder.hasMoreElements()) {
             vollstFeld = (Feld) alleFelder.nextElement();
             //prüfen welcher Typ von Feld es ist
             if (vollstFeld instanceof Platz) {
                 neuesSpielfeld.put(vollstFeld.gibPosition(),
-                    new VisPlatz(
-                    //Konstruktor Parameter
+                        new VisPlatz(
+                        //Konstruktor Parameter
                         new Koordinate(
-                            vollstFeld.gibPosition().gibXPosition(),
-                            vollstFeld.gibPosition().gibYPosition()),
+                        vollstFeld.gibPosition().gibXPosition(),
+                        vollstFeld.gibPosition().gibYPosition()),
                         vollstFeld.gibSichtweiteAmBoden(),
                         vollstFeld.gibSichtweiteInDerLuft(),
                         konvertiereBienenHash(vollstFeld.gibWartendeBienen()),
                         konvertiereBienenHash(vollstFeld.gibFliegendeBienen()),
                         konvertiereBienenHash(vollstFeld.gibTanzendeBienen())
-                    ));
+                        ));
             } else if (vollstFeld instanceof Bienenstock) {
                 neuesSpielfeld.put(vollstFeld.gibPosition(),
-                    new VisBienenstock(
-                    //Konstruktor Parameter
+                        new VisBienenstock(
+                        //Konstruktor Parameter
                         new Koordinate(
-                            vollstFeld.gibPosition().gibXPosition(),
-                            vollstFeld.gibPosition().gibYPosition()),
+                        vollstFeld.gibPosition().gibXPosition(),
+                        vollstFeld.gibPosition().gibYPosition()),
                         vollstFeld.gibSichtweiteAmBoden(),
                         vollstFeld.gibSichtweiteInDerLuft(),
                         konvertiereBienenHash(vollstFeld.gibWartendeBienen()),
@@ -890,15 +890,15 @@ public class Karte extends AbstractEnviroment {
                         ((Bienenstock) vollstFeld).gibVorhandenerNektar(),
                         ((Bienenstock) vollstFeld).gibVorhandenerHonig(),
                         ((Bienenstock) vollstFeld).gibVolksID())
-                );
-
+                        );
+                
             } else if (vollstFeld instanceof Blume) {
                 neuesSpielfeld.put(vollstFeld.gibPosition(),
-                    new VisBlume(
-                    //Konstruktor Parameter
+                        new VisBlume(
+                        //Konstruktor Parameter
                         new Koordinate(
-                            vollstFeld.gibPosition().gibXPosition(),
-                            vollstFeld.gibPosition().gibYPosition()),
+                        vollstFeld.gibPosition().gibXPosition(),
+                        vollstFeld.gibPosition().gibYPosition()),
                         vollstFeld.gibSichtweiteAmBoden(),
                         vollstFeld.gibSichtweiteInDerLuft(),
                         konvertiereBienenHash(vollstFeld.gibWartendeBienen()),
@@ -908,31 +908,31 @@ public class Karte extends AbstractEnviroment {
                         ((Blume) vollstFeld).gibVorhandenerNektar(),
                         ((Blume) vollstFeld).gibMaxNektarProRunde(),
                         konvertiereBienenHash(
-                                ((Blume) vollstFeld).gibAbbauendeBienen())
-                    )
-                );
+                        ((Blume) vollstFeld).gibAbbauendeBienen())
+                        )
+                        );
             }
         }
         //Nachbarfelder setzen
         VisFeld tmpVisFeld;
-
+        
         alleFelder = spielfeld.elements();
         while (alleFelder.hasMoreElements()) {
             vollstFeld = (Feld) alleFelder.nextElement();
             Iterator originalNachbarfelder
-                = vollstFeld.gibNachbarfelder().iterator();
+                    = vollstFeld.gibNachbarfelder().iterator();
             while (originalNachbarfelder.hasNext()) {
                 ((Feld) neuesSpielfeld.get(
                         vollstFeld.gibPosition())).trageNachbarfeldEin(
-                                (Feld) originalNachbarfelder.next());
+                        (Feld) originalNachbarfelder.next());
             }
         }
         return new VisKarte(spielmeister.gibRundennummer(),
-                            bienen,
-                            neuesSpielfeld,
-                            parameter.gibParameterHashTabelle());
+                bienen,
+                neuesSpielfeld,
+                parameter.gibParameterHashTabelle());
     }
-
+    
     /**
      * prüft, ob die Biene in der Liste wartendeBienen des
      * entsprechenden Feldes enthalten ist,
@@ -951,35 +951,35 @@ public class Karte extends AbstractEnviroment {
         Biene zielBiene = bieneSuchen(aktionscode);
         Feld zielFeld = feldSuchen(zielBiene.gibPosition());
         int liste = zielBiene.gibListenKennung();
-
+        
         aktionAusgefuehrt(zielBiene.gibBienenID());
         //wenn genug Honig da ist, dann
         if ((zielBiene.gibGeladeneHonigmenge()
-                    >= ((Integer) parameter.gibWert("honigStarten")).intValue())
-                && zielBiene.gibAmBoden()) {
-
+        >= ((Integer) parameter.gibWert("honigStarten")).intValue())
+        && zielBiene.gibAmBoden()) {
+            
             if (zielFeld.trageFliegendeBieneEin(zielBiene)) {
                 //Werte des Abbilds setzen
                 zielBiene.setzeGeladeneHonigmenge(
                         zielBiene.gibGeladeneHonigmenge()
                         - ((Integer) parameter.gibWert(
-                                "honigStarten")).intValue());
+                        "honigStarten")).intValue());
                 zielBiene.setzeZustand(Konstanten.FLIEGEND);
-
+                
                 //wenn sie eingetragen werden konnte aus der alten Liste löschen
                 bieneAusFeldLoeschen(zielBiene, liste);
                 return true;
             }
         }
-
+        
         /*
-        * Ist die Funktion noch nicht beendet, so konnte Biene nicht starten
-        * also muss eine passende alternative gefunden und ausgeführt werden
-        */
+         * Ist die Funktion noch nicht beendet, so konnte Biene nicht starten
+         * also muss eine passende alternative gefunden und ausgeführt werden
+         */
         alternativeAktionAusfuehrenLassen(zielBiene);
         return false;
     }
-
+    
     /**
      * prüft, ob die Biene in der Liste fliegendeBienen des
      * entsprechenden Feldes enthalten ist,
@@ -994,49 +994,49 @@ public class Karte extends AbstractEnviroment {
      * @return ob die Aktion ausgeführt werden konnte
      */
     public boolean bieneFliegenLassen(long aktionscode,
-                                      Koordinate zielFeldPosition) {
+            Koordinate zielFeldPosition) {
         Biene zielBiene = bieneSuchen(aktionscode);
         Feld ursprung = feldSuchen(zielBiene.gibPosition());
         Feld zielFeld = feldSuchen(zielFeldPosition);
-
+        
         aktionAusgefuehrt(zielBiene.gibBienenID());
-
+        
         //Existiert das Zielfeld?
         //genug Honig zum Fliegen vorhanden?
         if ((!(zielFeld == null
                 && (!ursprung.gibNachbarfelder().contains(zielFeld))))
                 && (zielBiene.gibGeladeneHonigmenge()
                 >= ((Integer) parameter.gibWert("honigFliegen")).intValue())) {
-
+            
             //Fliegt die Biene schon?
             if (!ursprung.gibFliegendeBienen().contains(zielBiene)) {
                 return false;
-
-            //Ist noch genügend Kapazität für eine ankommende Biene vorhanden?
+                
+                //Ist noch genügend Kapazität für eine ankommende Biene vorhanden?
             } else if (zielFeld.trageFliegendeBieneEin(zielBiene)) {
                 //Bei Biene neue Werte setzen
                 zielBiene.setzeGeladeneHonigmenge(
                         zielBiene.gibGeladeneHonigmenge()
                         - ((Integer) parameter.gibWert(
-                                "honigFliegen")).intValue());
+                        "honigFliegen")).intValue());
                 zielBiene.setzeZustand(Konstanten.FLIEGEND);
                 zielBiene.setzePosition(zielFeldPosition);
-
+                
                 //entferne Biene aus Ursprungsfeld wenn sie das Feld wechselt
                 if (zielFeld != ursprung) {
-                ursprung.entferneFliegendeBiene(zielBiene);
+                    ursprung.entferneFliegendeBiene(zielBiene);
                 }
-
+                
                 return true;
-
+                
             }
-
+            
         }
-
+        
         alternativeAktionAusfuehrenLassen(zielBiene);
         return false;
     }
-
+    
     /**
      * prüft, ob die Biene in der Liste fliegendeBienen des
      * entsprechenden Feldes enthalten ist und trägt gegebenenfalls die
@@ -1054,36 +1054,36 @@ public class Karte extends AbstractEnviroment {
     public boolean bieneLandenLassen(long aktionscode) {
         Biene zielBiene = bieneSuchen(aktionscode);
         Feld zielFeld = feldSuchen(zielBiene.gibPosition());
-
+        
         aktionAusgefuehrt(zielBiene.gibBienenID());
         //genug Honig zum Fliegen vorhanden?
         if (zielBiene.gibGeladeneHonigmenge()
-                >= ((Integer) parameter.gibWert("honigLanden")).intValue()) {
-
+        >= ((Integer) parameter.gibWert("honigLanden")).intValue()) {
+            
             //ist sie in der richtigen Liste? und dann
             //ist noch Kapazität in der neuen Liste vorhanden?
             if (zielFeld.gibFliegendeBienen().contains(zielBiene)
-                    && zielFeld.trageWartendeBieneEin(zielBiene)) {
-
+            && zielFeld.trageWartendeBieneEin(zielBiene)) {
+                
                 //Neue Werte setzen
                 zielBiene.setzeGeladeneHonigmenge(
                         zielBiene.gibGeladeneHonigmenge()
                         - ((Integer) parameter.gibWert(
-                                "honigLanden")).intValue());
+                        "honigLanden")).intValue());
                 zielBiene.setzeZustand(Konstanten.WARTEND);
-
+                
                 //Biene aus der alten Liste entfernen
                 zielFeld.entferneFliegendeBiene(zielBiene);
-
+                
                 return true;
             }
-
+            
         }
-
+        
         alternativeAktionAusfuehrenLassen(zielBiene);
         return false;
     }
-
+    
     /**
      * prüft, ob die Biene in der Liste wartendeBienen, abbauendeBienen oder
      * tanzendeBienen des entsprechenden Feldes enthalten ist,
@@ -1099,34 +1099,34 @@ public class Karte extends AbstractEnviroment {
     public boolean bieneWartenLassen(long aktionscode) {
         Biene zielBiene = bieneSuchen(aktionscode);
         Feld zielFeld = feldSuchen(zielBiene.gibPosition());
-
+        
         aktionAusgefuehrt(zielBiene.gibBienenID());
         if (zielBiene.gibGeladeneHonigmenge()
-                >= ((Integer) parameter.gibWert("honigWarten")).intValue()) {
-
+        >= ((Integer) parameter.gibWert("honigWarten")).intValue()) {
+            
             if (zielBiene.gibAmBoden()
-                    && zielFeld.trageWartendeBieneEin(zielBiene)) {
-
+            && zielFeld.trageWartendeBieneEin(zielBiene)) {
+                
                 //Biene aus der alten Liste entfernen wenn sie diese verlässt
                 if (zielBiene.gibListenKennung() != Konstanten.WARTEND) {
                     bieneAusFeldLoeschen(zielBiene,
-                                         zielBiene.gibListenKennung());
+                            zielBiene.gibListenKennung());
                 }
-
+                
                 //Neue Werte setzen
                 zielBiene.setzeGeladeneHonigmenge(
-                    zielBiene.gibGeladeneHonigmenge()
-                    - ((Integer) parameter.gibWert("honigWarten")).intValue());
+                        zielBiene.gibGeladeneHonigmenge()
+                        - ((Integer) parameter.gibWert("honigWarten")).intValue());
                 zielBiene.setzeZustand(Konstanten.WARTEND);
-
+                
                 return true;
             }
         }
-
+        
         alternativeAktionAusfuehrenLassen(zielBiene);
         return false;
     }
-
+    
     /**
      * prüft, ob die Biene in der Liste wartendeBienen des
      * entsprechenden Feldes enthalten ist,
@@ -1144,63 +1144,63 @@ public class Karte extends AbstractEnviroment {
      * @return ob die Aktion ausgeführt werden konnte
      */
     public boolean bieneTanzenLassen(long aktionscode,
-                                     int infoX,
-                                     int infoY,
-                                     boolean richtung,
-                                     boolean entfernung) {
+            int infoX,
+            int infoY,
+            boolean richtung,
+            boolean entfernung) {
         Biene zielBiene = bieneSuchen(aktionscode);
         if (!(zielBiene == null)) {
             Feld zielFeld = feldSuchen(zielBiene.gibPosition());
-
+            
             aktionAusgefuehrt(zielBiene.gibBienenID());
             int kosten = 0;
             if (richtung && entfernung) {
                 kosten
-                    = ((Integer) parameter.gibWert(
-                            "honigTanzenAlles")).intValue();
+                        = ((Integer) parameter.gibWert(
+                        "honigTanzenAlles")).intValue();
             } else if (richtung) {
                 kosten
-                    = ((Integer) parameter.gibWert(
-                            "honigTanzenRichtung")).intValue();
+                        = ((Integer) parameter.gibWert(
+                        "honigTanzenRichtung")).intValue();
             } else if (entfernung) {
                 kosten
-                    = ((Integer) parameter.gibWert(
-                            "honigTanzenEntfernung")).intValue();
+                        = ((Integer) parameter.gibWert(
+                        "honigTanzenEntfernung")).intValue();
             } else {
                 alternativeAktionAusfuehrenLassen(zielBiene);
                 return false;
             }
-
+            
             //Hat die Biene noch genügend Honig?
             if (zielBiene.gibGeladeneHonigmenge() >= kosten) {
-
+                
                 if (zielBiene.gibAmBoden()
-                        && zielFeld.trageTanzendeBieneEin(zielBiene)) {
-
-                    //Biene aus der alten Liste entfernen 
+                && zielFeld.trageTanzendeBieneEin(zielBiene)) {
+                    
+                    //Biene aus der alten Liste entfernen
                     //wenn sie diese verlässt
                     if (zielBiene.gibListenKennung() != Konstanten.TANZEND) {
                         bieneAusFeldLoeschen(zielBiene,
-                                             zielBiene.gibListenKennung());
+                                zielBiene.gibListenKennung());
                     }
-
+                    
                     //Neue Werte setzen
                     zielBiene.setzeZustand(Konstanten.TANZEND);
                     zielBiene.setzeGeladeneHonigmenge(
-                        zielBiene.gibGeladeneHonigmenge()
-                        - kosten);
-
+                            zielBiene.gibGeladeneHonigmenge()
+                            - kosten);
+                    
                     zielBiene.setzeInformation(konvertiereInfo(
-                        zielBiene.gibPosition(),
-                        infoX,
-                        infoY,
-                        richtung,
-                        entfernung));
-
+                            zielBiene.gibPosition(),
+                            infoX,
+                            infoY,
+                            richtung,
+                            entfernung));
+                    
                     return true;
                 }
             }
-
+            
             alternativeAktionAusfuehrenLassen(zielBiene);
             return false;
         } else {
@@ -1208,7 +1208,7 @@ public class Karte extends AbstractEnviroment {
             return false;
         }
     }
-
+    
     /**
      * prüft, ob die Biene auf der Liste wartendeBienen eingetragen ist und
      * ob die Biene IDTanzendeBiene tanzt.
@@ -1219,59 +1219,59 @@ public class Karte extends AbstractEnviroment {
      * @return ob die Aktio ausgeführt werden konnte
      */
     public boolean bieneZuschauenLassen(long aktionscodeSitzendeBiene,
-                                        int idTanzendeBiene) {
+            int idTanzendeBiene) {
         Biene tanzendeBiene
-            = (Biene) bienenNachID.get(new Integer(idTanzendeBiene));
+                = (Biene) bienenNachID.get(new Integer(idTanzendeBiene));
         Biene zielBiene = (Biene) bieneSuchen(aktionscodeSitzendeBiene);
         Feld zielFeld = feldSuchen(zielBiene.gibPosition());
-
+        
         aktionAusgefuehrt(zielBiene.gibBienenID());
-
+        
         //Haben wir sie gefunden?
         if ((!(zielBiene == null))
                 /*
                  * hat sie genug Honig?
                  */
-                && (zielBiene.gibGeladeneHonigmenge()
-                    >= ((Integer) parameter.gibWert(
-                            "honigZuschauen")).intValue())
+        && (zielBiene.gibGeladeneHonigmenge()
+        >= ((Integer) parameter.gibWert(
+                "honigZuschauen")).intValue())
                 /*
-                * eistiert die tanzende Biene ueberhaupt?
-                */
+                 * eistiert die tanzende Biene ueberhaupt?
+                 */
                 && (!(tanzendeBiene == null))
                 /*
-                * ist die tanzende Biene auf dem selben Feld
-                * und tanzt sie überhaupt?
-                */
+                 * ist die tanzende Biene auf dem selben Feld
+                 * und tanzt sie überhaupt?
+                 */
                 && (tanzendeBiene.gibPosition().equals(zielBiene.gibPosition()))
                 && (tanzendeBiene.gibListenKennung() == Konstanten.TANZEND)) {
-
+            
             if (zielBiene.gibAmBoden()
-                    && zielFeld.trageWartendeBieneEin(zielBiene)) {
-
+            && zielFeld.trageWartendeBieneEin(zielBiene)) {
+                
                 //Biene aus der alten Liste entfernen wenn sie diese verlässt
                 if (zielBiene.gibListenKennung() != Konstanten.WARTEND) {
                     bieneAusFeldLoeschen(zielBiene,
-                                         zielBiene.gibListenKennung());
+                            zielBiene.gibListenKennung());
                 }
-
+                
                 //Neue Werte setzen
                 zielBiene.setzeGeladeneHonigmenge(
-                    zielBiene.gibGeladeneHonigmenge()
-                    - ((Integer) parameter.gibWert(
-                            "honigZuschauen")).intValue());
+                        zielBiene.gibGeladeneHonigmenge()
+                        - ((Integer) parameter.gibWert(
+                        "honigZuschauen")).intValue());
                 zielBiene.setzeZustand(Konstanten.ZUSCHAUEND);
                 zielBiene.setzeInformation(tanzendeBiene.gibInformation());
-
+                
                 return true;
             }
         }
-
+        
         System.out.println("kann nicht zuschauen");
         alternativeAktionAusfuehrenLassen(zielBiene);
         return false;
     }
-
+    
     /**
      * füllt den Tank geladeneHonigmenge um gewünschteHonigmenge Einheiten auf.
      *
@@ -1282,7 +1282,7 @@ public class Karte extends AbstractEnviroment {
      * @return ob die Aktion ausgeführt werden konnte
      */
     public boolean bieneHonigTankenLassen(long aktionscode,
-                                          int gewuenschteHonigmenge) {
+            int gewuenschteHonigmenge) {
         Biene zielBiene = bieneSuchen(aktionscode);
         Feld zielFeld = feldSuchen(zielBiene.gibPosition());
         int wunschmenge;
@@ -1292,23 +1292,23 @@ public class Karte extends AbstractEnviroment {
             wunschmenge = 0;
         }
         int geladenerHonig = zielBiene.gibGeladeneHonigmenge();
-
-
+        
+        
         aktionAusgefuehrt(zielBiene.gibBienenID());
-
+        
         //wenn es ein Bienenstock ist und dann
         //die BienenvolkID stimmt
         if ((feldSuchen(zielBiene.gibPosition()) instanceof Bienenstock)
-               && (zielBiene.gibBienenvolkID()
-                       == ((Bienenstock) zielFeld).gibVolksID())) {
-
+        && (zielBiene.gibBienenvolkID()
+        == ((Bienenstock) zielFeld).gibVolksID())) {
+            
             //wenn genug Honig da ist
             if (geladenerHonig
                     >= ((Integer) parameter.gibWert(
-                            "honigHonigTanken")).intValue()) {
+                    "honigHonigTanken")).intValue()) {
                 //wenn sie in wartendeBienen eingetragen ist
                 if (zielBiene.gibAmBoden()) {
-
+                    
                     /*
                      * Biene aus der alten Liste entfernen wenn sie
                      * diese verlässt
@@ -1316,40 +1316,40 @@ public class Karte extends AbstractEnviroment {
                     if (zielBiene.gibListenKennung() == Konstanten.TANZEND) {
                         zielFeld.entferneTanzendeBiene(zielBiene);
                     }
-
+                    
                     //fairerweise erst Abbuchen
                     zielBiene.setzeGeladeneHonigmenge(
-                        geladenerHonig
-                        - ((Integer) parameter.gibWert(
-                                "honigHonigTanken")).intValue());
+                            geladenerHonig
+                            - ((Integer) parameter.gibWert(
+                            "honigHonigTanken")).intValue());
                     zielBiene.setzeZustand(Konstanten.WARTEND);
-
+                    
                     //wieviel kann sie tanken?
                     if ((geladenerHonig + wunschmenge)
-                            > ((Integer) parameter.gibWert(
-                                    "maxGelHonig")).intValue()) {
-
+                    > ((Integer) parameter.gibWert(
+                            "maxGelHonig")).intValue()) {
+                        
                         zielBiene.setzeGeladeneHonigmenge(geladenerHonig
-                            + ((Bienenstock) zielFeld).honigAbgeben(
+                                + ((Bienenstock) zielFeld).honigAbgeben(
                                 ((Integer) parameter.gibWert(
-                                        "maxGelHonig")).intValue()
+                                "maxGelHonig")).intValue()
                                 - geladenerHonig));
                     } else {
                         zielBiene.setzeGeladeneHonigmenge(geladenerHonig
-                            + ((Bienenstock) zielFeld).honigAbgeben(
-                                    wunschmenge));
-
+                                + ((Bienenstock) zielFeld).honigAbgeben(
+                                wunschmenge));
+                        
                     }
-
+                    
                     return true;
-                   }
+                }
             }
         }
-
+        
         alternativeAktionAusfuehrenLassen(zielBiene);
         return false;
     }
-
+    
     /**
      * prüft, ob die Biene im richtigen Bienenstock ist und fügt der
      * dort vorhandenen Nektarmenge die Menge des von der
@@ -1364,49 +1364,49 @@ public class Karte extends AbstractEnviroment {
         Biene zielBiene = bieneSuchen(aktionscode);
         Feld zielFeld = feldSuchen(zielBiene.gibPosition());
         int geladenerHonig = zielBiene.gibGeladeneHonigmenge();
-
+        
         aktionAusgefuehrt(zielBiene.gibBienenID());
-
+        
         if (zielBiene.gibAmBoden()) {
             //wenn es ein Bienenstock ist und dann
             //die BienenvolkID stimmt und dann
             //ob die Biene am Boden war.
             if ((zielFeld instanceof Bienenstock)
-               && (zielBiene.gibBienenvolkID()
-                       == ((Bienenstock) zielFeld).gibVolksID())) {
-
+            && (zielBiene.gibBienenvolkID()
+            == ((Bienenstock) zielFeld).gibVolksID())) {
+                
                 if (zielBiene.gibGeladeneHonigmenge()
-                        >= ((Integer) parameter.gibWert(
-                                "honigNektarAbliefern")).intValue()) {
-
+                >= ((Integer) parameter.gibWert(
+                        "honigNektarAbliefern")).intValue()) {
+                    
                     zielBiene.setzeGeladeneHonigmenge(
-                        zielBiene.gibGeladeneHonigmenge()
-                        - ((Integer) parameter.gibWert(
-                                "honigNektarAbliefern")).intValue());
-
-                    //Biene aus der alten Liste entfernen 
+                            zielBiene.gibGeladeneHonigmenge()
+                            - ((Integer) parameter.gibWert(
+                            "honigNektarAbliefern")).intValue());
+                    
+                    //Biene aus der alten Liste entfernen
                     //wenn sie diese verlässt
                     if (zielBiene.gibListenKennung() == Konstanten.TANZEND) {
                         zielFeld.entferneTanzendeBiene(zielBiene);
                     }
-
+                    
                     //Nektar abbuchen
                     zielBiene.setzeGeladeneNektarmenge(
                             zielBiene.gibGeladeneNektarmenge()
-                        - ((Bienenstock) zielFeld).nektarAbnehmen(
-                                zielBiene.gibGeladeneNektarmenge()));
+                            - ((Bienenstock) zielFeld).nektarAbnehmen(
+                            zielBiene.gibGeladeneNektarmenge()));
                     //Aktion setzen
                     zielBiene.setzeZustand(Konstanten.WARTEND);
-
+                    
                     return true;
                 }
             }
         }
-
+        
         alternativeAktionAusfuehrenLassen(zielBiene);
         return false;
     }
-
+    
     /**
      * prüft, ob die Biene in der Liste wartendeBienen des
      * entsprechenden Feldes enthalten ist,
@@ -1421,12 +1421,12 @@ public class Karte extends AbstractEnviroment {
      * @return ob die Aktio ausgeführt werden konnte
      */
     public boolean bieneNektarAbbauenLassen(long aktionscode,
-                                            int gewuenschteNektarmenge) {
+            int gewuenschteNektarmenge) {
         Biene zielBiene = bieneSuchen(aktionscode);
         Feld zielFeld = feldSuchen(zielBiene.gibPosition());
         int idBienie = zielBiene.gibBienenID();
         int honigkosten
-            = ((Integer) parameter.gibWert("honigNektarAbbauen")).intValue();
+                = ((Integer) parameter.gibWert("honigNektarAbbauen")).intValue();
         int wunschmenge;
         if (gewuenschteNektarmenge > 0) {
             wunschmenge = gewuenschteNektarmenge;
@@ -1435,23 +1435,23 @@ public class Karte extends AbstractEnviroment {
             wunschmenge = 0;
         }
         aktionAusgefuehrt(zielBiene.gibBienenID());
-
+        
         // Wenn alter Zustand richtig, es eine Blume ist, sie genug Honig hat
         // dann versuchen wirs mal
         if (zielBiene.gibAmBoden() && (zielFeld instanceof Blume)
-                && (zielBiene.gibGeladeneHonigmenge()
-                    >= honigkosten)) {
-
+        && (zielBiene.gibGeladeneHonigmenge()
+        >= honigkosten)) {
+            
             //ist noch Platz auf der Blume?
             if (((Blume) zielFeld).trageAbbauendeBieneEin(zielBiene)) {
-
+                
                 //Biene aus der alten Liste entfernen wenn sie diese verlässt
                 if (zielBiene.gibListenKennung() != Konstanten.ABBAUEND) {
                     bieneAusFeldLoeschen(zielBiene,
-                                         zielBiene.gibListenKennung());
+                            zielBiene.gibListenKennung());
                 }
-
-
+                
+                
                 //Neue Werte setzen
                 zielBiene.setzeGeladeneHonigmenge(
                         zielBiene.gibGeladeneHonigmenge()
@@ -1460,31 +1460,31 @@ public class Karte extends AbstractEnviroment {
                 //wieviel will sie denn haben?
                 int nektarmenge = 0;
                 if (wunschmenge + zielBiene.gibGeladeneNektarmenge()
-                        > ((Integer) parameter.gibWert(
-                                "maxGelNektar")).intValue()) {
+                > ((Integer) parameter.gibWert(
+                        "maxGelNektar")).intValue()) {
                     nektarmenge = ((Blume) zielFeld).nektarAbgeben(
-                        ((Integer) parameter.gibWert(
-                                "maxGelNektar")).intValue()
-                        - zielBiene.gibGeladeneNektarmenge());
+                            ((Integer) parameter.gibWert(
+                            "maxGelNektar")).intValue()
+                            - zielBiene.gibGeladeneNektarmenge());
                 } else {
                     nektarmenge = ((Blume) zielFeld).nektarAbgeben(wunschmenge);
-                  
+                    
                 }
                 /*
                  * muss die Biene mit den neuen werten in
                  * abbauendeBienen neu gespeichert werden?
                  */
                 zielBiene.setzeGeladeneNektarmenge(nektarmenge
-                    + zielBiene.gibGeladeneNektarmenge());
-
+                        + zielBiene.gibGeladeneNektarmenge());
+                
                 return true;
-                }
+            }
         }
-
+        
         alternativeAktionAusfuehrenLassen(zielBiene);
         return false;
     }
-
+    
     /**
      * Fügt eine Biene in die Spielkarte ein.
      * Startposition ist der Bienenstock ihres Volkes.
@@ -1501,17 +1501,17 @@ public class Karte extends AbstractEnviroment {
             Biene biene = new Biene(
                     id,
                     volxID,
-                       stock.gibPosition(),
-                       ((Integer) parameter.gibWert("startHonig")).intValue(),
-                       ((Integer) parameter.gibWert("startNektar")).intValue(),
-                       simId
-                       );
-
+                    stock.gibPosition(),
+                    ((Integer) parameter.gibWert("startHonig")).intValue(),
+                    ((Integer) parameter.gibWert("startNektar")).intValue(),
+                    simId
+                    );
+            
             stock.unbedingtesEintragen(biene);
             bienenNachID.put(new Integer(id), biene);
             synchronized (ausstehendeAktionen) {
                 ausstehendeAktionen.put(new Integer(biene.gibBienenID()),
-                                        new Boolean(true));
+                        new Boolean(true));
             }
             aktCode = aktionscodeSetzen(id);
             System.out.print("Biene ");
@@ -1524,8 +1524,8 @@ public class Karte extends AbstractEnviroment {
         }
         return aktCode;
     }
-
-
+    
+    
     /**
      * entfernt eine Biene aus der Simulation.
      *
@@ -1533,32 +1533,32 @@ public class Karte extends AbstractEnviroment {
      */
     public synchronized void bieneLoeschen(long aktionscode) {
         Biene zielBiene = bieneSuchen(aktionscode);
-
+        
         //Agenten auf seine Löschung hinweisen
         //zielBiene
-
-
-         System.out.println("Biene " + zielBiene.gibBienenID()
-                            + " wurde geloescht.");
+        
+        
+        System.out.println("Biene " + zielBiene.gibBienenID()
+        + " wurde geloescht.");
         //Aktionscodes entwerten
         gueltigeAktionscodes.remove(new Long(aktionscode));
         synchronized (ausstehendeAktionen) {
             ausstehendeAktionen.remove(new Integer(zielBiene.gibBienenID()));
         }
-
+        
         //dem MEISTER mitteilen, daß biene gelöscht wurde
         spielmeister.removeAgent(zielBiene.gibBienenID());
-
+        
         //aus den Listen bienenNachXX löschen
         bienenNachAC.remove(new Long(zielBiene.gibAktionsCode()));
         bienenNachID.remove(new Long(zielBiene.gibBienenID()));
-
+        
         //aus der entsprechenden Liste des entsprechenden Feldes löschen
         //eigentlich falsch, weil es nicht entferneXXXBiene nutzt
         bieneAusFeldLoeschen(zielBiene, zielBiene.gibListenKennung());
-
+        
     }
-
+    
     /**
      * Setzt für die Biene, identifiziert durch ihren alten Aktionscode,
      * einen neuen Aktionscode.
@@ -1569,38 +1569,38 @@ public class Karte extends AbstractEnviroment {
      */
     public long aktionscodeSetzen(long alterAktionscode) {
         Biene zielBiene = bieneSuchen(alterAktionscode);
-
-
+        
+        
         if (zielBiene == null) {
             return 0L;
         } else {
-
+            
             long zufallsZahl = zufallsGenerator.nextLong();
             //so lange neue Zahlen probieren, bis eine gefunden wurde,
             //die noch nicht verwendet wurde
             while (verwendeteAktionscodes.contains(new Long(zufallsZahl))
-                    || (zufallsZahl == 0L)) {
+            || (zufallsZahl == 0L)) {
                 zufallsZahl = zufallsGenerator.nextLong();
             }
             //neuen Code dem Hash hinzufügen
             verwendeteAktionscodes.add(new Long(zufallsZahl));
             gueltigeAktionscodes.add(new Long(zufallsZahl));
-
+            
             //Verweis löschen wenn existiert
             if (bienenNachAC.containsKey(new Long(
                     zielBiene.gibAktionsCode()))) {
                 bienenNachAC.remove(new Long(zielBiene.gibAktionsCode()));
             }
-
+            
             //neuen Code in der Biene aus bienen setzen
             zielBiene.setzeAktionsCode(zufallsZahl);
-
+            
             //Verweise neu setzen
             bienenNachAC.put(new Long(zielBiene.gibAktionsCode()), zielBiene);
             return zufallsZahl;
         }
     }
-
+    
     /**
      * Setzt für die Biene, identifiziert durch ihre ID,
      * einen neuen Aktionscode.
@@ -1611,7 +1611,7 @@ public class Karte extends AbstractEnviroment {
      */
     public long aktionscodeSetzen(int bieneID) {
         Biene zielBiene = bieneSuchen(bieneID);
-
+        
         if (zielBiene == null) {
             return 0L;
         } else {
@@ -1619,30 +1619,30 @@ public class Karte extends AbstractEnviroment {
             //so lange neue Zahlen probieren, bis eine gefunden wurde,
             //die noch nicht verwendet wurde
             while (verwendeteAktionscodes.contains(new Long(zufallsZahl))
-                    || (zufallsZahl == 0L)) {
+            || (zufallsZahl == 0L)) {
                 zufallsZahl = zufallsGenerator.nextLong();
             }
             //neuen Code dem Hash hinzufügen
             verwendeteAktionscodes.add(new Long(zufallsZahl));
             gueltigeAktionscodes.add(new Long(zufallsZahl));
-
+            
             //Verweis löschen wenn existiert
             if (bienenNachAC.containsKey(new Long(
                     zielBiene.gibAktionsCode()))) {
                 bienenNachAC.remove(new Long(zielBiene.gibAktionsCode()));
             }
-
+            
             //neuen Code in der Biene aus bienen setzen
             zielBiene.setzeAktionsCode(zufallsZahl);
-
+            
             //Verweise neu setzen
             bienenNachAC.put(new Long(zielBiene.gibAktionsCode()), zielBiene);
-
-
+            
+            
             return zufallsZahl;
         }
     }
-
+    
     /**
      * Prüft, ob ein Aktionscode gültig ist.
      *
@@ -1652,7 +1652,7 @@ public class Karte extends AbstractEnviroment {
     public boolean aktionscodeGueltig(long aktCode) {
         return gueltigeAktionscodes.contains(new Long(aktCode));
     }
-
+    
     /**
      * entwertet einen Aktionscode.
      *
@@ -1662,7 +1662,7 @@ public class Karte extends AbstractEnviroment {
     public boolean aktionscodeEntwerten(long aktCode) {
         return gueltigeAktionscodes.remove(new Long(aktCode));
     }
-
+    
     /**
      * Informiert die Karte darüber, das eine neue Runde beginnt.
      * Ale Agenten, die noch keine Aktion ausgefuehrt haben werden hier warten
@@ -1670,35 +1670,35 @@ public class Karte extends AbstractEnviroment {
      *
      */
     public void neueRunde() {
-
+        
         HashMap neueAusstehendeAktionen = new HashMap();
         Iterator iterKeyAusstehendeAktionen
-            = ausstehendeAktionen.keySet().iterator();
+                = ausstehendeAktionen.keySet().iterator();
         boolean tmpVal;
         int tmpKey;
         synchronized (ausstehendeAktionen) {
             while (iterKeyAusstehendeAktionen.hasNext()) {
                 tmpKey
-                    = ((Integer) iterKeyAusstehendeAktionen.next()).intValue();
+                        = ((Integer) iterKeyAusstehendeAktionen.next()).intValue();
                 tmpVal
-                    = ((Boolean) ausstehendeAktionen.get(
-                            new Integer(tmpKey))).booleanValue();
+                        = ((Boolean) ausstehendeAktionen.get(
+                        new Integer(tmpKey))).booleanValue();
                 if (tmpVal) {
                     alternativeAktionAusfuehrenLassen(bieneSuchen(tmpKey));
                 }
                 neueAusstehendeAktionen.put(new Integer(tmpKey), Boolean.TRUE);
             }
         }
-
+        
         ausstehendeAktionen = neueAusstehendeAktionen;
-
+        
         Iterator stoecke = bienenstoecke.iterator();
         Bienenstock tmpStock;
         int maxNektarZuHonigWert;
         double kursNektarHonigWert;
-        Object obj; 
+        Object obj;
         while (stoecke.hasNext()) {
-//            System.out.println("(Karte.neueRunde) stoecke hat noch einen");
+            //            System.out.println("(Karte.neueRunde) stoecke hat noch einen");
             tmpStock=(Bienenstock) stoecke.next();
             obj=parameter.gibWert("maxNektarZuHonig");
             maxNektarZuHonigWert=Integer.parseInt(obj.toString());
@@ -1708,10 +1708,10 @@ public class Karte extends AbstractEnviroment {
             tmpStock.nektarZuHonigVerarbeiten(maxNektarZuHonigWert,kursNektarHonigWert);
             
             //((Bienenstock) stoecke.next()).nektarZuHonigVerarbeiten(
-           
+            
         }
     }
-
+    
     /**
      * Fügt der Umwelt den Agenten mit der Id agentId hinzu.
      *
@@ -1720,9 +1720,9 @@ public class Karte extends AbstractEnviroment {
      * @throws exceptions.FullEnviromentException Fehler
      */
     public void addAgentToEnviroment(Id agentId)
-            throws InvalidAgentException,
-                    FullEnviromentException { }
-
+    throws InvalidAgentException,
+            FullEnviromentException { }
+    
     /**
      * Erstellt die Umwelt.
      *
@@ -1731,10 +1731,10 @@ public class Karte extends AbstractEnviroment {
      * @throws exceptions.InvalidElementException Fehler
      */
     public void createEnviroment(
-        String graphFile,
-        String attributeFile)
+            String graphFile,
+            String attributeFile)
             throws InvalidElementException { }
-
+    
     /**
      * Entfernt den Agenten mit der Id agentId aus der Umwelt.
      *
@@ -1742,7 +1742,7 @@ public class Karte extends AbstractEnviroment {
      * @throws exceptions.InvalidAgentException Fehler
      */
     public void removeAgentFromEnviroment(Id agentId)
-            throws InvalidAgentException { }
-
-
+    throws InvalidAgentException { }
+    
+    
 }

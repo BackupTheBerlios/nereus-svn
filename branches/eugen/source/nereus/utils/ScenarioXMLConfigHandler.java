@@ -41,7 +41,7 @@ import org.xml.sax.Locator;
 /**
  * BienenstockXMLConfigHandler erbt von org.xml.sax.helpert.DefaultHandler
  * und wird verwendet um die Eventbehandlung, die durch den SAXParser angestossen wird,
- * durchzuführen. Wird verwendet von scenario.bienenstock.getScenarioParameter() um 
+ * durchzuführen. Wird verwendet von scenario.bienenstock.getScenarioParameter() um
  * die Clients mit vorgegebenen Szenario-Werten zu initialisieren.
  *
  */
@@ -69,18 +69,18 @@ public class ScenarioXMLConfigHandler  extends DefaultHandler{
     /**
      * überschreibt das StandardInterface und wird stets ausgeführt,
      * wenn ein Element aus der XML-Liste eingelesen wird.
-     * 
+     *
      * @param URI Angabe zur position der Datei
      * @param localname enthält den Namen des Elements
      * @param atts eine Liste der zum Element gehörenden Attribute
      */
-   public void startElement(String URI, String localname, String name, Attributes atts){
-      
+    public void startElement(String URI, String localname, String name, Attributes atts){
+        
         String propertyName;
         String propertyValue;
         String propertyType;
         String propertyChangeable;
-                
+        
         int length=atts.getLength();
         if (name.equals("property") && (length>0)){
             propertyName=atts.getValue("name");
@@ -97,12 +97,12 @@ public class ScenarioXMLConfigHandler  extends DefaultHandler{
         }
     }
     
-   
+    
     
     /**
      * Wandelt den eingelesenen Wert der als String notiert ist,
      * in ein entsprechendes (Integer, Double, ..) Wrapper-Objekt um.
-     * 
+     *
      * @param type Typ des Wertes als String
      * @param value der Wert als String
      * @return Wrapper Objekt mit dem entsprechenden Wert und Typ.
@@ -121,7 +121,7 @@ public class ScenarioXMLConfigHandler  extends DefaultHandler{
      * Wandelt den Typ des eingelesenen Wertes, der als String notiert ist,
      * in ein entsprechend der utils#ParameterDescription() fesgelegten Integer-Wert um.
      * @param type Type des eingelesenen Wertes
-     * @return 
+     * @return
      */
     private int getType(String type){
         if (type.equals("int")) return ParameterDescription.IntegerType;

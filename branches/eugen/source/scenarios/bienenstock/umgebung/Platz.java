@@ -4,9 +4,9 @@
  * Letzte Änderung: 26. Januar 2005 durch Philip Funck
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
- *                  
- *                  
- *                  
+ *
+ *
+ *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen eines
@@ -40,7 +40,7 @@ import scenarios.bienenstock.agenteninfo.Koordinate;
  * @author Samuel Walz
  */
 public class Platz extends Feld {
-
+    
     /**
      * Konstruktor.
      *
@@ -52,21 +52,21 @@ public class Platz extends Feld {
      * @param maxTanzendeBienen     maximum tanzende Bienen
      * @param feldPosition  Koordinate des PLatzes
      */
-    public Platz (
-        int eigenID,
-        int sichtBoden,
-        int sichtLuft,
-        int maxWartendeBienen,
-        int maxFliegendeBienen,
-        int maxTanzendeBienen,
-        Koordinate feldPosition) {
+    public Platz(
+            int eigenID,
+            int sichtBoden,
+            int sichtLuft,
+            int maxWartendeBienen,
+            int maxFliegendeBienen,
+            int maxTanzendeBienen,
+            Koordinate feldPosition) {
         super(eigenID,
-              sichtBoden,
-              sichtLuft,
-              maxWartendeBienen,
-              maxFliegendeBienen,
-              maxTanzendeBienen,
-              feldPosition);
+                sichtBoden,
+                sichtLuft,
+                maxWartendeBienen,
+                maxFliegendeBienen,
+                maxTanzendeBienen,
+                feldPosition);
     }
-
+    
 }

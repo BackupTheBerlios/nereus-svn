@@ -4,9 +4,9 @@
  * Letzte Änderung: 26. Januar 2005 durch Philip Funck
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
- *                  
- *                  
- *                  
+ *
+ *
+ *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen eines
@@ -45,25 +45,25 @@ public class VisKarte {
      * Alle anwesenden Bienen.
      */
     private Hashtable bienen;
-
+    
     /**
      * Das Spielfeld für die Visualisierung.
      *
      * @associates VisFeld
      */
     private Hashtable spielfeld;
-
+    
     /**
      * Nummer der aktuellen Runde.
      */
     private int rundennummer;
-
-
+    
+    
     /**
      * Liste aller Kosten für die Aktionen der Bienen.
      */
     private Hashtable kosten;
-
+    
     /**
      * Konstruktor.
      *
@@ -73,15 +73,15 @@ public class VisKarte {
      * @param kostenvoranschlag Kosten für die Aktionen
      */
     public VisKarte(int runde,
-                    Hashtable bienchen,
-                    Hashtable feldchen,
-                    Hashtable kostenvoranschlag) {
+            Hashtable bienchen,
+            Hashtable feldchen,
+            Hashtable kostenvoranschlag) {
         rundennummer = runde;
         bienen = bienchen;
         spielfeld = feldchen;
         kosten = kostenvoranschlag;
     }
-
+    
     /**
      * gibt eine Liste der Kosten für alle Aktionen zurück.
      *
@@ -90,24 +90,23 @@ public class VisKarte {
     public Hashtable gibHonigkosten() {
         return kosten;
     }
-
+    
     /**
      * gibt eine Biene zurück, die in der Liste bienen mit bieneID
      * zu finden ist.
-     * 
+     *
      * @param bieneID ID der Biene
-     * @return eine Vis Biene 
+     * @return eine Vis Biene
      */
     public VisBiene gibBiene(int bieneID) {
         if (bienen.containsKey(new Integer(bieneID))) {
             return (VisBiene)bienen.get(new Integer(bieneID));
-        }
-        else {
+        } else {
             //Wurde Biene nicht gefunden, so gib nichts zurück (null)
             return null;
         }
     }
-
+    
     /**
      * gibt eine Liste aller anwesenden Bienen zurück.
      *
@@ -116,7 +115,7 @@ public class VisKarte {
     public Hashtable gibBienen() {
         return bienen;
     }
-
+    
     /**
      * gibt ein Feld mit den Koordinaten ort zurück.
      *
@@ -127,11 +126,11 @@ public class VisKarte {
         if (spielfeld.containsKey(ort)) {
             return (VisFeld)spielfeld.get(ort);
         } else {
-        //Wurde das Feld nicht gefunden, so gib nichts zurück (null)
-        return null;
+            //Wurde das Feld nicht gefunden, so gib nichts zurück (null)
+            return null;
         }
     }
-
+    
     /**
      * gibt das Spielfeld für die Visualisierung zurück.
      *

@@ -56,6 +56,8 @@ import scenarios.bienenstock.statistik.Statistikmodul;
 import nereus.simulatorinterfaces.IInformationHandler;
 import nereus.utils.Id;
 import nereus.utils.ParameterDescription;
+import nereus.simulator.ServerInfoObject;
+import nereus.utils.GameConf;
 
 import nereus.simulator.ServerInfoObject;
 
@@ -67,6 +69,7 @@ import scenarios.bienenstock.scenariomanagement.Konstanten;
 import scenarios.bienenstock.agenteninfo.Koordinate;
 import scenarios.bienenstock.scenariomanagement.BienenstockSzenarioHandler;
 import scenarios.bienenstock.scenariomanagement.ObjektWartendeAnfragen;
+
 
 
 
@@ -91,7 +94,7 @@ public class Scenario
     /**
      * Dateiname fuer Szenario-Karte
      */
-    private String KARTENDATEINAME="test2.gml";
+    private String KARTENDATEINAME;//="test2.gml";
     
     /**
      * Name des Szenario
@@ -99,15 +102,15 @@ public class Scenario
     private String SZENARIONAME="bienenstock";
     
     /**
-     * Verzeichnis in dem sich die XML-Config-Datei mit Szenario-parametern 
+     * Verzeichnis in dem sich die XML-Config-Datei mit Szenario-parametern
      * befindet.
      */
     private String SZENARIOCONFIGORDNER="parameters";
     
     /**
-     * Name der XML-Config-Datei mit Szenario-parametern 
+     * Name der XML-Config-Datei mit Szenario-parametern
      */
-    private String SZENARIOCONFIGDATEINAME="bienenstockconfig.xml";
+    private String SZENARIOCONFIGDATEINAME;//="bienenstockconfig.xml";
     
     /**
      * ist die Nummer der aktuellen Runde.
@@ -202,6 +205,20 @@ public class Scenario
     private boolean bearbeitungsphaseMussWarten = false;
     
     /**
+     * ServerInfoObject zum auslesen der Informationen ueber die verwendenden
+     * Karten und Scenario-XML-Konfig-Dateien.
+     */
+    private ServerInfoObject serverInfoObject;
+    
+    /**
+     * Konfigurationsdatei, in der Dateiname fuer Karte und ScenarioKonfigurationsdatei
+     * enthalten sind.
+     */
+    private GameConf gameConf;
+    
+    
+    
+    /**
      * Konstruktor.
      *
      * @param gameId            ID des Spiels
@@ -214,6 +231,10 @@ public class Scenario
         super(gameId,
                 visHandler,
                 parameterTabelle);
+        this.serverInfoObject=ServerInfoObject.m_instance;
+        this.gameConf=(GameConf)serverInfoObject.getGameConf(this.SZENARIONAME);
+        this.KARTENDATEINAME=this.gameConf.getKartenDateiName();
+        this.SZENARIOCONFIGDATEINAME=this.gameConf.getParameterDateiName();
         setzeParameter(parameterTabelle);
     }
     
@@ -223,6 +244,10 @@ public class Scenario
      */
     public Scenario() {
         super();
+        this.serverInfoObject=ServerInfoObject.m_instance;
+        this.gameConf=(GameConf)serverInfoObject.getGameConf(this.SZENARIONAME);
+        this.KARTENDATEINAME=this.gameConf.getKartenDateiName();
+        this.SZENARIOCONFIGDATEINAME=this.gameConf.getParameterDateiName();
     }
     
     

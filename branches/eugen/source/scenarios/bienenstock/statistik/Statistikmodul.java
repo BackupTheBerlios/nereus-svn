@@ -4,9 +4,9 @@
  * Letzte Änderung: 26. Januar 2005 durch Philip Funck
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
- *                  
- *                  
- *                  
+ *
+ *
+ *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen eines
@@ -47,7 +47,7 @@ import nereus.simulatorinterfaces.statistic.IStatisticComponent;
  * @author Samuel Walz
  */
 public class Statistikmodul implements IStatisticComponent {
-
+    
     /**
      * Liste mit mit den Statistikkomponenten aller Bienen
      */
@@ -76,7 +76,7 @@ public class Statistikmodul implements IStatisticComponent {
      * die Position innerhalb der Vektoren
      */
     private HashMap posInVector = new HashMap();
-
+    
     /**
      * Konstruktor.
      *
@@ -93,11 +93,11 @@ public class Statistikmodul implements IStatisticComponent {
         prefix.put("NEKTAR", "Einheiten");
         prefix.put("HONIG", "Einheiten");
         //prefix.put("ZUSTAND", "N.a.");
-
+        
         Iterator itStatBienen = statBienen.iterator();
         int pos = 0;
         while (itStatBienen.hasNext()) {
-
+            
             StatistikBiene tmp = (StatistikBiene) itStatBienen.next();
             Vector vecTmp;
             ((Vector) werte.get(
@@ -106,25 +106,25 @@ public class Statistikmodul implements IStatisticComponent {
             posInVector.put(tmp.gibID(), new Integer(pos));
             pos++;
         }
-
+        
     }
-
+    
     /**
      * setzt bei allen Statistikkomponenten die aktuellen Werte der zugehörigen
      * Bienen
      *
-     * @param statistikBienen die Bienen für 
+     * @param statistikBienen die Bienen für
      *        die neue Werte gesetzt werden sollen
      */
     public void neueWerteSetzen(HashSet statistikBienen) {
-
+        
         Iterator itStatBienen = statBienen.iterator();
         int pos;
         while (itStatBienen.hasNext()) {
             StatistikBiene tmp = (StatistikBiene) itStatBienen.next();
-
+            
             pos = ((Integer) posInVector.get(tmp.gibID())).intValue();
-
+            
             if (statistikBienen.contains(tmp)) {
                 ((Vector) werte.get(
                         "NEKTAR")).add(pos, new Integer(tmp.gibNektar()));
@@ -139,7 +139,7 @@ public class Statistikmodul implements IStatisticComponent {
         }
         statBienen = statistikBienen;
     }
-
+    
     /**
      * gibt den Wert eines gesuchten Parameters zurück.
      *
@@ -153,13 +153,13 @@ public class Statistikmodul implements IStatisticComponent {
             return null;
         }
     }
-
+    
     /**
      * gibt die Maßeinheit eines Parameters zurück.
      *
-     * @param parameter spezifiziert den Parameter von 
+     * @param parameter spezifiziert den Parameter von
      *          dem die Einheit zurückgegeben werden soll
-     * @return gibt die Einheiten der Parameter zurück 
+     * @return gibt die Einheiten der Parameter zurück
      */
     public String getParameterPrefix(String parameter) {
         if (prefix.containsKey(parameter)) {
@@ -168,10 +168,10 @@ public class Statistikmodul implements IStatisticComponent {
             return null;
         }
     }
-
+    
     /**
      * Fügt der Statistik neue Werte für eine Biene hinzu.
-     * 
+     *
      * @param agentId   die ID des Agenten
      * @param parameter die Parameter
      * @param value der Wert
@@ -180,9 +180,9 @@ public class Statistikmodul implements IStatisticComponent {
      */
     public void addInformation(Id agentId, String parameter, Object value)
     throws InvalidAgentException,
-           InvalidElementException {
+            InvalidElementException {
         if (schluessel.contains(parameter)
-                    && posInVector.containsKey(agentId)) {
+        && posInVector.containsKey(agentId)) {
             ((Vector) werte.get(parameter)).add(
                     ((Integer) posInVector.get(agentId)).intValue(),
                     value);
@@ -190,7 +190,7 @@ public class Statistikmodul implements IStatisticComponent {
             throw new InvalidAgentException(agentId.toString());
         }
     }
-
+    
     /**
      * Liefert eine Liste aller Parameternamen zurück.
      *
@@ -199,16 +199,16 @@ public class Statistikmodul implements IStatisticComponent {
     public Vector getParameters() {
         return schluessel;
     }
-
+    
     /**
      * wird nicht genutzt.
-     * 
+     *
      * @return gibt nichts zurück
      */
     public String getCSVDataset() {
         return null;
     }
-
+    
     /**
      * wertet die statistischen Daten aus.
      */
@@ -225,7 +225,7 @@ public class Statistikmodul implements IStatisticComponent {
             ergebnisse.put(schluessel.get(i), new Double(summe));
         }
     }
-
+    
     /**
      * Gibt die Zahl der statistisch erfassten Bienen zurück.
      * @return gibt die Anzahl der überwachten Agenten zurück
