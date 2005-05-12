@@ -1,6 +1,6 @@
 call setup.bat
 
-set MAIN=nereus.client.MASIMClient
+set MAIN=nereus.registrationgui.MASIMClient
 set POLICY_CONF=client.policy
 
 REM die Parameter für die JVM

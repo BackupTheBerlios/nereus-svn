@@ -24,6 +24,9 @@ DIST_DIR="../dist"
 # befinden.
 BASIS_PFAD="../"
 
+# Verzeichnis in dem sich Szanrien befinden
+SCENARIOS_DIR="../scenarios"
+
 # Der Rechner, auf dem der Simulator von Nereus läuft.
 SERVER_HOST="127.0.0.1"
 

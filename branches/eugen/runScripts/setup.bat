@@ -23,6 +23,10 @@ REM Das Verzeichnis in dem sich alle anderen Ordner (scenario, runSkripts, confi
 REM befinden.
 set BASIS_PFAD=..\
 
+
+REM Das Verzeichnis in dem sich scenario-Datein befinden
+set SCENARIOS_DIR=..\scenarios
+
 REM Der Rechner, auf dem der Simulator von Nereus läuft.
 set SERVER_HOST=127.0.0.1
  
