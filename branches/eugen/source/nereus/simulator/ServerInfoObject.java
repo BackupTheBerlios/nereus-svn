@@ -90,6 +90,8 @@ public class ServerInfoObject {
      */
     private String CONFIGDATEINAME="serverconfig.xml";
     
+    protected static String cofigFileURI="";
+    
     private LinkedList scenarioNames=null;
     
     /**
@@ -141,22 +143,21 @@ public class ServerInfoObject {
         System.out.println("Szenariopfad: "+ m_scenarioPath);
         //System.out.println("Umweltpfad: "+ m_enviromentsPath);
         
-        this.gameConfList=readGameConfList();
+        this.gameConfList=readGameConfList(this.cofigFileURI);
     }
     
     
     /**
      * Game-Config-Daten aus einer XML-KonfiguratiosDatei ein.
      */
-    private LinkedList readGameConfList(){
-        
+    private LinkedList readGameConfList(String configFileURI){
         String gameConfigXMLpath;
         if (m_serverBasePath.endsWith(m_pathSeparator))
             gameConfigXMLpath=m_serverBasePath+CONFIGDATEINAME;
         else gameConfigXMLpath=m_serverBasePath+ m_pathSeparator + CONFIGDATEINAME;
-        
+        if (configFileURI!="") gameConfigXMLpath=configFileURI;
         GameXMLConfigHandler handler=new GameXMLConfigHandler();
-        ScenarioXMLInputReader sceanrioXMLInputReader=new ScenarioXMLInputReader(gameConfigXMLpath,handler);
+        ScenarioXMLInputReader sceanrioXMLInputReader=new ScenarioXMLInputReader(gameConfigXMLpath ,handler);
         return handler.getGameConfList();
     }
     

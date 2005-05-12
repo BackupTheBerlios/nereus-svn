@@ -23,6 +23,11 @@ REM Das Verzeichnis in dem sich alle anderen Ordner (scenario, runSkripts, confi
 REM befinden.
 set BASIS_PFAD=..\
 
+REM Konfigurationsfile fuer den Server
+set CONFIGFILE_SERVER=..\config\serverconfig.xml
+
+REM Konfigurationsfile fuer den Client
+set CONFIGFILE_CLIENT=..\config\clientconfig.xml
 
 REM Das Verzeichnis in dem sich scenario-Datein befinden
 set SCENARIOS_DIR=..\scenarios

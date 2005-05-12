@@ -196,7 +196,7 @@
    <copy todir="${dist}/client">
      <fileset dir="${documentation}" includes="Readme.txt, ReadmeClient.txt"/>
    </copy>
-   <copy file="${config}/clientconfig.xml" tofile="${dist}/client/clientconfig.xml"/>
+   <copy file="${config}/clientconfig.xml" tofile="${dist}/client/config/clientconfig.xml"/>
  </target>
     
  <target name="_server" depends="serverJar, _scenariosServer"
@@ -216,7 +216,7 @@
    <copy todir="${dist}/server">
      <fileset dir="${documentation}" includes="Readme.txt, ReadmeServer.txt"/>
    </copy>
-   <copy file="${config}/serverconfig.xml" tofile="${dist}/server/serverconfig.xml"/>
+   <copy file="${config}/serverconfig.xml" tofile="${dist}/server/config/serverconfig.xml"/>
  </target>
      
  <target name="clean">
@@ -251,7 +251,7 @@
       </tarfileset>
       <tarfileset dir="${config}"
                   mode="644"
-                  prefix="/server">
+                  prefix="/server/config">
         <include name="serverconfig.xml"/>        
       </tarfileset>
       <tarfileset dir="${runScripts}"
@@ -290,7 +290,7 @@
       </tarfileset>
       <tarfileset dir="${config}"
                   mode="644"
-                  prefix="/client">
+                  prefix="/client/config">
         <include name="clientconfig.xml"/>   
       </tarfileset>     
       <tarfileset dir="${runScripts}"

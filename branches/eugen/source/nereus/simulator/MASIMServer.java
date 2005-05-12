@@ -1,7 +1,7 @@
 /*
  * Dateiname      : MASIMServer.java
  * Erzeugt        : 22. Mai 2003
- * Letzte Änderung: Eugen Volk 5.05.05
+ * Letzte Änderung: Eugen Volk 11.05.05
  * Autoren        : Daniel Friedrich
  *                  Eugen Volk
  *
@@ -35,7 +35,7 @@ import java.rmi.RMISecurityManager;
 import java.rmi.registry.LocateRegistry;
 import java.io.File;
 import nereus.simulatorinterfaces.ICoordinator;
-
+import nereus.simulator.ServerInfoObject;
 
 /**
  * Die Klasse dient nur als Startprogramm zum Ausführen des Coordinators von
@@ -65,6 +65,8 @@ public class MASIMServer {
             String basePath;
             String enviromentsPath;
             String hostname = "localhost";
+            String configFileURI=null;
+            ServerInfoObject serverInfoObject;
             if(args.length >= 1) {
                 hostname = args[0];
                 name = "rmi://" + hostname + ":1099" +"/Coordinator";
@@ -72,11 +74,14 @@ public class MASIMServer {
             }else {
                 name = "rmi://localhost/Coordinator";
             }
-            if (args.length==2) basePath=args[1];
+            if (args.length >=2) basePath=args[1];
             else {
                 File dFile = new File("");
                 basePath = dFile.getAbsolutePath();
             }
+            if (args.length ==3) configFileURI=args[2];
+            ServerInfoObject.cofigFileURI=configFileURI;
+            serverInfoObject=ServerInfoObject.getInstance(basePath);
             m_coordinator = new Coordinator(hostname, basePath);
             Naming.rebind(name, m_coordinator);
             System.out.println(

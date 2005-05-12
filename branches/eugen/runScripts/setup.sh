@@ -24,6 +24,12 @@ DIST_DIR="../dist"
 # befinden.
 BASIS_PFAD="../"
 
+# Konfigurationsfile fuer den Client
+CONFIGFILE_CLIENT="..\config\clientconfig.xml"
+
+# Konfigurationsfile fuer den Server
+CONFIGFILE_SERVER="..\config\serverconfig.xml"
+
 # Verzeichnis in dem sich Szanrien befinden
 SCENARIOS_DIR="../scenarios"
 

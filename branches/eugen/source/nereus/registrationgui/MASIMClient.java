@@ -569,6 +569,9 @@ public class MASIMClient extends JFrame {
      * @param args
      */
     public static void main(String[] args) {
+        if (args.length >= 3) {
+            ClientInfoObject.clientConfigFileURI=args[2];
+        }
         if(args.length >= 1) {
             System.out.println("Starte den MALClient");
             MASIMClient client = null;
@@ -588,7 +591,7 @@ public class MASIMClient extends JFrame {
             System.out.println(
                     "Syntaxfehler: Bitte versuchen Sie es das nächste mal mit ");
             System.out.println(
-                    "MALClient <hostname>");
+                    "MALClient <hostname> <BaisPfad> <Pfad zu Client-KonfigDatei>");
         }
     }
     

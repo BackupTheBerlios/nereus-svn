@@ -19,5 +19,5 @@ JVMPAR="$JVMPAR -Djava.rmi.server.hostname=$SERVER_HOST"
 # nereus.simulator.MASIMServer
 # und wird als Main-Class Attribut im jar-Manifest definiert
 MAIN="nereus.simulator.MASIMServer"
-exec $JAVA $JVMPAR -cp $DIST_DIR/Server.jar:$SCENARIOS_DIR/Scenarios.jar $MAIN $SERVER_HOST $BASIS_PFAD
+exec $JAVA $JVMPAR -cp $DIST_DIR/Server.jar:$SCENARIOS_DIR/Scenarios.jar $MAIN $SERVER_HOST $BASIS_PFAD $CONFIGFILE_SERVER
 

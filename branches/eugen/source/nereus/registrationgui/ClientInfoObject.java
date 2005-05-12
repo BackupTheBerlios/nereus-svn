@@ -53,6 +53,8 @@ public class ClientInfoObject {
      */
     public static ClientInfoObject m_instance = null;
     
+    protected static String clientConfigFileURI="";
+    
     /**
      *	Pfadseparator des laufenende Systems
      */
@@ -121,7 +123,9 @@ public class ClientInfoObject {
                     AGENTS_VERZEICHNIS  + m_pathSeparator;
         }
         System.out.println("Szenariopfad: "+ m_agentClassesPath);
-        this.agentsScenarioList=readScenarioAgentsList();
+        
+        
+        this.agentsScenarioList=readScenarioAgentsList(this.clientConfigFileURI);
     }
     
     
@@ -129,11 +133,12 @@ public class ClientInfoObject {
      * Liest aus einer XML-Konfig-Datei verfügbaren Agenten aus.
      * @return eine Liste die aus einer AgentsList-Struktur besteht.
      */
-    private LinkedList readScenarioAgentsList(){
+    private LinkedList readScenarioAgentsList(String configFileURI){
         String clientConfigXMLpath;
         if (m_clientBasePath.endsWith(m_pathSeparator))
             clientConfigXMLpath=m_clientBasePath+CONFIGDATEINAME;
         else clientConfigXMLpath=m_clientBasePath+ m_pathSeparator + CONFIGDATEINAME;
+        if (configFileURI!="") clientConfigXMLpath=configFileURI;
         
         AgentsXMLConfigHandler handler=new AgentsXMLConfigHandler();
         ScenarioXMLInputReader sceanrioXMLInputReader=new ScenarioXMLInputReader(clientConfigXMLpath,handler);

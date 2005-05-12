@@ -18,5 +18,5 @@ JVMPAR="$JVMPAR -Djava.rmi.server.hostname=$SERVER_HOST"
 # nereus.client.MASIMClient
 # und wird als Main-Class Attribut im jar-Manifest definiert
 
-exec $JAVA $JVMPAR -jar $DIST_DIR/Client.jar $SERVER_HOST $BASIS_PFAD
+exec $JAVA $JVMPAR -jar $DIST_DIR/Client.jar $SERVER_HOST $BASIS_PFAD $CONFIGFILE_CLIENT
 
