@@ -39,6 +39,7 @@ import java.util.LinkedList;
 
 import nereus.communication.speachacts.Speachact;
 import nereus.utils.Id;
+import nereus.utils.GameConf;
 import nereus.exceptions.InvalidAgentException;
 import nereus.exceptions.InvalidElementException;
 import nereus.exceptions.InvalidGameException;
@@ -118,11 +119,13 @@ public abstract class AbstractScenario implements Serializable {
      * @parm gameId Id des Spiels
      * @param InformationHandler vishandler - InformationHandler
      * @param Hashtable parameter - Spielparameter
+     * @param gameConf zu verwendende Konfugurationdatei mit Karen-Namen und ScenarioKonfidatei-Namen.
      */
     public void initialize(
             Id gameId,
             IInformationHandler visHandler,
-            Hashtable parameter){
+            Hashtable parameter,
+            GameConf gameConf){
         m_gameId = gameId;
         m_visHandler = visHandler;
         m_parameter = parameter;
@@ -251,6 +254,17 @@ public abstract class AbstractScenario implements Serializable {
      * @return LinkedList - Liste der Parameter
      */
     public abstract LinkedList getScenarioParameter();
+    
+     /**
+     * Gibt eine Liste mit den Parametern, die dass Szenario benötigt zurück.
+      * @param gameConf Game-KonfigDatei
+     *
+     * @return LinkedList - Liste der Parameter
+     */
+    public abstract LinkedList getScenarioParameter(GameConf gameConf);
+    
+    
+   
 }
 
 

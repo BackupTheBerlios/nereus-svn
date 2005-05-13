@@ -94,7 +94,7 @@ public class Scenario
     /**
      * Dateiname fuer Szenario-Karte
      */
-    private String KARTENDATEINAME;//="test2.gml";
+    private String KARTENDATEINAME;//="test2.gml"; // Default-Wert
     
     /**
      * Name des Szenario
@@ -110,7 +110,7 @@ public class Scenario
     /**
      * Name der XML-Config-Datei mit Szenario-parametern
      */
-    private String SZENARIOCONFIGDATEINAME;//="bienenstockconfig.xml";
+    private String SZENARIOCONFIGDATEINAME;//="bienenstockconfig.xml"; //Default-Wert
     
     /**
      * ist die Nummer der aktuellen Runde.
@@ -244,12 +244,13 @@ public class Scenario
      */
     public Scenario() {
         super();
-        this.serverInfoObject=ServerInfoObject.m_instance;
-        this.gameConf=(GameConf)serverInfoObject.getGameConf(this.SZENARIONAME);
-        this.KARTENDATEINAME=this.gameConf.getKartenDateiName();
-        this.SZENARIOCONFIGDATEINAME=this.gameConf.getParameterDateiName();
+       
     }
     
+    
+    
+    
+      
    /**
      * Initialisiert die Werte m_gameId, visHandler und parameter.
      * Dient als ersatz des parametrisierten Konstruktors.
@@ -261,13 +262,14 @@ public class Scenario
     public void initialize(
             Id gameId,
             IInformationHandler visHandler,
-            Hashtable parameterTabelle){
+            Hashtable parameterTabelle,
+            GameConf gameConf){
         super.m_gameId = gameId;
         super.m_visHandler = visHandler;
         super.m_parameter = parameterTabelle;
         
         this.serverInfoObject=ServerInfoObject.m_instance;
-        this.gameConf=(GameConf)serverInfoObject.getGameConf(this.SZENARIONAME);
+        this.gameConf=gameConf;
         this.KARTENDATEINAME=this.gameConf.getKartenDateiName();
         this.SZENARIOCONFIGDATEINAME=this.gameConf.getParameterDateiName();
         setzeParameter(parameterTabelle);
@@ -940,8 +942,51 @@ public class Scenario
      * wenn ein Spiel erneut simuliert werden soll.
      */
     public void reset() {
+        rundennummer = 0;
+        anzahlAngemeldeterAgenten = 0;
+      //  this.bienenStoecke.clear();
+     //   this.m_parameter.clear();
+        this.verfruehteAnfragen.clear();
+        this.statAgentIds.clear();
+        this.m_agentsEnergy.clear();
+        
+        
+        
+        this.m_agents.clear();
+        
         startphase();
     }
+    
+    
+    
+    
+   /* public void reset() {
+		// Alte Identitäten wegwerfen
+		m_actionKeys.clear();
+		// Alle Parameterwerte reseten
+		m_activeAgents.clear();
+		m_numOfFinishedAgents = 0;
+		m_numOfActiveAgents = 0;
+		m_agentsEnergy.clear();
+		Enumeration agents = m_agents.elements();
+		// Flags wieder zurücksetzen.
+		m_canGetCalculations = false;
+		m_canStartNextRound = false;
+		m_enviroment = new IslandEnviroment();
+		try {
+			m_enviroment.createEnviroment(m_graphFile, m_attributeFile);
+		} catch (Exception e) {
+			System.out.println("Fehler:");
+			e.printStackTrace(System.out);
+		}
+		// Visualisierungen reseten
+		try {
+			m_visHandler.resetVisualisations(m_agents);
+		} catch (Exception e) {
+			e.printStackTrace(System.out);
+		}
+		m_agents.clear();
+	}*/
     
     /**
      * gibt die Parameter des Szenarios zurück
@@ -963,7 +1008,11 @@ public class Scenario
      * @return      der Szenariohandler des Szenarios
      */
     public AbstractScenarioHandler createNewScenarioHandler() {
-        return szenariohandler;
+        BienenstockSzenarioHandler handler=new BienenstockSzenarioHandler(this);
+        if (this.szenariohandler==null) {
+            this.szenariohandler=handler;
+        }
+        return handler;
     }
     
     /**
@@ -978,7 +1027,9 @@ public class Scenario
     /**
      * Liest die Scenario-Parameter aus der XML-Datei aus.
      */
-    public LinkedList getScenarioParameter(){
+    public LinkedList getScenarioParameter(GameConf gameConf){
+        if (gameConf==null) return getScenarioParameter();
+        SZENARIOCONFIGDATEINAME=gameConf.getParameterDateiName();
         ServerInfoObject sio=ServerInfoObject.m_instance;
         String pathSep=sio.getPathSeparator();
         String scenarioPath=sio.getScenarioPath();
@@ -992,15 +1043,14 @@ public class Scenario
         return handler.getParameterListe();
     }
     
-    
-    
+  
     
     /**
      * gibt eine Liste mit den Parametern, die dass Szenario benötigt zurück.
      *
      * @return Liste der Parameter vorbelegt mit Defaultwerten
      */
-    public LinkedList getScenarioParameter2() {
+    public LinkedList getScenarioParameter() {
         System.out.println("BienenstockScenario: werde gebeten die Parameter"
                 + " zu uebergeben...");
         LinkedList parameterListe = new LinkedList();

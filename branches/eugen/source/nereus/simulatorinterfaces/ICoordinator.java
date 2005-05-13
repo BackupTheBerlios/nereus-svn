@@ -1,8 +1,9 @@
 /*
  * Dateiname      : ICoordinator.java
  * Erzeugt        : 13. Mai 2003
- * Letzte Änderung:
+ * Letzte Änderung: Eugen Volk am 12.05.05
  * Autoren        : Daniel Friedrich
+ *                  Eugen Volk
  *
  *
  *
@@ -37,6 +38,7 @@ import java.util.Vector;
 
 import nereus.utils.DataTransferObject;
 import nereus.utils.Id;
+import nereus.utils.GameConf;
 import nereus.visualisation.IVisualisation;
 import nereus.exceptions.InvalidElementException;
 import nereus.exceptions.InvalidGameException;
@@ -63,9 +65,10 @@ public interface ICoordinator extends Remote {
      * auf das neu erstellte Spiel, die Id des Spiels zurück geliefert.
      *
      * @param  Hashtable params  - Parameterwerte des Games
+     * @param gameConf KonfigurationStruktur mit Karten- und ScenarioKonfigDatei-Namen
      * @return Id - id des Games
      */
-    public Id registerGame(DataTransferObject dto)
+    public Id registerGame(DataTransferObject dto,GameConf gameConf)
     throws RemoteException, InvalidElementException;
     
     /**
@@ -228,7 +231,7 @@ public interface ICoordinator extends Remote {
      * @return LinkedList Liste der Szenarioparameter
      * @throws RemoteException
      */
-    public LinkedList getScenarioParameter(String scenarioName)
+    public LinkedList getScenarioParameter(String scenarioName, GameConf gameConf)
     throws RemoteException;
     
     /**
@@ -289,4 +292,24 @@ public interface ICoordinator extends Remote {
      */
     public Id getGameId(String gameName)
     throws RemoteException, InvalidElementException;
+    
+    /**
+     * Liefert zu einem Scenario verfügbare Game-Konfigurationen
+     * @param scenarioName Name des Szenario
+     * @return verfügbare Game-Konfigurationen zu einem Scenario
+     */
+    public LinkedList getGameConfTags(String scenarioName)
+    throws RemoteException;
+    
+    /**
+     * Liefert die Configuratinsdaten zu einem bestimmte Konfig-Eintag.
+     *
+     * @param tagName Name des Eintrags, fuer den
+     * die Configurationsdaten gelesen werden sollen.
+     *
+     * @return Configurationsdaten fuer den vorgegebenen Eintagsnamen.
+     */
+    public GameConf getGameConfToTag(String tagName) 
+    throws RemoteException;
+            
 }

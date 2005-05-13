@@ -332,6 +332,16 @@
  
  <target name="allTar" depends="serverTar, clientTar"
     description="Erstellt Tar-Dateien fuer den Client und den Server">
+    <!-- Aufraumen -->
+     <delete dir="${dist}/client"/>
+     <delete dir="${dist}/server"/>
+     <delete dir="${build}"/>
+     <delete file="${dist}/Client.jar"
+           quiet="true"/>
+     <delete file="${dist}/Server.jar"
+           quiet="true"/>
+     <delete file="${dist}/Scenarios.jar"
+           quiet="true"/>      
  </target>
   
  <target name="help">

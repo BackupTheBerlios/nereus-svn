@@ -27,12 +27,14 @@
  */
 package nereus.utils;
 
+import java.io.Serializable;
+
 /**
  * Eine DatenStruktur zur Verwaltung der Eingelesenen Eintrags aus
  * der KonfigurationsDatei fuer den Simulator.
  * @author Eugen Volk
  */
-public class GameConf {
+public class GameConf implements Serializable {
     
     /** Name des Eintrags, unt dem es in der Konfiguration auftauchen soll */
     private String tagName;

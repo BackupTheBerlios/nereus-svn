@@ -48,6 +48,7 @@ import java.util.Vector;
 import nereus.utils.DataTransferObject;
 import nereus.utils.Id;
 import nereus.utils.ParameterDescription;
+import nereus.utils.GameConf;
 import nereus.visualisation.IVisualisation;
 import nereus.exceptions.InvalidElementException;
 import nereus.exceptions.InvalidGameException;
@@ -147,11 +148,10 @@ public class Coordinator extends UnicastRemoteObject implements ICoordinator {
             String pathName) throws RemoteException {
         super(port);
         // starte den InformationHandler
-        m_sInfoObject = ServerInfoObject.getInstance(pathName);
-        
-        m_path = m_sInfoObject.getScenarioPath();
-        m_scenarioPath = m_sInfoObject.getScenarioPath();;
         this.startInformationHandler();
+        m_sInfoObject = ServerInfoObject.getInstance(pathName);
+        m_path = m_sInfoObject.getScenarioPath();
+        m_scenarioPath = m_sInfoObject.getScenarioPath();
     }
     
     /**
@@ -175,7 +175,7 @@ public class Coordinator extends UnicastRemoteObject implements ICoordinator {
         /* (non-Javadoc)
          * @see jAgentSimulator.server.ICoordinator#registerGame(java.util.Hashtable)
          */
-    public Id registerGame(DataTransferObject dto)
+    public Id registerGame(DataTransferObject dto, GameConf gameConf)
     throws RemoteException, InvalidElementException {
         System.out.println("Coordinator: Spiel soll registriert werden...");
         if (dto.containsKey("ScenarioName")) {
@@ -197,7 +197,7 @@ public class Coordinator extends UnicastRemoteObject implements ICoordinator {
             try {
                 Class scenarioClass = Class.forName("scenarios." + scenarioName);
                 scenario = (AbstractScenario)scenarioClass.newInstance();
-                scenario.initialize(gameId, m_informationHandler, new Hashtable(dto));
+                scenario.initialize(gameId, m_informationHandler, new Hashtable(dto),gameConf);
             } catch (Exception e) {
                 e.printStackTrace(System.out);
             }
@@ -553,7 +553,7 @@ public class Coordinator extends UnicastRemoteObject implements ICoordinator {
     /* (non-Javadoc)
      * @see simulator.ICoordinator#getScenarioParameter(java.lang.String)
      */
-    public LinkedList getScenarioParameter(String scenarioName)
+    public LinkedList getScenarioParameter(String scenarioName, GameConf gameConf)
     throws RemoteException {
         LinkedList retval = null;
         String className = "Scenario";
@@ -573,7 +573,7 @@ public class Coordinator extends UnicastRemoteObject implements ICoordinator {
             AbstractScenario scenario =
                     (AbstractScenario) scenarioClass.newInstance();
             System.out.println("Coordinator: Hole Parameter.");
-            return scenario.getScenarioParameter();
+            return scenario.getScenarioParameter(gameConf);
         } catch (Exception e) {
             throw new RemoteException("Inner Exception", e);
         }
@@ -700,5 +700,31 @@ public class Coordinator extends UnicastRemoteObject implements ICoordinator {
         } else {
             throw new NoSuchElementException();
         }
+    }
+    
+    
+    /**
+     * Liefert zu einem Scenario verfügbare Game-Konfigurationen
+     * @param scenarioName Name des Szenario
+     * @return verfügbare Game-Konfigurationen zu einem Scenario
+     */
+    public LinkedList getGameConfTags(String scenarioName) throws RemoteException {
+        LinkedList liste=this.m_sInfoObject.getGameConfTags(scenarioName);
+        if (liste.size()>=1) return liste;
+        else throw new NoSuchElementException();
+    }
+    
+    /**
+     * Liefert die Configuratinsdaten zu einem bestimmte Konfig-Eintag.
+     *
+     * @param tagName Name des Eintrags, fuer den
+     * die Configurationsdaten geliefert werden sollen.
+     * @return Configurationsdaten fuer den vorgegebenen Eintagsnamen.
+     */
+    
+    public GameConf getGameConfToTag(String tagName) throws RemoteException {
+        GameConf gameConf=this.m_sInfoObject.getGameConfToTag(tagName);
+        if (gameConf!=null) return gameConf;
+        else throw new NoSuchElementException();
     }
 }

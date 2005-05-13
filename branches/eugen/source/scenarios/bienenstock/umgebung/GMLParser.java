@@ -169,7 +169,7 @@ public class GMLParser {
             gmlCode = inputBuffer.toString();
         }catch (FileNotFoundException e) {
             System.out.println("Der Graph " + gmlDateiname + " konnte nicht gefunden werden.");
-            System.out.println("Die Datei sollte im Verzeichnis <PfadZumServer</server/ liegen.");
+            System.out.println("Die Datei sollte im Verzeichnis scenarios/bienenstock/karten/ liegen.");
         }catch(IOException ioe) {
             ioe.printStackTrace(System.out);
         }

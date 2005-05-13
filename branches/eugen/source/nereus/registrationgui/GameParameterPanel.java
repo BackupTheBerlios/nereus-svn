@@ -1,10 +1,10 @@
 /*
  * Dateiname      : GameParameterPanel.java
  * Erzeugt        : 5. August 2003
- * Letzte Änderung: 19. April 2004 durch Eugen Volk
+ * Letzte Änderung: 12. Mai 2004 durch Eugen Volk
  * Autoren        : Daniel Friedrich
  *                  Eugen Volk
- *                  
+ *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen einer
@@ -56,6 +56,7 @@ import javax.swing.JPanel;
 import nereus.simulatorinterfaces.ICoordinator;
 import nereus.utils.DataTransferObject;
 import nereus.utils.Id;
+import nereus.utils.GameConf;
 import nereus.utils.ParameterDescription;
 import nereus.visualisation.VisualisationDelegate;
 
@@ -188,6 +189,11 @@ public class GameParameterPanel
     private String pathName = null;
     
     /**
+     * KonfigurationStruktur mit Karten- und ScenarioKonfigDatei-Namen
+     */
+    private GameConf gameConf=null;
+    
+    /**
      * Konstruktor.
      *
      * @param coordinator
@@ -203,12 +209,14 @@ public class GameParameterPanel
             //String path,
             String scenarioName,
             Hashtable parameter,
-            String path) {
+            String path,
+            GameConf gameConf) {
         super();
         pathName = path;
         m_coordinator = coordinator;
         m_parent = parent;
         m_scenarioName = scenarioName;
+        this.gameConf=gameConf;
         if(parameter == null) {
             m_parameter = new Hashtable();
             
@@ -333,11 +341,17 @@ public class GameParameterPanel
             LinkedList description = m_coordinator.getGameParameter();
             System.out.println("GameParameterPanel: Was braucht das Szenario?"
                     + m_scenarioName);
-            LinkedList scenarioDescription = m_coordinator.getScenarioParameter(m_scenarioName);
+            
+            LinkedList scenarioDescription = m_coordinator.getScenarioParameter(m_scenarioName, this.gameConf);
+            if (scenarioDescription==null) {
+                m_parent.writeStatusMessage(" Fehler! Konnte Parameter nicht lesen.");
+                throw new RemoteException();
+            }
             ListIterator iter = scenarioDescription.listIterator();
             while(iter.hasNext()) {
                 description.addLast(iter.next());
             }
+            
                 /* Frage die Anzahl der Parameter ab, erzeuge ein Panel das
                  * groß genug ist alle Panels für jeden Parameter darzustellen
                  * und weise dem Panel ein GridLayout zu.
@@ -465,11 +479,12 @@ public class GameParameterPanel
             }
         }catch(RemoteException re) {
             System.out.println(
-                    "Fehler: Die Parameterbeschreibung wurden nicht "
+                    "Fehler: Die Parameterbeschreibung konnte nicht "
                     + "korrekt gelesen.");
             re.printStackTrace(System.out);
         }
     }
+    
     
     /**
      * Handelt das Event zum Starten eines Spiels.
@@ -479,10 +494,10 @@ public class GameParameterPanel
     void m_simulateGame_actionPerformed(ActionEvent e) {
         try {
             // starte Simulation
+            this.m_parent.writeStatusMessage("Simulation ausgefueht!");
+            m_simulateGame.setEnabled(false);
             m_coordinator.startGame(m_gameId);
-            
-            //m_parent.writeStatusMessage(
-        }catch(Exception re) {
+        } catch(Exception re) {
             System.out.println("Fehler: Das Spiel kann nicht gestartet werden.");
             re.printStackTrace(System.out);
         }
@@ -585,7 +600,7 @@ public class GameParameterPanel
                  * Registriere ein Spiel beim Coordinator und speichere die Id, die vom
                  * Coordinator zurückgegeben wird.
                  */
-            m_gameId = m_coordinator.registerGame(dto);
+            m_gameId = m_coordinator.registerGame(dto,this.gameConf);
             m_gameName = m_coordinator.getGameName(m_gameId);
             m_parent.writeStatusMessage(
                     "Speichern des Spiels " + m_gameName + " erfolgreich beendet.");
@@ -792,7 +807,7 @@ class GameParameterPanel_m_gameSaveButton_actionAdapter implements java.awt.even
     
     public void actionPerformed(ActionEvent e) {
         try{
-        adaptee.m_gameSaveButton_actionPerformed(e);
+            adaptee.m_gameSaveButton_actionPerformed(e);
         }catch (NumberFormatException nfe){}
     }
 }

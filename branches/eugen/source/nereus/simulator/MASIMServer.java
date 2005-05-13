@@ -79,8 +79,10 @@ public class MASIMServer {
                 File dFile = new File("");
                 basePath = dFile.getAbsolutePath();
             }
-            if (args.length ==3) configFileURI=args[2];
-            ServerInfoObject.cofigFileURI=configFileURI;
+            if (args.length ==3) {
+                configFileURI=args[2];
+                ServerInfoObject.cofigFileURI=configFileURI;
+            }
             serverInfoObject=ServerInfoObject.getInstance(basePath);
             m_coordinator = new Coordinator(hostname, basePath);
             Naming.rebind(name, m_coordinator);

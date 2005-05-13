@@ -201,7 +201,8 @@ public class ServerInfoObject {
     
     
     /**
-     * Liefert die Configuratinsdaten fuer ein bestimmters Szenario
+     * Liefert die Configuratinsdaten fuer ein bestimmters Szenario,
+     * wobei das erste Element aus der Liste ausgewähtlwird.
      *
      * @param scenarioName Name des Szenario, fuer den die Daten
      * die Configurationsdaten geliefert werden sollen.
@@ -290,4 +291,71 @@ public class ServerInfoObject {
     public String getEnviromentsPath() {
         return m_enviromentsPath;
     }
+    
+    
+    
+     /**
+     * Liefert die Configuratinsdaten fuer ein bestimmters Szenario,
+     * wobei das erste Element aus der Liste ausgewähtlwird.
+     *
+     * @param scenarioName Name des Szenario, fuer den die Daten
+     * die Configurationsdaten geliefert werden sollen.
+     * @return Configurationsdaten fuer den vorgegebenen scenarioNamen.
+     */
+    
+    public LinkedList getGameConfList(String scenarioName){
+        Iterator gameConfIter=this.gameConfList.iterator();
+        LinkedList gameConfList=new LinkedList();
+        while (gameConfIter.hasNext()){
+            GameConf actualGameConf=(GameConf) gameConfIter.next();
+            if(scenarioName.equals(actualGameConf.getScenarioName())){
+                gameConfList.add(actualGameConf);
+            }
+        }
+        return gameConfList;
+    }
+    
+    
+    
+    /**
+     * Liefert zu einem Scenario verfügbare Game-Konfigurationen
+     * @param scenarioName Name des Szenario
+     * @return verfügbare Namen der Game-Konfigurationen zu einem Scenario
+     */
+    public LinkedList getGameConfTags(String scenarioName){
+        LinkedList tagList=new LinkedList();
+        LinkedList gameConfList=getGameConfList(scenarioName);
+        GameConf gameConf;
+        Iterator it=gameConfList.iterator();
+        while (it.hasNext()){
+            gameConf=(GameConf)it.next();
+            tagList.add(new String(gameConf.getTagName()));
+        }
+        return tagList;
+    }
+    
+    
+    
+     /**
+     * Liefert die Configuratinsdaten zu einem bestimmte Konfig-Eintag.
+     *
+     * @param tagName Name des Eintags, fuer den die Daten
+     * die Configurationsdaten geliefert werden sollen.
+     * @return Configurationsdaten fuer den vorgegebenen Eintagsnamen.
+     */
+    
+    public GameConf getGameConfToTag(String tagName){
+        Iterator gameConfIter=this.gameConfList.iterator();
+        GameConf retValue;
+        while (gameConfIter.hasNext()){
+            GameConf actualGameConf=(GameConf) gameConfIter.next();
+            if(tagName.equals(actualGameConf.getTagName())){
+                retValue=actualGameConf;
+                return retValue;
+            }
+        }
+        return null;
+    }
+    
+   
 }

@@ -63,6 +63,7 @@ import javax.swing.border.TitledBorder;
 import nereus.simulatorinterfaces.ICoordinator;
 import nereus.utils.DataTableModel;
 import nereus.utils.Id;
+import nereus.utils.GameConf;
 import java.io.File;
 
 /**
@@ -449,6 +450,8 @@ public class MASIMClient extends JFrame {
                     scenarios);
             sdialog.show();
             String scenario = (String)sdialog.getSelected();
+            
+            
             // ClientInfoObject mit Servername und Agentenklassenpfad füllen
             ClientInfoObject clientInfoObject = ClientInfoObject.getInstance(pathName);
             clientInfoObject.setServerName(m_serverName);
@@ -456,19 +459,52 @@ public class MASIMClient extends JFrame {
             if((scenario != null)
             && (scenario.length() > 1)
             && (!scenarios.equals(" "))) {
-                GameTab tab = new GameTab(
-                        m_coordinator,
-                        m_tabbedPane,
-                        this,
-                        scenario,
-                        pathName);
-                m_gameTabs.addElement(tab);
-                m_tabbedPane.add(tab, "Spiel");
-                tab.setMaximumSize(new Dimension(550, 32767));
-                tab.setMinimumSize(new Dimension(550, 5));
-                tab.setPreferredSize(new Dimension(550, 200));
-                m_tabbedPane.setSelectedComponent(tab);
-                //tab.requestDefaultFocus();
+                
+                LinkedList tagNames=m_coordinator.getGameConfTags(scenario);
+                if (tagNames.size()>1){
+                    GameConf gameConf;
+                    tagNames.addFirst(" ");
+                    JSelectionDialog s2dialog =
+                            new JSelectionDialog(
+                            this,
+                            "Tag-Auswahl ",
+                            "Tag-Name",
+                            tagNames);
+                    s2dialog.show();
+                    String tagName= (String)s2dialog.getSelected();
+                    if((tagName != null)
+                    && (tagName.length() > 1)
+                    && (!tagNames.equals(" "))){
+                        gameConf=this.m_coordinator.getGameConfToTag(tagName);
+                        
+                        
+                    } else {
+                        tagNames=this.m_coordinator.getGameConfTags(scenario);
+                        tagName=(String) tagNames.getFirst();
+                        gameConf=this.m_coordinator.getGameConfToTag(tagName);
+                        
+                    }
+                    
+                    
+                    
+                    
+                    
+                    GameTab tab = new GameTab(
+                            m_coordinator,
+                            m_tabbedPane,
+                            this,
+                            scenario,
+                            pathName,
+                            gameConf);
+                    
+                    m_gameTabs.addElement(tab);
+                    m_tabbedPane.add(tab, "Spiel");
+                    tab.setMaximumSize(new Dimension(550, 32767));
+                    tab.setMinimumSize(new Dimension(550, 5));
+                    tab.setPreferredSize(new Dimension(550, 200));
+                    m_tabbedPane.setSelectedComponent(tab);
+                    //tab.requestDefaultFocus();
+                }
             }
         }catch(Exception ex) {
             if(ex instanceof RemoteException) {

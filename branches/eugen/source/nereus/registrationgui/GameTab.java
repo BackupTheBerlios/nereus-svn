@@ -39,6 +39,7 @@ import javax.swing.JTabbedPane;
 
 import nereus.simulatorinterfaces.ICoordinator;
 import nereus.utils.Id;
+import nereus.utils.GameConf;
 import java.util.Hashtable;
 
 /**
@@ -89,6 +90,8 @@ public class GameTab extends JScrollPane {
     
     private String pathName = null;
     
+    private GameConf gameConf;
+    
     /**
      * Konstruktor.
      *
@@ -104,20 +107,23 @@ public class GameTab extends JScrollPane {
             JTabbedPane parent,
             Component application,
             String scenarioName,
-            String path) {
+            String path,
+            GameConf gameConf) {
         super();
         pathName = path;
         m_coordinator = coordinator;
         m_parent = parent;
         m_application = application;
         m_scenarioName = scenarioName;
+        this.gameConf=gameConf;
         this.jbInit();
         this.setVisible(true);
         
     }
     
     /**
-     * Konstruktor.
+     * Konstruktor. Wird ausgefuert beim Ofnen eines Spiels
+     *
      *
      * @param coordinator
      * @param parent
@@ -167,7 +173,8 @@ public class GameTab extends JScrollPane {
                 this,
                 m_scenarioName,
                 m_parameter,
-                pathName);
+                pathName, 
+                this.gameConf);
         this.setAutoscrolls(true);
         // Setzen der Größe des GameTab
         m_gpp.setMaximumSize(new Dimension(545, 5000));

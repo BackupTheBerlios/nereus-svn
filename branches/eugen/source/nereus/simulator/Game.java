@@ -194,7 +194,7 @@ public class Game extends Thread {
     }
     
     /**
-     * Konstruktor.
+     * Konstruktor. Wird beim Restarten eines simulierten Spiels verwendet.
      *
      * @param name - Name des Spiels
      * @param iHandler - Informationhandler
