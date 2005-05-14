@@ -63,7 +63,7 @@ public class BienenstockAgent
     implements Runnable
 {
 
-	private int volksID;
+    private int volksID;
     private long aktCode;
     private EinfacheKarte karte;
     private EinfacheBiene selbst;
@@ -116,6 +116,7 @@ public class BienenstockAgent
     public BienenstockAgent (Id bId,String bName) {
     	super(bId, bName);
     	name = bName;
+        volksID = 1;
     }
     
     public static boolean isRunableAgent() {

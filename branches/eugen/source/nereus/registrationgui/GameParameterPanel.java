@@ -1,7 +1,7 @@
 /*
  * Dateiname      : GameParameterPanel.java
  * Erzeugt        : 5. August 2003
- * Letzte Änderung: 12. Mai 2004 durch Eugen Volk
+ * Letzte Änderung: 12. Mai 2005 durch Eugen Volk
  * Autoren        : Daniel Friedrich
  *                  Eugen Volk
  *
@@ -494,12 +494,14 @@ public class GameParameterPanel
     void m_simulateGame_actionPerformed(ActionEvent e) {
         try {
             // starte Simulation
-            this.m_parent.writeStatusMessage("Simulation ausgefueht!");
-            m_simulateGame.setEnabled(false);
+            this.m_parent.writeStatusMessage("Simulation gestartet.....");
             m_coordinator.startGame(m_gameId);
+            this.m_parent.writeStatusMessage("Simulation ausgefuert!");
         } catch(Exception re) {
             System.out.println("Fehler: Das Spiel kann nicht gestartet werden.");
-            re.printStackTrace(System.out);
+            this.m_parent.writeStatusMessage("Das Spiel konnte nicht gestartet werden, " +
+                    "uberpruefen sie ob die Agenten registriert wurden.");
+       //     re.printStackTrace(System.out);
         }
     }
     
@@ -546,10 +548,10 @@ public class GameParameterPanel
             /* Speichere die Daten, erzeuge dazu eine Hashmap mit allen Parameterwerten
              * drin.
              */
+        boolean exceptionRaised=false;
         Enumeration enum = m_panes.elements();
         DataTransferObject dto = new DataTransferObject();
         while(enum.hasMoreElements()) {
-            
             JParameterPanel jpp = (JParameterPanel)enum.nextElement();
                 /*
                  * Typkonvertierung
@@ -557,6 +559,14 @@ public class GameParameterPanel
             int type = ((Integer)m_paramDescription.get(jpp.getParameterName())).intValue();
             switch(type) {
                 case ParameterDescription.BooleanType: {
+                    try{
+                        Boolean test=(Boolean)jpp.getParameterValue();
+                    }catch (ClassCastException clCex){
+                        m_parent.writeStatusMessage("Fehler bei der Konvertierung: " +
+                                "Boolean-Type erwartet!");
+                        exceptionRaised=true;
+                        continue;
+                    }
                     dto.put(jpp.getParameterName(),
                             (Boolean)jpp.getParameterValue());
                     m_parameter.put(jpp.getParameterName(),
@@ -564,6 +574,14 @@ public class GameParameterPanel
                     jpp.setEditable(false);
                     break;}
                 case ParameterDescription.DoubleType: {
+                    try{
+                        Double.valueOf((String)jpp.getParameterValue());
+                    }catch (NumberFormatException nexIn){
+                        m_parent.writeStatusMessage("Fehler bei der Konvertierung: " +
+                                "Double-Type erwartet!");
+                        exceptionRaised=true;
+                        continue;
+                    }
                     dto.put(jpp.getParameterName(),
                             Double.valueOf((String)jpp.getParameterValue()));
                     m_parameter.put(jpp.getParameterName(),
@@ -571,6 +589,14 @@ public class GameParameterPanel
                     jpp.setEditable(false);
                     break;}
                 case ParameterDescription.FloatType: {
+                    try{
+                        Float.valueOf((String)jpp.getParameterValue());
+                    }catch (NumberFormatException nexIn){
+                        m_parent.writeStatusMessage("Fehler bei der Konvertierung: " +
+                                "Float-Type erwartet!");
+                        exceptionRaised=true;
+                        continue;
+                    }
                     dto.put(jpp.getParameterName(),
                             Float.valueOf((String)jpp.getParameterValue()));
                     m_parameter.put(jpp.getParameterName(),
@@ -578,6 +604,14 @@ public class GameParameterPanel
                     jpp.setEditable(false);
                     break;}
                 case ParameterDescription.IntegerType: {
+                    try{
+                        Integer.valueOf((String)jpp.getParameterValue());
+                    }catch (NumberFormatException nexIn){
+                        m_parent.writeStatusMessage("Fehler bei der Konvertierung: " +
+                                "Integer-Type erwartet!");
+                        exceptionRaised=true;
+                        continue;
+                    }
                     dto.put(jpp.getParameterName(),
                             Integer.valueOf((String)jpp.getParameterValue()));
                     m_parameter.put(jpp.getParameterName(),
@@ -595,35 +629,37 @@ public class GameParameterPanel
             jpp.setEnabled(false);
             
         }
-        try {
+        if ( !exceptionRaised ){
+            try {
                 /*
                  * Registriere ein Spiel beim Coordinator und speichere die Id, die vom
                  * Coordinator zurückgegeben wird.
                  */
-            m_gameId = m_coordinator.registerGame(dto,this.gameConf);
-            m_gameName = m_coordinator.getGameName(m_gameId);
-            m_parent.writeStatusMessage(
-                    "Speichern des Spiels " + m_gameName + " erfolgreich beendet.");
-        }catch(Exception ex) {
-            m_parent.writeStatusMessage(
-                    "Das Speichern des Spiels konnte nicht durchgeführt werden.");
-            System.out.println("Fehler: Das Speichern des Spiels hat nicht geklappt.");
-            ex.printStackTrace(System.out);
+                m_gameId = m_coordinator.registerGame(dto,this.gameConf);
+                m_gameName = m_coordinator.getGameName(m_gameId);
+                m_parent.writeStatusMessage(
+                        "Speichern des Spiels " + m_gameName + " erfolgreich beendet.");
+            }catch(Exception ex) {
+                m_parent.writeStatusMessage(
+                        "Das Speichern des Spiels konnte nicht durchgeführt werden.");
+                System.out.println("Fehler: Das Speichern des Spiels hat nicht geklappt.");
+                ex.printStackTrace(System.out);
+            }
+            m_parent.setGameSaved(true);
+            // Schreibe den Namen des Spiels in den Reiter des Tabs
+            m_parent.changeTabName(m_gameName);
+            // Schalte Buttons an und aus
+            m_gameSaveButton.setEnabled(false);
+            m_cancelDataButton.setEnabled(false);
+            m_simulateGame.setEnabled(true);
+            m_registerNewAgent.setEnabled(true);
+            //m_parent.repaint();
+            m_saveResultsButton.setEnabled(true);
+            m_parent.repaintApplication();
+            m_closeGameButton.setEnabled(true);
+            m_visRegisterButton.setEnabled(true);
+            
         }
-        m_parent.setGameSaved(true);
-        // Schreibe den Namen des Spiels in den Reiter des Tabs
-        m_parent.changeTabName(m_gameName);
-        // Schalte Buttons an und aus
-        m_gameSaveButton.setEnabled(false);
-        m_cancelDataButton.setEnabled(false);
-        m_simulateGame.setEnabled(true);
-        m_registerNewAgent.setEnabled(true);
-        //m_parent.repaint();
-        m_saveResultsButton.setEnabled(true);
-        m_parent.repaintApplication();
-        m_closeGameButton.setEnabled(true);
-        m_visRegisterButton.setEnabled(true);
-        
     }
     
     /**

@@ -944,17 +944,12 @@ public class Scenario
     public void reset() {
         rundennummer = 0;
         anzahlAngemeldeterAgenten = 0;
-      //  this.bienenStoecke.clear();
-     //   this.m_parameter.clear();
+        this.bienenStoecke.clear();
+        this.m_parameter.clear();
         this.verfruehteAnfragen.clear();
         this.statAgentIds.clear();
         this.m_agentsEnergy.clear();
-        
-        
-        
-        this.m_agents.clear();
-        
-        startphase();
+        this.m_agents.clear(); 
     }
     
     

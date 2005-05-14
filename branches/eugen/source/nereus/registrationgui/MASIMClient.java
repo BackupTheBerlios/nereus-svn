@@ -455,11 +455,10 @@ public class MASIMClient extends JFrame {
             // ClientInfoObject mit Servername und Agentenklassenpfad füllen
             ClientInfoObject clientInfoObject = ClientInfoObject.getInstance(pathName);
             clientInfoObject.setServerName(m_serverName);
-            
+       
             if((scenario != null)
             && (scenario.length() > 1)
             && (!scenarios.equals(" "))) {
-                
                 LinkedList tagNames=m_coordinator.getGameConfTags(scenario);
                 if (tagNames.size()>1){
                     GameConf gameConf;
@@ -467,28 +466,25 @@ public class MASIMClient extends JFrame {
                     JSelectionDialog s2dialog =
                             new JSelectionDialog(
                             this,
-                            "Tag-Auswahl ",
-                            "Tag-Name",
+                            "Spielkonfig.-Auswahl",
+                            "Spielkonfig.",
                             tagNames);
                     s2dialog.show();
                     String tagName= (String)s2dialog.getSelected();
                     if((tagName != null)
                     && (tagName.length() > 1)
                     && (!tagNames.equals(" "))){
+                        
                         gameConf=this.m_coordinator.getGameConfToTag(tagName);
-                        
-                        
+                                                
                     } else {
-                        tagNames=this.m_coordinator.getGameConfTags(scenario);
+                        return;
+               /*         tagNames=this.m_coordinator.getGameConfTags(scenario);
                         tagName=(String) tagNames.getFirst();
-                        gameConf=this.m_coordinator.getGameConfToTag(tagName);
+                        gameConf=this.m_coordinator.getGameConfToTag(tagName); */
                         
                     }
-                    
-                    
-                    
-                    
-                    
+                
                     GameTab tab = new GameTab(
                             m_coordinator,
                             m_tabbedPane,

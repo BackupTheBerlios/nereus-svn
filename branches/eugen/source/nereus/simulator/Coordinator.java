@@ -1,7 +1,7 @@
 /*
  * Dateiname      : Coordinator.java
  * Erzeugt        : 13. Mai 2003
- * Letzte Änderung: 11. Mai 2005 durch Eugen Volk
+ * Letzte Änderung: 14. Mai 2005 durch Eugen Volk
  * Autoren        : Daniel Friedrich
  *                  Eugen Volk
  *
@@ -424,22 +424,26 @@ public class Coordinator extends UnicastRemoteObject implements ICoordinator {
                                 + id.toString()
                                 +" zu simulieren.");*/
             Game tmpGame = (Game) m_games.get(id.toString());
-            if (tmpGame.wasStarted()) {
-                // restart, da Thread schon verbraucht
-                this.restartGame(id);
-            } else {
-                // normaler Start Thread wurde noch nicht verwendet.
-                tmpGame.start();
-            }
-            try {
-                Thread.sleep(400);
-            } catch (Exception e) {
-                throw new RemoteException("Inner Exception", e);
-            }
-        } else {
+            if (tmpGame.getAgents().size()>0){
+                
+                if (tmpGame.wasStarted()) {
+                    // restart, da Thread schon verbraucht
+                    this.restartGame(id);
+                } else {
+                    // normaler Start Thread wurde noch nicht verwendet.
+                    tmpGame.start();
+                }
+                try {
+                    Thread.sleep(400);
+                } catch (Exception e) {
+                    throw new RemoteException("Inner Exception", e);
+                }
+            }else throw new InvalidGameException("No Agents registred");
+        }else {
             // Spiel ist nicht registriert.
             throw new InvalidGameException(id.toString());
         }
+        
     }
     
     /**
@@ -457,10 +461,10 @@ public class Coordinator extends UnicastRemoteObject implements ICoordinator {
                          * füttern. Ansonsten wird kein neuer Thread erstellt und der alte
                          * kann nicht mehr verwendet werden.
                          */
+            String tmpGameName=tmpGame.getGameName(); // "Spiel" + m_gameCounter;
             m_gameCounter++;
             Game newGame =
-                    new Game(
-                    "Spiel" + m_gameCounter,
+                    new Game(tmpGameName,
                     m_informationHandler,
                     tmpGame);
             // ersetze im HT das alte durch das neue Spiel
