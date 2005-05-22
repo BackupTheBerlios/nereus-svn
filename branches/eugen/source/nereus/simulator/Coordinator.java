@@ -44,6 +44,7 @@ import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Vector;
+import java.util.Iterator;
 
 import nereus.utils.DataTransferObject;
 import nereus.utils.Id;
@@ -462,6 +463,11 @@ public class Coordinator extends UnicastRemoteObject implements ICoordinator {
                          * kann nicht mehr verwendet werden.
                          */
             String tmpGameName=tmpGame.getGameName(); // "Spiel" + m_gameCounter;
+            if (!tmpGame.isSimulationFinished()) try{
+                tmpGame.join();
+            }catch (InterruptedException ex){
+                System.out.println("tmpGame");
+            }
             m_gameCounter++;
             Game newGame =
                     new Game(tmpGameName,
@@ -470,6 +476,10 @@ public class Coordinator extends UnicastRemoteObject implements ICoordinator {
             // ersetze im HT das alte durch das neue Spiel
             m_games.remove(id.toString());
             m_games.put(id.toString(), newGame);
+            try{
+                tmpGame.stopAgentThreads();
+                tmpGame.stop();
+            }catch(Exception ex){}
             // starte dann Spiel neu.
             newGame.start();
         } else {
@@ -611,10 +621,16 @@ public class Coordinator extends UnicastRemoteObject implements ICoordinator {
         if (m_games.containsKey(gameId.toString())) {
             // hole Spiel
             Game tmpGame = (Game) m_games.get(gameId.toString());
+            tmpGame.stopAgentThreads();
             // lösche Spiel aus Server
             tmpGame.close();
-            tmpGame = null;
             m_games.remove(gameId.toString());
+            // Stoppe Game-Thread
+            try{
+                tmpGame.stop();
+            }catch (Exception exc){}
+            tmpGame = null;
+            
             return true;
         } else {
             throw new InvalidGameException(gameId.toString());

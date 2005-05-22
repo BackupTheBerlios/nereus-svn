@@ -1,7 +1,7 @@
 /*
  * Dateiname      : Game.java
  * Erzeugt        : 13. Mai 2003
- * Letzte Änderung:
+ * Letzte Änderung: 20. Mai 2005 durch Eugen Volk
  * Autoren        : Daniel Friedrich
  *
  *
@@ -35,6 +35,7 @@ import java.lang.reflect.Constructor;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
+import java.util.Iterator;
 
 import nereus.communication.interfaces.IMessagingAgent;
 import nereus.simulatorinterfaces.statistic.IStatisticScenario;
@@ -236,8 +237,8 @@ public class Game extends Thread {
                 Constructor cons = ((Class)m_agentClasses.get(
                         tmpAgent.getId().toString())).getConstructor(cParams);
                 Object[] params = new Object[2];
-                params[0] = tmpAgent.getId();
-                params[1] = tmpAgent.getAgentName();
+                params[0] = new Id(tmpAgent.getId().toString());
+                params[1] = new String(tmpAgent.getAgentName());
                 
                 AbstractAgent newAgent =
                         (AbstractAgent)cons.newInstance(params);
@@ -247,6 +248,9 @@ public class Game extends Thread {
                 m_scenario.addAgent(newAgent,
                         ((Double)this.getGameParameter(
                         "StartEnergy")).doubleValue());
+                try{
+                    tmpAgent.stop();
+                } catch (Exception e){}
             }catch(Exception e) {
                 System.out.println("Fehler beim Reaktivieren der Agenten.");
             }
@@ -531,7 +535,6 @@ public class Game extends Thread {
                         IVisualisation.StateMsg,
                         "Beende die Simulation des " + (i+1) + ". Experiments.");
                 
-                
             }
             m_simulationIsFinished = true;
             
@@ -623,4 +626,22 @@ public class Game extends Thread {
         return m_agentClasses;
     }
     
+    
+    /**
+     * Stoppt alle Agenten-Threads
+     */
+    public void stopAgentThreads(){
+        Iterator agentsIt=m_agents.values().iterator();
+        Thread thread;
+        while (agentsIt.hasNext()){
+            thread=(Thread)agentsIt.next();
+            agentsIt.remove();
+            try{
+                //   thread.interrupt();
+                thread.stop();
+            }catch (Exception ex){
+                //Stopped
+            }
+        }
+    }
 }

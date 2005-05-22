@@ -41,7 +41,7 @@
     <property name="unschaerfeEntfernung" wert="0.1" type="double" changeable="false"/>
     <property name="endbedingungMaxNektar" wert="0" type="int" changeable="true"/>
     <property name="endbedingungMaxHonig" wert="0" type="int" changeable="true"/>
-    <property name="endbedingungMaxRunden" wert="1000" type="int" changeable="true"/>
+    <property name="endbedingungMaxRunden" wert="200" type="int" changeable="true"/>
     <property name="endbedingung" wert="2000" type="int" changeable="true"/>
 </bienenstockconfig>
 

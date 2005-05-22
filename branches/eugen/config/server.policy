@@ -9,7 +9,7 @@ grant {
 	
 	// Lese-Rechte zum Auslesen der scenario- Daten
 	//permission java.io.FilePermission "..-", "read";
-	permission java.io.FilePermission "<<ALL FILES>>", "read";
+	permission java.io.FilePermission "<<ALL FILES>>", "read, write";
 
 	// Erlaubt, System-Property - user-Verzeichnis auszulesen
   	permission java.util.PropertyPermission "user.dir", "read";

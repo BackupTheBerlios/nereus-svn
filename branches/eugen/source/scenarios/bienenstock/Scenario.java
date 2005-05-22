@@ -1,7 +1,7 @@
 /*
  * Dateiname      : Scenario.java
  * Erzeugt        : 16. Oktober 2004
- * Letzte Änderung: 11. Mai 2005 durch Eugen Volk
+ * Letzte Änderung: 20. Mai 2005 durch Eugen Volk
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
  *                  Eugen Volk
@@ -51,8 +51,8 @@ import nereus.simulatorinterfaces.statistic.IStatisticScenario;
 import scenarios.bienenstock.einfacheUmgebung.EinfacheKarte;
 import scenarios.bienenstock.umgebung.Karte;
 import scenarios.bienenstock.umgebung.Bienenstock;
-import scenarios.bienenstock.statistik.StatistikBiene;
-import scenarios.bienenstock.statistik.Statistikmodul;
+import scenarios.bienenstock.statistik.StatistikBienenAgent;
+import scenarios.bienenstock.statistik.BienenStatistikKomponente;
 import nereus.simulatorinterfaces.IInformationHandler;
 import nereus.utils.Id;
 import nereus.utils.ParameterDescription;
@@ -188,9 +188,9 @@ public class Scenario
             = new BienenstockSzenarioHandler(this);
     
     /**
-     * @see statistik.Statistikmodul
+     * @see statistik.BienenStatistikKomponente
      */
-    private Statistikmodul statistik = null;
+    private BienenStatistikKomponente statistik = null;
     
     /**
      * enthält alle Statistikagenten für die aktuelle Runde.
@@ -244,14 +244,14 @@ public class Scenario
      */
     public Scenario() {
         super();
-       
+        
     }
     
     
     
     
-      
-   /**
+    
+    /**
      * Initialisiert die Werte m_gameId, visHandler und parameter.
      * Dient als ersatz des parametrisierten Konstruktors.
      *
@@ -384,7 +384,6 @@ public class Scenario
         //Vorsicht: Hard gecodeter Dateiname
         //    spielkarte = new Karte("scenario/bienenstock/gmlFile/test2.gml", this);
         spielkarte = new Karte(kartenPath, this);
-        
         timeout = ((Integer) parameter.gibWert("timeout")).intValue();
         bienenStoecke = spielkarte.bienenstoeckeSuchen();
         anzahlAngemeldeterAgenten = m_agents.size();
@@ -396,13 +395,9 @@ public class Scenario
             int id = mAgentIDs.size() + 1;
             mAgentIDs.put(new Integer(id), biene.getId().toString());
             biene.setHandler(szenariohandler);
-            biene.aktionscodeSetzen(spielkarte.bieneEinfuegen(id,
-                    biene.gibVolksID(),
-                    biene.getId()));
-        }
-        if (statistik != null) {
-            statistik.neueWerteSetzen(
-                    spielkarte.statistikBienenErstellen(statAgentIds));
+            long myActionCode=spielkarte.bieneEinfuegen(id,
+                    biene.gibVolksID(), biene.getId());
+            biene.aktionscodeSetzen(myActionCode);
         }
     }
     
@@ -498,10 +493,6 @@ public class Scenario
         synchronized (wartendeAnfragen) {
             wartendeAnfragen.setzeNull();
         }
-        if (statistik != null) {
-            statistik.neueWerteSetzen(
-                    spielkarte.statistikBienenErstellen(statAgentIds));
-        }
     }
     
     /**
@@ -510,10 +501,6 @@ public class Scenario
      */
     private synchronized void endphase() {
         phase = Konstanten.ENDPHASE;
-        if (statistik != null) {
-            statistik.neueWerteSetzen(
-                    spielkarte.statistikBienenErstellen(statAgentIds));
-        }
         System.out.println("SPIEL BEENDET.");
         
     }
@@ -611,7 +598,7 @@ public class Scenario
                         + "Konnte Anfrage nicht synchronisieren!");
             }
         }
-        
+        //(this.spielkarte!=null) &&
         if (spielkarte.aktionscodeGueltig(aktcode)) {
             return spielkarte.ausschnittErstellen(aktcode);
             
@@ -639,11 +626,9 @@ public class Scenario
         if (synchronisiereAktion(aktCode)) {
             // AUSFÜHRENDERAKTION
             erfolgreich = spielkarte.bieneStartenLassen(aktCode);
-            
             aktionAusgefuehrt(aktCode);
-            
-            return spielkarte.aktionscodeSetzen(aktCode);
-            
+            long newCode=spielkarte.aktionscodeSetzen(aktCode);
+            return newCode;
         } else {
             return 0L;
         }
@@ -670,8 +655,8 @@ public class Scenario
             erfolgreich = spielkarte.bieneFliegenLassen(aktCode, zielFeld);
             
             aktionAusgefuehrt(aktCode);
-            
-            return spielkarte.aktionscodeSetzen(aktCode);
+            long retValue=spielkarte.aktionscodeSetzen(aktCode);
+            return retValue;
             
         } else {
             return 0L;
@@ -699,8 +684,8 @@ public class Scenario
             
             aktionAusgefuehrt(aktCode);
             
-            
-            return spielkarte.aktionscodeSetzen(aktCode);
+            long retValue=spielkarte.aktionscodeSetzen(aktCode);
+            return retValue;
             
         } else {
             return 0L;
@@ -729,7 +714,9 @@ public class Scenario
             
             aktionAusgefuehrt(aktCode);
             
-            return spielkarte.aktionscodeSetzen(aktCode);
+            long retValue=spielkarte.aktionscodeSetzen(aktCode);
+            return retValue;
+            
             
         } else {
             return 0L;
@@ -770,7 +757,8 @@ public class Scenario
             
             aktionAusgefuehrt(aktCode);
             
-            return spielkarte.aktionscodeSetzen(aktCode);
+            long retValue=spielkarte.aktionscodeSetzen(aktCode);
+            return retValue;
             
         } else {
             return 0L;
@@ -831,7 +819,8 @@ public class Scenario
             
             aktionAusgefuehrt(aktCode);
             
-            return spielkarte.aktionscodeSetzen(aktCode);
+            long retValue=spielkarte.aktionscodeSetzen(aktCode);
+            return retValue;
             
         } else {
             return 0L;
@@ -924,6 +913,7 @@ public class Scenario
         while (!endbedingungTrifftZu()) {
             wartephase();
             bearbeitungsphase();
+            spielkarte.createRoundStatistik(this.statistik);
         }
         endphase();
         
@@ -945,43 +935,54 @@ public class Scenario
         rundennummer = 0;
         anzahlAngemeldeterAgenten = 0;
         this.bienenStoecke.clear();
-        this.m_parameter.clear();
+        //     this.m_parameter.clear();
         this.verfruehteAnfragen.clear();
-        this.statAgentIds.clear();
         this.m_agentsEnergy.clear();
-        this.m_agents.clear(); 
+        this.m_agents.clear();
+        this.mAgentIDs.clear();
+        this.m_scenarioHandler=null;
+        this.createNewScenarioHandler();
+        
+        this.bearbeitungsphaseMussWarten=false;
+        this.spielkarte=null;
+        this.wartendeAnfragen=null;
+        this.wartendeAnfragen = new ObjektWartendeAnfragen();
+        
+        //  this.wartendeAnfragen.setzeNull();
+        //    this.wartendeAnfragen.notify();
+        //   startphase();
     }
     
     
     
     
    /* public void reset() {
-		// Alte Identitäten wegwerfen
-		m_actionKeys.clear();
-		// Alle Parameterwerte reseten
-		m_activeAgents.clear();
-		m_numOfFinishedAgents = 0;
-		m_numOfActiveAgents = 0;
-		m_agentsEnergy.clear();
-		Enumeration agents = m_agents.elements();
-		// Flags wieder zurücksetzen.
-		m_canGetCalculations = false;
-		m_canStartNextRound = false;
-		m_enviroment = new IslandEnviroment();
-		try {
-			m_enviroment.createEnviroment(m_graphFile, m_attributeFile);
-		} catch (Exception e) {
-			System.out.println("Fehler:");
-			e.printStackTrace(System.out);
-		}
-		// Visualisierungen reseten
-		try {
-			m_visHandler.resetVisualisations(m_agents);
-		} catch (Exception e) {
-			e.printStackTrace(System.out);
-		}
-		m_agents.clear();
-	}*/
+                // Alte Identitäten wegwerfen
+                m_actionKeys.clear();
+                // Alle Parameterwerte reseten
+                m_activeAgents.clear();
+                m_numOfFinishedAgents = 0;
+                m_numOfActiveAgents = 0;
+                m_agentsEnergy.clear();
+                Enumeration agents = m_agents.elements();
+                // Flags wieder zurücksetzen.
+                m_canGetCalculations = false;
+                m_canStartNextRound = false;
+                m_enviroment = new IslandEnviroment();
+                try {
+                        m_enviroment.createEnviroment(m_graphFile, m_attributeFile);
+                } catch (Exception e) {
+                        System.out.println("Fehler:");
+                        e.printStackTrace(System.out);
+                }
+                // Visualisierungen reseten
+                try {
+                        m_visHandler.resetVisualisations(m_agents);
+                } catch (Exception e) {
+                        e.printStackTrace(System.out);
+                }
+                m_agents.clear();
+        }*/
     
     /**
      * gibt die Parameter des Szenarios zurück
@@ -1038,7 +1039,7 @@ public class Scenario
         return handler.getParameterListe();
     }
     
-  
+    
     
     /**
      * gibt eine Liste mit den Parametern, die dass Szenario benötigt zurück.
@@ -1201,18 +1202,20 @@ public class Scenario
      *                   Statistikkomponente erstellt werden soll
      * @return            die Statistikkomponente des Szenarios
      */
-    public IStatisticComponent createNewStatisticComponent(Vector agents) {
-        statAgentIds = agents;
-        HashSet statBienenOhneWerte = new HashSet();
-        //StatistikBienen instanziieren
-        int i;
-        for (i = 0; i < agents.size(); i++) {
-            statBienenOhneWerte.add(new StatistikBiene((Id) agents.get(i)));
+    public IStatisticComponent createNewStatisticComponent(Vector agentIds) {
+        this.mAgentIDs.get(agentIds);
+        int size=agentIds.size();
+        /* die Agenten IDs innerhalb von Scenario beginnen mit 1 ...*/
+        Vector scenarioAgentIDs=new Vector();
+        for (int i=1; i<=size; i++) {
+            scenarioAgentIDs.add(new Id(String.valueOf(i)));
         }
         //   statistik instanziieren
-        statistik = new Statistikmodul(statBienenOhneWerte);
-        return statistik;
+        this.statistik = new BienenStatistikKomponente(scenarioAgentIDs, m_parameter);
+        return this.statistik;
     }
+    
+    
     
     /**
      * gibt eine Liste mit allen Ststistikparametern zurück.
@@ -1222,6 +1225,7 @@ public class Scenario
     public Hashtable getEnviromentStatisticParameters() {
         Hashtable rueckgabe = new Hashtable();
         rueckgabe.put("Szenario", parameter.gibWert("ScenarioName"));
+        rueckgabe.putAll(this.m_parameter);
         return rueckgabe;
     }
 }

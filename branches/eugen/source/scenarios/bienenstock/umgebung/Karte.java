@@ -1,7 +1,7 @@
 /*
  * Dateiname      : Karte.java
  * Erzeugt        : 26. Juli 2004
- * Letzte Änderung: 9. Mai 2005 durch Eugen Volk
+ * Letzte Änderung: 20. Mai 2005 durch Eugen Volk
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
  *                  Eugen Volk
@@ -40,6 +40,8 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Vector;
 import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Set;
 import nereus.utils.Id;
 import nereus.simulatorinterfaces.AbstractEnviroment;
 import nereus.exceptions.InvalidAgentException;
@@ -47,7 +49,7 @@ import nereus.exceptions.FullEnviromentException;
 import nereus.exceptions.InvalidElementException;
 import scenarios.bienenstock.scenariomanagement.Konstanten;
 import scenarios.bienenstock.agenteninfo.Koordinate;
-import scenarios.bienenstock.statistik.StatistikBiene;
+import scenarios.bienenstock.statistik.StatistikBienenAgent;
 import nereus.utils.Parameter;
 import scenarios.bienenstock.Scenario;
 import scenarios.bienenstock.agenteninfo.Info;
@@ -64,7 +66,8 @@ import scenarios.bienenstock.visualisierungsUmgebung.VisBiene;
 import scenarios.bienenstock.visualisierungsUmgebung.VisFeld;
 import scenarios.bienenstock.visualisierungsUmgebung.VisBienenstock;
 import scenarios.bienenstock.visualisierungsUmgebung.VisBlume;
-
+import nereus.simulatorinterfaces.statistic.IStatisticComponent;
+import scenarios.bienenstock.statistik.BienenStatistikKomponente;
 
 /**
  * Die Spielkarte des Szanarios.
@@ -77,18 +80,18 @@ public class Karte extends AbstractEnviroment {
     /**
      * speichert die in einer Runde noch ausstehenden Aktionen
      */
-    private HashMap ausstehendeAktionen;
+    private Hashtable ausstehendeAktionen;
     
     /**
      * Alle angemeldeten Bienen sortiert nach ihrem Aktionscode.
      * @associates scenario.bienenstock.umgebung.Biene
      */
-    private HashMap bienenNachAC; // = new HashMap();
+    private Hashtable bienenNachAC; // = new HashMap();
     
     /**
      * Alle angemeldeten Bienen sortiert nach ihrer ID.
      */
-    private HashMap bienenNachID; // = new HashMap();
+    private Hashtable bienenNachID; // = new HashMap();
     
     /**
      * Alle Aktionscodes, die in der aktuellen Spielrunde
@@ -133,6 +136,8 @@ public class Karte extends AbstractEnviroment {
      */
     private Hashtable spielfeld;
     
+    
+    
     /**
      * Erstellt eine neue Instanz der Karte, bekommt mitgeteilt,
      * wo sich die gewünschte GML-Datei befindet und
@@ -149,13 +154,14 @@ public class Karte extends AbstractEnviroment {
         
         bienenstoecke = bienenstoeckeSuchen();
         
-        bienenNachAC = new HashMap();
-        bienenNachID = new HashMap();
-        ausstehendeAktionen = new HashMap();
+        bienenNachAC = new Hashtable();
+        bienenNachID = new Hashtable();
+        ausstehendeAktionen = new Hashtable();
         
         zufallsGenerator.setSeed(samen);
         
     }
+    
     
     /**
      * Nimmt die mitgeteilte Position eines Feldes und verfälscht diese.
@@ -311,7 +317,7 @@ public class Karte extends AbstractEnviroment {
      * @param originalSet das zu konvertierende Hash
      * @return Hashtable mit einfachen Bienen
      */
-    private Hashtable konvertiereBienenHash(HashMap originalSet) {
+    private Hashtable konvertiereBienenHash(Hashtable originalSet) {
         Iterator original = originalSet.values().iterator();
         Hashtable neuesTable = new Hashtable();
         
@@ -577,12 +583,14 @@ public class Karte extends AbstractEnviroment {
      * @param aktCode Aktionscode der zu suchenden Biene
      * @return Biene, odernull, wenn sie nicht gefunden werden konnte
      */
-    private Biene bieneSuchen(long aktCode) {
-        if (bienenNachAC.containsKey(new Long(aktCode))) {
-            return (Biene) bienenNachAC.get(new Long(aktCode));
-        } else {
-            //Wurde Biene nicht gefunden, so gib nichts zurück (null)
-            return null;
+    private  Biene bieneSuchen(long aktCode) {
+        synchronized(bienenNachAC){
+            if (bienenNachAC.containsKey(new Long(aktCode))) {
+                return (Biene) bienenNachAC.get(new Long(aktCode));
+            } else {
+                //Wurde Biene nicht gefunden, so gib nichts zurück (null)
+                return null;
+            }
         }
     }
     
@@ -679,7 +687,7 @@ public class Karte extends AbstractEnviroment {
      * @return ob alle Bienen verstorben sind
      */
     public boolean alleBienenTot() {
-        return bienenNachAC.isEmpty();
+        return bienenNachID.isEmpty();
     }
     
     
@@ -691,7 +699,7 @@ public class Karte extends AbstractEnviroment {
      * @param aktCode der Aktionscode des Agenten
      * @return den zu erstellenden Ausschnitt
      */
-    public EinfacheKarte ausschnittErstellen(long aktCode) {
+    public synchronized EinfacheKarte ausschnittErstellen(long aktCode) {
         
         if (bienenNachAC.containsKey(new Long(aktCode))) {
             
@@ -819,27 +827,7 @@ public class Karte extends AbstractEnviroment {
             return null;}
     }
     
-    /**
-     * erstellt die Bienen für die Statistikkomponente
-     *
-     * @param agentIds die ID's der zu erfassenden Bienen
-     * @return ein Hashset gefüllt mit StatistikBienen
-     */
-    public HashSet statistikBienenErstellen(Vector agentIds) {
-        HashSet statBienen = new HashSet();
-        Iterator enumBienenNachID = bienenNachID.values().iterator();
-        while (enumBienenNachID.hasNext()) {
-            Biene tmp = (Biene) enumBienenNachID.next();
-            if (agentIds.contains(tmp.gibSimId())) {
-                statBienen.add(new StatistikBiene(
-                        tmp.gibSimId(),
-                        tmp.gibGeladeneHonigmenge(),
-                        tmp.gibGeladeneNektarmenge(),
-                        konvertiereZustand(tmp.gibListenKennung())));
-            }
-        }
-        return statBienen;
-    }
+    
     
     /**
      * Gibt einen Schnappschuss der gesamten Karte
@@ -1531,7 +1519,7 @@ public class Karte extends AbstractEnviroment {
      *
      * @param aktionscode der Aktionscode der zu löschenden Biene
      */
-    public synchronized void bieneLoeschen(long aktionscode) {
+    public void bieneLoeschen(long aktionscode) {
         Biene zielBiene = bieneSuchen(aktionscode);
         
         //Agenten auf seine Löschung hinweisen
@@ -1551,7 +1539,7 @@ public class Karte extends AbstractEnviroment {
         
         //aus den Listen bienenNachXX löschen
         bienenNachAC.remove(new Long(zielBiene.gibAktionsCode()));
-        bienenNachID.remove(new Long(zielBiene.gibBienenID()));
+        bienenNachID.remove(new Integer(zielBiene.gibBienenID()));
         
         //aus der entsprechenden Liste des entsprechenden Feldes löschen
         //eigentlich falsch, weil es nicht entferneXXXBiene nutzt
@@ -1567,10 +1555,9 @@ public class Karte extends AbstractEnviroment {
      * @param alterAktionscode der alte Aktionscode
      * @return der neue Aktionscode
      */
-    public long aktionscodeSetzen(long alterAktionscode) {
+    public synchronized long aktionscodeSetzen(long alterAktionscode) {
+        
         Biene zielBiene = bieneSuchen(alterAktionscode);
-        
-        
         if (zielBiene == null) {
             return 0L;
         } else {
@@ -1578,38 +1565,42 @@ public class Karte extends AbstractEnviroment {
             long zufallsZahl = zufallsGenerator.nextLong();
             //so lange neue Zahlen probieren, bis eine gefunden wurde,
             //die noch nicht verwendet wurde
-            while (verwendeteAktionscodes.contains(new Long(zufallsZahl))
-            || (zufallsZahl == 0L)) {
-                zufallsZahl = zufallsGenerator.nextLong();
+            synchronized(verwendeteAktionscodes){
+                while (verwendeteAktionscodes.contains(new Long(zufallsZahl))
+                || (zufallsZahl == 0L)) {
+                    zufallsZahl = zufallsGenerator.nextLong();
+                }
+                //neuen Code dem Hash hinzufügen
+                verwendeteAktionscodes.add(new Long(zufallsZahl));
+                gueltigeAktionscodes.add(new Long(zufallsZahl));
             }
-            //neuen Code dem Hash hinzufügen
-            verwendeteAktionscodes.add(new Long(zufallsZahl));
-            gueltigeAktionscodes.add(new Long(zufallsZahl));
-            
             //Verweis löschen wenn existiert
             if (bienenNachAC.containsKey(new Long(
-                    zielBiene.gibAktionsCode()))) {
-                bienenNachAC.remove(new Long(zielBiene.gibAktionsCode()));
+                    zielBiene.gibAktionsCode()))){
+                synchronized(bienenNachAC){
+                    bienenNachAC.remove(new Long(zielBiene.gibAktionsCode()));
+                }
             }
             
             //neuen Code in der Biene aus bienen setzen
             zielBiene.setzeAktionsCode(zufallsZahl);
-            
-            //Verweise neu setzen
-            bienenNachAC.put(new Long(zielBiene.gibAktionsCode()), zielBiene);
+            synchronized(bienenNachAC){
+                //Verweise neu setzen
+                bienenNachAC.put(new Long(zielBiene.gibAktionsCode()), zielBiene);
+            }
             return zufallsZahl;
         }
     }
     
     /**
-     * Setzt für die Biene, identifiziert durch ihre ID,
+     * Setzt für die Biene, dentifiziert durch ihre ID,
      * einen neuen Aktionscode.
      * Rückgabewert ist der neue Aktionscode.
      *
      * @param bieneID die ID der Biene die einen neuen Aktionscode bekommt
      * @return der neue Aktionscode
      */
-    public long aktionscodeSetzen(int bieneID) {
+    public synchronized long aktionscodeSetzen(int bieneID) {
         Biene zielBiene = bieneSuchen(bieneID);
         
         if (zielBiene == null) {
@@ -1649,8 +1640,9 @@ public class Karte extends AbstractEnviroment {
      * @param aktCode der Aktionscode der geprüft werden soll
      * @return ob der Aktionscode gueltig ist
      */
-    public boolean aktionscodeGueltig(long aktCode) {
-        return gueltigeAktionscodes.contains(new Long(aktCode));
+    public synchronized boolean aktionscodeGueltig(long aktCode) {
+        boolean retValue=gueltigeAktionscodes.contains(new Long(aktCode));
+        return retValue;
     }
     
     /**
@@ -1660,7 +1652,8 @@ public class Karte extends AbstractEnviroment {
      * @return ob der Aktionscode gültig war
      */
     public boolean aktionscodeEntwerten(long aktCode) {
-        return gueltigeAktionscodes.remove(new Long(aktCode));
+        boolean retValue=gueltigeAktionscodes.remove(new Long(aktCode));
+        return retValue;
     }
     
     /**
@@ -1671,7 +1664,7 @@ public class Karte extends AbstractEnviroment {
      */
     public void neueRunde() {
         
-        HashMap neueAusstehendeAktionen = new HashMap();
+        Hashtable neueAusstehendeAktionen = new Hashtable();
         Iterator iterKeyAusstehendeAktionen
                 = ausstehendeAktionen.keySet().iterator();
         boolean tmpVal;
@@ -1743,6 +1736,37 @@ public class Karte extends AbstractEnviroment {
      */
     public void removeAgentFromEnviroment(Id agentId)
     throws InvalidAgentException { }
+    
+    /**
+     * liest die statistischen Werte von jeder Biene aus.
+     *
+     * @param statistik statistische Komponente zur Erfassung der statistischen
+     * Werten.
+     * @return true, falls die Efassung erfolgreich war.
+     *
+     */
+    public boolean createRoundStatistik(IStatisticComponent statistik){
+        if (statistik==null) return false;
+        Set bienenIDs=bienenNachID.keySet();
+        Iterator idIt=bienenIDs.iterator();
+        boolean statistikErfolgreich=true;
+        while(idIt.hasNext()){
+            Id id=(Id)new Id(idIt.next().toString());
+            Biene biene=(Biene)bienenNachID.get(new Integer(id.toString()));
+            try{
+                int honig=biene.gibGeladeneHonigmenge();
+                statistik.addInformation(id, BienenStatistikKomponente.HONIG, new Integer(honig));
+                int nektar=biene.gibGeladeneNektarmenge();
+                statistik.addInformation(id, BienenStatistikKomponente.NEKTAR, new Integer(nektar));
+            }catch (Exception exc){
+                System.out.println("FEHLER bei der Statistik Erfassung");
+                exc.printStackTrace();
+                statistikErfolgreich=false;
+            }
+        }
+        return statistikErfolgreich;
+    }
+    
     
     
 }

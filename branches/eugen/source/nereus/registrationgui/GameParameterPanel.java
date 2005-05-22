@@ -501,7 +501,7 @@ public class GameParameterPanel
             System.out.println("Fehler: Das Spiel kann nicht gestartet werden.");
             this.m_parent.writeStatusMessage("Das Spiel konnte nicht gestartet werden, " +
                     "uberpruefen sie ob die Agenten registriert wurden.");
-       //     re.printStackTrace(System.out);
+            re.printStackTrace(System.out);
         }
     }
     
