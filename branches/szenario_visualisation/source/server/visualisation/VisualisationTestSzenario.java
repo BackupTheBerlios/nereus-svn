@@ -1,7 +1,7 @@
 /*
- * Dateiname      : IVisualisationServerExtern.java
- * Erzeugt        : 19. Mai 2005
- * Letzte Änderung: 19. Mai 1005 durch Samuel Walz
+ * Dateiname      : VisualisationServer.java
+ * Erzeugt        : 22. Mai 2005
+ * Letzte Änderung: 22. Mai 1005 durch Samuel Walz
  * Autoren        : Samuel Walz (samuel@gmx.info)
  *                  
  *
@@ -24,23 +24,32 @@
  */
 package source.server.visualisation;
 
-import java.rmi.Remote;
-import java.rmi.RemoteException;
-import java.util.LinkedList;
-
 /**
  *
- * @author Samuel Walz
+ * @author  Samuel Walz
  */
-public interface IVisualisationServerExtern extends Remote {
-    /**
-     * Gibt den Ausschnitt der Informationen zu einem Spiel ab einer 
-     * gewünschten Position zurück.
-     *
-     * @param spielID             ID des gewünschten Spiels
-     * @param ausschnittsbeginn   eine ganzzahlige Zahl größer -1 (>0)
-     * @return                    eine Liste der gewünschten Informationen
-     */
-    LinkedList gibSpielInformationen (int spielID, int ausschnittsbeginn)
-                throws RemoteException;
+public class VisualisationTestSzenario {
+    
+    /** Creates a new instance of VisualisationTestSzenario */
+    public VisualisationTestSzenario() {
+        try {
+            VisualisationServer unserServer = new VisualisationServer();
+            int i = 0;
+            for(i=0; i<=5; i++) {
+                unserServer.speichereSpielInformationen(23, "hammer No." + i);
+            }
+            
+                synchronized(this) {
+                    this.wait(120000);
+                }
+            
+        } catch(Exception fehler) {
+            System.out.println(fehler.getMessage());
+        }
+    }
+    
+    public static void main(String args[]) {
+        VisualisationTestSzenario testSzenario = new VisualisationTestSzenario();
+    }
+    
 }

@@ -1,5 +1,5 @@
 /*
- * Dateiname      : IVisualisationServer.java
+ * Dateiname      : VisualisationServer.java
  * Erzeugt        : 19. Mai 2005
  * Letzte Änderung: 19. Mai 1005 durch Samuel Walz
  * Autoren        : Samuel Walz (samuel@gmx.info)
@@ -26,32 +26,90 @@ package source.server.visualisation;
 
 import java.rmi.Naming;
 import java.rmi.server.UnicastRemoteObject;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.LinkedList;
+import java.util.ListIterator;
+import java.util.HashMap;
 
 /**
  *
  * @author Samuel Walz
  */
-public class VisualisationServer extends Thread implements IVisualisationServerIntern, IVisualisationServerExtern {
+public class VisualisationServer extends UnicastRemoteObject 
+        implements IVisualisationServerIntern, IVisualisationServerExtern {
     
-    
+    private static HashMap informationsspeicher = new HashMap();
     
     /** 
      * Creates a new instance of VisualisationServer 
      */
-    public VisualisationServer() {
-        start();
-        UnicastRemoteObject.exportObject(this);
-        Naming.rebind("VisualisationServer", this);
+    public VisualisationServer() throws RemoteException{
+        System.out.println("Melde den VisualisationServer an...");
+        UnicastRemoteObject.unexportObject((Remote)this, true);
+        UnicastRemoteObject.exportObject((Remote)this);
+        try {
+            Naming.rebind("VisualisationServer", this);
+        } catch(Exception fehler) {
+            System.out.println(fehler.getMessage());
+        }
     }
     
-    public LinkedList gibSpielInformationen(int spielID, int ausschnittsbeginn) {
+    /**
+     * Erstellt eine neue Liste, die den Inhalt der übergebenen ab einer
+     * bestimmten Position enthält.
+     *
+     * @param liste                Eine Liste
+     * @param ausschnittsbeginn    natürliche Zahl größer Null
+     * @return                     der gewünschte Ausschnitt
+     */
+    private LinkedList erstelleAusschnitt (LinkedList liste, 
+                                           int ausschnittsbeginn) {
+        
+        LinkedList listenausschnitt = new LinkedList();
+        ListIterator listenlaeufer = liste.listIterator(ausschnittsbeginn);
+        while (listenlaeufer.hasNext()) {
+            listenausschnitt.add(listenlaeufer.next());
+        }
+        
+        return listenausschnitt;
     }
     
-    public void speichereSpielInformationen(java.lang.Object information) {
+    /**
+     * Gibt die Spielinformationen zu einem bestimmten Spiel zurück.
+     *
+     * @param spielID
+     * @param ausschnittsbeginn      natürliche Zahl größer -1
+     */
+    public LinkedList gibSpielInformationen(int spielID, int ausschnittsbeginn) 
+            throws RemoteException {
+        //Informationen suchen und zurückgeben
+        if (informationsspeicher.containsKey(new Integer(spielID))) {
+            return erstelleAusschnitt(
+                (LinkedList)informationsspeicher.get(new Integer(spielID)), 
+                ausschnittsbeginn);
+        } else {
+            //Sind noch keine Informationen vorhanden, wird null zurückgegeben
+            return new LinkedList();
+        }
     }
     
-    public void run() {
+    /**
+     * 
+     */
+    public void speichereSpielInformationen(int spielID, 
+            java.lang.Object information) {
+        //Existiert für das Spiel schon eine List?
+        if (! informationsspeicher.containsKey(new Integer(spielID))) {
+            //Falls nicht, dann legen wir eine neue an
+            informationsspeicher.put(new Integer(spielID), new LinkedList());
+        }
+        
+        //Die neue Information an die Liste anhängen
+        ((LinkedList)informationsspeicher.get(new Integer(spielID))).add(information);
+        
+        //Eventuell wartende Threads wecken
+        this.notifyAll();
         
     }
     

@@ -1,5 +1,5 @@
 /*
- * Dateiname      : IVisualisationServer.java
+ * Dateiname      : IVisualisationServerIntern.java
  * Erzeugt        : 18. Mai 2005
  * Letzte Änderung: 19. Mai 1005 durch Samuel Walz
  * Autoren        : Samuel Walz (samuel@gmx.info)
@@ -46,6 +46,7 @@ public interface IVisualisationServerIntern {
     /**
      * Speichert die Informationen eines Spiels.
      */
-    void speichereSpielInformationen (java.lang.Object information);
+    public void speichereSpielInformationen (int spielID, 
+            java.lang.Object information);
     
 }
