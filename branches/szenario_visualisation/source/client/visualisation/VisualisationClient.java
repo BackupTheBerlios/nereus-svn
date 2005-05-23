@@ -1,7 +1,7 @@
 /*
- * Dateiname      : IVisualisationServer.java
+ * Dateiname      : VisualisationClient.java
  * Erzeugt        : 19. Mai 2005
- * Letzte Änderung: 19. Mai 1005 durch Samuel Walz
+ * Letzte Änderung: 22. Mai 1005 durch Samuel Walz
  * Autoren        : Samuel Walz (samuel@gmx.info)
  *                  
  *
@@ -24,16 +24,16 @@
  */
 package source.client.visualisation;
 
-import java.rmi.*;
+import java.rmi.Naming;
 import source.server.visualisation.IVisualisationServerExtern;
-import source.client.visualisation.IVisualisation;
 import java.util.LinkedList;
+import java.util.ListIterator;
 
 /**
  *
  * @author  sam
  */
-public class VisualisationClient extends Thread {
+public class VisualisationClient {
     
     private static String serverAdresse = "127.0.0.1:1099/VisualisationServer";
     
@@ -41,49 +41,71 @@ public class VisualisationClient extends Thread {
     
     private int ausschnittsbeginn = 0;
     
+    private LinkedList spielinformationen = new LinkedList();
+    
     /** 
      * Creates a new instance of VisualisationClient 
      */
     public VisualisationClient(String adresse, int spiel) {
         serverAdresse = adresse;
         spielID = spiel;
-        start();
+        kontaktiereServer();
     }
     
     public VisualisationClient(int spiel) {
         spielID = spiel;
-        start();
+        kontaktiereServer();
     }
     
-    public void run() {
-        IVisualisationServerExtern visServer = 
-            (IVisualisationServerExtern) Naming.lookup("rmi://" 
-                                                        + serverAdresse);
+    public void kontaktiereServer() {
+        try {
+             IVisualisationServerExtern visServer = 
+                (IVisualisationServerExtern) Naming.lookup("rmi://" 
+                                                       + serverAdresse);
+             
+            Visualisation visClient = new Visualisation();
+            visClient.run();
         
-        IVisualisation visClient = new IVisualisation();
-        
-        //Abholen der Spiel-Informationen am Server
-        while (true) {
-            LinkedList informationen = 
-                visServer.gibSpielInformationen(spielID, ausschnittsbeginn);
+            //Abholen der Spiel-Informationen am Server
+            while (visClient.isAlive()) {
+                LinkedList informationen = 
+                    visServer.gibSpielInformationen(spielID, ausschnittsbeginn);
             
-            /*
-             * Wird eine leere Liste übergeben, so wird auf weitere
-             * Informationen gewartet.
-             */
-            if (informationen.isEmpty()) {
-                synchronized (visServer) {
-                    visServer.wait();
-                }
-            } else {
-                //Weitergeben der Informationen an die Visualisierung
+                ListIterator listenlaeufer = informationen.listIterator();
+                /*
+                * Wird eine leere Liste übergeben, so wird auf weitere
+                * Informationen gewartet.
+                */
+                if (! listenlaeufer.hasNext()) {
+                    synchronized (visServer) {
+                        visServer.wait(2000);
+                    }
+                } else {
+                    //Weitergeben der Informationen an die Visualisierung
+                    while (listenlaeufer.hasNext()) {
+                        visClient.visualisiere(listenlaeufer.next());
+                        ausschnittsbeginn = ausschnittsbeginn + 1;
+                    }
                 
+                }
             }
+        } catch(Exception fehler) {
+            System.out.println(fehler.getMessage());
         }
     }
     
-    public void main(String args[]) {
-        start();
+    public static void main(String args[]) {
+        System.out.println("Client ist gestartet...");
+        if (args.length >= 2) {
+            VisualisationClient unserClient = new VisualisationClient(args[0], 
+                                                 Integer.parseInt(args[1]));
+            //unserClient.kontaktiereServer();
+        } else {
+            System.out.println("Bitte geben Sie Serveradresse, Port, Servername"
+                    + " und die Spiel-ID an.\n"
+                    + "(z.B.: 127.0.0.1:1099/VisualisationServer 23)");
+        }
+        System.out.println("...Client wurde beendet.");
     }
     
 }

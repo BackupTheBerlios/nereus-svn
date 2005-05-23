@@ -1,7 +1,7 @@
 /*
- * Dateiname      : IVisualisationServer.java
+ * Dateiname      : Visualisation.java
  * Erzeugt        : 19. Mai 2005
- * Letzte Änderung: 19. Mai 1005 durch Samuel Walz
+ * Letzte Änderung: 22. Mai 1005 durch Samuel Walz
  * Autoren        : Samuel Walz (samuel@gmx.info)
  *                  
  *
@@ -24,12 +24,33 @@
  */
 package source.client.visualisation;
 
+import source.client.visualisation.IVisualisation;
+
 /**
+ * Die Dummy-Klasse Visualisation.
  *
  * @author  Samuel Walz
  */
-interface IVisualisation {
+public class Visualisation extends Thread implements IVisualisation {
     
-    public void visualisiere(java.lang.Object information);
+    /** Creates a new instance of Visualisation */
+    public Visualisation() {
+    }
+    
+    public void run() {
+        System.out.println("Visualisierung wurde gestartet...");
+        synchronized(this) {
+            try {
+                this.wait(60000);
+            } catch(Exception fehler) {
+                System.out.println(fehler.getMessage());
+            }
+        }
+        System.out.println("...und beendet.");
+    }
+    
+    public void visualisiere(java.lang.Object information) {
+        System.out.println((String)information);
+    }
     
 }
