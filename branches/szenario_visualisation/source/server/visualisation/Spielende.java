@@ -1,7 +1,7 @@
 /*
- * Dateiname      : VisualisationServer.java
- * Erzeugt        : 22. Mai 2005
- * Letzte Änderung: 22. Mai 1005 durch Samuel Walz
+ * Dateiname      : IVisualisationServer.java
+ * Erzeugt        : 26. Mai 2005
+ * Letzte Änderung: 26. Mai 1005 durch Samuel Walz
  * Autoren        : Samuel Walz (samuel@gmx.info)
  *                  
  *
@@ -25,32 +25,24 @@
 
 package source.server.visualisation;
 
+import java.io.Serializable;
+
 /**
+ * Markiert in einer LinkedList mit Informationsobjekten das Ende eines Spiels.
  *
  * @author  Samuel Walz
  */
-public class VisualisationTestSzenario {
+public class Spielende implements Serializable {
     
-    /** Creates a new instance of VisualisationTestSzenario */
-    public VisualisationTestSzenario() {
-        try {
-            VisualisationServer unserServer = new VisualisationServer();
-            int i = 0;
-            for(i=0; i<=5; i++) {
-                unserServer.speichereSpielInformationen(23, "hammer No." + i);
-            }
-            
-                synchronized(this) {
-                    this.wait(120000);
-                }
-            
-        } catch(Exception fehler) {
-            System.out.println(fehler.getMessage());
-        }
+    private static long zeitDesSpielendes = 0L;
+    
+    /** Creates a new instance of Spielende */
+    public Spielende(long endZeit) {
+        zeitDesSpielendes = endZeit;
     }
     
-    public static void main(String args[]) {
-        VisualisationTestSzenario testSzenario = new VisualisationTestSzenario();
+    public long gibEndZeit() {
+        return zeitDesSpielendes;
     }
     
 }

@@ -1,11 +1,11 @@
 /*
  * Dateiname      : IVisualisationServerIntern.java
  * Erzeugt        : 18. Mai 2005
- * Letzte Ã„nderung: 19. Mai 1005 durch Samuel Walz
+ * Letzte Änderung: 26. Mai 1005 durch Samuel Walz
  * Autoren        : Samuel Walz (samuel@gmx.info)
  *                  
  *
- * Diese Datei gehÃ¶rt zum Projekt Nereus (http://nereus.berlios.de/).
+ * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  *
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -22,31 +22,44 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+
 package source.server.visualisation;
 
+import java.io.Serializable;
+
 /**
- * Speichert die Informationen aller Spiele die fÃ¼r eine Visualisierung
- * notwendig sein kÃ¶nnten und gibt sie auf Anfrage an interessierte
- * Clients weiter.
- * 
- * Die ankommenden Informationen der laufenden Spiele werden
- * sortiert, nach der ID des zugehÃ¶rigen Spieles und der Reihenfolge
- * in der sie von einem Spiel angeliefert werden, abgespeichert.
- * Hierzu werden die Informationen eines Spiels mit der Zahl Null 
- * beginnend und aufsteigend durchnummeriert.
- * Ein interessierter Client gibt dann an, an welchen Informationen
- * er Interesse hat, indem er die ID des Spieles und den Ausschnittsbeginn
- * angibt. Er bekommt dann in einer Liste alle Informationen zurÃ¼ck,
- * deren Nummer grÃ¶ÃŸer oder gleich dem gewÃ¼nschten Ausschnittsbeginn ist.
+ * Die Schnittstelle der Server-Vis-Komponente für das Szenario.
  * 
  * @author  Samuel Walz
  */
 public interface IVisualisationServerIntern {
     
     /**
-     * Speichert die Informationen eines Spiels.
+     * Meldet ein Spiel für die Speicherung seiner Informationen an.
+     * Gibt eine Zahl zurück, die als Authentifizierung für die Übergabe
+     * der Informationen dient, damit diese dem richtigen Spiel zugeordnet
+     * werden können. 
+     *
+     * @param spielID
+     * @param wartezeit
+     * @return             Eine natürliche Zahl größer Null.
      */
-    public void speichereSpielInformationen (int spielID, 
-            java.lang.Object information);
+    public long spielAnmelden (int spielID, int wartezeit) throws Exception;
+    
+    /**
+     * Speichert die Informationen eines Spiels.
+     *
+     * @param authCode       Eine natürliche Zahl größer Null.
+     * @param information
+     */
+    public void speichereSpielInformationen (long authCode, 
+            Serializable information);
+    
+    /**
+     * Meldet ein Spiel für die Speicherungen von Informationen ab.
+     *
+     * @param authCode   Eine natürliche Zahl größer Null.
+     */
+    public void spielAbmelden (long authCode);
     
 }

@@ -1,7 +1,7 @@
 /*
  * Dateiname      : IVisualisationServerExtern.java
  * Erzeugt        : 19. Mai 2005
- * Letzte Änderung: 19. Mai 1005 durch Samuel Walz
+ * Letzte Änderung: 26. Mai 1005 durch Samuel Walz
  * Autoren        : Samuel Walz (samuel@gmx.info)
  *                  
  *
@@ -22,6 +22,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+
 package source.server.visualisation;
 
 import java.rmi.Remote;
@@ -29,10 +30,12 @@ import java.rmi.RemoteException;
 import java.util.LinkedList;
 
 /**
+ * Die Schnittstelle der Server-Vis-Komponente für die Client-Vis-Komponente.
  *
  * @author Samuel Walz
  */
 public interface IVisualisationServerExtern extends Remote {
+    
     /**
      * Gibt den Ausschnitt der Informationen zu einem Spiel ab einer 
      * gewünschten Position zurück.
