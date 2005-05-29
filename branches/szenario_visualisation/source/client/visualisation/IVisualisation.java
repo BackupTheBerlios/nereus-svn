@@ -1,7 +1,7 @@
 /*
  * Dateiname      : IVisualisationServer.java
  * Erzeugt        : 19. Mai 2005
- * Letzte Änderung: 19. Mai 1005 durch Samuel Walz
+ * Letzte Änderung: 26. Mai 1005 durch Samuel Walz
  * Autoren        : Samuel Walz (samuel@gmx.info)
  *                  
  *
@@ -22,6 +22,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+
 package source.client.visualisation;
 
 /**

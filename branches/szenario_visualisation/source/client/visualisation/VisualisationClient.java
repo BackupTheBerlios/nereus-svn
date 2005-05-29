@@ -1,7 +1,7 @@
 /*
  * Dateiname      : VisualisationClient.java
  * Erzeugt        : 19. Mai 2005
- * Letzte Änderung: 22. Mai 1005 durch Samuel Walz
+ * Letzte Änderung: 26. Mai 1005 durch Samuel Walz
  * Autoren        : Samuel Walz (samuel@gmx.info)
  *                  
  *
@@ -22,26 +22,33 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+
 package source.client.visualisation;
 
 import java.rmi.Naming;
+import java.rmi.RemoteException;
 import source.server.visualisation.IVisualisationServerExtern;
 import java.util.LinkedList;
 import java.util.ListIterator;
+import java.io.Serializable;
 
 /**
  *
  * @author  sam
  */
-public class VisualisationClient {
+public class VisualisationClient extends Thread implements IVisualisationClient{
     
     private static String serverAdresse = "127.0.0.1:1099/VisualisationServer";
     
     private static int spielID = 0;
     
+    private static Integer wartezeit = new Integer(2000);
+    
     private int ausschnittsbeginn = 0;
     
     private LinkedList spielinformationen = new LinkedList();
+    
+    private boolean alleInformationenAbgeholt = false;
     
     /** 
      * Creates a new instance of VisualisationClient 
@@ -49,25 +56,33 @@ public class VisualisationClient {
     public VisualisationClient(String adresse, int spiel) {
         serverAdresse = adresse;
         spielID = spiel;
-        kontaktiereServer();
+        
+        start();
     }
     
     public VisualisationClient(int spiel) {
         spielID = spiel;
-        kontaktiereServer();
+        
+        start();
     }
     
-    public void kontaktiereServer() {
+
+    public void run() {
         try {
+            // Die Client-Vis-Komponente an der Server-Vis-Komponente anmelden
              IVisualisationServerExtern visServer = 
                 (IVisualisationServerExtern) Naming.lookup("rmi://" 
                                                        + serverAdresse);
              
-            Visualisation visClient = new Visualisation();
-            visClient.run();
-        
-            //Abholen der Spiel-Informationen am Server
-            while (visClient.isAlive()) {
+             // Die empfohlene Wartezeit erfragen
+             
+             
+             // Die Visualisierung starten
+             Visualisation visualisierung = new Visualisation();
+             visualisierung.start();
+             
+             while (alleInformationenAbgeholt && visualisierung.isAlive()) {
+             
                 LinkedList informationen = 
                     visServer.gibSpielInformationen(spielID, ausschnittsbeginn);
             
@@ -77,21 +92,33 @@ public class VisualisationClient {
                 * Informationen gewartet.
                 */
                 if (! listenlaeufer.hasNext()) {
-                    synchronized (visServer) {
-                        visServer.wait(2000);
+                    
+                    synchronized (wartezeit) {
+                        wartezeit.wait(wartezeit.intValue());
                     }
+                    
                 } else {
+                    
                     //Weitergeben der Informationen an die Visualisierung
                     while (listenlaeufer.hasNext()) {
-                        visClient.visualisiere(listenlaeufer.next());
-                        ausschnittsbeginn = ausschnittsbeginn + 1;
+                        Object information = 
+                                (Object)listenlaeufer.next();
+                        String klassenName = information.getClass().getName();
+                        if (! klassenName.equals("Spielende")) {
+                            visualisierung.visualisiere(information);
+                            ausschnittsbeginn = ausschnittsbeginn + 1;
+                        } else {
+                            alleInformationenAbgeholt = true;
+                        }
                     }
                 
                 }
-            }
-        } catch(Exception fehler) {
+                
+             }
+        } catch (Exception fehler) {
             System.out.println(fehler.getMessage());
         }
+            
     }
     
     public static void main(String args[]) {
@@ -107,5 +134,7 @@ public class VisualisationClient {
         }
         System.out.println("...Client wurde beendet.");
     }
+    
+    
     
 }
