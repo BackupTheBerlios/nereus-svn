@@ -1,7 +1,7 @@
 /*
  * Dateiname      : VisualisationClient.java
  * Erzeugt        : 19. Mai 2005
- * Letzte Änderung: 26. Mai 1005 durch Samuel Walz
+ * Letzte Änderung: 30. Mai 1005 durch Samuel Walz
  * Autoren        : Samuel Walz (samuel@gmx.info)
  *                  
  *
@@ -27,10 +27,15 @@ package source.client.visualisation;
 
 import java.rmi.Naming;
 import java.rmi.RemoteException;
+import java.rmi.NotBoundException;
+import java.net.MalformedURLException;
+import java.lang.InterruptedException;
 import source.server.visualisation.IVisualisationServerExtern;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.ListIterator;
 import java.io.Serializable;
+import source.server.visualisation.Spielende;
 
 /**
  *
@@ -68,6 +73,7 @@ public class VisualisationClient extends Thread implements IVisualisationClient{
     
 
     public void run() {
+        System.out.println("Client ist gestartet...");
         try {
             // Die Client-Vis-Komponente an der Server-Vis-Komponente anmelden
              IVisualisationServerExtern visServer = 
@@ -81,8 +87,8 @@ public class VisualisationClient extends Thread implements IVisualisationClient{
              Visualisation visualisierung = new Visualisation();
              visualisierung.start();
              
-             while (alleInformationenAbgeholt && visualisierung.isAlive()) {
-             
+             while ((! alleInformationenAbgeholt) && visualisierung.isAlive()) {
+                System.out.println("hole informationen...");
                 LinkedList informationen = 
                     visServer.gibSpielInformationen(spielID, ausschnittsbeginn);
             
@@ -93,18 +99,21 @@ public class VisualisationClient extends Thread implements IVisualisationClient{
                 */
                 if (! listenlaeufer.hasNext()) {
                     
+                    System.out.println("Habe eine leere Liste erhalten...");
+                    
                     synchronized (wartezeit) {
                         wartezeit.wait(wartezeit.intValue());
                     }
                     
                 } else {
                     
+                    System.out.println("Liste enthält Informationen...");
                     //Weitergeben der Informationen an die Visualisierung
                     while (listenlaeufer.hasNext()) {
                         Object information = 
                                 (Object)listenlaeufer.next();
-                        String klassenName = information.getClass().getName();
-                        if (! klassenName.equals("Spielende")) {
+      
+                        if (! (information instanceof Spielende)) {
                             visualisierung.visualisiere(information);
                             ausschnittsbeginn = ausschnittsbeginn + 1;
                         } else {
@@ -115,14 +124,25 @@ public class VisualisationClient extends Thread implements IVisualisationClient{
                 }
                 
              }
-        } catch (Exception fehler) {
-            System.out.println(fehler.getMessage());
+        } catch (MalformedURLException fehler) {
+            System.out.println("Server-URL fehlerhaft!\n" 
+                                + fehler.getMessage());
+        } catch (RemoteException fehler) {
+            System.out.println("Server nicht gefunden!\n" 
+                                + fehler.getMessage());
+        } catch (NotBoundException fehler) {
+            System.out.println("Server-Vis-Komponente nicht gefunden!\n" 
+                                + fehler.getMessage());
+        } catch (InterruptedException fehler) {
+            System.out.println("Warten fehlgeschlagen!\n" 
+                                + fehler.getMessage());
         }
-            
+        
+        System.out.println("Client hat sich beendet...");
     }
     
     public static void main(String args[]) {
-        System.out.println("Client ist gestartet...");
+        System.out.println("Client wird gestartet...");
         if (args.length >= 2) {
             VisualisationClient unserClient = new VisualisationClient(args[0], 
                                                  Integer.parseInt(args[1]));
@@ -132,7 +152,6 @@ public class VisualisationClient extends Thread implements IVisualisationClient{
                     + " und die Spiel-ID an.\n"
                     + "(z.B.: 127.0.0.1:1099/VisualisationServer 23)");
         }
-        System.out.println("...Client wurde beendet.");
     }
     
     
