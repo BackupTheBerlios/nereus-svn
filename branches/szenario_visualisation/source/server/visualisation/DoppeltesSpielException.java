@@ -1,6 +1,6 @@
 /*
- * Dateiname      : IVisualisationServerExtern.java
- * Erzeugt        : 19. Mai 2005
+ * Dateiname      : DoppeltesSpielException.java
+ * Erzeugt        : 30. Mai 2005
  * Letzte Änderung: 30. Mai 1005 durch Samuel Walz
  * Autoren        : Samuel Walz (samuel@gmx.info)
  *                  
@@ -25,25 +25,24 @@
 
 package source.server.visualisation;
 
-import java.rmi.Remote;
-import java.rmi.RemoteException;
-import java.util.LinkedList;
-
 /**
- * Die Schnittstelle der Server-Vis-Komponente für die Client-Vis-Komponente.
  *
- * @author Samuel Walz
+ * @author  Samuel Walz
  */
-public interface IVisualisationServerExtern extends Remote {
+public class DoppeltesSpielException extends java.lang.Exception {
     
     /**
-     * Gibt den Ausschnitt der Informationen zu einem Spiel ab einer 
-     * gewünschten Position zurück.
-     *
-     * @param spielID             ID des gewünschten Spiels
-     * @param ausschnittsbeginn   eine ganzzahlige Zahl größer -1 (>0)
-     * @return                    eine Liste der gewünschten Informationen
+     * Creates a new instance of <code>doppeltesSpielException</code> without detail message.
      */
-    public LinkedList gibSpielInformationen (int spielID, int ausschnittsbeginn)
-                throws RemoteException;
+    public DoppeltesSpielException() {
+    }
+    
+    
+    /**
+     * Constructs an instance of <code>doppeltesSpielException</code> with the specified detail message.
+     * @param msg the detail message.
+     */
+    public DoppeltesSpielException(String msg) {
+        super(msg);
+    }
 }

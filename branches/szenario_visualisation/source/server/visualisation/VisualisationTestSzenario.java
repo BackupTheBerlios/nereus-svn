@@ -1,7 +1,7 @@
 /*
- * Dateiname      : VisualisationServer.java
+ * Dateiname      : VisualisationTestSzenario.java
  * Erzeugt        : 22. Mai 2005
- * Letzte Änderung: 22. Mai 1005 durch Samuel Walz
+ * Letzte Änderung: 30. Mai 1005 durch Samuel Walz
  * Autoren        : Samuel Walz (samuel@gmx.info)
  *                  
  *
@@ -25,27 +25,49 @@
 
 package source.server.visualisation;
 
+import java.rmi.RemoteException;
+import java.lang.InterruptedException;
+
+
 /**
  *
  * @author  Samuel Walz
  */
 public class VisualisationTestSzenario {
     
+    private static long authCode = 0L;
+    
     /** Creates a new instance of VisualisationTestSzenario */
     public VisualisationTestSzenario() {
         try {
             VisualisationServer unserServer = new VisualisationServer();
+            System.out.println("Melde Spiel an...");
+            authCode = unserServer.spielAnmelden(23, 3000);
             int i = 0;
+            System.out.println("Speichere Spielinformationen...");
             for(i=0; i<=5; i++) {
-                unserServer.speichereSpielInformationen(23, "hammer No." + i);
+                synchronized (this) {
+                    wait(10000);
+                }
+                unserServer.speichereSpielInformationen(authCode, "hammer No." + i);
             }
+            System.out.println("Melde Spiel ab...");
+            unserServer.spielAbmelden(authCode);
             
+            System.out.println("Warte...");
                 synchronized(this) {
                     this.wait(120000);
                 }
             
-        } catch(Exception fehler) {
-            System.out.println(fehler.getMessage());
+        } catch (DoppeltesSpielException fehler) {
+            System.out.println("Spiel mit gleicher ID schon angemeldet!\n" 
+                                + fehler.getMessage());
+        } catch (RemoteException fehler) {
+            System.out.println("Konnte Server nicht finden!\n" 
+                                + fehler.getMessage());
+        } catch (InterruptedException fehler) {
+            System.out.println("Warten fehlgeschlagen!!\n" 
+                                + fehler.getMessage());
         }
     }
     

@@ -1,7 +1,7 @@
 /*
  * Dateiname      : IVisualisationServerIntern.java
  * Erzeugt        : 18. Mai 2005
- * Letzte Änderung: 26. Mai 1005 durch Samuel Walz
+ * Letzte Änderung: 30. Mai 1005 durch Samuel Walz
  * Autoren        : Samuel Walz (samuel@gmx.info)
  *                  
  *
@@ -40,11 +40,14 @@ public interface IVisualisationServerIntern {
      * der Informationen dient, damit diese dem richtigen Spiel zugeordnet
      * werden können. 
      *
+     * @throws doppeltesSpielException    wenn ein Spiel mit der gleichen ID
+     *                                    bereits angemeldet ist
      * @param spielID
      * @param wartezeit
      * @return             Eine natürliche Zahl größer Null.
      */
-    public long spielAnmelden (int spielID, int wartezeit) throws Exception;
+    public long spielAnmelden (int spielID, int wartezeit) 
+                                throws DoppeltesSpielException;
     
     /**
      * Speichert die Informationen eines Spiels.

@@ -1,7 +1,7 @@
 /*
  * Dateiname      : VisualisationServer.java
  * Erzeugt        : 19. Mai 2005
- * Letzte Änderung: 26. Mai 1005 durch Samuel Walz
+ * Letzte Änderung: 30. Mai 1005 durch Samuel Walz
  * Autoren        : Samuel Walz (samuel@gmx.info)
  *                  
  *
@@ -30,9 +30,13 @@ import java.rmi.Naming;
 import java.rmi.server.UnicastRemoteObject;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.net.MalformedURLException;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.ListIterator;
+import java.util.Iterator;
 import java.util.HashMap;
+import java.util.Set;
 import java.io.Serializable;
 import source.client.visualisation.IVisualisationClient;
 
@@ -53,7 +57,7 @@ import source.client.visualisation.IVisualisationClient;
  *
  * @author Samuel Walz
  */
-public class VisualisationServer extends UnicastRemoteObject 
+public class VisualisationServer extends UnicastRemoteObject
         implements IVisualisationServerIntern, IVisualisationServerExtern {
     
     // Die Informationen der Spiele, sortiert nach der Spiel-ID.
@@ -67,6 +71,9 @@ public class VisualisationServer extends UnicastRemoteObject
     
     // Die Standardwartezeit in Millisekunden
     private static int standardwartezeit = 2000;
+    
+    //
+    private static long informationshaltbarkeit = (1000 * 60 * 60);
     
     /*
      * Die angemeldeten Client-Vis-Komponenten, sortiert nach den Spielen,
@@ -89,7 +96,7 @@ public class VisualisationServer extends UnicastRemoteObject
         UnicastRemoteObject.exportObject((Remote)this);
         try {
             Naming.rebind("VisualisationServer", this);
-        } catch(Exception fehler) {
+        } catch(MalformedURLException fehler) {
             System.out.println(fehler.getMessage());
         }
     }
@@ -113,11 +120,12 @@ public class VisualisationServer extends UnicastRemoteObject
      * @param authCode
      * @return           Eine ganze Zahl größer -1
      */
-    private int gibSpielID (long authCode) throws Exception{
+    private int gibSpielID (long authCode) throws AuthentifizierungException{
         if (authZuordnung.containsKey(new Long(authCode))) {
             return ((Integer)authZuordnung.get(new Long(authCode))).intValue();
         } else {
-            throw new Exception();
+            throw new AuthentifizierungException("Falscher Authentifizierungscode: " 
+                                + authCode);
         }
     }
     
@@ -159,14 +167,58 @@ public class VisualisationServer extends UnicastRemoteObject
     private LinkedList erstelleAusschnitt (LinkedList liste, 
                                            int ausschnittsbeginn) {
         
+        LinkedList ausschnitt = new LinkedList();                                       
+                                               
         if (liste.size() >= ausschnittsbeginn) {
-            return (LinkedList)liste.subList(ausschnittsbeginn, liste.size());
-        } else {
-            return new LinkedList();
-        }
+            //return liste.subList(ausschnittsbeginn, liste.size());
+            ListIterator listenlaeufer = liste.listIterator(ausschnittsbeginn);
+            
+            while (listenlaeufer.hasNext()) {
+                ausschnitt.addLast(listenlaeufer.next());
+            }
+        } 
+        
+        return ausschnitt;
     }
     
-    private void bereinigeInformationsspeicher() {
+    /**
+     * Löscht alle Spielinformationen aus dem Speicher, deren Haltbarkeit
+     * abgelaufen ist.
+     *
+     * @param haltbarkeit             eine positive Zahl
+     */
+    private void bereinigeInformationsspeicher(long haltbarkeit) {
+        // Aktuelle Zeit
+        long zeit = System.currentTimeMillis();
+        
+        synchronized (informationsspeicher) {
+            // Alle Informationslisten durchgehen
+            Set alleSpiele = informationsspeicher.keySet();
+            Iterator spiellaeufer = alleSpiele.iterator();
+            while (spiellaeufer.hasNext()) {
+                Object spielID = spiellaeufer.next();
+                LinkedList informationen = 
+                        (LinkedList)informationsspeicher.get(spielID);
+                
+                // Wenn die Liste nicht leer ist
+                if (! informationen.isEmpty()) {
+                    Object letzterEintrag = informationen.getLast();
+            
+                    // Ist das zugehörige Spiel zuende?
+                    if ((letzterEintrag instanceof Spielende)) {
+                        /*
+                        * Ist die Haltbarkeit abgelaufen, 
+                        * so lösche die Informationen
+                        */
+                        long eintragszeit = 
+                                ((Spielende)letzterEintrag).gibEndZeit();
+                        if ((eintragszeit + haltbarkeit) < zeit) {
+                            informationsspeicher.remove(spielID);
+                        }
+                    }
+                }
+            }
+        }
         
     }
     
@@ -176,8 +228,7 @@ public class VisualisationServer extends UnicastRemoteObject
      * @param spielID
      * @param ausschnittsbeginn      natürliche Zahl größer -1
      */
-    public LinkedList gibSpielInformationen(int spielID, int ausschnittsbeginn) 
-            throws RemoteException {
+    public LinkedList gibSpielInformationen(int spielID, int ausschnittsbeginn) throws RemoteException {
         // Informationen suchen und zurückgeben
         if (informationsspeicher.containsKey(new Integer(spielID))) {
             return erstelleAusschnitt(
@@ -190,7 +241,10 @@ public class VisualisationServer extends UnicastRemoteObject
     }
     
     /**
-     * 
+     * Speichert die Spielinformationen der einzelnen Spiele.
+     *
+     * @param authCode
+     * @param information      die zu speichernde Information
      */
     public void speichereSpielInformationen(long authCode, 
                                             Serializable information) {
@@ -205,14 +259,23 @@ public class VisualisationServer extends UnicastRemoteObject
             
         } catch(Exception fehler) {
             
-            // Falscher Authentifizierungscode!
             gibFehlerAus("speichereSpielInformationen", 
-                    "Falscher Authentifizierungscode: " + authCode);
+                         fehler.getMessage());
         }
         
     }
     
-    public long spielAnmelden(int spielID, int wartezeit) throws Exception{
+    /**
+     * Meldet ein Spiel für die Informationsspeicherung an.
+     * 
+     * Wird als Wartezeit 0 angegeben, so wird der Defaultwert verwendet.
+     *
+     * @param spielID        natürliche Zahl
+     * @param wartezeit      natürliche Zahl >= null (Zeit in Millisekunden)
+     * @return               der Authentifizierungscode
+     */
+    public long spielAnmelden(int spielID, int wartezeit) 
+                                throws DoppeltesSpielException{
         
         if (! informationsspeicher.containsKey(new Integer(spielID))) {
             // Eine neue Liste für die Informationen des Spiels anlegen
@@ -228,17 +291,23 @@ public class VisualisationServer extends UnicastRemoteObject
             }
             
             // Spielinformationsbereinigung starten
+            bereinigeInformationsspeicher(informationshaltbarkeit);
             
             // Den zugehörigen Authentifizierungscode zurückgeben
             return authCodeErzeugen(spielID);
             
         } else {
             // Hat das Anmelden nicht geklappt, wird ein Fehler geworfen
-            throw new Exception("Ein Spiel mit der ID " + spielID
+            throw new DoppeltesSpielException("Ein Spiel mit der ID " + spielID
                         + " ist schon angemeldet!");
         }
     }
     
+    /**
+     * Meldet ein Spiel für die Informationsspeicherung ab.
+     *
+     * @param authCode
+     */
     public void spielAbmelden(long authCode) {
         try {
             int spielID = gibSpielID(authCode);
@@ -247,7 +316,7 @@ public class VisualisationServer extends UnicastRemoteObject
             LinkedList informationen = 
                     (LinkedList)informationsspeicher.get(new Integer(spielID));
             
-            informationen.addLast(new Spielende());
+            informationen.addLast(new Spielende(System.currentTimeMillis()));
             
             // Den Wartezeiteintrag für das Spiel löschen
             wartezeiten.remove(new Integer(spielID));
