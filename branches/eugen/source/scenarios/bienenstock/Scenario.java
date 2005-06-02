@@ -1228,4 +1228,20 @@ public class Scenario
         rueckgabe.putAll(this.m_parameter);
         return rueckgabe;
     }
+    
+    /**
+     * liefert zu einem Szenario-Parameter-Namen den zugehörigen 
+     * Wert als String zurück.
+     *
+     * @throws InvalidElementException  parameterName ist in der Parameter-Liste 
+     * nicht vorhanden.
+     * @param parameterName der Name des Parameters
+     */
+    public String getScenarioParameter(String parameterName) 
+    throws InvalidElementException{
+        if (this.m_parameter.containsKey(parameterName)){
+            Object obj=this.m_parameter.get(parameterName);
+            return new String(obj.toString());
+        }else throw new InvalidElementException();
+    }
 }

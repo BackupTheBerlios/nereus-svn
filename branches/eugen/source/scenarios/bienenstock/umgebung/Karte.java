@@ -1,7 +1,7 @@
 /*
  * Dateiname      : Karte.java
  * Erzeugt        : 26. Juli 2004
- * Letzte Änderung: 20. Mai 2005 durch Eugen Volk
+ * Letzte Änderung: 30. Mai 2005 durch Eugen Volk
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
  *                  Eugen Volk
@@ -1279,6 +1279,9 @@ public class Karte extends AbstractEnviroment {
         } else {
             wunschmenge = 0;
         }
+        /* im falle dass wunschmenge=Integer.MAX_VALUE,
+          gibt es ein overflow und die summe (wunschmenge + geladenerHonig) wird negativ */
+        if (wunschmenge>1000000) wunschmenge=1000000;
         int geladenerHonig = zielBiene.gibGeladeneHonigmenge();
         
         
@@ -1311,7 +1314,6 @@ public class Karte extends AbstractEnviroment {
                             - ((Integer) parameter.gibWert(
                             "honigHonigTanken")).intValue());
                     zielBiene.setzeZustand(Konstanten.WARTEND);
-                    
                     //wieviel kann sie tanken?
                     if ((geladenerHonig + wunschmenge)
                     > ((Integer) parameter.gibWert(
@@ -1422,6 +1424,7 @@ public class Karte extends AbstractEnviroment {
             //System.out.println("Karte: illegal value -> set to zero");
             wunschmenge = 0;
         }
+        if (wunschmenge>1000000) wunschmenge=1000000;
         aktionAusgefuehrt(zielBiene.gibBienenID());
         
         // Wenn alter Zustand richtig, es eine Blume ist, sie genug Honig hat

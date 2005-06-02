@@ -1,10 +1,10 @@
 /*
  * Dateiname      : Koordinate.java
  * Erzeugt        : 21. Oktober 2004
- * Letzte Änderung: 26. Januar 2005 durch Philip Funck
+ * Letzte Änderung: 24. Mai 2005 durch Eugen Volk
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
- *
+ *                  
  *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
@@ -102,5 +102,17 @@ public class Koordinate {
      */
     public int hashCode() {
         return ((xPosition * 1000) + yPosition);
+    }
+    
+    /** 
+     * liefert die Kopie der aktuellen Koordinate
+     * @return Kopie der aktuellen Koordinate
+     */
+    public Koordinate copy(){
+        return new Koordinate(this.xPosition, this.yPosition);
+    }
+    
+    public String toString(){
+        return new String("(" +xPosition + " / " + yPosition + ")");
     }
 }

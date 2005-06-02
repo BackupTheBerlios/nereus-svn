@@ -151,6 +151,7 @@ public abstract class AbstractAgent
      */
     public void setAgentName(String name) {
         m_name = name;
+        this.setName(name);
     }
     
     /**

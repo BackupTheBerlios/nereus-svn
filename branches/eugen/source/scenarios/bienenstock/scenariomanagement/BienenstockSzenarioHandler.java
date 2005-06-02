@@ -221,4 +221,23 @@ public class BienenstockSzenarioHandler extends AbstractScenarioHandler
             InvalidElementException {
         return null;
     }
+    
+     /**
+     * liefert zu einem Szenario-Parameter-Namen den zugehörigen 
+     * Wert als String zurück.
+     *
+     * @throws InvalidElementException  parameterName ist in der Parameter-Liste 
+     * nicht vorhanden.
+     * @param parameterName der Name des Parameters
+     */
+    public String getScenarioParameter(String parameterName) 
+    throws InvalidElementException{
+        String retValue;
+        retValue=spielmeister.getScenarioParameter(parameterName);
+        return retValue;
+    }
+    
+    
+    
+    
 }

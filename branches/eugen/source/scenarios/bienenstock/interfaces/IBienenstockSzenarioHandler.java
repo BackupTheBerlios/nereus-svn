@@ -1,10 +1,10 @@
 /*
  * Dateiname      : IBienenstockSzenarioHandler.java
  * Erzeugt        : 6. Oktober 2004
- * Letzte Änderung: 14. Februar 2005 durch Samuel Walz
+ * Letzte Änderung: 23. Mai 2005 durch Eugen Volk
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
- *
+ *                  
  *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
@@ -139,4 +139,16 @@ public interface IBienenstockSzenarioHandler {
             String name) throws InvalidAgentException,
             InvalidActionKeyException,
             InvalidElementException;
+    
+    /**
+     * liefert zu einem Szenario-Parameter-Namen den zugehörigen
+     * Wert als String zurück.
+     *
+     * @throws InvalidElementException  parameterName ist in der Parameter-Liste
+     * nicht vorhanden.
+     * @param parameterName der Name des Parameters
+     */
+    public String getScenarioParameter(String parameterName)
+    throws InvalidElementException;
+    
 }
