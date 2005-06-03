@@ -78,7 +78,7 @@ public class UnkooperativerBDIAgent
     /** kritische Entfernung bis zur Blume */
     private int kritEntfernung=0;
     boolean erstenAktCodeBekommen = false;
-    
+    /** Id der Biene */
     private int id = 0;
     private Koordinate posBienenstock;
     
@@ -87,7 +87,7 @@ public class UnkooperativerBDIAgent
     HashMap bekannteBlumen=new HashMap();
     
     
-    /** eine Navigationskarte als Gedächtnis über die besuchten Felder */
+    /** eine Navigationskarte als Gedächtnis über die wahrgenommenen Felder */
     HashMap gespeicherteFelder=new HashMap();
     
     //ein paar honigkosten
@@ -110,10 +110,11 @@ public class UnkooperativerBDIAgent
     private String name = "";
     /** gesammelter Nektar */
     private int gesammelterNektar = 0;
+    /** kurs Nektar zu Honig */
+    private double kursNektarHonig=1;
     
     
-    
-    private boolean hinweg = true;
+    private boolean sofortNektarAbliefernTanken = false;
     
     /**
      * Zahl zur initialisierung des Zufallsgenerators.
@@ -172,27 +173,25 @@ public class UnkooperativerBDIAgent
     /* ###########################----Begin AgentenVerhalten festlegen---############################-----*/
     
     
-    
+    DesireIntentionPlan modus=new DesireIntentionPlan();
     public void run() {
-        DesireIntentionPlan modus=new DesireIntentionPlan();
+        // DesireIntentionPlan modus=new DesireIntentionPlan();
         perception();
         posBienenstock = selbst.gibPosition().copy();
         modus.setDesire(modus.D_BLUMENSUCHEN);
         
         while(true){
-            this.visualisiereBiene(selbst);
             perception();
+            this.visualisiereBiene(selbst);
             evaluate(modus);
             filter(modus);
+            System.out.println(id+": neuer MODUS  Desire: " + modus.getDesire() + " Intention: "+ modus.getIntention());
             plan(modus);
             act(modus);
         }
-        
-        
     }
     
     
-         
     
     /**
      * Nimmt die Umwelt wahr.
@@ -223,6 +222,9 @@ public class UnkooperativerBDIAgent
         Koordinate neuesZiel;
         Koordinate altesZiel=modus.getDesireZiel();
         int desire=modus.getDesire();
+        
+        if (this.sofortNektarAbliefernTanken) return;
+        
         switch (desire){
             case DesireIntentionPlan.D_UMGEBUNGERFORSCHEN:{
                 if (altesZiel==null || (altesZiel.equals(myPosition))){
@@ -277,14 +279,19 @@ public class UnkooperativerBDIAgent
      * @param modus interner Zustand des Agenten als DesireInteionPlan-Typ.
      */
     public void filter(DesireIntentionPlan modus){
+        // verlasse filter ohne neue Intention auszuwählen
+        if (this.sofortNektarAbliefernTanken) return;
+        
         int newIntention;
         int oldIntention=modus.getIntention();
         Koordinate myPosition=selbst.gibPosition();
         Koordinate d_Ziel=modus.getDesireZiel();
         Koordinate i_neuesZiel;
         Koordinate i_altesZiel=modus.getIntentionZiel();
-        
+        int myHonigmege=selbst.gibGeladeneHonigmenge();
+        int kostenNachHause=kostenNachHauseTanken(myPosition,this.bieneIstInDerLuft);
         int desire=modus.getDesire();
+        
         switch (desire){
             case DesireIntentionPlan.D_UMGEBUNGERFORSCHEN:{
                 modus.setIntention(DesireIntentionPlan.I_FLIEGENZURKOORDINATE);
@@ -293,14 +300,35 @@ public class UnkooperativerBDIAgent
             case DesireIntentionPlan.D_BLUMENSUCHEN:{
                 if (selbst.gibGeladeneNektarmenge()>0) {
                     modus.setIntention(DesireIntentionPlan.I_NEKTARABLIEFERNTANKEN);
-                } else modus.setIntention(DesireIntentionPlan.I_FLIEGENZURKOORDINATE);
-                modus.setIntentionZiel(d_Ziel);
+                } else {
+                    newIntention=DesireIntentionPlan.I_FLIEGENZURKOORDINATE;
+                    i_neuesZiel=d_Ziel;
+                    if (!nextIntentionOK(newIntention, i_neuesZiel)){
+                        modus.setIntention(DesireIntentionPlan.I_NEKTARABLIEFERNTANKEN);
+                    }else{
+                        modus.setIntention(newIntention);
+                        modus.setIntentionZiel(i_neuesZiel);
+                    }
+                }
             }break;
             case DesireIntentionPlan.D_BLUMENPROBEENTNEHMEN:{
+                i_neuesZiel=d_Ziel;
                 if (d_Ziel.equals(myPosition)) newIntention=DesireIntentionPlan.I_NEKTARABBAUEN;
-                else newIntention=DesireIntentionPlan.I_FLIEGENZURKOORDINATE;
+                else {
+                    if (selbst.gibGeladeneNektarmenge()>0) {
+                        newIntention=DesireIntentionPlan.I_NEKTARABLIEFERNTANKEN;
+                        i_neuesZiel=this.posBienenstock;
+                    } else{
+                        newIntention=DesireIntentionPlan.I_FLIEGENZURKOORDINATE;
+                        i_neuesZiel=d_Ziel;
+                    }
+                }
+                 if (!nextIntentionOK(newIntention, i_neuesZiel)) {
+                        newIntention=DesireIntentionPlan.I_NEKTARABLIEFERNTANKEN;
+                        i_neuesZiel=this.posBienenstock;
+                    }
                 modus.setIntention(newIntention);
-                modus.setIntentionZiel(d_Ziel);
+                modus.setIntentionZiel(i_neuesZiel);
             }break;
             case DesireIntentionPlan.D_BLUMEBEARBEITEN:{
                 if (i_altesZiel==null)  {
@@ -386,6 +414,7 @@ public class UnkooperativerBDIAgent
                 modus.setPlanListe(planListe);
             }break;
             case DesireIntentionPlan.I_NEKTARABLIEFERNTANKEN:{
+                this.sofortNektarAbliefernTanken=true;
                 boolean nektarAbgeliefert=false;
                 boolean getankt=false;
                 planListe=new LinkedList();
@@ -407,12 +436,16 @@ public class UnkooperativerBDIAgent
                         planListe.add(atp);
                         nektarAbgeliefert=true;
                     }
-                    if (nektarAbgeliefert || (selbst.gibGeladeneHonigmenge()<this.startHonig)){
+                    if (nektarAbgeliefert || (selbst.gibGeladeneHonigmenge()<(this.startHonig-honigStarten))){
                         actionNr=DesireIntentionPlan.P_TANKEN;
                         atp=new ActionTargetPair(actionNr,myPosition.copy());
                         planListe.add(atp);
                     }
                     modus.setPlanListe(planListe);
+                    // notfall zurücksetzen
+                    if (sofortNektarAbliefernTanken && (selbst.gibGeladeneNektarmenge()==0) &&
+                            (selbst.gibGeladeneHonigmenge()>=(startHonig-honigStarten))) sofortNektarAbliefernTanken=false;
+                    
                 }else {
                     if (!this.bieneIstInDerLuft) {
                         actionNr=DesireIntentionPlan.P_STARTEN;
@@ -439,6 +472,7 @@ public class UnkooperativerBDIAgent
      */
     public void act(DesireIntentionPlan modus){
         LinkedList planListe=modus.getPlanListe();
+        if ((planListe==null) || (planListe.size()==0)) return;
         ActionTargetPair act;
         act=(ActionTargetPair)planListe.getFirst();
         planListe.removeFirst();
@@ -464,15 +498,17 @@ public class UnkooperativerBDIAgent
                 selbst=localMap.gibSelbst();
                 int nektarNachAbbau=selbst.gibGeladeneNektarmenge();
                 int ausbeute=nektarNachAbbau-nektarAnf;
-                
-                InfoBlume infoBlume=(InfoBlume)bekannteBlumen.get(ziel);
-                if (!infoBlume.getProbeEntnommen()) {
-                    infoBlume.setProbeEntnommen();
-                    infoBlume.setAusbeuteProRunde(ausbeute);
-                    infoBlume.setNutzen(1);
-                }else if ((ausbeute==0) && (nektarAnf!=this.maxGelNektar)) {
-                    infoBlume.setHatNektar(false);
-                }
+                if ((nektarAnf!=this.maxGelNektar)){
+                    InfoBlume infoBlume=(InfoBlume)bekannteBlumen.get(ziel);
+                    if (!infoBlume.getProbeEntnommen()) {
+                        infoBlume.setProbeEntnommen();
+                        infoBlume.setAusbeuteProRunde(ausbeute);
+                        berechneSetzeNutzen(infoBlume);
+                    }
+                    if ((ausbeute==0)) {
+                        infoBlume.setHatNektar(false);
+                    }
+                } else {System.out.println(" NEKTAR VOLL VOLL");}
             }break;
             case DesireIntentionPlan.P_NEKTARABLIEFERN:{
                 this.nektarAbliefern();
@@ -482,9 +518,9 @@ public class UnkooperativerBDIAgent
         
     }
     
- /* ####################### Ende der Festlegung von AgentenVerhalten ########### */
+    /* ####################### Ende der Festlegung von AgentenVerhalten ########### */
     
-   /* ############################    HilfsFunktionen   ######################## */  
+    /* ############################    HilfsFunktionen   ######################## */
     
     /**
      * überprüft, ob die nächste auszuführende Absicht durchgeführt werden kann.
@@ -527,39 +563,27 @@ public class UnkooperativerBDIAgent
     
     
     /**
-     * gibt die Kosten an, um von der aktuellen Positin zurück zum Bienenstock zu fliegen
+     * gibt die Kosten an, um von der aktuellen Position zurück zum Bienenstock zu fliegen
      * und dort zu tanken.
      *
      * @return Kosten um zum Bienenstock zurück zu kehren und zu tanken.
      */
-    private int kostenNachHauseTanken(Koordinate vonPosition, boolean bieneIstInDerLuft){
+    private int kostenNachHauseTanken(Koordinate vonPosition, boolean bieneIstInLuft){
         int kosten;
+        int kostenFliegen;
         if (vonPosition.equals(this.posBienenstock)){
-            if (bieneIstInDerLuft) return (this.honigLanden+this.honigTanken);
+            if (bieneIstInLuft) return (this.honigLanden+this.honigTanken);
             else return this.honigTanken;
         }else{
-            kosten=this.honigLanden+this.honigTanken + kostenFliegen(vonPosition, this.posBienenstock);
-            if (this.bieneIstInDerLuft) return kosten;
+            kostenFliegen=kostenFliegen(vonPosition, this.posBienenstock);
+            if (kostenFliegen>this.startHonig) kostenFliegen=kostenFliegen(this.posBienenstock, vonPosition);
+            kosten=this.honigLanden+this.honigTanken + kostenFliegen;
+            if (bieneIstInLuft) return kosten;
             else return (kosten+this.honigStarten);
         }
     }
     
-  
-    /**
-     * Fliegt zur bestimmten Position
-     * @param zielKoordinate FlugZiel
-     */
-    private boolean fliegeZurPosition(Koordinate zielKoordinate){
-        LinkedList weg=this.kuerzesterWeg(selbst.gibPosition(), zielKoordinate, this.gespeicherteFelder);
-        if (weg!=null) {
-            Iterator it=weg.iterator();
-            while(it.hasNext()){
-                Koordinate nextZiel=(Koordinate)it.next();
-                fliegen(nextZiel);
-            }return true;
-        }else return false;
-        
-    }
+    
     
     
     /**
@@ -609,7 +633,7 @@ public class UnkooperativerBDIAgent
     }
     
     /**
-     * Sucht Blume in NachbarnFeldern
+     * Sucht Blume in Nachbar-Feldern
      * @return Koordinate der gefundenen Blume oder null, falls keine Blume gefunden wurde
      */
     private Koordinate sucheBlumeInNachbarfelder(){
@@ -680,6 +704,8 @@ public class UnkooperativerBDIAgent
             infoBlume=new InfoBlume(posBlume, entfernung);
             bekannteBlumen.put(posBlume.copy(), infoBlume);
             if (entfernung>this.kritEntfernung) {
+                infoBlume.setProbeEntnommen();
+                infoBlume.setNutzen(0);
                 infoBlume.setHatNektar(false);
                 return false;
             } else return true;
@@ -688,17 +714,41 @@ public class UnkooperativerBDIAgent
     }
     
     
+    /**
+     * Berechnet den Nutzen der Blume in abhängigkeit von ihrer Ausbeute und Enfernung zum Bienenstock.
+     *
+     * @blume Informationen zu einer Blume, wobei die Probe entnommen sein muss,
+     * Ausbeute-NektarProRunde und die Entfernung zum Bienenstock bereits eingetragen sein muessen.
+     */
+    private void berechneSetzeNutzen(InfoBlume blume){
+        if (!blume.getProbeEntnommen()) return;
+        int ausbeute=blume.getAusbeuteProRunde();
+        if (ausbeute==0) {
+            blume.setNutzen(0);
+            return;
+        }
+        int entfernung=blume.getEntfernungZumBienenstock();
+        int kosten0=2*(honigStarten + honigLanden + entfernung*honigFliegen);
+        int maxAnzAbbau=(int)(maxGelNektar/ausbeute);
+        int anzMoeglAbbau=(int)((this.startHonig-kosten0)/honigAbbauen);
+        int tatsAbbau=Math.min(anzMoeglAbbau, maxAnzAbbau);
+        int tatsKosten=kosten0 + honigAbliefern + (tatsAbbau * honigAbbauen);
+        double nutzen=(tatsAbbau * ausbeute * kursNektarHonig) - tatsKosten;
+        blume.setNutzen(nutzen);
+    }
+    
+    
     
     
     
     /**
-     * Berechnet die HonigKosten um von einer Position zur anderen Positin zu fliegen
+     * Berechnet die HonigKosten um von einer Position zur anderen Position zu fliegen
      * @param startPosition Start-Position
      * @param zielPosition Ziel-Position
      * @return Kosten um von startPositin zur zielPosition zu gelangen.
      */
     private int kostenFliegen(Koordinate startPosition, Koordinate zielPosition){
-        int honigKosten=Integer.MAX_VALUE;
+        int honigKosten=10000;
         LinkedList weg=this.kuerzesterWeg(startPosition,
                 zielPosition,
                 this.gespeicherteFelder);
@@ -771,6 +821,9 @@ public class UnkooperativerBDIAgent
             parameterString=handler.getScenarioParameter("maxGelNektar");
             this.maxGelNektar=Integer.parseInt(parameterString);
             
+            parameterString=handler.getScenarioParameter("kursNektarHonig");
+            this.kursNektarHonig=Double.parseDouble(parameterString);
+            
             parameterString=handler.getScenarioParameter("maxGelHonig");
             this.startHonig=Integer.parseInt(parameterString);
             double honigVerbr;
@@ -797,6 +850,7 @@ public class UnkooperativerBDIAgent
                 + id + ": geladene Honigmenge:  "
                 + ich.gibGeladeneHonigmenge() + "\n");
         System.out.println( id + ": abgeliferte Nektarmenge: " + gesammelterNektar);
+        System.out.println(id+": alter MODUS  Desire: " + modus.getDesire() + " Intention: "+ modus.getIntention());
         if (!(selbst.gibInformation() == null)) {
             System.out.println(id + ": Info");
             Info information = selbst.gibInformation();
@@ -877,7 +931,7 @@ public class UnkooperativerBDIAgent
     }
     
     
-
+    
     /* #######################   Beginn: primitive Aktionen    ######################## */
     
     

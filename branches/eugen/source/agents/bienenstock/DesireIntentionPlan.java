@@ -58,6 +58,8 @@ public class DesireIntentionPlan {
     
     public static final int P_NEKTARABLIEFERN=107;
     
+    public static final int NOTSET=-1;
+    
     /** Ziel des Agenten, codiert über DesireIntentionPlan.D_... */
     private int desireName;
     /** Koordinate für das Ziel */

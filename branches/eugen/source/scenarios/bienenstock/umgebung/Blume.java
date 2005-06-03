@@ -1,11 +1,11 @@
 /*
  * Dateiname      : Blume.java
  * Erzeugt        : 19. Mai 2004
- * Letzte Änderung: 26. Januar 2005 durch Samuel Walz
+ * Letzte Änderung: 2. Juni 2005 durch Eugen Volk
  *
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
- *
+ *                  
  *
  *
  *
@@ -126,28 +126,16 @@ public class Blume extends Feld {
      */
     int nektarAbgeben(int gewuenschteNektarMenge) {
         int abgabemenge = 0;
-        
-        //Ermitteln der zulaessigen Abgabemenge
-        if (gewuenschteNektarMenge > maximumNektarProRunde
-                && gewuenschteNektarMenge > vorhandenerNektar) {
-            
-            if (maximumNektarProRunde > vorhandenerNektar) {
-                abgabemenge = vorhandenerNektar;
-            } else {
-                abgabemenge = maximumNektarProRunde;
-            }
-        } else if (gewuenschteNektarMenge > maximumNektarProRunde
-                && gewuenschteNektarMenge < vorhandenerNektar) {
-            
-            abgabemenge = maximumNektarProRunde;
-        } else if (gewuenschteNektarMenge < maximumNektarProRunde
-                && gewuenschteNektarMenge > vorhandenerNektar) {
-            
-            abgabemenge = vorhandenerNektar;
-        } else {
-            abgabemenge = gewuenschteNektarMenge;
+        if (gewuenschteNektarMenge<0) return 0;
+        if (gewuenschteNektarMenge > maximumNektarProRunde){
+            gewuenschteNektarMenge = maximumNektarProRunde;
         }
-        
+        if (gewuenschteNektarMenge > vorhandenerNektar){
+            abgabemenge=vorhandenerNektar;
+        }else {
+            abgabemenge=gewuenschteNektarMenge;
+        }
+               
         //Abbuchen der zulaessigen Menge
         vorhandenerNektar = vorhandenerNektar - abgabemenge;
         return abgabemenge;
