@@ -4,8 +4,8 @@
  * Letzte Änderung: 14. Februar 2005 durch Samuel Walz
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
- *                  
- *                  
+ *
+ *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen eines
@@ -40,7 +40,7 @@ import java.io.FileNotFoundException;
 
 /**
  * Hilfsmittel zum auslesen von Konfigurationsdateien.
- * 
+ *
  * @author Samuel Walz
  */
 public class ParameterParser {
@@ -52,14 +52,14 @@ public class ParameterParser {
      * und der betroffene Parameter bekommt einen Schreibschutz.
      * Erwartet eine LinkedList,
      * die Objekte der Klasse utils.ParameterDescription enthält.
-     * 
+     *
      * @param parameter         Die eingehende Parameterliste
-     * @param dateiname         Die Datei, aus der die Parameter 
+     * @param dateiname         Die Datei, aus der die Parameter
      *                          ausgelesen werden sollen
      * @return                  Die aktualisierte Parameterliste
      */
     public LinkedList setzePassendeParameter(LinkedList parameter,
-                                             String dateiname) {
+            String dateiname) {
         Properties konfiguration = new Properties();
         LinkedList neueParameterListe = new LinkedList();
         
@@ -70,7 +70,7 @@ public class ParameterParser {
         String neuerWert;
         
         FileInputStream konfigurationsdatei;
-
+        
         try {
             konfigurationsdatei = new FileInputStream(dateiname);
             
@@ -79,19 +79,19 @@ public class ParameterParser {
                 konfiguration.load(konfigurationsdatei);
             } catch (Exception fehler) {
                 System.out.println("Konfigurationsdatei " + dateiname
-                               + " konnte nicht geladen werden!");
+                        + " konnte nicht geladen werden!");
             }
         } catch (FileNotFoundException fehler) {
             System.out.println("Konfigurationsdatei " + dateiname
-                               + " nicht gefunden!");
+                    + " nicht gefunden!");
         }
         
         
         
         /*
-        * suchen welche Parameter auch in der Datei vorhanden sind und diese
-        * übernehmen und schreibschützen
-        */
+         * suchen welche Parameter auch in der Datei vorhanden sind und diese
+         * übernehmen und schreibschützen
+         */
         int i;
         for (i = 0; i < parameter.size(); i++) {
             aktuellerParameter = (ParameterDescription) parameter.get(i);
@@ -99,15 +99,15 @@ public class ParameterParser {
             aktuellerSchluessel = aktuellerParameter.getParameterName();
             aktuelleKlasse = aktuellerParameter.getClassDescription();
             aktuellerDefaultwert = aktuellerParameter.getDefaultValue();
-
+            
             /*
-            * Existiert er auch in der Konfigurationsdatei?
-            * Falls ja, dann Schreibschutz und den neuen Defaultwert setzen
-            */
+             * Existiert er auch in der Konfigurationsdatei?
+             * Falls ja, dann Schreibschutz und den neuen Defaultwert setzen
+             */
             if (konfiguration.containsKey(aktuellerSchluessel)) {
                 // neuen Defaultwert holen
                 neuerWert
-                    = konfiguration.getProperty(aktuellerSchluessel);
+                        = konfiguration.getProperty(aktuellerSchluessel);
                 // und passend Konvertieren
                 switch (aktuelleKlasse) {
                     case ParameterDescription.BooleanType:
@@ -132,32 +132,32 @@ public class ParameterParser {
                         aktuellerDefaultwert = neuerWert;
                         break;
                 }
-                aktuellerDefaultwert 
-                    = konfiguration.getProperty(aktuellerSchluessel);
+                aktuellerDefaultwert
+                        = konfiguration.getProperty(aktuellerSchluessel);
                 neueParameterListe.add(
-                    new ParameterDescription(
+                        new ParameterDescription(
                         aktuellerSchluessel,
                         aktuelleKlasse,
                         aktuellerDefaultwert,
                         false
                         )
-                    );
+                        );
             } else {
                 // Parameter aus der alten Liste einfach in die neue übertragen
                 neueParameterListe.add(
-                    new ParameterDescription(
+                        new ParameterDescription(
                         aktuellerSchluessel,
                         aktuelleKlasse,
                         aktuellerDefaultwert,
                         aktuellerParameter.isChangeable()
                         )
-                    );
+                        );
             }
-
+            
         }
-
+        
         return neueParameterListe;
-
+        
     }
-
+    
 }

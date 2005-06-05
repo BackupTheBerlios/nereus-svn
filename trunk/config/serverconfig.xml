@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+    Document   : serverconfig.xml
+    Created on : 11. Mai 2005, 12:45
+    Author     : Eugen Volk
+    Description:
+        Diese Datei dient zur Konfiguration der Parameter-Werte für
+        das Bienenstockszenario.
+        
+        name: der Name des Parameters
+        wert: der Wert des Parameters
+        type: der Typ des Parameters ist Element von {string, int, double, float, boolean}
+        changeable: falls true, so kann der Parameterwert während der Laufzeit
+            verändert werden.
+-->
+
+<config>
+<gameconf name="Bienenstock_1" scenario="bienenstock" karte="test2.gml" parameters="bienenstockconfig.xml"/>
+<gameconf name="Bienenstock_2" scenario="bienenstock" karte="test2.gml" parameters="bienenstockconfig_2.xml"/>
+</config>

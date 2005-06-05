@@ -16,8 +16,8 @@ JVMPAR="$JVMPAR -Djava.security.policy=$CONFIG_DIR/$POLICY_CONF"
 JVMPAR="$JVMPAR -Djava.rmi.server.hostname=$SERVER_HOST"
 
 # die Main-Klasse ist
-# nereus.client.MASIMClient
+# nereus.simulator.MASIMServer
 # und wird als Main-Class Attribut im jar-Manifest definiert
-
-exec $JAVA $JVMPAR -jar $DIST_DIR/Server.jar $SERVER_HOST $BASIS_PFAD
+MAIN="nereus.simulator.MASIMServer"
+exec $JAVA $JVMPAR -cp $DIST_DIR/Server.jar:$SCENARIOS_DIR/Scenarios.jar $MAIN $SERVER_HOST $BASIS_PFAD $CONFIGFILE_SERVER
 

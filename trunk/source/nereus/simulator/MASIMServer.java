@@ -1,11 +1,11 @@
 /*
  * Dateiname      : MASIMServer.java
  * Erzeugt        : 22. Mai 2003
- * Letzte Änderung: Eugen Volk 5.05.05
+ * Letzte Änderung: Eugen Volk 11.05.05
  * Autoren        : Daniel Friedrich
  *                  Eugen Volk
- *                  
- *                  
+ *
+ *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen einer
@@ -35,58 +35,65 @@ import java.rmi.RMISecurityManager;
 import java.rmi.registry.LocateRegistry;
 import java.io.File;
 import nereus.simulatorinterfaces.ICoordinator;
-
+import nereus.simulator.ServerInfoObject;
 
 /**
- * Die Klasse dient nur als Startprogramm zum Ausführen des Coordinators von 
+ * Die Klasse dient nur als Startprogramm zum Ausführen des Coordinators von
  * der Kommandozeile aus.
- * 
+ *
  * @author Daniel Friedrich
  */
 public class MASIMServer {
-
-	/**
-	 * Zugriff auf den Coordinator, d.h. den eigentlichen Simulator.
-	 */
-    private static ICoordinator m_coordinator;    
     
-	/**
-	 * Methode zum Starten des Simulators.
-	 * 
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		try {
-			System.out.println(
-				"MASIMServer: Coordinator wird versucht zu registrieren.");
-			System.setSecurityManager(new RMISecurityManager());
-			LocateRegistry.createRegistry(1099);
-			String name;
-			String basePath;
-			String enviromentsPath;
-			String hostname = "localhost";
-			if(args.length >= 1) {
-				hostname = args[0];
-				name = "rmi://" + hostname + ":1099" +"/Coordinator";
-				System.out.println("register as: " + name);
-			}else {
-				name = "rmi://localhost/Coordinator";
-			}
-                        if (args.length==2) basePath=args[1];
-                        else {
-                            File dFile = new File("");
-                            basePath = dFile.getAbsolutePath();
-                        }
-                        m_coordinator = new Coordinator(hostname, basePath);
-			Naming.rebind(name, m_coordinator);
-			System.out.println(
-				"MultiAgentSimulator: Coordinator wurde erfolgreich registriert.");
-			
-			System.out.println("register ready");
-		}catch (Exception e) {
-			System.out.println(
-				"Fehler: Der Coordinator konnte nicht bei der RMI-Registry registriert werden.");
-			e.printStackTrace();
-		}
-	}
+    /**
+     * Zugriff auf den Coordinator, d.h. den eigentlichen Simulator.
+     */
+    private static ICoordinator m_coordinator;
+    
+    /**
+     * Methode zum Starten des Simulators.
+     *
+     * @param args
+     */
+    public static void main(String[] args) {
+        try {
+            System.out.println(
+                    "MASIMServer: Coordinator wird versucht zu registrieren.");
+            System.setSecurityManager(new RMISecurityManager());
+            LocateRegistry.createRegistry(1099);
+            String name;
+            String basePath;
+            String enviromentsPath;
+            String hostname = "localhost";
+            String configFileURI=null;
+            ServerInfoObject serverInfoObject;
+            if(args.length >= 1) {
+                hostname = args[0];
+                name = "rmi://" + hostname + ":1099" +"/Coordinator";
+                System.out.println("register as: " + name);
+            }else {
+                name = "rmi://localhost/Coordinator";
+            }
+            if (args.length >=2) basePath=args[1];
+            else {
+                File dFile = new File("");
+                basePath = dFile.getAbsolutePath();
+            }
+            if (args.length ==3) {
+                configFileURI=args[2];
+                ServerInfoObject.cofigFileURI=configFileURI;
+            }
+            serverInfoObject=ServerInfoObject.getInstance(basePath);
+            m_coordinator = new Coordinator(hostname, basePath);
+            Naming.rebind(name, m_coordinator);
+            System.out.println(
+                    "MultiAgentSimulator: Coordinator wurde erfolgreich registriert.");
+            
+            System.out.println("register ready");
+        }catch (Exception e) {
+            System.out.println(
+                    "Fehler: Der Coordinator konnte nicht bei der RMI-Registry registriert werden.");
+            e.printStackTrace();
+        }
+    }
 }

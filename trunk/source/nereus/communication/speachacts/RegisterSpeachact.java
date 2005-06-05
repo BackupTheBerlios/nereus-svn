@@ -1,10 +1,10 @@
 /*
  * Dateiname      : RegisterSpeachact.java
  * Erzeugt        : 5. August 2003
- * Letzte Änderung: 
+ * Letzte Änderung:
  * Autoren        : Daniel Friedrich
- *                  
- *                  
+ *
+ *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen einer
@@ -35,24 +35,24 @@ import java.util.Hashtable;
 /**
  * Die Klasse repräsentiert einen Sprechakt zum registrieren bei Agenten mit
  * Verwaltungseinheiten oder der Umwelt.
- * 
- * Die Klasse ist nicht durch Vererbung erweiterbar, damit es den Agenten nicht 
+ *
+ * Die Klasse ist nicht durch Vererbung erweiterbar, damit es den Agenten nicht
  * möglich ist, einen Sprechakt einzusetzen, der sich als Subklasse dieses
- * Sprechaktes tarnt. Wenn eine Hierarchie unter dieser Klasse eingeführt werden 
- * soll, dann muss der Sprechakt als abstract definiert werden und die 
+ * Sprechaktes tarnt. Wenn eine Hierarchie unter dieser Klasse eingeführt werden
+ * soll, dann muss der Sprechakt als abstract definiert werden und die
  * Subklassen dann wieder final.
- * 
+ *
  * @author Daniel Friedrich
  */
 public final class RegisterSpeachact extends FacilitationSpeachact {
-
-	/**
-	 * Konstruktor.
-	 * 
-	 * @param parameters
-	 */
-	public RegisterSpeachact(Hashtable parameters) {
-		super(parameters);
-	}
-
+    
+    /**
+     * Konstruktor.
+     *
+     * @param parameters
+     */
+    public RegisterSpeachact(Hashtable parameters) {
+        super(parameters);
+    }
+    
 }

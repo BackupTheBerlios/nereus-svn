@@ -1,11 +1,11 @@
 /*
  * Dateiname      : IStatisticScenario.java
  * Erzeugt        : 4. August 2003
- * Letzte Änderung: 
+ * Letzte Änderung:
  * Autoren        : Daniel Friedrich
- *                  
- *                  
- *                  
+ *
+ *
+ *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen einer
@@ -37,28 +37,28 @@ import java.util.Vector;
 /**
  * Die Schnittstelle definiert die Methoden, die ein Szenario implementieren
  * muss, wenn es für es eine Statistik erstellt werden soll.
- * 
+ *
  * @author Daniel Friedrich
  */
 public interface IStatisticScenario {
-	
-	/**
-	 * Erstellt eine neue szenariospezifische Statistikkomponente.
-	 * 
-	 * Das Szenario muss eine Statistikkomponente erstellen, die der 
-	 * Schnittstelle IStatisticComponent genügt. Die Komponente ist dazu da,
-	 * während des Ablaufs des Spiels eigenständig die statistischen Daten zu
-	 * erfassen und auszuwerten. 
-	 * 
-	 * @param agents - Menge der Agenten
-	 * @return IStatisticComponent - Statistikkomponente des Szenarios.
-	 */
-	public IStatisticComponent createNewStatisticComponent(Vector agents);
-	
-	/**
-	 * Gibt eine Hashtable zurück in der die Parameter aufgelistet sind, die statistisch erfasst werden.
-	 * 
-	 * @return Hashtable - Hashtable mit den zu erfassenden Parametern
-	 */
-	public Hashtable getEnviromentStatisticParameters();
+    
+    /**
+     * Erstellt eine neue szenariospezifische Statistikkomponente.
+     *
+     * Das Szenario muss eine Statistikkomponente erstellen, die der
+     * Schnittstelle IStatisticComponent genügt. Die Komponente ist dazu da,
+     * während des Ablaufs des Spiels eigenständig die statistischen Daten zu
+     * erfassen und auszuwerten.
+     *
+     * @param agents - Menge der Agenten
+     * @return IStatisticComponent - Statistikkomponente des Szenarios.
+     */
+    public IStatisticComponent createNewStatisticComponent(Vector agents);
+    
+    /**
+     * Gibt eine Hashtable zurück in der die Parameter aufgelistet sind, die statistisch erfasst werden.
+     *
+     * @return Hashtable - Hashtable mit den zu erfassenden Parametern
+     */
+    public Hashtable getEnviromentStatisticParameters();
 }

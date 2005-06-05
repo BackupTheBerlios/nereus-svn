@@ -1,10 +1,10 @@
 /*
  * Dateiname      : SendHypothesisSpeachact.java
  * Erzeugt        : 7. September 2003
- * Letzte Änderung: 
+ * Letzte Änderung:
  * Autoren        : Daniel Friedrich
- *                  
- *                  
+ *
+ *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen einer
@@ -38,40 +38,40 @@ import nereus.exceptions.InvalidElementException;
 
 /**
  * Die Klasse repräsentiert einen Sprechakt zum Versenden einer Hypothesen.
- * 
- * Die Klasse ist nicht durch Vererbung erweiterbar, damit es den Agenten nicht 
+ *
+ * Die Klasse ist nicht durch Vererbung erweiterbar, damit es den Agenten nicht
  * möglich ist, einen Sprechakt einzusetzen, der sich als Subklasse dieses
- * Sprechaktes tarnt. Wenn eine Hierarchie unter dieser Klasse eingeführt werden 
- * soll, dann muss der Sprechakt als abstract definiert werden und die 
+ * Sprechaktes tarnt. Wenn eine Hierarchie unter dieser Klasse eingeführt werden
+ * soll, dann muss der Sprechakt als abstract definiert werden und die
  * Subklassen dann wieder final.
- * 
+ *
  * @author Daniel Friedrich
  */
 public final class SendHypothesisSpeachact extends SendSpeachact {
-
-	/**
-	 * Konstruktor.
-	 * 
-	 * @param parameters
-	 */
-	public SendHypothesisSpeachact(Hashtable parameters) {
-		super(parameters);
-	}
-
-	/**
-	 * Die Methode setzt den Inhalt des Sprechaktes. 
-	 * 
-	 * Der Inhalt dieses Sprechaktes kann nur aus einer einzelnen Hypothese 
-	 * oder aus null bestehen. Wird versucht etwas anderes als Inhalt 
-	 * zu übertragen, dann wird eine InvalidElementException geworfen. 
-	 */
-	public void setContent(Object content) throws InvalidElementException {
-		if((content == null) || (content instanceof Classifier)) {
-			m_content = content;
-		}else {
-			throw new InvalidElementException(
-				"SendHypothesisSpeachact - fehlerhaftes Inhaltselement: " 
-				+ content.toString());
-		}
-	}
+    
+    /**
+     * Konstruktor.
+     *
+     * @param parameters
+     */
+    public SendHypothesisSpeachact(Hashtable parameters) {
+        super(parameters);
+    }
+    
+    /**
+     * Die Methode setzt den Inhalt des Sprechaktes.
+     *
+     * Der Inhalt dieses Sprechaktes kann nur aus einer einzelnen Hypothese
+     * oder aus null bestehen. Wird versucht etwas anderes als Inhalt
+     * zu übertragen, dann wird eine InvalidElementException geworfen.
+     */
+    public void setContent(Object content) throws InvalidElementException {
+        if((content == null) || (content instanceof Classifier)) {
+            m_content = content;
+        }else {
+            throw new InvalidElementException(
+                    "SendHypothesisSpeachact - fehlerhaftes Inhaltselement: "
+                    + content.toString());
+        }
+    }
 }

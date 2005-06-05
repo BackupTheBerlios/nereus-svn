@@ -1,9 +1,9 @@
 /*
  * Dateiname      : ILogging.java
  * Erzeugt        : 17. Juli 2003
- * Letzte Änderung: 
+ * Letzte Änderung:
  * Autoren        : Daniel Friedrich
- *                 
+ *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen einer
@@ -31,39 +31,39 @@ package nereus.utils;
 import java.io.File;
 
 /**
- * Das Interface definiert Methoden zum Logging von Textnachrichten in eine 
+ * Das Interface definiert Methoden zum Logging von Textnachrichten in eine
  * Datei.
- * 
+ *
  * @author Daniel Friedrich
  */
 public interface ILogging {
-	
-	/**
-	 * Loggt die Message message in das Logfile
-	 * 
-	 * @param message
-	 */
-	public void log(String message);
-	
-	/**
-	 * Setzt den Pfad an dem das LogFile gespeichert werden soll.
-	 * 
-	 * @param String path - Pfad an dem das LogFile gespeichert werden soll.
-	 */
-	public void setLogFilePath(String path);
-	
-	/**
-	 * Liefert den Pfad des Logfiles zurück.
-	 * 
-	 * @return String - Pfad des LogFiles
-	 */
-	public String getLogFilePath();
-	
-	/**
-	 * Liefert das komplette Logfile zurück.
-	 * 
-	 * @return File - LogFile
-	 */
-	public File getLogFile();
-
+    
+    /**
+     * Loggt die Message message in das Logfile
+     *
+     * @param message
+     */
+    public void log(String message);
+    
+    /**
+     * Setzt den Pfad an dem das LogFile gespeichert werden soll.
+     *
+     * @param String path - Pfad an dem das LogFile gespeichert werden soll.
+     */
+    public void setLogFilePath(String path);
+    
+    /**
+     * Liefert den Pfad des Logfiles zurück.
+     *
+     * @return String - Pfad des LogFiles
+     */
+    public String getLogFilePath();
+    
+    /**
+     * Liefert das komplette Logfile zurück.
+     *
+     * @return File - LogFile
+     */
+    public File getLogFile();
+    
 }

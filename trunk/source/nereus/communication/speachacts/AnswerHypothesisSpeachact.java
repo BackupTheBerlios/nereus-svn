@@ -1,10 +1,10 @@
 /*
  * Dateiname      : AnswerHypothesisSpeachact.java
  * Erzeugt        : 29. Juli 2003
- * Letzte Änderung: 
+ * Letzte Änderung:
  * Autoren        : Daniel Friedrich
- *                  
- *                  
+ *
+ *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen einer
@@ -38,42 +38,42 @@ import nereus.exceptions.InvalidElementException;
 
 /**
  * Sprechakt zur Antwort einer Hypothese auf eine Anfrage nach einer Hypothese.
- * 
- * Die Klasse ist nicht durch Vererbung erweiterbar, damit es den Agenten nicht 
+ *
+ * Die Klasse ist nicht durch Vererbung erweiterbar, damit es den Agenten nicht
  * möglich ist, einen Sprechakt einzusetzen, der sich als Subklasse dieses
- * Sprechaktes tarnt. Wenn eine Hierarchie unter dieser Klasse eingeführt werden 
- * soll, dann muss der Sprechakt als abstract definiert werden und die 
+ * Sprechaktes tarnt. Wenn eine Hierarchie unter dieser Klasse eingeführt werden
+ * soll, dann muss der Sprechakt als abstract definiert werden und die
  * Subklassen dann wieder final.
- * 
+ *
  * @author Daniel Friedrich
  */
 public final class AnswerHypothesisSpeachact extends AnswerSpeachact {
-
-	/**
-	 * Konstruktor.
-	 * 
-	 * @param parameters
-	 */
-	public AnswerHypothesisSpeachact(Hashtable parameters) {
-		super(parameters);
-	}
-
-	/**
-	 * Setzt den Inhalt der Nachricht.
-	 * 
-	 * Für diesen Sprechakt gibt es die Beschränkung auf Classifier, Strings,
-	 * und Vector Objekte. Alle anderen lösen eine InvalidElementException aus.
-	 * 
-	 * @param Object content
-	 */
-	public void setContent(Object content) 
-		throws InvalidElementException	{
-		if((content == null) 
-			|| (content instanceof Vector)
-			|| (content instanceof Classifier)) {
-			m_content = content;	
-		}else {
-			throw new InvalidElementException();
-		}
-	}
+    
+    /**
+     * Konstruktor.
+     *
+     * @param parameters
+     */
+    public AnswerHypothesisSpeachact(Hashtable parameters) {
+        super(parameters);
+    }
+    
+    /**
+     * Setzt den Inhalt der Nachricht.
+     *
+     * Für diesen Sprechakt gibt es die Beschränkung auf Classifier, Strings,
+     * und Vector Objekte. Alle anderen lösen eine InvalidElementException aus.
+     *
+     * @param Object content
+     */
+    public void setContent(Object content)
+    throws InvalidElementException	{
+        if((content == null)
+        || (content instanceof Vector)
+        || (content instanceof Classifier)) {
+            m_content = content;
+        }else {
+            throw new InvalidElementException();
+        }
+    }
 }

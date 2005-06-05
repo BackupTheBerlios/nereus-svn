@@ -1,9 +1,9 @@
 /*
  * Dateiname      : ActionKey.java
  * Erzeugt        : 20. Juni 2003
- * Letzte Änderung: 
+ * Letzte Änderung:
  * Autoren        : Daniel Friedrich
- *                 
+ *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen einer
@@ -34,38 +34,38 @@ package nereus.utils;
 
 /**
  * Der Key wird eingesetzt zur Überprüfung der Identität eines Agenten.
- * 
+ *
  * @author Daniel Friedrich
  */
 public class ActionKey {
-	
-	/**
-	 * Schlüssel.
-	 */
-	private String m_key;
-	
-	/**
-	 * Konstruktor. 
-	 */
-	public ActionKey() {
-		super();
-		m_key = Integer.toString(this.hashCode());
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	public boolean equals(Object obj) {
-		if(obj instanceof ActionKey) {
-			return m_key.equals(((ActionKey)obj).toString());			
-		}
-		return false;
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	public String toString() {
-		return m_key;
-	}
+    
+    /**
+     * Schlüssel.
+     */
+    private String m_key;
+    
+    /**
+     * Konstruktor.
+     */
+    public ActionKey() {
+        super();
+        m_key = Integer.toString(this.hashCode());
+    }
+    
+        /* (non-Javadoc)
+         * @see java.lang.Object#equals(java.lang.Object)
+         */
+    public boolean equals(Object obj) {
+        if(obj instanceof ActionKey) {
+            return m_key.equals(((ActionKey)obj).toString());
+        }
+        return false;
+    }
+    
+        /* (non-Javadoc)
+         * @see java.lang.Object#toString()
+         */
+    public String toString() {
+        return m_key;
+    }
 }

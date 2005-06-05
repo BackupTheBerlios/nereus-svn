@@ -1,10 +1,10 @@
 /*
  * Dateiname      : InvalidGameException.java
  * Erzeugt        : 14. August 2003
- * Letzte Änderung: 
+ * Letzte Änderung:
  * Autoren        : Daniel Friedrich
- *                  
- *                  
+ *
+ *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen einer
@@ -31,50 +31,50 @@ package nereus.exceptions;
 
 /**
  * Die Exception dient zum Melden, dass ein Spiel nicht existiert.
- * 
+ *
  * @author Daniel Friedrich
  */
 public class InvalidGameException extends Exception {
-
-	/**
-	 * Konstruktor.
-	 */
-	public InvalidGameException() {
-		super("Das Spiel existiert nicht.");
-	}
-
-	/**
-	 * Konstruktor.
-	 * 
-	 * @param message
-	 */
-	public InvalidGameException(String message) {
-		super("Das Spiel " + message + " existiert nicht");
-	}
-
-	/**
-	 * Konstruktor.
-	 * 
-	 * @param message
-	 * @param cause
-	 */
-	public InvalidGameException(String message, Throwable cause) {
-		super("Das Spiel " + message + " existiert nicht", cause);
-	}
-
-	/**
-	 * Konstruktor.
-	 * 
-	 * @param cause
-	 */
-	public InvalidGameException(Throwable cause) {
-		super("Das Spiel existiert nicht",cause);
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Throwable#getMessage()
-	 */
-	public String getMessage() {
-		return "Das Spiel existiert nicht";
-	}
+    
+    /**
+     * Konstruktor.
+     */
+    public InvalidGameException() {
+        super("Das Spiel existiert nicht.");
+    }
+    
+    /**
+     * Konstruktor.
+     *
+     * @param message
+     */
+    public InvalidGameException(String message) {
+        super("Das Spiel " + message + " existiert nicht");
+    }
+    
+    /**
+     * Konstruktor.
+     *
+     * @param message
+     * @param cause
+     */
+    public InvalidGameException(String message, Throwable cause) {
+        super("Das Spiel " + message + " existiert nicht", cause);
+    }
+    
+    /**
+     * Konstruktor.
+     *
+     * @param cause
+     */
+    public InvalidGameException(Throwable cause) {
+        super("Das Spiel existiert nicht",cause);
+    }
+    
+        /* (non-Javadoc)
+         * @see java.lang.Throwable#getMessage()
+         */
+    public String getMessage() {
+        return "Das Spiel existiert nicht";
+    }
 }

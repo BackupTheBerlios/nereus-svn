@@ -16,4 +16,4 @@ REM die Parameter für die JVM
 set JVMPAR= -Djava.security.policy=%CONFIG_DIR%\%POLICY_CONF%
 set JVMPAR=%JVMPAR% -Djava.rmi.server.hostname=%SERVER_HOST%
 
-%JAVA% %JVMPAR% -cp %DIST_DIR%\Server.jar %MAIN% %SERVER_HOST% %BASIS_PFAD%
+%JAVA% %JVMPAR% -cp %DIST_DIR%\Server.jar;%SCENARIOS_DIR%\Scenarios.jar %MAIN% %SERVER_HOST% %BASIS_PFAD% %CONFIGFILE_SERVER%

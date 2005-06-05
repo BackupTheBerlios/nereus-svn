@@ -1,10 +1,10 @@
 /*
  * Dateiname      : NotEnoughEnergyException.java
  * Erzeugt        : 16. Juni 2003
- * Letzte Änderung: 
+ * Letzte Änderung:
  * Autoren        : Daniel Friedrich
- *                  
- *                  
+ *
+ *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen einer
@@ -30,54 +30,54 @@
 package nereus.exceptions;
 
 /**
- * Die Exception wird ausgelöst, wenn ein Agent nicht über genügend Energie zum 
- * Ausführen einer Aktion verfügt.  
- * 
+ * Die Exception wird ausgelöst, wenn ein Agent nicht über genügend Energie zum
+ * Ausführen einer Aktion verfügt.
+ *
  * @author Daniel Friedrich
  */
 public class NotEnoughEnergyException extends Exception {
-
-	/**
-	 * Konstruktor. 
-	 */
-	public NotEnoughEnergyException() {
-		super(
-			"Der Agent verfügt nicht über genügend Energie zum Ausführen "
-			+ "der Aktion.");
-	}
-
-	/**
-	 * Konstruktor.
-	 * 
-	 * @param message
-	 */
-	public NotEnoughEnergyException(String message) {
-		super("Der Agent " 
-			+ message 
-			+ " verfügt nicht über genügend Energie zum Ausführen der Aktion.");
-	}
-
-	/**
-	 * Konstruktor.
-	 * 
-	 * @param message
-	 * @param cause
-	 */
-	public NotEnoughEnergyException(String message, Throwable cause) {
-		super("Der Agent " 
-			+ message 
-			+ " verfügt nicht über genügend Energie zum Ausführen der Aktion.",
-		cause);
-	}
-
-	/**
-	 * Konstruktor.
-	 * 
-	 * @param cause
-	 */
-	public NotEnoughEnergyException(Throwable cause) {
-		super("Der Agent "
-			+ " verfügt nicht über genügend Energie zum Ausführen der Aktion",
-			cause);
-	}
+    
+    /**
+     * Konstruktor.
+     */
+    public NotEnoughEnergyException() {
+        super(
+                "Der Agent verfügt nicht über genügend Energie zum Ausführen "
+                + "der Aktion.");
+    }
+    
+    /**
+     * Konstruktor.
+     *
+     * @param message
+     */
+    public NotEnoughEnergyException(String message) {
+        super("Der Agent "
+                + message
+                + " verfügt nicht über genügend Energie zum Ausführen der Aktion.");
+    }
+    
+    /**
+     * Konstruktor.
+     *
+     * @param message
+     * @param cause
+     */
+    public NotEnoughEnergyException(String message, Throwable cause) {
+        super("Der Agent "
+                + message
+                + " verfügt nicht über genügend Energie zum Ausführen der Aktion.",
+                cause);
+    }
+    
+    /**
+     * Konstruktor.
+     *
+     * @param cause
+     */
+    public NotEnoughEnergyException(Throwable cause) {
+        super("Der Agent "
+                + " verfügt nicht über genügend Energie zum Ausführen der Aktion",
+                cause);
+    }
 }

@@ -8,7 +8,11 @@
 # JAVA_HOME=/usr/java
 
 # Der Pfad zur JVM.
-JAVA="$JAVA_HOME/bin/java"
+if [ -n "$JAVA_HOME" ]; then
+  JAVA="$JAVA_HOME/bin/java"
+else
+  JAVA="java"
+fi
 
 # Das Verzeichnis mit den policy-Dateien.
 CONFIG_DIR="../config"
@@ -20,11 +24,18 @@ DIST_DIR="../dist"
 # befinden.
 BASIS_PFAD="../"
 
+# Konfigurationsfile fuer den Client
+CONFIGFILE_CLIENT="../config/clientconfig.xml"
+
+# Konfigurationsfile fuer den Server
+CONFIGFILE_SERVER="../config/serverconfig.xml"
+
+# Verzeichnis in dem sich Szanrien befinden
+SCENARIOS_DIR="../scenarios"
+
 # Der Rechner, auf dem der Simulator von Nereus läuft.
 SERVER_HOST="127.0.0.1"
 
 # Der Port, unter dem der ClassFielServer lauft.
 CLASS_SERVER_PORT="2003"
-
-
 
