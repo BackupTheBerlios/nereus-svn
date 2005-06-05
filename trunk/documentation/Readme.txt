@@ -1,7 +1,7 @@
 /*
  * Dateiname      : Readme
  * Erzeugt        : 5. Mai 2005
- * Letzte Änderung: 9. Mai 2005 durch Dietmar Lippold
+ * Letzte Änderung: 5. Juni 2005 durch Dietmar Lippold
  * Autoren        : Eugen Volk 
  *                  
  *
@@ -31,13 +31,14 @@
 Funktion von Nereus
 -------------------
 
-Nereus ist ein Multiagentensimulator, programmiert in der plattformunabhängigen 
-Sprache Java. Der Multiagentensimulator arbeitet als Server und ermöglicht es, 
-mehrere Szenarien für Agenten gleichzeitig laufen zu lassen und lässt sowohl 
-rundenbasierte Spiele (Instanzen der Szenarien) als auch echtzeitbasierte Spiele
-zu. Das Starten von neuen Spielen, deren Überwachung und das Anmelden von Agenten 
-an den Spielen geschieht über Clients, die über das Internet auf den Server mit 
-den dort vorhandenen Szenarien zugreifen.
+Nereus ist ein Multiagentensimulator, programmiert in der
+plattformunabhängigen Sprache Java. Der Multiagentensimulator arbeitet als
+Server und ermöglicht es, mehrere Szenarien für Agenten gleichzeitig laufen
+zu lassen und lässt sowohl rundenbasierte Spiele (Instanzen der Szenarien)
+als auch echtzeitbasierte Spiele zu. Das Starten von neuen Spielen, deren
+Überwachung und das Anmelden von Agenten an den Spielen geschieht über
+Clients, die über das Internet auf den Server mit den dort vorhandenen
+Szenarien zugreifen.
 
 
 Benutzung von Nereus
@@ -72,10 +73,9 @@ die Version von IBM ab 1.4.1 empfohlen.
 Entwickler von Nereus
 ---------------------
 
-Nereus wurde am Institut für Intelligente Systeme der Universität
-unter Betreuun von Dietmar Lippold
-Stuttgart (http://www.iis.uni-stuttgart.de/) entwickelt und ist 
-bei berlios (http://www.berlios.de/) gehostet. An der
+Nereus wurde am Institut für Intelligente Systeme der Universität Stuttgart
+(http://www.iis.uni-stuttgart.de/) unter Betreuung von Dietmar Lippold
+entwickelt und ist  bei berlios (http://www.berlios.de/) gehostet. An der
 Entwicklung waren bzw. sind folgende Personen beteiligt:
 
  * Daniel Friedrich
