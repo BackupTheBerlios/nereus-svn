@@ -1,0 +1,13 @@
+Change-log-File
+
+
+6.05.05 - Änderung durch Eugen Volk (alias) custos
+-------------------------------------
+Sources sind komplett restrukturiert worden.
+Sceanrio-sources befindet sich jetzt unter sources,
+Scenario Konfigurationsdateien: gml-file und xml-file befinden sich 
+unter scenarioconfig/bienenstock/scenarioconfig und .../scenariokarte.
+lib/shared.jar ist jetzt überflüssig, da Stubs durch den Ant-build-Skript
+generiert werden. 
+Verzeichnis documentation enthält neue Readme-files. 
+
