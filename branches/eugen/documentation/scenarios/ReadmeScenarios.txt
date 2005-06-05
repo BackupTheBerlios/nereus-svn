@@ -37,11 +37,14 @@ source/scenarios befinden.
 
 Die Struktur eines Scenario muss wie folgt aussehen:
 
- * Verzeichnis scenario/<scenario-name>/agents enthält Agenten fuer den
+ * Verzeichnis source/agents/<scenario-name>/ enthält Agenten fuer den
    Client, wobei jeder lauffähige Agent mit "Agent" enden muss z.B:
    BienenstockAgent.java.
 
+ * Jeder Agent, der an einem Spiel teilnehmen sollte, muss in der /config/clientconfig.xml
+   Datei registriert sein, um bei der Agentenanmeldung zur Verfügung zu stehen.
+
  * Die Datei Scenario.java muss sich in dem Hauptverzeichnis des neuen
    scenario-Ordners befinden, d.h. unter
-   scenario/<scenario-name>/Scenario.java
+   scenarios/<scenario-name>/Scenario.java
 
