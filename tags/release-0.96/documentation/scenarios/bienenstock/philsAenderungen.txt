@@ -1,0 +1,5 @@
+Philips Änderungen am Bienenstock
+
+Konstruktor der AbstraktenBiene hinzugefügt. (es wird nur der ohne Parameter genutzt)
+setHandler hinzugefügt (setzt den BienenstockSzenarioHandler beim Agenten)
+die Statistik ausprogrammiert.
