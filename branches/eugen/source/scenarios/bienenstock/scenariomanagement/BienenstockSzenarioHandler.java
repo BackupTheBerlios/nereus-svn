@@ -153,6 +153,32 @@ public class BienenstockSzenarioHandler extends AbstractScenarioHandler
      * reicht die Anfrage des Agenten an die gleichnamige Methode des
      * Szenarios weiter.
      *
+     * @param aktCode          Aktionscode des Agenten
+     * @param zielX                 X-Koordinate des Ziels
+     * @param zielY                Y-Koordinate des Ziels
+     * @param richtung          mitteilen der Richtung?
+     * @param entfernung     mitteilen der Entfernung?
+     * @param nutzen         Nutzen der Blume
+     * @return                  neuer Aktionscode für den Agenten
+     */
+    public long aktionTanzen(long aktCode,
+            int zielX,
+            int zielY,
+            boolean richtung,
+            boolean entfernung,
+            double nutzen) {
+        return spielmeister.tanzenLassen(aktCode,
+                zielX,
+                zielY,
+                richtung,
+                entfernung,
+                nutzen);
+    }
+    
+    /**
+     * reicht die Anfrage des Agenten an die gleichnamige Methode des
+     * Szenarios weiter.
+     *
      * @see Scenario.aktionZuschauen
      * @param aktCode           Aktionscode des Agenten
      * @param tanzendeBieneID   Die ID der Biene, der der Agent zuschauen möchte
@@ -222,15 +248,15 @@ public class BienenstockSzenarioHandler extends AbstractScenarioHandler
         return null;
     }
     
-     /**
-     * liefert zu einem Szenario-Parameter-Namen den zugehörigen 
+    /**
+     * liefert zu einem Szenario-Parameter-Namen den zugehörigen
      * Wert als String zurück.
      *
-     * @throws InvalidElementException  parameterName ist in der Parameter-Liste 
+     * @throws InvalidElementException  parameterName ist in der Parameter-Liste
      * nicht vorhanden.
      * @param parameterName der Name des Parameters
      */
-    public String getScenarioParameter(String parameterName) 
+    public String getScenarioParameter(String parameterName)
     throws InvalidElementException{
         String retValue;
         retValue=spielmeister.getScenarioParameter(parameterName);

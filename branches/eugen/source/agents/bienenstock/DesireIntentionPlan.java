@@ -1,7 +1,31 @@
 /*
- * DesireIntentionPlan.java
+ * Dateiname      : DesireIntentionPlan.java
+ * Erzeugt        : 29. Mai 2005
+ * Letzte Änderung: 6. Juni 2005 durch Eugen Volk
+ * Autoren        :  Eugen Volk
  *
- * Created on 29. Mai 2005, 21:20
+ *
+ *
+ * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
+ * Die erste Version dieser Datei wurde erstellt im Rahmen einer
+ * Diplomarbeit von Eugen Volk am Institut für Intelligente Systeme
+ * der Universität Stuttgart unter Betreuung von Dietmar Lippold
+ * (dietmar.lippold@informatik.uni-stuttgart.de).
+ *
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 package agents.bienenstock;
@@ -26,6 +50,8 @@ public class DesireIntentionPlan {
     /** Konstante für Ziel: mit anderen Agenten kooperieren bzw. Inforamation austauschen */
     public static final int D_COOPERATION=4;
     
+    public static final int D_FINDEBLUME=5;
+    
     // Absichten des Agenten
     /** Konstante für Absicht: zurück zum Bienenstock kehren und tanken */
     public static final int I_NACHHAUSETANKEN=10;
@@ -39,6 +65,11 @@ public class DesireIntentionPlan {
     public static final int I_ZURUECKZURBLUME=15;
     /** Konstante für Absicht: Durchfuührung der Prozedur "am Bienenstock" */
     public static final int I_AMBIENENSTOCK=16;
+    /** Konstante für Absicht: Kooperieren: tanzen oder zuschauen */
+    public static final int I_COOPERATION=17;
+    
+    public static final int I_FINDEBLUME=18;
+    
     
     // Schlüssel für PlanAktionen
     /** Konstante für atomare Aktion: tanken */
@@ -55,8 +86,10 @@ public class DesireIntentionPlan {
     public static final int P_TANZEN=105;
     /** Konstante für atomare Aktion: zuschauen */
     public static final int P_ZUSCHAUEN=106;
+    /** Konstante für atomare Aktion: warten */
+    public static final int P_WARTEN=107;
     
-    public static final int P_NEKTARABLIEFERN=107;
+    public static final int P_NEKTARABLIEFERN=108;
     
     public static final int NOTSET=-1;
     

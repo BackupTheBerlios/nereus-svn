@@ -103,6 +103,23 @@ public interface IBienenstockSzenarioHandler {
     /**
      *
      * @param aktCode       Der Aktionscode des Agenten
+     * @param zielX         Die mitzuteilende X-Koordinate
+     * @param zielY         Die Mitzuteilende Y-Koordinate
+     * @param richtung      Gibt an, ob die Richtung mitzuteilen ist
+     * @param entfernung    Gibt an, ob die Entfernung mitzuteilen ist
+     * @param nutzen        Nutzen der Blume
+     * @return              Der neue Aktionscode
+     */
+    long aktionTanzen(long aktCode,
+            int zielX,
+            int zielY,
+            boolean richtung,
+            boolean entfernung,
+            double nutzen);
+    
+    /**
+     *
+     * @param aktCode       Der Aktionscode des Agenten
      * @param tanzendeBieneID   Die ID der Biene, der der Agent zuschauen möchte
      * @return              Der neue Aktionscode
      */

@@ -753,7 +753,53 @@ public class Scenario
                     zielX,
                     zielY,
                     richtung,
-                    entfernung);
+                    entfernung,
+                    -1);
+            
+            aktionAusgefuehrt(aktCode);
+            
+            long retValue=spielkarte.aktionscodeSetzen(aktCode);
+            return retValue;
+            
+        } else {
+            return 0L;
+        }
+    }
+    
+     /**
+     * versucht einen Agenten tanzen zu lassen.
+     *
+     * Der Agent wird über seinen Aktionscode identifiziert und
+     * seine Anfrage wird synchronisiert - nach erfolgreicher
+     * Abarbeitung der Anfrage wird der neue
+     * Aktionscode an den Agenten zurückgegeben.
+     *
+     * @param aktCode       Der Aktionscode des Agenten
+     * @param zielX         Die x-Koordinate der mitgeteilten Position
+     * @param zielY         Die y-Koordinate der mitgeteilten Position
+     * @param richtung      Teilt mit, ob die Richtung mitgeteilt werden soll
+     * @param entfernung    Teilt mit, ob die Entfernung mitgeteilt werden soll
+     * @param nutzen        Nutzen der Blume
+     * @return              Der neue Aktionscode für den Agenten.
+     *                      Ist die Anfrage missglückt, so bekommt
+     *                      er 0 zurück.
+     */
+    public long tanzenLassen(long aktCode,
+            int zielX,
+            int zielY,
+            boolean richtung,
+            boolean entfernung,
+            double nutzen) {
+        boolean erfolgreich;
+        if (synchronisiereAktion(aktCode)) {
+            
+            // AUSFÜHRENDERAKTION
+            erfolgreich = spielkarte.bieneTanzenLassen(aktCode,
+                    zielX,
+                    zielY,
+                    richtung,
+                    entfernung,
+                    nutzen);
             
             aktionAusgefuehrt(aktCode);
             

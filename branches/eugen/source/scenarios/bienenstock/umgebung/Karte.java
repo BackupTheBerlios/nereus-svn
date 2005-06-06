@@ -1,7 +1,7 @@
 /*
  * Dateiname      : Karte.java
  * Erzeugt        : 26. Juli 2004
- * Letzte Änderung: 30. Mai 2005 durch Eugen Volk
+ * Letzte Änderung: 6. Juni 2005 durch Eugen Volk
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
  *                  Eugen Volk
@@ -136,7 +136,8 @@ public class Karte extends AbstractEnviroment {
      */
     private Hashtable spielfeld;
     
-    
+    /** enthält (bienennId, rundenNr) in der getanzt wurde */
+    private Hashtable getanztInRundeNr=new Hashtable();
     
     /**
      * Erstellt eine neue Instanz der Karte, bekommt mitgeteilt,
@@ -171,15 +172,17 @@ public class Karte extends AbstractEnviroment {
      * @param infoY die y koord. des Ziels
      * @param richtungMitteilen ob die richtung mitgeteilt werden soll
      * @param entfernungMitteilen ob die Entfernung mitgeteilt werden soll
+     * @param nutzen Nutzen der Blume für Agenten
      */
     private Info konvertiereInfo(Koordinate pos,
             int infoX,
             int infoY,
             boolean richtungMitteilen,
-            boolean entfernungMitteilen) {
+            boolean entfernungMitteilen,
+            double nutzen) {
         
-        double relativX = (double) pos.gibXPosition() - (double) infoX;
-        double relativY = (double) pos.gibYPosition() - (double) infoY;
+        double relativX = (double) infoX -(double) pos.gibXPosition();
+        double relativY = (double) infoY -(double) pos.gibYPosition();
         double entfernung;
         double richtung;
         
@@ -192,7 +195,7 @@ public class Karte extends AbstractEnviroment {
                 "unschaerfeEntfernung")).doubleValue());
         
         zufallsZahl = ((zufallsGenerator.nextDouble() * 2.00) - 1.00);
-        richtung = Math.atan(relativY / relativX);
+        richtung = Math.atan2(relativY,relativX);
         richtung = richtung
                 + (richtung
                 * zufallsZahl
@@ -203,13 +206,13 @@ public class Karte extends AbstractEnviroment {
             return new scenarios.bienenstock.agenteninfo.Info(richtung,
                     entfernung,
                     true,
-                    true);
+                    true, nutzen);
         } else if (richtungMitteilen) {
-            return new scenarios.bienenstock.agenteninfo.Info(richtung, 0, true, false);
+            return new scenarios.bienenstock.agenteninfo.Info(richtung, 0, true, false, nutzen);
         } else if (entfernungMitteilen) {
-            return new scenarios.bienenstock.agenteninfo.Info(0, entfernung, false, true);
+            return new scenarios.bienenstock.agenteninfo.Info(0, entfernung, false, true, nutzen);
         } else {
-            return new scenarios.bienenstock.agenteninfo.Info(0, 0, false, false);
+            return new scenarios.bienenstock.agenteninfo.Info(0, 0, false, false, -1);
         }
     }
     
@@ -512,6 +515,7 @@ public class Karte extends AbstractEnviroment {
                 } else {
                     return ((Blume) zielFeld).trageAbbauendeBieneEin(zielBiene);
                 }
+            case Konstanten.TANKENABLIEFERN: return true;               
                 
             default:
                 return false;
@@ -555,6 +559,9 @@ public class Karte extends AbstractEnviroment {
                 feldSuchen(zielBiene.gibPosition()).entferneWartendeBiene(
                         zielBiene);
                 break;
+            case Konstanten.TANKENABLIEFERN:{
+                
+            }break;
         }
         
     }
@@ -785,8 +792,13 @@ public class Karte extends AbstractEnviroment {
         /*if (sehendeBiene == null) {
             System.out.println("sehendeBiene == null");
         }*/
-            if (sehendeBiene.gibListenKennung() == Konstanten.ZUSCHAUEND) {
+            if (sehendeBiene.gibListenKennung() == Konstanten.WARTEND) {
                 //System.out.println("biene zuschauend");
+                
+                Info info=sehendeBiene.gibInformation();
+                Info returnInfo=null;
+                if (info!=null) returnInfo=info.klonen();
+                
                 einfachSelbst = new EinfacheBiene(
                         spielmeister.gibRundennummer(),
                         konvertiereZustand(sehendeBiene.gibListenKennung()),
@@ -798,7 +810,7 @@ public class Karte extends AbstractEnviroment {
                         sehendeBiene.gibAktionsCode(),
                         sehendeBiene.gibGeladeneHonigmenge(),
                         sehendeBiene.gibGeladeneNektarmenge(),
-                        sehendeBiene.gibInformation().klonen());
+                        returnInfo);
                 
             } else {
                 //System.out.println("nicht zuschauend");
@@ -1129,13 +1141,15 @@ public class Karte extends AbstractEnviroment {
      * @param infoY Zielkoordinate y position
      * @param richtung ob die Richtung mitgeteilt werden soll
      * @param entfernung ob die entfernung mitgeteilt werden soll
+     * @param nutzen Nutzen der Blume
      * @return ob die Aktion ausgeführt werden konnte
      */
     public boolean bieneTanzenLassen(long aktionscode,
             int infoX,
             int infoY,
             boolean richtung,
-            boolean entfernung) {
+            boolean entfernung,
+            double nutzen) {
         Biene zielBiene = bieneSuchen(aktionscode);
         if (!(zielBiene == null)) {
             Feld zielFeld = feldSuchen(zielBiene.gibPosition());
@@ -1168,8 +1182,10 @@ public class Karte extends AbstractEnviroment {
                     //Biene aus der alten Liste entfernen
                     //wenn sie diese verlässt
                     if (zielBiene.gibListenKennung() != Konstanten.TANZEND) {
-                        bieneAusFeldLoeschen(zielBiene,
-                                zielBiene.gibListenKennung());
+                        try{
+                            bieneAusFeldLoeschen(zielBiene,
+                                    zielBiene.gibListenKennung());
+                        }catch (Exception ex){}
                     }
                     
                     //Neue Werte setzen
@@ -1178,12 +1194,17 @@ public class Karte extends AbstractEnviroment {
                             zielBiene.gibGeladeneHonigmenge()
                             - kosten);
                     
-                    zielBiene.setzeInformation(konvertiereInfo(
+                    zielBiene.setzeGesendeteInformation(konvertiereInfo(
                             zielBiene.gibPosition(),
                             infoX,
                             infoY,
                             richtung,
-                            entfernung));
+                            entfernung,
+                            nutzen));
+                    /** damit auf die Information auch eine Runde später zugegriffen werden kann */
+                    Integer rundenNrInteger=new Integer(this.spielmeister.gibRundennummer());
+                    Integer bienenIdInteger=new Integer(zielBiene.gibBienenID());
+                    this.getanztInRundeNr.put(bienenIdInteger,rundenNrInteger);
                     
                     return true;
                 }
@@ -1232,7 +1253,8 @@ public class Karte extends AbstractEnviroment {
                  * und tanzt sie überhaupt?
                  */
                 && (tanzendeBiene.gibPosition().equals(zielBiene.gibPosition()))
-                && (tanzendeBiene.gibListenKennung() == Konstanten.TANZEND)) {
+                && ( (tanzendeBiene.gibListenKennung() == Konstanten.TANZEND)
+                || this.getantzInLetzterRunde(tanzendeBiene.gibBienenID()))) {
             
             if (zielBiene.gibAmBoden()
             && zielFeld.trageWartendeBieneEin(zielBiene)) {
@@ -1249,13 +1271,13 @@ public class Karte extends AbstractEnviroment {
                         - ((Integer) parameter.gibWert(
                         "honigZuschauen")).intValue());
                 zielBiene.setzeZustand(Konstanten.ZUSCHAUEND);
-                zielBiene.setzeInformation(tanzendeBiene.gibInformation());
+                zielBiene.setzeInformation(tanzendeBiene.gibGesendeteInformation());
                 
                 return true;
             }
         }
         
-        System.out.println("kann nicht zuschauen");
+        System.out.println(zielBiene.gibBienenID() + ": kann nicht zuschauen");
         alternativeAktionAusfuehrenLassen(zielBiene);
         return false;
     }
@@ -1304,16 +1326,18 @@ public class Karte extends AbstractEnviroment {
                      * Biene aus der alten Liste entfernen wenn sie
                      * diese verlässt
                      */
-                    if (zielBiene.gibListenKennung() == Konstanten.TANZEND) {
+                    /*if (zielBiene.gibListenKennung() == Konstanten.TANZEND) {
                         zielFeld.entferneTanzendeBiene(zielBiene);
-                    }
-                    
+                    }*/
+                    bieneAusFeldLoeschen(zielBiene, zielBiene.gibListenKennung());
                     //fairerweise erst Abbuchen
                     zielBiene.setzeGeladeneHonigmenge(
                             geladenerHonig
                             - ((Integer) parameter.gibWert(
                             "honigHonigTanken")).intValue());
-                    zielBiene.setzeZustand(Konstanten.WARTEND);
+                /*    zielBiene.setzeZustand(Konstanten.WARTEND);
+                    zielFeld.trageWartendeBieneEin(zielBiene);*/
+                    zielBiene.setzeZustand(Konstanten.TANKENABLIEFERN);
                     //wieviel kann sie tanken?
                     if ((geladenerHonig + wunschmenge)
                     > ((Integer) parameter.gibWert(
@@ -1376,17 +1400,17 @@ public class Karte extends AbstractEnviroment {
                     
                     //Biene aus der alten Liste entfernen
                     //wenn sie diese verlässt
-                    if (zielBiene.gibListenKennung() == Konstanten.TANZEND) {
+                /*    if (zielBiene.gibListenKennung() == Konstanten.TANZEND) {
                         zielFeld.entferneTanzendeBiene(zielBiene);
-                    }
-                    
+                    }*/
+                    bieneAusFeldLoeschen(zielBiene, zielBiene.gibListenKennung());
                     //Nektar abbuchen
                     zielBiene.setzeGeladeneNektarmenge(
                             zielBiene.gibGeladeneNektarmenge()
                             - ((Bienenstock) zielFeld).nektarAbnehmen(
                             zielBiene.gibGeladeneNektarmenge()));
                     //Aktion setzen
-                    zielBiene.setzeZustand(Konstanten.WARTEND);
+                    zielBiene.setzeZustand(Konstanten.TANKENABLIEFERN);
                     
                     return true;
                 }
@@ -1770,6 +1794,24 @@ public class Karte extends AbstractEnviroment {
         return statistikErfolgreich;
     }
     
-    
+    /**
+     * liefert true, falls die Biene in der letzten Runde getanzt hat
+     * @param bienenId Id der Biene
+     * @return true, falls die Biene in der vergangenen Runde oder in jetzigen
+     * Runde getanzt hat.
+     */
+    private boolean getantzInLetzterRunde(int bienenId){
+        Integer myId=new Integer(bienenId);
+        int aktuelleRundenNr=this.spielmeister.gibRundennummer();
+        int getanztInRdNr=-1;
+        
+        if (this.getanztInRundeNr.containsKey(myId)){
+            getanztInRdNr=((Integer)this.getanztInRundeNr.get(myId)).intValue();
+        }
+        if ((aktuelleRundenNr-getanztInRdNr)<=1) return true;
+        else return false;
+        
+        
+    }
     
 }

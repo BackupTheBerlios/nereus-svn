@@ -32,8 +32,11 @@ package nereus.utils;
  * 
  */
 public class ActionTargetPair {
-    
+    /** AktionsNummer, kodiert durch  Konstanten */
     private int action;
+    /** Nummer des Zielagenten */
+    private int zielAgentId;
+    /** ZielObjekt */
     private Object target;
     
     /**
@@ -51,6 +54,17 @@ public class ActionTargetPair {
     public ActionTargetPair(int action, Object target){
         this.action=action;
         this.target=target;
+    }
+    
+    /**
+     * Erzeugt ein Instanz von ActionTargetPair, die als Datenstruktur zur Koppelung
+     * von Aktion und Ziel dient.
+     * @param action Aktion, die über int Konstanten kodiert ist.
+     * @param zielAgentId Id des zielAgenten
+     */
+    public ActionTargetPair(int action, int zielAgentId){
+        this.action=action;
+        this.zielAgentId=zielAgentId;
     }
     
     /**
@@ -84,4 +98,20 @@ public class ActionTargetPair {
     public Object getTarget(){
         return this.target;
     }
+    
+    /**
+     * liefert den Id des Zielagenten
+     * @return Id des Zeilagenten
+     */
+    public int getZielAgentId(){
+       return this.zielAgentId;
+    }
+    
+    /**
+     * setzt den Id des ZielAgenten
+     */
+    public void setZielAgtenId(int zielAgentId){
+        this.zielAgentId=zielAgentId;
+    }
 }
+

@@ -143,31 +143,39 @@ public class BienenstockAgent
       //  zufallsGenerator.setSeed(1999);
         ausschnittHolen();
         posBienenstock = selbst.gibPosition();
-        /*visualisiereBiene(selbst);
+        
+        visualisiereBiene(selbst);
         starten();
-        if (id == 12) {
-            visualisiereFelder(karte);
-            fliegen(2, 1);
-            landen();
-            for (i = 0; i < 10; i++) {
-                abbauen(1000);
-            }
-        }
+        landen();
+        visualisiereBiene(selbst);
         if (id == 1) {
-            fliegen(3, 1);
-            landen();
-            for (i = 0; i < 10; i++) {
+          //  visualisiereFelder(karte);
+            
+             for (i = 0; i < 1; i++) {
+                 ausschnittHolen();
                 tanzen();
+                 ausschnittHolen();
+                visualisiereBiene(selbst);
             }
         }
-        if (id == 13) {
+        if (id == 2) {
+           
+            for (i = 0; i <2; i++) {
+                ausschnittHolen();
+                visualisiereBiene(selbst);
+                zuschauen();
+                ausschnittHolen();
+                visualisiereBiene(selbst);
+            }
+        }
+        if (id == 3) {
             fliegen(3, 1);
             landen();
-            for(i = 0; i < 15; i++) {
+            for(i = 0; i < 20; i++) {
                 zuschauen();
             }
             starten();
-        }*/
+        }
         
         
         /*while (true) {
@@ -585,6 +593,7 @@ public class BienenstockAgent
     }
     public void zuschauen() {
         //visualisiereFelder(karte);
+        ausschnittHolen();
         System.out.println(id + ": schaue zu (" + position.gibPosition().gibXPosition() + ", " + position.gibPosition().gibYPosition() + " )");
         if (!(position.gibIDsTanzendeBienen().isEmpty())) {
             int zielBiene = ((Integer)position.gibIDsTanzendeBienen().iterator().next()).intValue();
@@ -592,8 +601,11 @@ public class BienenstockAgent
             if (!( nAktCode == 0L)) {
                 aktCode = nAktCode;
             }
+            System.out.println(id +" habe Folgende INFORMATION : " );
             ausschnittHolen();
-            //visualisiereBiene(selbst);
+            visualisiereBiene(selbst);
+            System.out.println(id + ": visualisation abgeschlossen");
+         //   System.out.println(" INFO :" + "richtung " + selbst.gibInformation().gibRichtung());
         } else {
             System.out.println(id + "keine tanzenden Bienen anwesend!!!");
             long nAktCode = handler.aktionZuschauen(aktCode, 111);
