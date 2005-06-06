@@ -1,12 +1,9 @@
 /*
  * Dateiname      : VisBienenstock.java
- * Erzeugt        : 6. Oktober 2004
- * Letzte Änderung: 26. Januar 2005 durch Samuel Walz
+ * Erzeugt        : 06. Oktober 2004
+ * Letzte Änderung: 06. Juni 2005 durch Dietmar Lippold
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
- *
- *
- *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen eines
@@ -30,9 +27,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+
 package scenarios.bienenstock.visualisierungsUmgebung;
-import scenarios.bienenstock.agenteninfo.Koordinate;
+
 import java.util.HashSet;
+
+import scenarios.bienenstock.agenteninfo.Koordinate;
 
 /**
  * repräsentiert einen Bienenstock.
@@ -40,22 +40,22 @@ import java.util.HashSet;
  * @author Philip Funck
  */
 public class VisBienenstock extends VisFeld {
-    
+
     /**
      * ist das Maximum des im Bienenstock lagerbaren Nektars.
      */
     private int maximumGelagerterNektar;
-    
+
     /**
      * ist der im Bienenstock vorhandene Nektar.
      */
     private int vorhandenerNektar;
-    
+
     /**
      * ist die Menge des Nektars der pro Runde zu Honig gemacht werden kann.
      */
     private int maximumNektarZuHonigProRunde;
-    
+
     /**
      * ist der Faktor, der angibt wieviel Honig aus einer
      * bestimmten Menge Nektar wird.
@@ -63,18 +63,17 @@ public class VisBienenstock extends VisFeld {
      * mengeNektar * wechselkursNektarZuHonig = mengeHonig
      */
     private int wechselkursNektarZuHonig;
-    
+
     /**
      * ist der im Bienenstock vorhandene Honig.
      */
     private int vorhandenerHonig;
-    
+
     /**
      * ist eine Nummer, die das Bienenvolk eindeutig kennzeichnet.
      */
     private int volksID;
-    
-    
+
     /**
      * Konstruktor.
      *
@@ -119,60 +118,60 @@ public class VisBienenstock extends VisFeld {
         vorhandenerHonig = vorhHonig;
         volksID = bienenvolksID;
     }
-    
+
     /**
      * gibt die ID des zugehörigen Bienenvolks zurück.
      *
      * @return ID des Bienenvolkes zu dem der Stock gehört
      */
-    int gibVolksID() {
+    public int gibVolksID() {
         return volksID;
     }
-    
+
     /**
      * gibt die Obergrenze für die lagerbare Nektarmenge zurück.
      *
      * @return Maximum an gelagerten Nektar
      */
-    int gibMaxGelagerterNektar() {
+    public int gibMaxGelagerterNektar() {
         return maximumGelagerterNektar;
     }
-    
+
     /**
      * gibt die Menge an vorhandenem Nektar zurück.
      *
      * @return vorhandener Nektar
      */
-    int gibVorhandenerNektar() {
+    public int gibVorhandenerNektar() {
         return vorhandenerNektar;
     }
-    
+
     /**
      * gibt zurück, wieviel Nektar pro Runde maximal in Honig
      * umgewandelt werden kann.
      *
      * @return Maximum an Nektar der pro Runde zu Honig gemacht wird
      */
-    int gibMaxNektarZuHonigProRunde() {
+    public int gibMaxNektarZuHonigProRunde() {
         return maximumNektarZuHonigProRunde;
     }
-    
+
     /**
      * gibt zurück, wieviel Honig man aus einer Einheit Nektar herstellen kann.
      *
      * @return Wechselkurs von Nektar zu Honig
      */
-    int gibWechselkursNektarZuHonig() {
+    public int gibWechselkursNektarZuHonig() {
         return wechselkursNektarZuHonig;
     }
-    
+
     /**
      * gibt zurück, wieviel Honig vorhanden ist.
      *
      * @return vorhandener Honig
      */
-    int gibVorhandenerHonig() {
+    public int gibVorhandenerHonig() {
         return vorhandenerHonig;
     }
-    
 }
+

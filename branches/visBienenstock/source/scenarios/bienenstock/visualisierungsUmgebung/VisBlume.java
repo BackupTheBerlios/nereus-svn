@@ -1,12 +1,9 @@
 /*
  * Dateiname      : VisBlume.java
  * Erzeugt        : 6. Oktober 2004
- * Letzte Änderung: 26. Januar 2005 durch Philip Funck
+ * Letzte Änderung: 06. Juni 2005 durch Dietmar Lippold
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
- *
- *
- *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen eines
@@ -30,10 +27,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+
 package scenarios.bienenstock.visualisierungsUmgebung;
 
-import scenarios.bienenstock.agenteninfo.Koordinate;
 import java.util.HashSet;
+
+import scenarios.bienenstock.agenteninfo.Koordinate;
 
 /**
  * repräsentiert eine Blume.
@@ -41,28 +40,28 @@ import java.util.HashSet;
  * @author Philip Funck
  */
 public class VisBlume extends VisFeld {
-    
+
     /**
      * ist das äußere Merkmal der Blume.
      */
     private int merkmal;
-    
+
     /**
      * ist die vorhandene Nektarmenge.
      */
     private int vorhandenerNektar;
-    
+
     /**
      * ist das Maximum, das von einer Biene pro Runde bezogen werden kann.
      */
     private int maximumNektarProRunde;
-    
+
     /**
      * ist ene Liste aller zur Zeit Nektar abbauenden Bienen.
      * @associates VisBiene
      */
     private HashSet abbauendeBienen;
-    
+
     /**
      * Konstruktor.
      *
@@ -108,42 +107,42 @@ public class VisBlume extends VisFeld {
         maximumNektarProRunde = maxNektarProRunde;
         abbauendeBienen = aBienen;
     }
-    
+
     /**
      * gibt das Merkmal der Blume zurück.
      *
      * @return Merkmal der Blume
      */
-    int gibMerkmal() {
+    public int gibMerkmal() {
         return merkmal;
     }
-    
+
     /**
      * gibt zurück, wieviel Nektar vorhanden ist.
      *
      * @return vorhandener Nektar
      */
-    int gibVorhandenerNektar() {
+    public int gibVorhandenerNektar() {
         return vorhandenerNektar;
     }
-    
+
     /**
      * gibt zurück, wieviel Nektar pro Runde und Biene maximal
      * abgegeben werden kann.
      *
      * @return Maximalabgabemenge Nektar
      */
-    int gibMaxNektarProRunde() {
+    public int gibMaxNektarProRunde() {
         return maximumNektarProRunde;
     }
-    
+
     /**
      * gibt eine Liste aller an dieser Blume abbauenden Bienen zurück.
      *
      * @return abbauende Bienen
      */
-    HashSet gibAbbauendeBienen() {
+    public HashSet gibAbbauendeBienen() {
         return (HashSet) abbauendeBienen.clone();
     }
-    
 }
+

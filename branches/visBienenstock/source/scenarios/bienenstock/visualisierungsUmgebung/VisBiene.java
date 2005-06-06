@@ -1,12 +1,9 @@
 /*
  * Dateiname      : VisBiene.java
- * Erzeugt        : 6. Oktober 2004
- * Letzte Änderung: 26. Januar 2005 durch Philip Funck
+ * Erzeugt        : 06. Oktober 2004
+ * Letzte Änderung: 06. Juni 2005 durch Dietmar Lippold
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
- *
- *
- *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen eines
@@ -30,10 +27,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+
 package scenarios.bienenstock.visualisierungsUmgebung;
 
-import scenarios.bienenstock.agenteninfo.Koordinate;
 import scenarios.bienenstock.agenteninfo.Info;
+import scenarios.bienenstock.agenteninfo.Koordinate;
 
 /**
  * ist das Abbild des Agenten im Szenario.
@@ -44,55 +42,55 @@ import scenarios.bienenstock.agenteninfo.Info;
  * @author Philip Funck
  */
 public class VisBiene {
-    
+
     /**
      * Der Zustand der Biene.
      */
     private String zustand;
-    
+
     /**
      * ist eine Nummer, die die Biene eindeutig kennzeichnet.
      * Ist identisch mit der Agent-ID die die Agenten im Simulator haben.
      */
     private int bienenID;
-    
+
     /**
      * ist eine Nummer,
      * die die Zugehörigkeit einer Biene zu einem Bienenvolk
      * eindeutig kennzeichnet.
      */
     private int bienenvolkID;
-    
+
     /**
      * Die Position der Biene auf der Spielkarte
      */
     private Koordinate position;
-    
+
     /**
      * Die aktuell geladene Honigmenge der Biene.
      */
     private int geladeneHonigmenge;
-    
+
     /**
      * Die aktuell geladene Nektarmenge der Biene
      */
     private int geladeneNektarmenge;
-    
+
     /**
      * Maximale Beladung mit Honig.
      */
     private int maximumGeladenerHonig;
-    
+
     /**
      * Maximale Beladung mit Nektar.
      */
     private int maximumGeladenerNektar;
-    
+
     /**
      * ZUletzt getanzte Information der Biene.
      */
     private Info information;
-    
+
     /**
      * Konstruktor.
      *
@@ -124,7 +122,7 @@ public class VisBiene {
         maximumGeladenerNektar = maxGeladenerNektar;
         information = null;
     }
-    
+
     /**
      * Konstruktor für die Repräsentation einer tanzenden Biene.
      *
@@ -158,86 +156,87 @@ public class VisBiene {
         maximumGeladenerNektar = maxGeladenerNektar;
         information = infoObjekt;
     }
-    
+
     /**
      * gibt den Zustand der Biene zurück.
      *
      * @return der aktuelle Zustand
      */
-    String gibZustand() {
+    public String gibZustand() {
         return zustand;
     }
-    
+
     /**
      * Gibt die ID des zugehörigen Bienenvolks zurück.
      *
      * @return die ID des Bienenvolkes dem sie angehört
      */
-    int gibBienenvolkID() {
+    public int gibBienenvolkID() {
         return bienenvolkID;
     }
-    
+
     /**
      * Gibt die ID der Biene zurück.
      *
      * @return die ID der Biene
      */
-    int gibBienenID() {
+    public int gibBienenID() {
         return bienenID;
     }
-    
+
     /**
      * Gibt die Position der Biene auf der Spielkarte zurück.
      *
      * @return die Position der Biene
      */
-    Koordinate gibPosition() {
+    public Koordinate gibPosition() {
         return position;
     }
-    
+
     /**
      * Gibt die geladene Nektarmenge der Biene zurück.
      *
      * @return die geladenen Nektarmenge
      */
-    int gibGeladeneNektarmenge() {
+    public int gibGeladeneNektarmenge() {
         return geladeneNektarmenge;
     }
-    
+
     /**
      * Gibt die geladeneHonigmenge der Biene zurück.
      *
      * @return die geladenen Honigmenge
      */
-    int gibGeladeneHonigmenge() {
+    public int gibGeladeneHonigmenge() {
         return geladeneHonigmenge;
     }
-    
+
     /**
      * Gibt die maximal tragbare Nektarmenge zurück.
      *
      * @return das Maximum was sie an Nektar tragen kann
      */
-    int gibMaximumNektar() {
+    public int gibMaximumNektar() {
         return maximumGeladenerNektar;
     }
-    
+
     /**
      * Gibt die maximal tragbare Honigmenge zurück.
      *
      * @return das Maximum, was sie an Honig tragen kann
      */
-    int gibMaximumHonig() {
+    public int gibMaximumHonig() {
         return maximumGeladenerHonig;
     }
-    
+
     /**
      * Gibt die zuletzt getanzte Information der Biene zurück.
      *
      * @return die Information, die sie trägt <code>null</code>,
      *         wenn sie keine trägt
      */
-    Info gibInformation() {
+    public Info gibInformation() {
         return information;
     }
 }
+

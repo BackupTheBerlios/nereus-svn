@@ -1,12 +1,9 @@
 /*
  * Dateiname      : VisFeld.java
  * Erzeugt        : 6. Oktober 2004
- * Letzte Änderung: 26. Januar 2005 durch Philip Funck
+ * Letzte Änderung: 06. Juni 2005 durch Dietmar Lippold
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
- *
- *
- *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen eines
@@ -30,9 +27,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+
 package scenarios.bienenstock.visualisierungsUmgebung;
+
 import java.util.HashSet;
 import java.util.Hashtable;
+
 import scenarios.bienenstock.agenteninfo.Koordinate;
 
 /**
@@ -41,46 +41,46 @@ import scenarios.bienenstock.agenteninfo.Koordinate;
  *  @author Philip Funck
  */
 public class VisFeld {
-    
+
     /**
      * Position des Feldes auf der Spielkarte.
      */
     private Koordinate position;
-    
+
     /**
      * ist eine Liste de Angrenzenden Felder.
      * @associates VisFeld
      */
     private Hashtable nachbarfelder;
-    
+
     /**
      * Sichtweite der Biene am Boden des Feldes.
      */
     private int sichtweiteAmBoden;
-    
+
     /**
      * Sichtweite der Biene in der Luft des Feldes.
      */
     private int sichtweiteInDerLuft;
-    
+
     /**
      * ist eien Liste der auf dem Feld Wartenden oder zuhörenden Bienen.
      * @associates VisBiene
      */
     private HashSet wartendeBienen;
-    
+
     /**
      * ist eine Liste der über dem Feld fliegenden Bienen.
      * @associates VisBiene
      */
     private HashSet fliegendeBienen;
-    
+
     /**
      * ist eine Liste der auf dem Feld tanzenden Bienen.
      * @associates VisBiene
      */
     private HashSet tanzendeBienen;
-    
+
     /**
      * Konstruktor.
      *
@@ -104,76 +104,77 @@ public class VisFeld {
         tanzendeBienen = tBienen;
         position = feldPosition;
     }
-    
+
     /**
      * gibt die Position des Feldes auf der Spielkarte zurück.
      *
      * @return Position des Feldes
      */
-    Koordinate gibPosition() {
+    public Koordinate gibPosition() {
         return position;
     }
-    
+
     /**
      * gibt die direkt angrenzenden Nachbarfelder des Feldes zurück.
      *
      * @return Nachbarfelder
      */
-    Hashtable gibNachbarfelder() {
+    public Hashtable gibNachbarfelder() {
         return (Hashtable) nachbarfelder.clone();
     }
-    
+
     /**
      * gibt die Sichtweite der Biene am Boden des Feldes zurück.
      *
      * @return Sichtweite am Boden
      */
-    int gibSichtweiteAmBoden() {
+    public int gibSichtweiteAmBoden() {
         return sichtweiteAmBoden;
     }
-    
+
     /**
      * gibt die Sichtweite der Biene in der Luft des Feldes zurück.
      *
      * @return Sichtweite in der Luft
      */
-    int gibSichtweiteInDerLuft() {
+    public int gibSichtweiteInDerLuft() {
         return sichtweiteInDerLuft;
     }
-    
+
     /**
      * gibt eine Liste der dort watenden Bienen zurück.
      *
      * @return wartende Bienen
      */
-    HashSet gibWartendeBienen() {
+    public HashSet gibWartendeBienen() {
         return (HashSet) wartendeBienen.clone();
     }
-    
+
     /**
      * gibt eine Liste der dort fliegenden Bienen zurück.
      *
      * @return fliegende Bienen
      */
-    HashSet gibFliegendeBienen() {
+    public HashSet gibFliegendeBienen() {
         return (HashSet) fliegendeBienen.clone();
     }
-    
+
     /**
      * gibt eine Liste der dort tanzenden Bienen zurück.
      *
      * @return tanzende Bienen
      */
-    HashSet gibTanzendeBienen() {
+    public HashSet gibTanzendeBienen() {
         return (HashSet) tanzendeBienen.clone();
     }
-    
+
     /**
      * setzt dem Feld seine direkt angrenzenden Nachbarfelder.
      *
      * @param nachbarn die Nachbarfelder
      */
-    void setzeNachbarfelder(Hashtable nachbarn) {
+    public void setzeNachbarfelder(Hashtable nachbarn) {
         nachbarfelder = nachbarn;
     }
 }
+
