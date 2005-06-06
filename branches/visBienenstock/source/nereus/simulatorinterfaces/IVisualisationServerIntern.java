@@ -27,7 +27,7 @@ package nereus.simulatorinterfaces;
 
 import java.io.Serializable;
 
-import nereus.simulator.visualisation.DoppeltesSpielException;
+import nereus.exceptions.DoppeltesSpielException;
 
 /**
  * Die Schnittstelle der Server-Vis-Komponente für das Szenario.
