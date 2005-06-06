@@ -39,7 +39,8 @@ import java.util.HashMap;
 import java.util.Set;
 import java.io.Serializable;
 
-import nereus.simulatorinterfaces;
+import nereus.simulatorinterfaces.IVisualisationServerIntern;
+import nereus.simulatorinterfaces.IVisualisationServerExtern;
 
 /**
  * Speichert die Informationen aller Spiele die für eine Visualisierung
