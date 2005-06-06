@@ -1,9 +1,8 @@
 /*
  * Dateiname      : IVisualisationClient.java
  * Erzeugt        : 26. Mai 2005
- * Letzte Änderung: 26. Mai 1005 durch Samuel Walz
+ * Letzte Änderung: 06. Juni 2005 durch Dietmar Lippold
  * Autoren        : Samuel Walz (samuel@gmx.info)
- *                  
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  *
@@ -23,14 +22,14 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package source.client.visualisation;
+
+package nereus.simulatorinterfaces;
 
 /**
  *
  * @author  Samuel Walz
  */
 public interface IVisualisationClient {
-    
-    
-    
+
 }
+
