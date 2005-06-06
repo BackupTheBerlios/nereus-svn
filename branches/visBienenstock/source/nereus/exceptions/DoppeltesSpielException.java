@@ -23,7 +23,7 @@
  */
 
 
-package nereus.simulator.visualisation;
+package nereus.exceptions;
 
 /**
  *
