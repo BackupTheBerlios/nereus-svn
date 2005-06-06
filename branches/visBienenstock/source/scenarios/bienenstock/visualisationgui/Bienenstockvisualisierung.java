@@ -24,7 +24,7 @@
  */
 
 
-package scenarios.bienenstock.visualisationclient;
+package scenarios.bienenstock.visualisationgui;
 
 import java.util.Hashtable;
 import java.util.Enumeration;
