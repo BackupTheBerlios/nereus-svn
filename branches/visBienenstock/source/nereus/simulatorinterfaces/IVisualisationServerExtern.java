@@ -23,7 +23,7 @@
  */
 
 
-package nereus.simulator.visualisation;
+package nereus.simulatorinterfaces;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
