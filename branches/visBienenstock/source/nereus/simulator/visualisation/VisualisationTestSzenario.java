@@ -27,6 +27,8 @@ package nereus.simulator.visualisation;
 
 import java.rmi.RemoteException;
 
+import nereus.exceptions.DoppeltesSpielException;
+
 /**
  *
  * @author  Samuel Walz

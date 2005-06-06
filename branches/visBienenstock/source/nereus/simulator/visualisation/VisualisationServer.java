@@ -39,6 +39,8 @@ import java.util.HashMap;
 import java.util.Set;
 import java.io.Serializable;
 
+import nereus.exceptions.DoppeltesSpielException;
+import nereus.exceptions.AuthentifizierungException;
 import nereus.simulatorinterfaces.IVisualisationServerIntern;
 import nereus.simulatorinterfaces.IVisualisationServerExtern;
 
@@ -99,7 +101,7 @@ public class VisualisationServer extends UnicastRemoteObject
         UnicastRemoteObject.exportObject((Remote)this);
         try {
             Naming.rebind("VisualisationServer", this);
-        } catch(MalformedURLException fehler) {
+        } catch (MalformedURLException fehler) {
             System.out.println(fehler.getMessage());
         }
     }
@@ -123,7 +125,8 @@ public class VisualisationServer extends UnicastRemoteObject
      * @param authCode
      * @return           Eine ganze Zahl größer -1
      */
-    private int gibSpielID (long authCode) throws AuthentifizierungException{
+    private int gibSpielID (long authCode) throws AuthentifizierungException {
+
         if (authZuordnung.containsKey(new Long(authCode))) {
             return ((Integer)authZuordnung.get(new Long(authCode))).intValue();
         } else {
