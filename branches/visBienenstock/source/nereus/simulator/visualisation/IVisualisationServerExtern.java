@@ -1,9 +1,8 @@
 /*
  * Dateiname      : IVisualisationServerExtern.java
  * Erzeugt        : 19. Mai 2005
- * Letzte Änderung: 30. Mai 1005 durch Samuel Walz
+ * Letzte Änderung: 06. Juni 2005 durch Dietmar Lippold
  * Autoren        : Samuel Walz (samuel@gmx.info)
- *                  
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  *
@@ -23,7 +22,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package source.server.visualisation;
+
+package nereus.simulator.visualisation;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -35,7 +35,7 @@ import java.util.LinkedList;
  * @author Samuel Walz
  */
 public interface IVisualisationServerExtern extends Remote {
-    
+
     /**
      * Gibt den Ausschnitt der Informationen zu einem Spiel ab einer 
      * gewünschten Position zurück.
@@ -45,5 +45,6 @@ public interface IVisualisationServerExtern extends Remote {
      * @return                    eine Liste der gewünschten Informationen
      */
     public LinkedList gibSpielInformationen (int spielID, int ausschnittsbeginn)
-                throws RemoteException;
+        throws RemoteException;
 }
+

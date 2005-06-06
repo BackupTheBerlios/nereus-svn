@@ -1,9 +1,8 @@
 /*
  * Dateiname      : VisualisationTestSzenario.java
  * Erzeugt        : 22. Mai 2005
- * Letzte Änderung: 30. Mai 1005 durch Samuel Walz
+ * Letzte Änderung: 06. Juni 2005 durch Samuel Walz
  * Autoren        : Samuel Walz (samuel@gmx.info)
- *                  
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  *
@@ -23,20 +22,19 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package source.server.visualisation;
+
+package nereus.simulator.visualisation;
 
 import java.rmi.RemoteException;
-import java.lang.InterruptedException;
-
 
 /**
  *
  * @author  Samuel Walz
  */
 public class VisualisationTestSzenario {
-    
+
     private static long authCode = 0L;
-    
+
     /** Creates a new instance of VisualisationTestSzenario */
     public VisualisationTestSzenario() {
         try {
@@ -53,12 +51,12 @@ public class VisualisationTestSzenario {
             }
             System.out.println("Melde Spiel ab...");
             unserServer.spielAbmelden(authCode);
-            
+
             System.out.println("Warte...");
                 synchronized(this) {
                     this.wait(120000);
                 }
-            
+
         } catch (DoppeltesSpielException fehler) {
             System.out.println("Spiel mit gleicher ID schon angemeldet!\n" 
                                 + fehler.getMessage());
@@ -70,9 +68,10 @@ public class VisualisationTestSzenario {
                                 + fehler.getMessage());
         }
     }
-    
+
+
     public static void main(String args[]) {
         VisualisationTestSzenario testSzenario = new VisualisationTestSzenario();
     }
-    
 }
+

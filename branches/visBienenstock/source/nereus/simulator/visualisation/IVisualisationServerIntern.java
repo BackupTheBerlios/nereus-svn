@@ -1,9 +1,8 @@
 /*
  * Dateiname      : IVisualisationServerIntern.java
  * Erzeugt        : 18. Mai 2005
- * Letzte Änderung: 30. Mai 1005 durch Samuel Walz
+ * Letzte Änderung: 06. Juni 2005 durch Dietmar Lippold
  * Autoren        : Samuel Walz (samuel@gmx.info)
- *                  
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  *
@@ -23,7 +22,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package source.server.visualisation;
+
+package nereus.simulator.visualisation;
 
 import java.io.Serializable;
 
@@ -33,22 +33,24 @@ import java.io.Serializable;
  * @author  Samuel Walz
  */
 public interface IVisualisationServerIntern {
-    
+
     /**
      * Meldet ein Spiel für die Speicherung seiner Informationen an.
      * Gibt eine Zahl zurück, die als Authentifizierung für die Übergabe
      * der Informationen dient, damit diese dem richtigen Spiel zugeordnet
      * werden können. 
      *
-     * @throws doppeltesSpielException    wenn ein Spiel mit der gleichen ID
-     *                                    bereits angemeldet ist
      * @param spielID
      * @param wartezeit
-     * @return             Eine natürliche Zahl größer Null.
+     *
+     * @return  Eine natürliche Zahl größer Null.
+     *
+     * @throws doppeltesSpielException  Wenn ein Spiel mit der gleichen ID
+     *                                  bereits angemeldet ist.
      */
     public long spielAnmelden (int spielID, int wartezeit) 
-                                throws DoppeltesSpielException;
-    
+        throws DoppeltesSpielException;
+
     /**
      * Speichert die Informationen eines Spiels.
      *
@@ -56,13 +58,13 @@ public interface IVisualisationServerIntern {
      * @param information
      */
     public void speichereSpielInformationen (long authCode, 
-            Serializable information);
-    
+                                             Serializable information);
+
     /**
      * Meldet ein Spiel für die Speicherungen von Informationen ab.
      *
      * @param authCode   Eine natürliche Zahl größer Null.
      */
     public void spielAbmelden (long authCode);
-    
 }
+

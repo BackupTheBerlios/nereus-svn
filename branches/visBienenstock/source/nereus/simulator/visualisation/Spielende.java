@@ -1,9 +1,8 @@
 /*
  * Dateiname      : IVisualisationServer.java
  * Erzeugt        : 26. Mai 2005
- * Letzte Änderung: 26. Mai 1005 durch Samuel Walz
+ * Letzte Änderung: 06. Juni 2005 durch Dietmar Lippold
  * Autoren        : Samuel Walz (samuel@gmx.info)
- *                  
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  *
@@ -23,26 +22,30 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package source.server.visualisation;
+
+package nereus.simulator.visualisation;
 
 import java.io.Serializable;
 
 /**
- * Markiert in einer LinkedList mit Informationsobjekten das Ende eines Spiels.
+ * Markiert in einer LinkedList mit Informationsobjekten das Ende eines
+ * Spiels.
  *
  * @author  Samuel Walz
  */
 public class Spielende implements Serializable {
-    
+
     private static long zeitDesSpielendes = 0L;
-    
-    /** Creates a new instance of Spielende */
+
+    /**
+     * Creates a new instance of Spielende.
+     */
     public Spielende(long endZeit) {
         zeitDesSpielendes = endZeit;
     }
-    
+
     public long gibEndZeit() {
         return zeitDesSpielendes;
     }
-    
 }
+

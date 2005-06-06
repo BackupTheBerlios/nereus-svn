@@ -1,9 +1,8 @@
 /*
  * Dateiname      : VisualisationServer.java
  * Erzeugt        : 19. Mai 2005
- * Letzte Änderung: 30. Mai 1005 durch Samuel Walz
+ * Letzte Änderung: 06. Juni 2005 durch Dietmar Lippold
  * Autoren        : Samuel Walz (samuel@gmx.info)
- *                  
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  *
@@ -23,7 +22,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package source.server.visualisation;
+
+package nereus.simulator.visualisation;
 
 import java.util.Random;
 import java.rmi.Naming;
@@ -38,12 +38,13 @@ import java.util.Iterator;
 import java.util.HashMap;
 import java.util.Set;
 import java.io.Serializable;
-import source.client.visualisation.IVisualisationClient;
+
+import nereus.simulatorinterfaces;
 
 /**
  * Speichert die Informationen aller Spiele die für eine Visualisierung
  * notwendig sein könnten und gibt sie auf Anfrage an interessierte
- * Clients weiter.
+ * Clients weiter.<P>
  * 
  * Die ankommenden Informationen der laufenden Spiele werden
  * sortiert, nach der ID des zugehörigen Spieles und der Reihenfolge
@@ -58,32 +59,33 @@ import source.client.visualisation.IVisualisationClient;
  * @author Samuel Walz
  */
 public class VisualisationServer extends UnicastRemoteObject
-        implements IVisualisationServerIntern, IVisualisationServerExtern {
-    
+    implements IVisualisationServerIntern, IVisualisationServerExtern {
+
     // Die Informationen der Spiele, sortiert nach der Spiel-ID.
     private static HashMap informationsspeicher = new HashMap();
-    
+
     // Die empfohlenen Wartezeiten für die Client-Vis-Komponenten
     private static HashMap wartezeiten = new HashMap();
-    
+
     // Die Zuordnung der Authentifizierungscodes zu den Spiel-IDs.
     private static HashMap authZuordnung = new HashMap();
-    
+
     // Die Standardwartezeit in Millisekunden
     private static int standardwartezeit = 2000;
-    
+
     //
     private static long informationshaltbarkeit = (1000 * 60 * 60);
-    
+
     /*
      * Die angemeldeten Client-Vis-Komponenten, sortiert nach den Spielen,
      * für die sie sich interessieren.
      */
     // Zum Erzeugen zufälliger Werte
     private final long samen = System.currentTimeMillis();
+
     private Random zufallsGenerator = new Random();
-    
-    
+
+
     /** 
      * Creates a new instance of VisualisationServer 
      */
@@ -100,7 +102,7 @@ public class VisualisationServer extends UnicastRemoteObject
             System.out.println(fehler.getMessage());
         }
     }
-    
+
     /**
      * Gibt Fehlermeldungen aus.
      *
@@ -111,7 +113,7 @@ public class VisualisationServer extends UnicastRemoteObject
         System.out.println("Server-Vis-Komponente : " + methodenname + " : \n"
                 + "    " + fehlerbeschreibung);
     }
-    
+
     /**
      * Gibt die zu einem Authentifizierungscode gehörende Spiel-ID zurück.
      *
@@ -128,7 +130,7 @@ public class VisualisationServer extends UnicastRemoteObject
                                 + authCode);
         }
     }
-    
+
     /**
      * Erzeugt einen Athentifizierungscode, der eindeutig einer Spiel-ID
      * zugeordnet und zufällig generiert ist und speichert diese Zuordnung
@@ -155,7 +157,7 @@ public class VisualisationServer extends UnicastRemoteObject
         
         return authCode;
     }
-    
+
     /**
      * Erstellt eine neue Liste, die den Inhalt der übergebenen ab einer
      * bestimmten Position enthält.
@@ -180,7 +182,7 @@ public class VisualisationServer extends UnicastRemoteObject
         
         return ausschnitt;
     }
-    
+
     /**
      * Löscht alle Spielinformationen aus dem Speicher, deren Haltbarkeit
      * abgelaufen ist.
@@ -219,9 +221,8 @@ public class VisualisationServer extends UnicastRemoteObject
                 }
             }
         }
-        
     }
-    
+
     /**
      * Gibt die Spielinformationen zu einem bestimmten Spiel zurück.
      *
@@ -239,7 +240,7 @@ public class VisualisationServer extends UnicastRemoteObject
             return new LinkedList();
         }
     }
-    
+
     /**
      * Speichert die Spielinformationen der einzelnen Spiele.
      *
@@ -262,9 +263,8 @@ public class VisualisationServer extends UnicastRemoteObject
             gibFehlerAus("speichereSpielInformationen", 
                          fehler.getMessage());
         }
-        
     }
-    
+
     /**
      * Meldet ein Spiel für die Informationsspeicherung an.
      * 
@@ -275,7 +275,7 @@ public class VisualisationServer extends UnicastRemoteObject
      * @return               der Authentifizierungscode
      */
     public long spielAnmelden(int spielID, int wartezeit) 
-                                throws DoppeltesSpielException{
+        throws DoppeltesSpielException{
         
         if (! informationsspeicher.containsKey(new Integer(spielID))) {
             // Eine neue Liste für die Informationen des Spiels anlegen
@@ -302,7 +302,7 @@ public class VisualisationServer extends UnicastRemoteObject
                         + " ist schon angemeldet!");
         }
     }
-    
+
     /**
      * Meldet ein Spiel für die Informationsspeicherung ab.
      *
@@ -328,5 +328,5 @@ public class VisualisationServer extends UnicastRemoteObject
                     "Falscher Authentifizierungscode: " + authCode);
         }
     }
-    
 }
+
