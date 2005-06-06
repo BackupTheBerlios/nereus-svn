@@ -1,9 +1,8 @@
 /*
  * Dateiname      : VisualisationClient.java
  * Erzeugt        : 19. Mai 2005
- * Letzte Änderung: 30. Mai 1005 durch Samuel Walz
+ * Letzte Änderung: 06. Juni 2005 durch Dietmar Lippold
  * Autoren        : Samuel Walz (samuel@gmx.info)
- *                  
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  *
@@ -23,38 +22,40 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package source.client.visualisation;
+
+package nereus.visualisationclient;
 
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.NotBoundException;
 import java.net.MalformedURLException;
-import java.lang.InterruptedException;
-import source.server.visualisation.IVisualisationServerExtern;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.io.Serializable;
-import source.server.visualisation.Spielende;
+
+import nereus.simulator.visualisation.Spielende;
+import nereus.simulatorinterfaces.IVisualisationClient;
+import nereus.simulatorinterfaces.IVisualisationServerExtern;
 
 /**
  *
- * @author  sam
+ * @author  Samuel Walz
  */
-public class VisualisationClient extends Thread implements IVisualisationClient{
-    
+public class VisualisationClient extends Thread implements IVisualisationClient {
+
     private static String serverAdresse = "127.0.0.1:1099/VisualisationServer";
-    
+
     private static int spielID = 0;
-    
+
     private static Integer wartezeit = new Integer(2000);
-    
+
     private int ausschnittsbeginn = 0;
-    
+
     private LinkedList spielinformationen = new LinkedList();
-    
+
     private boolean alleInformationenAbgeholt = false;
-    
+
     /** 
      * Creates a new instance of VisualisationClient 
      */
@@ -64,13 +65,13 @@ public class VisualisationClient extends Thread implements IVisualisationClient{
         
         start();
     }
-    
+
     public VisualisationClient(int spiel) {
         spielID = spiel;
         
         start();
     }
-    
+
 
     public void run() {
         System.out.println("Client ist gestartet...");
@@ -79,34 +80,34 @@ public class VisualisationClient extends Thread implements IVisualisationClient{
              IVisualisationServerExtern visServer = 
                 (IVisualisationServerExtern) Naming.lookup("rmi://" 
                                                        + serverAdresse);
-             
+
              // Die empfohlene Wartezeit erfragen
-             
-             
+
+
              // Die Visualisierung starten
              Visualisation visualisierung = new Visualisation();
              visualisierung.start();
-             
+
              while ((! alleInformationenAbgeholt) && visualisierung.isAlive()) {
                 System.out.println("hole informationen...");
                 LinkedList informationen = 
                     visServer.gibSpielInformationen(spielID, ausschnittsbeginn);
-            
+
                 ListIterator listenlaeufer = informationen.listIterator();
                 /*
                 * Wird eine leere Liste übergeben, so wird auf weitere
                 * Informationen gewartet.
                 */
                 if (! listenlaeufer.hasNext()) {
-                    
+
                     System.out.println("Habe eine leere Liste erhalten...");
-                    
+
                     synchronized (wartezeit) {
                         wartezeit.wait(wartezeit.intValue());
                     }
-                    
+
                 } else {
-                    
+
                     System.out.println("Liste enthält Informationen...");
                     //Weitergeben der Informationen an die Visualisierung
                     while (listenlaeufer.hasNext()) {
@@ -120,9 +121,7 @@ public class VisualisationClient extends Thread implements IVisualisationClient{
                             alleInformationenAbgeholt = true;
                         }
                     }
-                
-                }
-                
+                 }
              }
         } catch (MalformedURLException fehler) {
             System.out.println("Server-URL fehlerhaft!\n" 
@@ -137,10 +136,11 @@ public class VisualisationClient extends Thread implements IVisualisationClient{
             System.out.println("Warten fehlgeschlagen!\n" 
                                 + fehler.getMessage());
         }
-        
+
         System.out.println("Client hat sich beendet...");
     }
-    
+
+
     public static void main(String args[]) {
         System.out.println("Client wird gestartet...");
         if (args.length >= 2) {
@@ -153,7 +153,5 @@ public class VisualisationClient extends Thread implements IVisualisationClient{
                     + "(z.B.: 127.0.0.1:1099/VisualisationServer 23)");
         }
     }
-    
-    
-    
 }
+
