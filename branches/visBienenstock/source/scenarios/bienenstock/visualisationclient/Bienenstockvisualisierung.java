@@ -1,19 +1,40 @@
 /*
- * Created on Apr 26, 2005
+ * Dateiname      : Bienenstockvisualisierung.java
+ * Erzeugt        : 26. April 2005
+ * Letzte Änderung: 06. Juni 2005 durch Dietmar Lippold
+ * Autoren        : Philip Funck (mango.3@gmx.de)
+ *                  Samuel Walz (felix-kinkowski@gmx.net)
  *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
+ * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
+ *
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package scenario.bienenstock.visualisierung;
 
-import scenario.bienenstock.visualisierungsUmgebung.*;
-import scenario.bienenstock.Koordinate;
+
+package scenarios.bienenstock.visualisationclient;
+
 import java.util.Hashtable;
 import java.util.Enumeration;
-import javax.swing.*;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+
+import scenarios.bienenstock.agenteninfo.Koordinate;
+import scenarios.bienenstock.visualisierungsUmgebung.*;
 
 /**
  * @author philip
@@ -23,11 +44,11 @@ import java.awt.event.*;
  */
 public class Bienenstockvisualisierung extends Frame {
 	
-	private boolean initiiert = false;
-	private VisKarte karte;
-	private int groesseX = 51;
-	private int groesseY = 51;
-	private Frame fenster;
+    private boolean initiiert = false;
+    private VisKarte karte;
+    private int groesseX = 51;
+    private int groesseY = 51;
+    private Frame fenster;
     
     private Font schrift = new Font("Serif", Font.PLAIN, 12);
     
@@ -40,69 +61,71 @@ public class Bienenstockvisualisierung extends Frame {
     private int minY = 1000000000;
     private int maxX = -1000000000;
     private int maxY = -1000000000;
-    
+
     private boolean fertig = true;
-    
+
     private Visualisierung vis;
-	
-	public Bienenstockvisualisierung(Visualisierung visu) {
-		fenster = this;
+
+
+    public Bienenstockvisualisierung(Visualisierung visu) {
+        fenster = this;
         vis = visu;
-		fenster.setTitle("Bienenstockvisualisierung");
+	        fenster.setTitle("Bienenstockvisualisierung");
         fenster.setFont(schrift);
         //Schliessen
-		addWindowListener( new WindowAdapter() {
+	        addWindowListener( new WindowAdapter() {
             public void windowClosing ( WindowEvent e ) {
               System.exit(0);
             }
           } );
-        
+
         //Groesse und Position setzen
-		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-		fenster.setSize((int)screen.getWidth(), (int)screen.getHeight() - 30);
-		fenster.setLocation(0, fenster.getInsets().top);
-        
+	        Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+	        fenster.setSize((int)screen.getWidth(), (int)screen.getHeight() - 30);
+	        fenster.setLocation(0, fenster.getInsets().top);
+
         //Bilder laden
         bildBienenstock = Toolkit.getDefaultToolkit().getImage(pfad + "bienenstock.gif");
         bildBlume = Toolkit.getDefaultToolkit().getImage(pfad + "blume.gif");
         bildPlatz = Toolkit.getDefaultToolkit().getImage(pfad + "platz.gif");
-	}
+    }
+
+
+    public void visualisiere (VisKarte neueKarte) {
+        if (neueKarte != null) {
+	    karte = neueKarte;
+            if (!initiiert) {
+                setzeXY();
+            }
+	    repaint();
+        } else {
+            System.out.println("Vis: Keine Gültige Karte übergeben bekommen.");
+        }
+    }
 
 	
-	public void visualisiere (VisKarte neueKarte) {
-		if (neueKarte != null) {
-			karte = neueKarte;
-			if (!initiiert) {
-				setzeXY();
-			}
-			repaint();
-		} else {
-			System.out.println("Vis: Keine Gültige Karte übergeben bekommen.");
-		}
-	}
+    private void setzeXY() {
+        Enumeration felder = karte.gibFelder().elements();
+        Koordinate pos;
+        while (felder.hasMoreElements()) {
+            pos = ((VisFeld)felder.nextElement()).gibPosition();
+            if (pos.gibXPosition() < minX) {
+                minX = pos.gibXPosition();
+            } else if (pos.gibXPosition() > maxX){
+                maxX = pos.gibXPosition();
+            } 
+            if (pos.gibYPosition() < minY) {
+                minY = pos.gibYPosition();
+            } else if (pos.gibYPosition() > maxY) {
+                maxY = pos.gibYPosition();
+            }
+        }
+        initiiert = true;
+    }
 	
-	private void setzeXY() {
-		Enumeration felder = karte.gibFelder().elements();
-		Koordinate pos;
-		while (felder.hasMoreElements()) {
-			pos = ((VisFeld)felder.nextElement()).gibPosition();
-			if (pos.gibXPosition() < minX) {
-				minX = pos.gibXPosition();
-			} else if (pos.gibXPosition() > maxX){
-				maxX = pos.gibXPosition();
-			} 
-			if (pos.gibYPosition() < minY) {
-				minY = pos.gibYPosition();
-			} else if (pos.gibYPosition() > maxY) {
-				maxY = pos.gibYPosition();
-			}
-		}
-		initiiert = true;
-	}
-	
-	public void paint(Graphics g) {
+    public void paint(Graphics g) {
         g.setColor(new Color(0, 0, 0));
-        
+
         if (karte != null) {
             Hashtable felder = karte.gibFelder();
             VisFeld tmpFeld;
@@ -182,10 +205,10 @@ public class Bienenstockvisualisierung extends Frame {
                         } else {
                             System.out.println("Vis: ungueltiger FeldTyp!");
                         }
-                                            
                     }
                 }
             }
         }
-	}
+    }
 }
+
