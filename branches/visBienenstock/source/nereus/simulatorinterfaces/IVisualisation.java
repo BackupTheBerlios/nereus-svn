@@ -29,7 +29,7 @@ package nereus.simulatorinterfaces;
  *
  * @author  Samuel Walz
  */
-interface IVisualisation {
+public interface IVisualisation {
 
     public void visualisiere(java.lang.Object information);
 }
