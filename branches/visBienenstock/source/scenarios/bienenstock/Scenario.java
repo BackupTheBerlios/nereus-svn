@@ -1,9 +1,9 @@
 /*
  * Dateiname      : Scenario.java
  * Erzeugt        : 16. Oktober 2004
- * Letzte Änderung: 20. Mai 2005 durch Eugen Volk
+ * Letzte Änderung: 08. Juni 2005 durch Samuel Walz
  * Autoren        : Philip Funck (mango.3@gmx.de)
- *                  Samuel Walz (felix-kinkowski@gmx.net)
+ *                  Samuel Walz (samuel@gmx.info)
  *                  Eugen Volk
  *
  *
@@ -41,6 +41,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Vector;
 
+import nereus.exceptions.DoppeltesSpielException;
 import nereus.exceptions.InvalidAgentException;
 import nereus.exceptions.NotEnoughEnergyException;
 import nereus.exceptions.InvalidElementException;
@@ -48,6 +49,7 @@ import nereus.simulatorinterfaces.AbstractScenario;
 import nereus.simulatorinterfaces.AbstractScenarioHandler;
 import nereus.simulatorinterfaces.statistic.IStatisticComponent;
 import nereus.simulatorinterfaces.statistic.IStatisticScenario;
+import nereus.simulatorinterfaces.IVisualisationServerIntern;
 import scenarios.bienenstock.einfacheUmgebung.EinfacheKarte;
 import scenarios.bienenstock.umgebung.Karte;
 import scenarios.bienenstock.umgebung.Bienenstock;
@@ -216,6 +218,11 @@ public class Scenario
      */
     private GameConf gameConf;
     
+    /**
+     * Authentifizierungscode zum übertragen der Informationsobjekte an die
+     * Server-Vis-Komponente
+     */
+    private long visAuthCode = 0L;    
     
     
     /**
@@ -224,13 +231,16 @@ public class Scenario
      * @param gameId            ID des Spiels
      * @param visHandler        Der Visualisierungshandler für das Szenario
      * @param parameterTabelle  Die Parameter für das Spiel
+     * @param visServer         Die Server-Vis-Komponente
      */
     public Scenario(Id gameId,
             IInformationHandler visHandler,
-            Hashtable parameterTabelle) {
+            Hashtable parameterTabelle,
+            IVisualisationServerIntern visServer) {
         super(gameId,
                 visHandler,
-                parameterTabelle);
+                parameterTabelle,
+                visServer);
         this.serverInfoObject=ServerInfoObject.m_instance;
         this.gameConf=(GameConf)serverInfoObject.getGameConf(this.SZENARIONAME);
         this.KARTENDATEINAME=this.gameConf.getKartenDateiName();
@@ -909,13 +919,27 @@ public class Scenario
     throws InvalidAgentException,
             NotEnoughEnergyException,
             InvalidElementException {
+        // Szenario an der Server-Vis-Komponente anmelden
+        try {
+            visAuthCode = m_visualisationServer.spielAnmelden(m_gameId, 2000);
+        } catch (DoppeltesSpielException fehler) {
+            System.out.println("Konnte Spiel für die Visualisierung nicht "
+                                + "anmelden: Doppelte ID!");
+        }
+                
         startphase();
-        while (!endbedingungTrifftZu()) {
+        while (!endbedingungTrifftZu()) { 
+            // Übertragen der Spielinformationen an die Server-Vis-Komponente
+            m_visualisationServer.speichereSpielInformationen(visAuthCode, 
+                                                 spielkarte.visualisieren());
             wartephase();
             bearbeitungsphase();
             spielkarte.createRoundStatistik(this.statistik);
         }
         endphase();
+        
+        // Spiel von der Server-Vis-Komponente abmelden
+        m_visualisationServer.spielAbmelden(visAuthCode);
         
     }
     
