@@ -43,7 +43,7 @@ public class Visualisierung extends Thread {
     /**
      * das frame der Visualisierung
      */
-    private Bienenstockvisualisierung fenster;
+    private VisualisierungFenster fenster;
     
     /**
      * die Liste mit den Karten, die visualisiert wurden und werden müssen. 
@@ -66,7 +66,7 @@ public class Visualisierung extends Thread {
      *
      */
     public Visualisierung () {
-        fenster = new BienenstockvisualisierungFenster(this);
+        fenster = new VisualisierungFenster(this);
         fenster.show();
         karten = new LinkedList();
     }
