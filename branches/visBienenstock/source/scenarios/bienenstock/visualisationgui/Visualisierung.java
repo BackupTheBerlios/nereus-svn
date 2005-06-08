@@ -61,12 +61,14 @@ public class Visualisierung extends Thread {
      */
     private long zeit = 1000L;
     
+    private boolean warten = false;
+    
     /**
      * der Konstruktor initiiert das Frame und die Kartenliste
      *
      */
     public Visualisierung () {
-        fenster = new VisualisierungFenster();
+        fenster = new VisualisierungFenster(this);
         fenster.show();
         karten = new LinkedList();
     }
@@ -81,6 +83,14 @@ public class Visualisierung extends Thread {
         karten.addLast(karte);
     }
     
+    public void warte () {
+        warten = true;
+    }
+    
+    public void weiter() {
+        warten = false;
+    }
+    
     /**
      * prüft, ob eine zu visualisierende Karte in <code>karten</code> ist und leitet 
      * die gegebenenfalls weiter. Anschließend wird <code>zeit</code> 
@@ -89,7 +99,7 @@ public class Visualisierung extends Thread {
     public void run () {
         while (fenster.isActive()) {
             // überprüfen ob eine neue Karte da ist
-            if (naechste < karten.size()) {
+            if (!warten && naechste < karten.size()) {
                 //neue Karte weiterleiten
                 fenster.visualisiere((VisKarte)karten.get(naechste));
                 //hochzählen

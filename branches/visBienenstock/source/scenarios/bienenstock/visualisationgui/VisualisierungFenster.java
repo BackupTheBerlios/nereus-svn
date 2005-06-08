@@ -112,14 +112,18 @@ public class VisualisierungFenster extends Frame {
      * die maximale Y Koordiante
      */
     private int maxY = -1000000000;
+    
+    Button pause = new Button("Pause");
+    Visualisierung vis;
 
     /**
      * der Konstruktor
      *
      */
-    public VisualisierungFenster() {
+    public VisualisierungFenster(Visualisierung visu) {
+        vis = visu;
         fenster = this;
-	        fenster.setTitle("Bienenstockvisualisierung");
+	fenster.setTitle("Bienenstockvisualisierung");
         fenster.setFont(schrift);
         //Schliessen
 	        addWindowListener( new WindowAdapter() {
@@ -194,13 +198,20 @@ public class VisualisierungFenster extends Frame {
             int x, y;
             for (x = minX; x <= maxX; x++) {
                 for (y = minY; y <= maxY; y++) {
+                    //Breite der headline
                     int abstandOben = fenster.getInsets().top + 5;
+                    //Positionierung der Schrift
                     int oben = 12;
                     int unten = 46;
                     int links = 2;
                     int rechts = 36;
+                    
+                    // temporaerer Speicher f?r die anzahl der am Boden 
+                    // befindlichen Bienen
                     int tmpBienen = 0;
+                    
                     Koordinate koord = new Koordinate(x, y);
+                    //gibt es das Feld ueberhaupt
                     if (felder.containsKey(koord)) {
                         tmpFeld = (VisFeld) felder.get(koord);
                         Image bild;
@@ -282,7 +293,25 @@ public class VisualisierungFenster extends Frame {
                     }
                 }
             }
+            add(pause);
         }
     }
+    
+    ActionListener pauseAktion = new ActionListener() {
+	public void actionPerformed(ActionEvent e) {
+            pause.setLabel("weiter");
+            vis.warte();
+            pause.removeActionListener(pauseAktion);
+            pause.addActionListener(weiterAktion);
+        }
+    };
+    ActionListener weiterAktion = new ActionListener () {
+        public void actionPerformed(ActionEvent e) {
+            pause.setLabel("Pause");
+            vis.weiter();
+            pause.removeActionListener(this);
+            pause.addActionListener(pauseAktion);
+        }
+    };
 }
 
