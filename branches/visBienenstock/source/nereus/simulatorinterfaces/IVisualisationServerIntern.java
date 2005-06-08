@@ -1,7 +1,7 @@
 /*
  * Dateiname      : IVisualisationServerIntern.java
  * Erzeugt        : 18. Mai 2005
- * Letzte Änderung: 06. Juni 2005 durch Dietmar Lippold
+ * Letzte Änderung: 08. Juni 2005 durch Samuel Walz
  * Autoren        : Samuel Walz (samuel@gmx.info)
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
@@ -28,6 +28,7 @@ package nereus.simulatorinterfaces;
 import java.io.Serializable;
 
 import nereus.exceptions.DoppeltesSpielException;
+import nereus.utils.Id;
 
 /**
  * Die Schnittstelle der Server-Vis-Komponente für das Szenario.
@@ -50,7 +51,7 @@ public interface IVisualisationServerIntern {
      * @throws doppeltesSpielException  Wenn ein Spiel mit der gleichen ID
      *                                  bereits angemeldet ist.
      */
-    public long spielAnmelden (int spielID, int wartezeit) 
+    public long spielAnmelden (Id spielID, int wartezeit) 
         throws DoppeltesSpielException;
 
     /**

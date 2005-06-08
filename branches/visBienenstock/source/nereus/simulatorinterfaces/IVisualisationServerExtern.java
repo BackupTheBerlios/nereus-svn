@@ -1,7 +1,7 @@
 /*
  * Dateiname      : IVisualisationServerExtern.java
  * Erzeugt        : 19. Mai 2005
- * Letzte Änderung: 06. Juni 2005 durch Dietmar Lippold
+ * Letzte Änderung: 08. Juni 2005 durch Samuel Walz
  * Autoren        : Samuel Walz (samuel@gmx.info)
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
@@ -29,6 +29,8 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.LinkedList;
 
+import nereus.utils.Id;
+
 /**
  * Die Schnittstelle der Server-Vis-Komponente für die Client-Vis-Komponente.
  *
@@ -44,7 +46,7 @@ public interface IVisualisationServerExtern extends Remote {
      * @param ausschnittsbeginn   eine ganzzahlige Zahl größer -1 (>0)
      * @return                    eine Liste der gewünschten Informationen
      */
-    public LinkedList gibSpielInformationen (int spielID, int ausschnittsbeginn)
+    public LinkedList gibSpielInformationen (Id spielID, int ausschnittsbeginn)
         throws RemoteException;
 }
 
