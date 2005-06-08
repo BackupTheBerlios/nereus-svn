@@ -1,9 +1,9 @@
 /*
  * Dateiname      : VisBienenstock.java
  * Erzeugt        : 06. Oktober 2004
- * Letzte Änderung: 06. Juni 2005 durch Dietmar Lippold
+ * Letzte Änderung: 08. Juni 2005 durch Samuel Walz
  * Autoren        : Philip Funck (mango.3@gmx.de)
- *                  Samuel Walz (felix-kinkowski@gmx.net)
+ *                  Samuel Walz (samuel@gmx.info)
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen eines
@@ -31,6 +31,7 @@
 package scenarios.bienenstock.visualisierungsUmgebung;
 
 import java.util.HashSet;
+import java.io.Serializable;
 
 import scenarios.bienenstock.agenteninfo.Koordinate;
 
@@ -39,7 +40,7 @@ import scenarios.bienenstock.agenteninfo.Koordinate;
  *
  * @author Philip Funck
  */
-public class VisBienenstock extends VisFeld {
+public class VisBienenstock extends VisFeld implements Serializable {
 
     /**
      * ist das Maximum des im Bienenstock lagerbaren Nektars.

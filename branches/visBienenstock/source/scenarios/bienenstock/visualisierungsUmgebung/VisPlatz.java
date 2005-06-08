@@ -1,9 +1,9 @@
 /*
  * Dateiname      : VisPlatz.java
  * Erzeugt        : 6. Oktober 2004
- * Letzte Änderung: 26. Januar 2005 durch Philip Funck
+ * Letzte Änderung: 08. Juni 2005 durch Samuel Walz
  * Autoren        : Philip Funck (mango.3@gmx.de)
- *                  Samuel Walz (felix-kinkowski@gmx.net)
+ *                  Samuel Walz (samuel@gmx.info)
  *
  *
  *
@@ -33,7 +33,9 @@
 package scenarios.bienenstock.visualisierungsUmgebung;
 
 import scenarios.bienenstock.agenteninfo.Koordinate;
+
 import java.util.HashSet;
+import java.io.Serializable;
 
 /**
  * repräsentiert den Platz in der vereinfachten Darstellung
@@ -41,7 +43,7 @@ import java.util.HashSet;
  *
  * @author Philip Funck
  */
-public class VisPlatz extends VisFeld {
+public class VisPlatz extends VisFeld implements Serializable {
     
     /**
      * Konstruktor.

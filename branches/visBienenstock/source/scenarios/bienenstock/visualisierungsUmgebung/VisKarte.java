@@ -1,9 +1,9 @@
 /*
  * Dateiname      : VisKarte.java
  * Erzeugt        : 6. Oktober 2004
- * Letzte Änderung: 26. Januar 2005 durch Philip Funck
+ * Letzte Änderung: 08. Juni 2005 durch Samuel Walz
  * Autoren        : Philip Funck (mango.3@gmx.de)
- *                  Samuel Walz (felix-kinkowski@gmx.net)
+ *                  Samuel Walz (samuel@gmx.info)
  *
  *
  *
@@ -31,8 +31,12 @@
  */
 
 package scenarios.bienenstock.visualisierungsUmgebung;
+
 import java.util.Hashtable;
+import java.io.Serializable;
+
 import scenarios.bienenstock.agenteninfo.Koordinate;
+
 
 /**
  * Die Spielkartendarstellung für die Visualisierung.
@@ -40,7 +44,7 @@ import scenarios.bienenstock.agenteninfo.Koordinate;
  * @author Philip Funck
  * @author Samuel Walz
  */
-public class VisKarte {
+public class VisKarte implements Serializable{
     /**
      * Alle anwesenden Bienen.
      */

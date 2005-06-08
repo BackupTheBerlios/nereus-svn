@@ -1,9 +1,9 @@
 /*
  * Dateiname      : VisBiene.java
  * Erzeugt        : 06. Oktober 2004
- * Letzte Änderung: 06. Juni 2005 durch Dietmar Lippold
+ * Letzte Änderung: 08. Juni 2005 durch Samuel Walz
  * Autoren        : Philip Funck (mango.3@gmx.de)
- *                  Samuel Walz (felix-kinkowski@gmx.net)
+ *                  Samuel Walz (samuel@gmx.info)
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen eines
@@ -33,6 +33,8 @@ package scenarios.bienenstock.visualisierungsUmgebung;
 import scenarios.bienenstock.agenteninfo.Info;
 import scenarios.bienenstock.agenteninfo.Koordinate;
 
+import java.io.Serializable;
+
 /**
  * ist das Abbild des Agenten im Szenario.
  *
@@ -41,7 +43,7 @@ import scenarios.bienenstock.agenteninfo.Koordinate;
  * durch den jeweiligen Agenten ausgeschlossen.
  * @author Philip Funck
  */
-public class VisBiene {
+public class VisBiene implements Serializable {
 
     /**
      * Der Zustand der Biene.

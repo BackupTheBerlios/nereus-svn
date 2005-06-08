@@ -1,9 +1,9 @@
 /*
  * Dateiname      : VisFeld.java
  * Erzeugt        : 6. Oktober 2004
- * Letzte Änderung: 06. Juni 2005 durch Dietmar Lippold
+ * Letzte Änderung: 08. Juni 2005 durch Samuel Walz
  * Autoren        : Philip Funck (mango.3@gmx.de)
- *                  Samuel Walz (felix-kinkowski@gmx.net)
+ *                  Samuel Walz (samuel@gmx.info)
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen eines
@@ -32,6 +32,7 @@ package scenarios.bienenstock.visualisierungsUmgebung;
 
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.io.Serializable;
 
 import scenarios.bienenstock.agenteninfo.Koordinate;
 
@@ -40,7 +41,7 @@ import scenarios.bienenstock.agenteninfo.Koordinate;
  *
  *  @author Philip Funck
  */
-public class VisFeld {
+public class VisFeld implements Serializable {
 
     /**
      * Position des Feldes auf der Spielkarte.
