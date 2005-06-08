@@ -42,7 +42,7 @@ import scenarios.bienenstock.visualisierungsUmgebung.*;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class BienenstockvisualisierungFenster extends Frame {
+public class VisualisierungFenster extends Frame {
 	
     private boolean initiiert = false;
     private VisKarte karte;
@@ -67,7 +67,7 @@ public class BienenstockvisualisierungFenster extends Frame {
     private Visualisierung vis;
 
 
-    public Bienenstockvisualisierung(Visualisierung visu) {
+    public VisualisierungFenster(Visualisierung visu) {
         fenster = this;
         vis = visu;
 	        fenster.setTitle("Bienenstockvisualisierung");
