@@ -1,7 +1,7 @@
 /*
  * Dateiname      : VisualisationServer.java
  * Erzeugt        : 19. Mai 2005
- * Letzte Änderung: 06. Juni 2005 durch Dietmar Lippold
+ * Letzte Änderung: 08. Juni 2005 durch Samuel Walz
  * Autoren        : Samuel Walz (samuel@gmx.info)
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
@@ -39,6 +39,7 @@ import java.util.HashMap;
 import java.util.Set;
 import java.io.Serializable;
 
+import nereus.utils.Id;
 import nereus.exceptions.DoppeltesSpielException;
 import nereus.exceptions.AuthentifizierungException;
 import nereus.simulatorinterfaces.IVisualisationServerIntern;
@@ -125,10 +126,10 @@ public class VisualisationServer extends UnicastRemoteObject
      * @param authCode
      * @return           Eine ganze Zahl größer -1
      */
-    private int gibSpielID (long authCode) throws AuthentifizierungException {
+    private Id gibSpielID (long authCode) throws AuthentifizierungException {
 
         if (authZuordnung.containsKey(new Long(authCode))) {
-            return ((Integer)authZuordnung.get(new Long(authCode))).intValue();
+            return (Id)authZuordnung.get(new Long(authCode));
         } else {
             throw new AuthentifizierungException("Falscher Authentifizierungscode: " 
                                 + authCode);
@@ -145,7 +146,7 @@ public class VisualisationServer extends UnicastRemoteObject
      *
      * @param spielID      Die Spiel-ID der der Code zugeordnet werden soll
      */
-    private synchronized long authCodeErzeugen(int spielID) {
+    private synchronized long authCodeErzeugen(Id spielID) {
         
         long authCode = 0L;
         /*
@@ -157,7 +158,7 @@ public class VisualisationServer extends UnicastRemoteObject
         } while (authZuordnung.containsKey(new Long(authCode)));
         
         // Speichern der Zuordung des Code zur Spiel-ID
-        authZuordnung.put(new Long(authCode), new Integer(spielID));
+        authZuordnung.put(new Long(authCode), spielID);
         
         return authCode;
     }
@@ -233,11 +234,12 @@ public class VisualisationServer extends UnicastRemoteObject
      * @param spielID
      * @param ausschnittsbeginn      natürliche Zahl größer -1
      */
-    public LinkedList gibSpielInformationen(int spielID, int ausschnittsbeginn) throws RemoteException {
+    public LinkedList gibSpielInformationen(Id spielID, int ausschnittsbeginn) 
+                                            throws RemoteException {
         // Informationen suchen und zurückgeben
-        if (informationsspeicher.containsKey(new Integer(spielID))) {
+        if (informationsspeicher.containsKey(spielID)) {
             return erstelleAusschnitt(
-                (LinkedList)informationsspeicher.get(new Integer(spielID)), 
+                (LinkedList)informationsspeicher.get(spielID), 
                 ausschnittsbeginn);
         } else {
             // Sind noch keine Informationen vorhanden, wird null zurückgegeben
@@ -255,11 +257,11 @@ public class VisualisationServer extends UnicastRemoteObject
                                             Serializable information) {
         try {
             // Die zugehörige Spiel-ID
-            int spielID = gibSpielID(authCode);
+            Id spielID = gibSpielID(authCode);
         
             // Die neue Information an die Liste anhängen
             LinkedList informationen = 
-                    (LinkedList)informationsspeicher.get(new Integer(spielID));
+                    (LinkedList)informationsspeicher.get(spielID);
             informationen.addLast(information);
             
         } catch(Exception fehler) {
@@ -274,23 +276,23 @@ public class VisualisationServer extends UnicastRemoteObject
      * 
      * Wird als Wartezeit 0 angegeben, so wird der Defaultwert verwendet.
      *
-     * @param spielID        natürliche Zahl
+     * @param spielID        Die ID des Spiels
      * @param wartezeit      natürliche Zahl >= null (Zeit in Millisekunden)
      * @return               der Authentifizierungscode
      */
-    public long spielAnmelden(int spielID, int wartezeit) 
+    public long spielAnmelden(Id spielID, int wartezeit) 
         throws DoppeltesSpielException{
         
-        if (! informationsspeicher.containsKey(new Integer(spielID))) {
+        if (! informationsspeicher.containsKey(spielID)) {
             // Eine neue Liste für die Informationen des Spiels anlegen
-            informationsspeicher.put(new Integer(spielID), new LinkedList());
+            informationsspeicher.put(spielID, new LinkedList());
             
             // Die empfohlene Wartezeit eintragen
             if (wartezeit == 0) {
-                wartezeiten.put(new Integer(spielID), 
+                wartezeiten.put(spielID, 
                                 new Integer(standardwartezeit));
             } else {
-                wartezeiten.put(new Integer(spielID), 
+                wartezeiten.put(spielID, 
                                 new Integer(wartezeit));
             }
             
@@ -314,16 +316,16 @@ public class VisualisationServer extends UnicastRemoteObject
      */
     public void spielAbmelden(long authCode) {
         try {
-            int spielID = gibSpielID(authCode);
+            Id spielID = gibSpielID(authCode);
             
             // Spielende markieren
             LinkedList informationen = 
-                    (LinkedList)informationsspeicher.get(new Integer(spielID));
+                    (LinkedList)informationsspeicher.get(spielID);
             
             informationen.addLast(new Spielende(System.currentTimeMillis()));
             
             // Den Wartezeiteintrag für das Spiel löschen
-            wartezeiten.remove(new Integer(spielID));
+            wartezeiten.remove(spielID);
             
             
         } catch (Exception fehler) {
@@ -332,5 +334,6 @@ public class VisualisationServer extends UnicastRemoteObject
                     "Falscher Authentifizierungscode: " + authCode);
         }
     }
+    
 }
 
