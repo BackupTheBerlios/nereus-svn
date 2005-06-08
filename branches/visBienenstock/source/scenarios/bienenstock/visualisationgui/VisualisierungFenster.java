@@ -113,15 +113,77 @@ public class VisualisierungFenster extends Frame {
      */
     private int maxY = -1000000000;
     
+    /**
+     * der Knopf zum Pausieren
+     */
     Button pause = new Button("Pause");
+    
+    /**
+     * der zurueck Knopf
+     */
+    Button zurueck = new Button("Zurueck");
+    
+    /**
+     * der vor Knopf
+     */
+    Button vor = new Button("Vor");
+    
+    /**
+     * Verknuepfung mit dem Puffer
+     */
     Visualisierung vis;
 
+    /**
+     * die Aktion die bei einer Pause ausgefuehrt wird
+     */
+    ActionListener pauseAktion = new ActionListener() {
+	public void actionPerformed(ActionEvent e) {
+            pause.setLabel("weiter");
+            vis.warte();
+            pause.addActionListener(weiterAktion);
+            pause.removeActionListener(pauseAktion);
+        }
+    };
+    
+    /**
+     * die Aktion die zum weitermachen ausgefuehrt wird
+     */
+    ActionListener weiterAktion = new ActionListener () {
+        public void actionPerformed(ActionEvent e) {
+            pause.setLabel("Pause");
+            vis.weiter();
+            pause.addActionListener(pauseAktion);
+            pause.removeActionListener(this);
+        }
+    };
+    
+    /**
+     * die Aktion die zum zurueckspulen ausgefuehrt wird
+     */
+    ActionListener zurueckAktion = new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            vis.zurueck();
+        }
+    };
+    
+    /**
+     * die Aktion, die zm vorspulen ausgefuehrt wird
+     */
+    ActionListener vorAktion = new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            vis.vor();
+        }
+    };
+    
     /**
      * der Konstruktor
      *
      */
     public VisualisierungFenster(Visualisierung visu) {
         vis = visu;
+        pause.addActionListener(pauseAktion);
+        zurueck.addActionListener(zurueckAktion);
+        vor.addActionListener(vorAktion);
         fenster = this;
 	fenster.setTitle("Bienenstockvisualisierung");
         fenster.setFont(schrift);
@@ -142,7 +204,6 @@ public class VisualisierungFenster extends Frame {
         bildBlume = Toolkit.getDefaultToolkit().getImage(pfad + "blume.gif");
         bildPlatz = Toolkit.getDefaultToolkit().getImage(pfad + "platz.gif");
     }
-
 
     /**
      * ruft gegebenenfalls die Funktion zur Berechnung der Maﬂe der Karte auf, und
@@ -293,25 +354,10 @@ public class VisualisierungFenster extends Frame {
                     }
                 }
             }
+            add(zurueck);
             add(pause);
+            add(vor);
         }
     }
-    
-    ActionListener pauseAktion = new ActionListener() {
-	public void actionPerformed(ActionEvent e) {
-            pause.setLabel("weiter");
-            vis.warte();
-            pause.removeActionListener(pauseAktion);
-            pause.addActionListener(weiterAktion);
-        }
-    };
-    ActionListener weiterAktion = new ActionListener () {
-        public void actionPerformed(ActionEvent e) {
-            pause.setLabel("Pause");
-            vis.weiter();
-            pause.removeActionListener(this);
-            pause.addActionListener(pauseAktion);
-        }
-    };
 }
 

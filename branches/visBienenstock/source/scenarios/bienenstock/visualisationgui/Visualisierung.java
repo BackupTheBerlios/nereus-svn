@@ -83,10 +83,37 @@ public class Visualisierung extends Thread {
         karten.addLast(karte);
     }
     
+    /**
+     * setzt die zuVisualisierende Karte um einen runter
+     */
+    public void zurueck() {
+        if (naechste > 0) {
+            naechste = naechste - 1;
+            fenster.visualisiere((VisKarte)karten.get(naechste));
+        }
+    }
+    
+    /**
+     * setzt die zu visualisierende Karte um einen hoch
+     */
+    public void vor() {
+        if (naechste < karten.size()) {
+            naechste = naechste + 1;
+            fenster.visualisiere((VisKarte)karten.get(naechste));
+        }
+        
+    }
+    
+    /**
+     * ermoeglicht dem Fenster den Puffer schlafen zu legen
+     */
     public void warte () {
         warten = true;
     }
     
+    /**
+     * ermoeglicht dem Fenster den Puffer wieder zu wecken
+     */
     public void weiter() {
         warten = false;
     }
@@ -99,7 +126,7 @@ public class Visualisierung extends Thread {
     public void run () {
         while (fenster.isActive()) {
             // überprüfen ob eine neue Karte da ist
-            if (!warten && naechste < karten.size()) {
+            if (!warten && (naechste < karten.size())) {
                 //neue Karte weiterleiten
                 fenster.visualisiere((VisKarte)karten.get(naechste));
                 //hochzählen
