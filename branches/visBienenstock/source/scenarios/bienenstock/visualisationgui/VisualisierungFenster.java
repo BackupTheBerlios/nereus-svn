@@ -27,7 +27,7 @@
 package scenarios.bienenstock.visualisationgui;
 
 import java.util.HashMap;
-//import java.util.Enumeration;
+import java.util.Iterator;
 
 import javax.swing.*;
 import java.awt.*;
