@@ -1,11 +1,11 @@
 /*
  * Dateiname      : Bienenstockvisualisierung.java
  * Erzeugt        : 26. April 2005
- * Letzte Änderung: 08. Juni 2005 durch Philip Funck
+ * Letzte ?nderung: 08. Juni 2005 durch Philip Funck
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
  *
- * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
+ * Diese Datei geh?rt zum Projekt Nereus (http://nereus.berlios.de/).
  *
  *
  * This program is free software; you can redistribute it and/or modify
@@ -26,8 +26,8 @@
 
 package scenarios.bienenstock.visualisationgui;
 
-import java.util.Hashtable;
-import java.util.Enumeration;
+import java.util.HashMap;
+//import java.util.Enumeration;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,7 +37,7 @@ import scenarios.bienenstock.agenteninfo.Koordinate;
 import scenarios.bienenstock.visualisierungsUmgebung.*;
 
 /**
- * das Frame für die Bienenstockvisualisierung.
+ * das Frame f?r die Bienenstockvisualisierung.
  * 
  * @author philip
  */
@@ -206,7 +206,7 @@ public class VisualisierungFenster extends Frame {
     }
 
     /**
-     * ruft gegebenenfalls die Funktion zur Berechnung der Maße der Karte auf, und
+     * ruft gegebenenfalls die Funktion zur Berechnung der Ma?e der Karte auf, und
      * veranlasst eine neue Zeichnung des Fensterinhaltes
      * 
      * @param neueKarte
@@ -219,17 +219,17 @@ public class VisualisierungFenster extends Frame {
             }
 	    repaint();
         } else {
-            System.out.println("Vis: Keine Gültige Karte übergeben bekommen.");
+            System.out.println("Vis: Keine G?ltige Karte ?bergeben bekommen.");
         }
     }
 
     /**
      * berechnet die minimalen und maximaken x und y Koordinaten, sowie die
-     * Maße in x und y Richtung
+     * Ma?e in x und y Richtung
      *
      */
     private void setzeXY() {
-        Enumeration felder = karte.gibFelder().elements();
+        Iterator felder = karte.gibFelder().elements();
         Koordinate pos;
         while (felder.hasMoreElements()) {
             pos = ((VisFeld)felder.nextElement()).gibPosition();
@@ -254,7 +254,7 @@ public class VisualisierungFenster extends Frame {
         g.setColor(new Color(0, 0, 0));
 
         if (karte != null) {
-            Hashtable felder = karte.gibFelder();
+            HashMap felder = karte.gibFelder();
             VisFeld tmpFeld;
             int x, y;
             for (x = minX; x <= maxX; x++) {
