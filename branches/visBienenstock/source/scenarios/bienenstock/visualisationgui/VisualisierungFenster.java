@@ -199,10 +199,14 @@ public class VisualisierungFenster extends Frame {
                     int unten = 46;
                     int links = 2;
                     int rechts = 36;
+                    int tmpBienen = 0;
                     Koordinate koord = new Koordinate(x, y);
                     if (felder.containsKey(koord)) {
                         tmpFeld = (VisFeld) felder.get(koord);
                         Image bild;
+                        /*
+                         *          BIENENSTOCK
+                         */
                         if (tmpFeld instanceof VisBienenstock) {
                             VisBienenstock tmpStock = (VisBienenstock) tmpFeld;
                             g.drawImage(bildBienenstock, 
@@ -220,11 +224,16 @@ public class VisualisierungFenster extends Frame {
                                         ((x - minX) * groesseX) + rechts,
                                         ((y - minY) * groesseY) + abstandOben + oben);
                             }
-                            if (tmpStock.gibWartendeBienen().size() > 0) {
-                                g.drawString("" + tmpStock.gibWartendeBienen().size(),
+                            tmpBienen = tmpStock.gibWartendeBienen().size() 
+                                    + tmpStock.gibTanzendeBienen().size();
+                            if (tmpBienen > 0) {
+                                g.drawString("" + tmpBienen,
                                         ((x - minX) * groesseX) + rechts,
                                         ((y - minY) * groesseY) + abstandOben + unten);
                             }
+                            /*
+                             *      BLUME
+                             */
                         } else if (tmpFeld instanceof VisBlume) {
                             VisBlume tmpBlume = (VisBlume) tmpFeld;
                             g.drawImage(bildBlume, 
@@ -233,22 +242,23 @@ public class VisualisierungFenster extends Frame {
                                     this);
                             g.drawString("" + tmpBlume.gibVorhandenerNektar(),
                                     ((x - minX) * groesseX) + links,
-                                    ((y - minY) * groesseY) + abstandOben + oben);
+                                    ((y - minY) * groesseY) + abstandOben + unten);
                             if (tmpBlume.gibFliegendeBienen().size() > 0) {
                                 g.drawString("" + tmpBlume.gibFliegendeBienen().size(),
                                         ((x - minX) * groesseX) + rechts,
                                         ((y - minY) * groesseY) + abstandOben + oben);
                             }
-                            if (tmpBlume.gibWartendeBienen().size() > 0) {
-                                g.drawString("" + tmpBlume.gibFliegendeBienen().size(),
+                            tmpBienen = tmpBlume.gibWartendeBienen().size() 
+                                    + tmpBlume.gibTanzendeBienen().size()
+                                    + tmpBlume.gibAbbauendeBienen().size();
+                            if (tmpBienen > 0) {
+                                g.drawString("" + tmpBienen,
                                         ((x - minX) * groesseX) + rechts,
                                         ((y - minY) * groesseY) + abstandOben + unten);
-                            }
-                            if (tmpBlume.gibAbbauendeBienen().size() > 0) {
-                                g.drawString("" + tmpBlume.gibAbbauendeBienen().size(),
-                                        ((x - minX) * groesseX) + links,
-                                        ((y -minY) * groesseY) + abstandOben + unten);
-                            }
+                            }                            
+                            /*
+                             *          PLATZ
+                             */
                         } else if (tmpFeld instanceof VisPlatz) {
                             g.drawImage(bildPlatz, 
                                     (x - minX) * groesseX, 
@@ -259,8 +269,10 @@ public class VisualisierungFenster extends Frame {
                                         ((x - minX) * groesseX) + rechts,
                                         ((y - minY) * groesseY) + abstandOben + oben);
                             }
-                            if (tmpFeld.gibWartendeBienen().size() > 0) {
-                                g.drawString("" + tmpFeld.gibWartendeBienen().size(),
+                            tmpBienen = tmpFeld.gibWartendeBienen().size()
+                                    + tmpFeld.gibTanzendeBienen().size();
+                            if (tmpBienen > 0) {
+                                g.drawString("" + tmpBienen,
                                         ((x - minX) * groesseX) + rechts,
                                         ((y - minY) * groesseY) + abstandOben + unten);
                             }
