@@ -32,7 +32,7 @@
 
 package scenarios.bienenstock.visualisierungsUmgebung;
 
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.io.Serializable;
 
 import scenarios.bienenstock.agenteninfo.Koordinate;
@@ -48,14 +48,14 @@ public class VisKarte implements Serializable{
     /**
      * Alle anwesenden Bienen.
      */
-    private Hashtable bienen;
+    private HashMap bienen;
     
     /**
      * Das Spielfeld für die Visualisierung.
      *
      * @associates VisFeld
      */
-    private Hashtable spielfeld;
+    private HashMap spielfeld;
     
     /**
      * Nummer der aktuellen Runde.
@@ -66,7 +66,7 @@ public class VisKarte implements Serializable{
     /**
      * Liste aller Kosten für die Aktionen der Bienen.
      */
-    private Hashtable kosten;
+    private HashMap kosten;
     
     /**
      * Konstruktor.
@@ -77,9 +77,9 @@ public class VisKarte implements Serializable{
      * @param kostenvoranschlag Kosten für die Aktionen
      */
     public VisKarte(int runde,
-            Hashtable bienchen,
-            Hashtable feldchen,
-            Hashtable kostenvoranschlag) {
+            HashMap bienchen,
+            HashMap feldchen,
+            HashMap kostenvoranschlag) {
         rundennummer = runde;
         bienen = bienchen;
         spielfeld = feldchen;
@@ -91,7 +91,7 @@ public class VisKarte implements Serializable{
      *
      * @return Kosten  für die Aktionen
      */
-    public Hashtable gibHonigkosten() {
+    public HashMap gibHonigkosten() {
         return kosten;
     }
     
@@ -116,7 +116,7 @@ public class VisKarte implements Serializable{
      *
      * @return alle Bienen
      */
-    public Hashtable gibBienen() {
+    public HashMap gibBienen() {
         return bienen;
     }
     
@@ -140,7 +140,7 @@ public class VisKarte implements Serializable{
      *
      * @return alle Felder
      */
-    public Hashtable gibFelder() {
+    public HashMap gibFelder() {
         return spielfeld;
     }
 }

@@ -273,10 +273,12 @@ public class Scenario
             Id gameId,
             IInformationHandler visHandler,
             Hashtable parameterTabelle,
-            GameConf gameConf){
+            GameConf gameConf,
+            IVisualisationServerIntern visServer){
         super.m_gameId = gameId;
         super.m_visHandler = visHandler;
         super.m_parameter = parameterTabelle;
+        super.m_visualisationServer = visServer;
         
         this.serverInfoObject=ServerInfoObject.m_instance;
         this.gameConf=gameConf;

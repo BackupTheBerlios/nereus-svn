@@ -1,9 +1,9 @@
 /*
  * Dateiname      : Parameter.java
  * Erzeugt        : 20. Oktober 2004
- * Letzte Änderung: 14. Februar 2005 durch Samuel Walz
+ * Letzte Änderung: 08. Juni 2005 durch Samuel Walz
  * Autoren        : Philip Funck (mango.3@gmx.de)
- *                  Samuel Walz (felix-kinkowski@gmx.net)
+ *                  Samuel Walz (samuel@gmx.info)
  *
  *
  *
@@ -31,8 +31,8 @@
 
 package nereus.utils;
 
-import java.util.Hashtable;
 import java.util.HashMap;
+import java.io.Serializable;
 
 /**
  * speichert die Parameter für das Szenario.
@@ -40,7 +40,7 @@ import java.util.HashMap;
  * @author Philip Funck
  * @author Samuel Walz
  */
-public class Parameter {
+public class Parameter implements Serializable{
     
     /**
      * enthält die Parameter.
@@ -50,7 +50,7 @@ public class Parameter {
     /**
      * enthält die Information, welche Parameter schreibgeschützt sind.
      */
-    private Hashtable szenarioParameterSchreibschutz = new Hashtable();
+    private HashMap szenarioParameterSchreibschutz = new HashMap();
     
     /**
      * Der Konstruktor.
@@ -123,8 +123,8 @@ public class Parameter {
      *
      * @return Hashtable
      */
-    public Hashtable gibParameterHashTabelle() {
-        return (Hashtable) szenarioParameter.clone();
+    public HashMap gibParameterHashTabelle() {
+        return (HashMap) szenarioParameter.clone();
     }
 }
 

@@ -37,6 +37,21 @@ import nereus.utils.Id;
  * @author Samuel Walz
  */
 public interface IVisualisationServerExtern extends Remote {
+    
+    /**
+     * Der Name unter dem die Server-Vis-Komponente bei RMI angemeldet wird
+     */
+    public final String VISUALISATIONSERVERNAME = "VisualisationServer";
+    
+    /**
+     * Der Port an dem RMI lauscht
+     */
+    public final int SERVERPORT = 1099;
+    
+    /**
+     * Die IP-Adresse unseres Servers
+     */
+    public final String SERVERIP = "127.0.0.1";
 
     /**
      * Gibt den Ausschnitt der Informationen zu einem Spiel ab einer 

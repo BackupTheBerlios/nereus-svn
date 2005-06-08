@@ -6,7 +6,7 @@
  *
  * Dateiname      : build.xml
  * Erzeugt        : 29. April 2005
- * Letzte Änderung: 06. Juni 2005 durch Dietmar Lippold
+ * Letzte Änderung: 08. Juni 2005 durch Samuel Walz
  * Autoren        : Eugen Volk 
  *                  
  *
@@ -70,16 +70,23 @@
    </javac>
  </target>
 
-  <!-- Compilieren Stub fuer die Klasse Coordinator in /simulator            -->
+  <!-- Compilieren Stub fuer die Klasse Coordinator in /simulator,
+       die Klasse VisualisationDelegate in /visualisation und
+       die Klasse VisualisationServer in /simulator/visualisation-->
  <target name="_Stub" depends="compile"
          description="Erstellt die Stub-Dateien">
    <echo message="erstelle Stub-Datei fuer Coordinator"/>
    <rmic base="${build}"
          debug="true"
-         classname="nereus.simulator.Coordinator"/>         
+         classname="nereus.simulator.Coordinator"/>
+   <echo message="erstelle Stub-Datei fuer VisualisationDelegate"/>
    <rmic base="${build}"
          debug="true"
          classname="nereus.visualisation.VisualisationDelegate"/>
+   <echo message="erstelle Stub-Datei fuer VisualisationServer"/>
+   <rmic base="${build}"
+         debug="true"
+         classname="nereus.simulator.visualisation.VisualisationServer"/>
  </target>
    
  <!-- Compilieren aller Projekt-Dateien mit Scenarios                -->

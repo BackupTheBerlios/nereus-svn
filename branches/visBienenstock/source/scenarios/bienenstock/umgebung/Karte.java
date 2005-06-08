@@ -1,9 +1,9 @@
 /*
  * Dateiname      : Karte.java
  * Erzeugt        : 26. Juli 2004
- * Letzte Änderung: 30. Mai 2005 durch Eugen Volk
+ * Letzte Änderung: 08. Juni 2005
  * Autoren        : Philip Funck (mango.3@gmx.de)
- *                  Samuel Walz (felix-kinkowski@gmx.net)
+ *                  Samuel Walz (samuel@gmx.info)
  *                  Eugen Volk
  *
  *
@@ -317,9 +317,9 @@ public class Karte extends AbstractEnviroment {
      * @param originalSet das zu konvertierende Hash
      * @return Hashtable mit einfachen Bienen
      */
-    private Hashtable konvertiereBienenHash(Hashtable originalSet) {
+    private HashMap konvertiereBienenHash(Hashtable originalSet) {
         Iterator original = originalSet.values().iterator();
-        Hashtable neuesTable = new Hashtable();
+        HashMap neuesTable = new HashMap();
         
         while (original.hasNext()) {
             Biene originalBiene = (Biene) original.next();
@@ -837,9 +837,9 @@ public class Karte extends AbstractEnviroment {
      */
     public VisKarte visualisieren() {
         
-        Hashtable bienen = new Hashtable();
+        HashMap bienen = new HashMap();
         Enumeration alleFelder = spielfeld.elements();
-        Hashtable neuesSpielfeld = new Hashtable();
+        HashMap neuesSpielfeld = new HashMap();
         Feld vollstFeld;
         
         //instanziieren aller Bienen
@@ -909,11 +909,15 @@ public class Karte extends AbstractEnviroment {
             vollstFeld = (Feld) alleFelder.nextElement();
             Iterator originalNachbarfelder
                     = vollstFeld.gibNachbarfelder().iterator();
+            
+            Hashtable neueNachbarfelder = new Hashtable();
             while (originalNachbarfelder.hasNext()) {
-                ((Feld) neuesSpielfeld.get(
-                        vollstFeld.gibPosition())).trageNachbarfeldEin(
-                        (Feld) originalNachbarfelder.next());
+                Koordinate nachbarkoordinate = 
+                        ((Feld) originalNachbarfelder.next()).gibPosition(); 
+                neueNachbarfelder.put(nachbarkoordinate, 
+                                      neuesSpielfeld.get(nachbarkoordinate));
             }
+            ((VisFeld)neuesSpielfeld.get(vollstFeld.gibPosition())).setzeNachbarfelder(neueNachbarfelder);
         }
         return new VisKarte(spielmeister.gibRundennummer(),
                 bienen,

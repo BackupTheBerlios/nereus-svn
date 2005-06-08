@@ -100,8 +100,12 @@ public class VisualisationServer extends UnicastRemoteObject
         System.out.println("Melde den VisualisationServer an...");
         UnicastRemoteObject.unexportObject((Remote)this, true);
         UnicastRemoteObject.exportObject((Remote)this);
+        
+        String visServerAdresse = "//" + SERVERIP + ":" + SERVERPORT + "/"
+                                  + VISUALISATIONSERVERNAME;
+        
         try {
-            Naming.rebind("VisualisationServer", this);
+            Naming.rebind(visServerAdresse, this);
         } catch (MalformedURLException fehler) {
             System.out.println(fehler.getMessage());
         }
@@ -168,7 +172,7 @@ public class VisualisationServer extends UnicastRemoteObject
      * bestimmten Position enthält.
      *
      * @param liste                Eine Liste
-     * @param ausschnittsbeginn    natürliche Zahl größer Null
+     * @param ausschnittsbeginn    natürliche Zahl größer oder gleich Null
      * @return                     der gewünschte Ausschnitt
      */
     private LinkedList erstelleAusschnitt (LinkedList liste, 

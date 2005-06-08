@@ -11,3 +11,7 @@ lib/shared.jar ist jetzt überflüssig, da Stubs durch den Ant-build-Skript
 generiert werden. 
 Verzeichnis documentation enthält neue Readme-files. 
 
+
+06 Juni 2005 - Änderungen durch Samuel Walz (aka) walzsl
+-------------------------------------
+

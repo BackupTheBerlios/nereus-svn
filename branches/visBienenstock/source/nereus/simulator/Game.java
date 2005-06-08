@@ -159,6 +159,7 @@ public class Game extends Thread {
         // ScenarioHandler erstellen
         m_scenarioHandler = m_scenario.createNewScenarioHandler();
         m_maxNumberOfAgents = ((Integer)m_params.get("MaxAgents")).intValue();
+        
     }
     
     /**
@@ -192,6 +193,7 @@ public class Game extends Thread {
         //	ScenarioHandler erstellen
         m_scenarioHandler = m_scenario.createNewScenarioHandler();
         m_maxNumberOfAgents = ((Integer)m_params.get("MaxAgents")).intValue();
+        
     }
     
     /**
@@ -201,7 +203,9 @@ public class Game extends Thread {
      * @param iHandler - Informationhandler
      * @param oldGame - altes Spiel das ersetzt werden soll durch neues.
      */
-    public Game(String name, IInformationHandler iHandler,Game oldGame) {
+    public Game(String name, 
+                IInformationHandler iHandler,
+                Game oldGame) {
         super(name);
         m_id = oldGame.getId();
         m_agents = new Hashtable();

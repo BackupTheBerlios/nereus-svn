@@ -57,6 +57,7 @@ import nereus.simulatorinterfaces.AbstractAgent;
 import nereus.simulatorinterfaces.AbstractScenario;
 import nereus.simulatorinterfaces.ICoordinator;
 import nereus.simulatorinterfaces.IInformationHandler;
+import nereus.simulator.visualisation.VisualisationServer;
 
 /**
  * Die Klasse dient dazu Agenten, Spiele und Visualisierungskomponenten
@@ -120,6 +121,11 @@ public class Coordinator extends UnicastRemoteObject implements ICoordinator {
     private ServerInfoObject m_sInfoObject = null;
     
     /**
+     * Die Server-Vis-Komponente
+     */
+    private VisualisationServer m_visualisationServer = null;
+    
+    /**
      * Konstruktor.
      *
      * @throws <{java.rmi.RemoteException}>
@@ -137,6 +143,8 @@ public class Coordinator extends UnicastRemoteObject implements ICoordinator {
         m_scenarioPath = m_sInfoObject.getScenarioPath();;
         m_hostname = hostname;
         m_sInfoObject.setServerName(hostname);
+        
+        m_visualisationServer = new VisualisationServer();
     }
     
     /**
@@ -153,6 +161,8 @@ public class Coordinator extends UnicastRemoteObject implements ICoordinator {
         m_sInfoObject = ServerInfoObject.getInstance(pathName);
         m_path = m_sInfoObject.getScenarioPath();
         m_scenarioPath = m_sInfoObject.getScenarioPath();
+        
+        m_visualisationServer = new VisualisationServer();
     }
     
     /**
@@ -198,7 +208,11 @@ public class Coordinator extends UnicastRemoteObject implements ICoordinator {
             try {
                 Class scenarioClass = Class.forName("scenarios." + scenarioName);
                 scenario = (AbstractScenario)scenarioClass.newInstance();
-                scenario.initialize(gameId, m_informationHandler, new Hashtable(dto),gameConf);
+                scenario.initialize(gameId, 
+                                    m_informationHandler, 
+                                    new Hashtable(dto),
+                                    gameConf,
+                                    m_visualisationServer);
             } catch (Exception e) {
                 e.printStackTrace(System.out);
             }

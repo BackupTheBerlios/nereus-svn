@@ -136,7 +136,7 @@ public abstract class AbstractScenario implements Serializable {
             IInformationHandler visHandler,
             Hashtable parameter,
             GameConf gameConf,
-            VisualisationServer visServer){
+            IVisualisationServerIntern visServer){
         m_gameId = gameId;
         m_visHandler = visHandler;
         m_parameter = parameter;
