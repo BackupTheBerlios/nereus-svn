@@ -246,7 +246,7 @@ public class VisualisierungFenster extends Frame {
         }
         initiiert = true;
     }
-	
+    
     /**
      * zeichnet den Fensterinhalt
      */
