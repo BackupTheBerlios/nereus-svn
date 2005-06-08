@@ -1,7 +1,7 @@
 /*
  * Dateiname      : Bienenstockvisualisierung.java
  * Erzeugt        : 26. April 2005
- * Letzte Änderung: 06. Juni 2005 durch Dietmar Lippold
+ * Letzte Änderung: 08. Juni 2005 durch Philip Funck
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
  *
@@ -37,39 +37,88 @@ import scenarios.bienenstock.agenteninfo.Koordinate;
 import scenarios.bienenstock.visualisierungsUmgebung.*;
 
 /**
+ * das Frame für die Bienenstockvisualisierung.
+ * 
  * @author philip
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
  */
 public class VisualisierungFenster extends Frame {
 	
+    /**
+     * ob die Visualisierung die erste Karte bekommen hat.
+     */
     private boolean initiiert = false;
+    
+    /**
+     * die zu visualisierende Karte
+     */
     private VisKarte karte;
+    
+    /**
+     * die groesse der Karte in x Richtung
+     */
     private int groesseX = 51;
+    
+    /**
+     * die groesse der Karte in Y Richtung
+     */
     private int groesseY = 51;
+    
+    /**
+     * das Fenster
+     */
     private Frame fenster;
     
+    /**
+     * die Schrift der Elemente
+     */
     private Font schrift = new Font("Serif", Font.PLAIN, 12);
     
+    /**
+     * der Pfad zu den librarys
+     */
     private String pfad = "/home/philip/workspace/nereus/branches/philip/libs/";
+    
+    /**
+     * das Bild vom Bienenstock
+     */
     private Image bildBienenstock;
+    
+    /** 
+     * das Bild von der Blume
+     */
     private Image bildBlume;
+    
+    /**
+     * das Bild vom Platz
+     */
     private Image bildPlatz;
     
-    private int minX = 1000000000; 
+    /**
+     * die minimale x Koordinate
+     */
+    private int minX = 1000000000;
+    
+    /**
+     * die minimale Y Koordinate
+     */
     private int minY = 1000000000;
+    
+    /**
+     * die maximale X Koordinate
+     */
     private int maxX = -1000000000;
+    
+    /**
+     * die maximale Y Koordiante
+     */
     private int maxY = -1000000000;
 
-    private boolean fertig = true;
-
-    private Visualisierung vis;
-
-
-    public VisualisierungFenster(Visualisierung visu) {
+    /**
+     * der Konstruktor
+     *
+     */
+    public VisualisierungFenster() {
         fenster = this;
-        vis = visu;
 	        fenster.setTitle("Bienenstockvisualisierung");
         fenster.setFont(schrift);
         //Schliessen
@@ -91,6 +140,12 @@ public class VisualisierungFenster extends Frame {
     }
 
 
+    /**
+     * ruft gegebenenfalls die Funktion zur Berechnung der Maße der Karte auf, und
+     * veranlasst eine neue Zeichnung des Fensterinhaltes
+     * 
+     * @param neueKarte
+     */
     public void visualisiere (VisKarte neueKarte) {
         if (neueKarte != null) {
 	    karte = neueKarte;
@@ -103,7 +158,11 @@ public class VisualisierungFenster extends Frame {
         }
     }
 
-	
+    /**
+     * berechnet die minimalen und maximaken x und y Koordinaten, sowie die
+     * Maße in x und y Richtung
+     *
+     */
     private void setzeXY() {
         Enumeration felder = karte.gibFelder().elements();
         Koordinate pos;
@@ -123,6 +182,9 @@ public class VisualisierungFenster extends Frame {
         initiiert = true;
     }
 	
+    /**
+     * zeichnet den Fensterinhalt
+     */
     public void paint(Graphics g) {
         g.setColor(new Color(0, 0, 0));
 

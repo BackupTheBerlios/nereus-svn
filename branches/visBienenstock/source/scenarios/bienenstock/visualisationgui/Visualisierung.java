@@ -1,7 +1,7 @@
 /*
  * Dateiname      : Visualisierung.java
  * Erzeugt        : 06. Mai 2005
- * Letzte Änderung: 06. Juni 2005 durch Dietmar Lippold
+ * Letzte Änderung: 08. Juni 2005 durch Philip Funck
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
  *
@@ -66,7 +66,7 @@ public class Visualisierung extends Thread {
      *
      */
     public Visualisierung () {
-        fenster = new VisualisierungFenster(this);
+        fenster = new VisualisierungFenster();
         fenster.show();
         karten = new LinkedList();
     }
