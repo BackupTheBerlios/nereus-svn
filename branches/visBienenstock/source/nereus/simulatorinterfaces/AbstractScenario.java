@@ -1,7 +1,7 @@
 /*
  * Dateiname      : AbstractScenario.java
  * Erzeugt        : 13. Mai 2003
- * Letzte Änderung: 11. Mai 2005 durch Euge Volk
+ * Letzte Änderung: 08. Juni 2005 durch Samuel Walz
  * Autoren        : Daniel Friedrich
  *                  Eugen Volk
  *
@@ -46,6 +46,7 @@ import nereus.exceptions.InvalidGameException;
 import nereus.exceptions.NotEnoughEnergyException;
 import nereus.simulatorinterfaces.AbstractAgent;
 import nereus.simulatorinterfaces.AbstractScenarioHandler;
+import nereus.simulatorinterfaces.IVisualisationServerIntern;
 
 
 /**
@@ -89,19 +90,27 @@ public abstract class AbstractScenario implements Serializable {
     protected AbstractScenarioHandler m_scenarioHandler = null;
     
     /**
+     * Die Server-Vis-Komponente
+     */
+    protected IVisualisationServerIntern m_visualisationServer = null;
+    
+    /**
      * Konstruktor
      *
-     * @param InformationHandler vishandler - InformationHandler
-     * @param Hashtable parameter - Spielparameter
+     * @param vishandler - InformationHandler
+     * @param parameter - Spielparameter
+     * @param visServer - Server-Vis-Komponente
      */
     public AbstractScenario(
             Id gameId,
             IInformationHandler visHandler,
-            Hashtable parameter){
+            Hashtable parameter,
+            IVisualisationServerIntern visServer){
         super();
         m_gameId = gameId;
         m_visHandler = visHandler;
         m_parameter = parameter;
+        m_visualisationServer = visServer;
     }
     
     /**
@@ -120,15 +129,18 @@ public abstract class AbstractScenario implements Serializable {
      * @param InformationHandler vishandler - InformationHandler
      * @param Hashtable parameter - Spielparameter
      * @param gameConf zu verwendende Konfugurationdatei mit Karen-Namen und ScenarioKonfidatei-Namen.
+     * @param visServer zu verwendende Server-Vis-Komponente
      */
     public void initialize(
             Id gameId,
             IInformationHandler visHandler,
             Hashtable parameter,
-            GameConf gameConf){
+            GameConf gameConf,
+            VisualisationServer visServer){
         m_gameId = gameId;
         m_visHandler = visHandler;
         m_parameter = parameter;
+        m_visualisationServer = visServer;
     }
     
     
