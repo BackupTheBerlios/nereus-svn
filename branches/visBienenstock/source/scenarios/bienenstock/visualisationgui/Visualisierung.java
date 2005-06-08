@@ -38,33 +38,71 @@ import scenarios.bienenstock.visualisierungsUmgebung.*;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class Visualisierung {
+public class Visualisierung extends Thread {
     
+    /**
+     * das frame der Visualisierung
+     */
     private Bienenstockvisualisierung fenster;
+    
+    /**
+     * die Liste mit den Karten, die visualisiert wurden und werden müssen. 
+     */
     private LinkedList karten;
-    private boolean initiiert = false;
+    
+    /**
+     * die nächste zu visualisierende Karte, als Position in der Liste. 
+     */
     private int naechste = 0;
+    
+    /**
+     * die Zeit in ms, die gewartet werden soll, bevor die nächste Karte frühestens 
+     * visualisiert werden soll.
+     */
     private long zeit = 1000L;
     
+    /**
+     * der Konstruktor initiiert das Frame und die Kartenliste
+     *
+     */
     public Visualisierung () {
-        fenster = new Bienenstockvisualisierung(this);
+        fenster = new BienenstockvisualisierungFenster(this);
         fenster.show();
         karten = new LinkedList();
     }
     
+    /**
+     * wird von dem Szenario aufgerufen um eine neue Karte hinzuzufügen
+     * 
+     * @param karte
+     */
     public void visualisiere(VisKarte karte) {
+        // hinzufügen der neuen Karte
         karten.addLast(karte);
-        System.out.println("karten.size() = " + karten.size());
-        if (naechste < karten.size()) {
-            try {
-                synchronized (this) {
-                    this.wait(zeit);
+    }
+    
+    /**
+     * prüft, ob eine zu visualisierende Karte in <code>karten</code> ist und leitet 
+     * die gegebenenfalls weiter. Anschließend wird <code>zeit</code> 
+     * lang gewartet.
+     */
+    public void run () {
+        while (fenster.isActive()) {
+            // überprüfen ob eine neue Karte da ist
+            if (naechste < karten.size()) {
+                //neue Karte weiterleiten
+                fenster.visualisiere((VisKarte)karten.get(naechste));
+                //hochzählen
+                naechste = naechste + 1;
+                //warten
+                try {
+                    synchronized (this) {
+                        this.wait(zeit);
+                    }
+                } catch (InterruptedException e) {
+                    System.out.println("Visualisierung wurde unterbrochen");
                 }
-            } catch (InterruptedException e) {
-                System.out.println("wurde unterbrochen");
             }
-            fenster.visualisiere((VisKarte)karten.get(naechste));
-            naechste = naechste + 1;
         }
     }
 }
