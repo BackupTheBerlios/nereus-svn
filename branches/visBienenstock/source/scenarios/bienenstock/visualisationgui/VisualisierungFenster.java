@@ -206,7 +206,7 @@ public class VisualisierungFenster extends Frame {
     }
 
     /**
-     * ruft gegebenenfalls die Funktion zur Berechnung der Ma?e der Karte auf, und
+     * ruft gegebenenfalls die Funktion zur Berechnung der Masse der Karte auf, und
      * veranlasst eine neue Zeichnung des Fensterinhaltes
      * 
      * @param neueKarte
@@ -229,10 +229,10 @@ public class VisualisierungFenster extends Frame {
      *
      */
     private void setzeXY() {
-        Iterator felder = karte.gibFelder().elements();
+        Iterator felder = karte.gibFelder().values().iterator();
         Koordinate pos;
-        while (felder.hasMoreElements()) {
-            pos = ((VisFeld)felder.nextElement()).gibPosition();
+        while (felder.hasNext()) {
+            pos = ((VisFeld)felder.next()).gibPosition();
             if (pos.gibXPosition() < minX) {
                 minX = pos.gibXPosition();
             } else if (pos.gibXPosition() > maxX){
