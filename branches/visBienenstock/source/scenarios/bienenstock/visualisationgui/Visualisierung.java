@@ -1,11 +1,11 @@
 /*
  * Dateiname      : Visualisierung.java
  * Erzeugt        : 06. Mai 2005
- * Letzte Änderung: 08. Juni 2005 durch Philip Funck
+ * Letzte ?nderung: 08. Juni 2005 durch Philip Funck
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
  *
- * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
+ * Diese Datei geh?rt zum Projekt Nereus (http://nereus.berlios.de/).
  *
  *
  * This program is free software; you can redistribute it and/or modify
@@ -46,17 +46,17 @@ public class Visualisierung extends Thread {
     private VisualisierungFenster fenster;
     
     /**
-     * die Liste mit den Karten, die visualisiert wurden und werden müssen. 
+     * die Liste mit den Karten, die visualisiert wurden und werden m?ssen. 
      */
     private LinkedList karten;
     
     /**
-     * die nächste zu visualisierende Karte, als Position in der Liste. 
+     * die n?chste zu visualisierende Karte, als Position in der Liste. 
      */
     private int naechste = 0;
     
     /**
-     * die Zeit in ms, die gewartet werden soll, bevor die nächste Karte frühestens 
+     * die Zeit in ms, die gewartet werden soll, bevor die n?chste Karte fr?hestens 
      * visualisiert werden soll.
      */
     private long zeit = 1000L;
@@ -74,12 +74,12 @@ public class Visualisierung extends Thread {
     }
     
     /**
-     * wird von dem Szenario aufgerufen um eine neue Karte hinzuzufügen
+     * wird von dem Szenario aufgerufen um eine neue Karte hinzuzuf?gen
      * 
      * @param karte
      */
     public void visualisiere(VisKarte karte) {
-        // hinzufügen der neuen Karte
+        // hinzuf?gen der neuen Karte
         karten.addLast(karte);
     }
     
@@ -119,25 +119,34 @@ public class Visualisierung extends Thread {
     }
     
     /**
-     * prüft, ob eine zu visualisierende Karte in <code>karten</code> ist und leitet 
-     * die gegebenenfalls weiter. Anschließend wird <code>zeit</code> 
+     * pr?ft, ob eine zu visualisierende Karte in <code>karten</code> ist und leitet 
+     * die gegebenenfalls weiter. Anschlie?end wird <code>zeit</code> 
      * lang gewartet.
      */
     public void run () {
         while (fenster.isActive()) {
-            // überprüfen ob eine neue Karte da ist
-            if (!warten && (naechste < karten.size())) {
-                //neue Karte weiterleiten
-                fenster.visualisiere((VisKarte)karten.get(naechste));
-                //hochzählen
-                naechste = naechste + 1;
-                //warten
+            if (warten) {
                 try {
                     synchronized (this) {
-                        this.wait(zeit);
+                        this.wait(10);
+                        }
+                    } catch (InterruptedException e) {
                     }
-                } catch (InterruptedException e) {
-                    System.out.println("Visualisierung wurde unterbrochen");
+            } else {
+                // ?berpr?fen ob eine neue Karte da ist
+                if (naechste < karten.size()) {
+                    //neue Karte weiterleiten
+                    fenster.visualisiere((VisKarte)karten.get(naechste));
+                    //hochz?hlen
+                    naechste = naechste + 1;
+                    //warten
+                    try {
+                        synchronized (this) {
+                            this.wait(zeit);
+                        }
+                    } catch (InterruptedException e) {
+                        System.out.println("Visualisierung wurde unterbrochen");
+                    }
                 }
             }
         }
