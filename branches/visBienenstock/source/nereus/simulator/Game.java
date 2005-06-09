@@ -1,9 +1,8 @@
 /*
  * Dateiname      : Game.java
  * Erzeugt        : 13. Mai 2003
- * Letzte Änderung: 20. Mai 2005 durch Eugen Volk
+ * Letzte Änderung: 09. Juni 2005 durch Dietmar Lippold
  * Autoren        : Daniel Friedrich
- *
  *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
@@ -27,6 +26,8 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+
+
 package nereus.simulator;
 
 import java.io.File;
@@ -47,6 +48,7 @@ import nereus.simulatorinterfaces.AbstractAgent;
 import nereus.simulatorinterfaces.AbstractScenario;
 import nereus.simulatorinterfaces.AbstractScenarioHandler;
 import nereus.simulatorinterfaces.IInformationHandler;
+
 /**
  * Die Klasse repräsentiert ein Spiel das im Simulator ausgeführt werden kann.
  * Ein Spiel managed den Ablauf der Spiels, es enthält das Szenario und eine
@@ -55,7 +57,13 @@ import nereus.simulatorinterfaces.IInformationHandler;
  * @author Daniel Friedrich
  */
 public class Game extends Thread {
-    
+
+    /**
+     * Die Anzahl schon durchgeführter Simulations-Durchläufe irgendeines
+     * Spiels.
+     */
+    private static int generalRunNumber = 0;
+
     /**
      *  Name des Spiels
      */
@@ -65,7 +73,14 @@ public class Game extends Thread {
      *  Id des Spiels
      */
     private Id m_id;
-    
+
+    /**
+     * Eine Nummer, die den aktuellen oder letzten Simulations-Durchlauf
+     * dieses Spiels unter allen Simulations-Durchläufen aller Spiele
+     * eindeutig kennzeichnet.
+     */
+    private int runNumber = -1;
+
     /**
      * Visualisierungshandler
      */
@@ -125,7 +140,17 @@ public class Game extends Thread {
      * Statistikkomponente des Spiels.
      */
     private StatisticManagement m_statisticManagement;
-    
+
+    /**
+     * Liefert die nächste eindeutige Nummer für einen Simulations-Durchlauf.
+     *
+     * @return  Die nächste eindeutige Nummer für einen Simulations-Durchlauf.
+     */
+    private static synchronized int getNextRunNumber() {
+        generalRunNumber++;
+        return generalRunNumber;
+    }
+
     /**
      * Konstruktor.
      *
@@ -260,7 +285,21 @@ public class Game extends Thread {
             }
         }
     }
-    
+
+    /**
+     * Liefert eine für alle Spiele eindeutige Kennzahl des aktuellen
+     * Simulations-Durchlaufs des Spiels. Wenn das Spiel gerade nicht
+     * ausgeführt wird, wird die Kennzahl des letzten Durchlaufs geliefert.
+     * Wenn das Spiel außerdem noch nicht ausgeführt wurde, wird der Wert -1
+     * geliefert.
+     *
+     * @return  Eine eindeutige Kennzahl des aktuellen oder letzten
+     *          Simulations-Durchlaufs des Speils.
+     */
+    public int getRunNumber() {
+        return runNumber;
+    }
+
     /**
      * Liefert alle registrierten Agenten des Spiels.
      *
@@ -456,6 +495,7 @@ public class Game extends Thread {
         try {
             int numExps = ((Integer)this.getGameParameter("numExps")).intValue();
             for(int i = 0; i < numExps; i++) {
+                runNumber = getNextRunNumber();
                 m_informationHandler.log(
                         m_id,
                         IVisualisation.StateMsg,
