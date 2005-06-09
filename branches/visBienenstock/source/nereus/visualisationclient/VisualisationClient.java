@@ -46,8 +46,7 @@ import nereus.simulatorinterfaces.IVisualisationServerExtern;
 public class VisualisationClient extends Thread implements IVisualisationClient {
 
     private static String serverAdresse = 
-            "//"
-            + nereus.simulatorinterfaces.IVisualisationServerExtern.SERVERIP 
+            nereus.simulatorinterfaces.IVisualisationServerExtern.SERVERIP 
             + ":"
             + nereus.simulatorinterfaces.IVisualisationServerExtern.SERVERPORT
             + "/"
