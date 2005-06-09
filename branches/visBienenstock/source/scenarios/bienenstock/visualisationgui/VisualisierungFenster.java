@@ -219,7 +219,7 @@ public class VisualisierungFenster extends Frame {
             }
 	    repaint();
         } else {
-            System.out.println("Vis: Keine G?ltige Karte ?bergeben bekommen.");
+            System.out.println("Vis: Keine Gueltige Karte uebergeben bekommen.");
         }
     }
 
