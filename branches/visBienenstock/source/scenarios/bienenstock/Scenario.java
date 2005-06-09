@@ -1,16 +1,16 @@
 /*
  * Dateiname      : Scenario.java
  * Erzeugt        : 16. Oktober 2004
- * Letzte Änderung: 08. Juni 2005 durch Samuel Walz
+ * Letzte ?nderung: 08. Juni 2005 durch Samuel Walz
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (samuel@gmx.info)
  *                  Eugen Volk
  *
  *
- * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
+ * Diese Datei geh?rt zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen eines
- * Software-Praktikums von Philip Funck und Samuel Walz am Institut für
- * Intelligente Systeme der Universität Stuttgart unter Betreuung von
+ * Software-Praktikums von Philip Funck und Samuel Walz am Institut f?r
+ * Intelligente Systeme der Universit?t Stuttgart unter Betreuung von
  * Dietmar Lippold (dietmar.lippold@informatik.uni-stuttgart.de).
  *
  *
@@ -60,6 +60,8 @@ import nereus.utils.Id;
 import nereus.utils.ParameterDescription;
 import nereus.simulator.ServerInfoObject;
 import nereus.utils.GameConf;
+
+import scenarios.bienenstock.visualisationgui.*;
 
 import nereus.simulator.ServerInfoObject;
 
@@ -134,28 +136,28 @@ public class Scenario
     /**
      * ist die Zeit, die der SpielMeister wartet bis er von dem Start der
      * <code>wartephase</code> zur <code>bearbeitungsphase</code>
-     * übergeht.
+     * ?bergeht.
      */
     private int timeout;
     
     /**
      * ist eine Tabelle, die die Szenario-internen ID's in
-     * Simulator ID's übersetzt.
+     * Simulator ID's ?bersetzt.
      */
     private Hashtable mAgentIDs = new Hashtable();
     
     /**
-     * hält die Anfragen von Agenten, die zu früh anfragen.
+     * h?lt die Anfragen von Agenten, die zu fr?h anfragen.
      */
     private HashSet verfruehteAnfragen = new HashSet();
     
     /**
-     * ist eine Liste aller auf der Karte befindlichen Bienenstöcke.
+     * ist eine Liste aller auf der Karte befindlichen Bienenst?cke.
      */
     private HashSet bienenStoecke;
     
     /**
-     * enthält Dummy-objekte an denen jeweils ein Agent darauf wartet,
+     * enth?lt Dummy-objekte an denen jeweils ein Agent darauf wartet,
      * das seine Anfrage abgearbeitet wird.
      */
     private ObjektWartendeAnfragen wartendeAnfragen
@@ -174,7 +176,7 @@ public class Scenario
     private Object zeigerWartephase = new Object();
     
     /**
-     * enthält die Parameter für das Szenario
+     * enth?lt die Parameter f?r das Szenario
      */
     private Parameter parameter = new Parameter();
     
@@ -195,7 +197,7 @@ public class Scenario
     private BienenStatistikKomponente statistik = null;
     
     /**
-     * enthält alle Statistikagenten für die aktuelle Runde.
+     * enth?lt alle Statistikagenten f?r die aktuelle Runde.
      */
     private Vector statAgentIds = null;
     
@@ -219,18 +221,20 @@ public class Scenario
     private GameConf gameConf;
     
     /**
-     * Authentifizierungscode zum übertragen der Informationsobjekte an die
+     * Authentifizierungscode zum ?bertragen der Informationsobjekte an die
      * Server-Vis-Komponente
      */
     private long visAuthCode = 0L;    
     
     
+    private Visualisierung vis;
+    
     /**
      * Konstruktor.
      *
      * @param gameId            ID des Spiels
-     * @param visHandler        Der Visualisierungshandler für das Szenario
-     * @param parameterTabelle  Die Parameter für das Spiel
+     * @param visHandler        Der Visualisierungshandler f?r das Szenario
+     * @param parameterTabelle  Die Parameter f?r das Spiel
      * @param visServer         Die Server-Vis-Komponente
      */
     public Scenario(Id gameId,
@@ -290,15 +294,15 @@ public class Scenario
     
     
     /**
-     * setzt die Liste der übergebenen Parameter und die Liste der
+     * setzt die Liste der ?bergebenen Parameter und die Liste der
      * Standardwerte zusammen.
      *
-     * Dabei werden hauptsächlich die übergebenen Parameter verwendet,
-     * fehlt jedoch ein Parameter in der übergebenen Liste, oder ist ein
-     * Parameter der Standartparameter schreibgeschützt, so wird der
+     * Dabei werden haupts?chlich die ?bergebenen Parameter verwendet,
+     * fehlt jedoch ein Parameter in der ?bergebenen Liste, oder ist ein
+     * Parameter der Standartparameter schreibgesch?tzt, so wird der
      * Parameter der Standardparameterliste verwendet.
      *
-     * @param parameterTabelle   Liste der vom Simulator übergebenen Werte
+     * @param parameterTabelle   Liste der vom Simulator ?bergebenen Werte
      */
     private void setzeParameter(Hashtable parameterTabelle) {
         LinkedList defaults=getScenarioParameter();
@@ -322,11 +326,11 @@ public class Scenario
     }
     
     /**
-     * prüft ob eine der Endbedingungen zutrifft.
+     * pr?ft ob eine der Endbedingungen zutrifft.
      *
-     * Ist eine Bedingung auf null gesetzt, so wird sie nicht geprüft.
+     * Ist eine Bedingung auf null gesetzt, so wird sie nicht gepr?ft.
      *
-     * @return      Gibt einen Boolean-Wert zurück, der singnalisiert,
+     * @return      Gibt einen Boolean-Wert zur?ck, der singnalisiert,
      *              ob eine der Endbedingungen zutrifft
      */
     private boolean endbedingungTrifftZu() {
@@ -376,7 +380,7 @@ public class Scenario
     /**
      * ist die Phase, in der das Spiel initiiert wird.
      *
-     * Es wird davon ausgegangen, daß alle Agenten vorher schon
+     * Es wird davon ausgegangen, da? alle Agenten vorher schon
      * am Simulator eingetragen sind.
      */
     private void startphase() {
@@ -411,6 +415,8 @@ public class Scenario
                     biene.gibVolksID(), biene.getId());
             biene.aktionscodeSetzen(myActionCode);
         }
+        //zum testen der visualisierung
+        //vis = new Visualisierung();
     }
     
     /**
@@ -419,7 +425,7 @@ public class Scenario
      *
      * Nach einer gewissen Zeit, dem sogenannten <code>timeout</code>,
      * oder wenn alle Agenten ihre Aktionsanfrage gestellt haben,
-     * geht der Spielmeister in die <code>bearbeitungsphase</code> über.
+     * geht der Spielmeister in die <code>bearbeitungsphase</code> ?ber.
      */
     private void wartephase() {
         
@@ -440,7 +446,7 @@ public class Scenario
         }
         
         /*
-         * Warten bis timeout in millisek. zum Ende führt.
+         * Warten bis timeout in millisek. zum Ende f?hrt.
          */
         //System.out.println("agenten im spiel: " + anzahlAngemeldeterAgenten);
         if (anzahlAngemeldeterAgenten > wartendeAnfragen.gibAnzahl()) {
@@ -460,15 +466,15 @@ public class Scenario
     
     /**
      * bearbeitet die von den Agenten gestellten Aktionsanfragen in einer
-     * zufälligen Reihenfolge.
+     * zuf?lligen Reihenfolge.
      *
-     * Abschließend wird geprüft, ob die Endbedingungen zutreffen,
-     * und gegebenenfalls in die <code>endpahse</code> übergegangen.
+     * Abschlie?end wird gepr?ft, ob die Endbedingungen zutreffen,
+     * und gegebenenfalls in die <code>endpahse</code> ?bergegangen.
      * Ansonsten geht der Spielmeister wieder in
-     * die <code>wartephase</code> über.
+     * die <code>wartephase</code> ?ber.
      *
      * Aktionsanfragen,die zu diesem Zeitpunkt gestellt werden, werden,
-     * falls sie gültig sind, gehalten und in der nächsten
+     * falls sie g?ltig sind, gehalten und in der n?chsten
      * <code>bearbeitungsphase</code> bearbeitet.
      */
     private void bearbeitungsphase() {
@@ -478,8 +484,8 @@ public class Scenario
         phase = Konstanten.BEARBEITUNGSPHASE;
         
         /*
-         * Bearbeiten der Aktionsanfragen in zufälliger Reihenfolge.
-         * Der Zufall entsteht durch die zufällige Wahl der Aktinscodes,
+         * Bearbeiten der Aktionsanfragen in zuf?lliger Reihenfolge.
+         * Der Zufall entsteht durch die zuf?llige Wahl der Aktinscodes,
          * nach denen <code>verwendeteAktionsCodes</code> sortiert ist.
          */
         anzahlWartendeAnfragen = wartendeAnfragen.gibAnzahl();
@@ -518,15 +524,15 @@ public class Scenario
     }
     
     /**
-     * prüft einen aktionscode auf Gültigkeit.
+     * pr?ft einen aktionscode auf G?ltigkeit.
      *
-     * Es wird dabei überprüft, ob der Aktionscode schon verwendet wurde,
-     * und ob er in der letzten Runde überhaupt ausgegeben wurde.
-     * Durch die Überprüfung verliert der Aktionscode seine Gültigkeit.
+     * Es wird dabei ?berpr?ft, ob der Aktionscode schon verwendet wurde,
+     * und ob er in der letzten Runde ?berhaupt ausgegeben wurde.
+     * Durch die ?berpr?fung verliert der Aktionscode seine G?ltigkeit.
      *
      * @param aktCode       Der Aktionscode eines Agenten
      * @return      Boolean-Wert, der angibt, ob der Aktionscode noch
-     *              gültig war
+     *              g?ltig war
      */
     private synchronized boolean aktionscodeVerwendbar(long aktCode) {
         return (spielkarte.aktionscodeEntwerten(aktCode));
@@ -534,7 +540,7 @@ public class Scenario
     
     /**
      * banachrichtig den Spielmeister,
-     * daß der Thread mit der Abarbeitung der Aktion fertig ist.
+     * da? der Thread mit der Abarbeitung der Aktion fertig ist.
      *
      * @param aktCode       Der Aktionscode eines Agenten
      */
@@ -549,7 +555,7 @@ public class Scenario
      * dient zur Synchronisation der Anfragen der Agenten.
      *
      * @param aktCode       Der Aktionscode eines Agenten
-     * @return              gibt zurück, ob der Aktionscode verwendbar war
+     * @return              gibt zur?ck, ob der Aktionscode verwendbar war
      */
     private boolean synchronisiereAktion(long aktCode) {
         if (phase == Konstanten.STARTPHASE
@@ -563,7 +569,7 @@ public class Scenario
             }
         }
         
-        //prüfen, ob der aktionscode gueltig ist
+        //pr?fen, ob der aktionscode gueltig ist
         if (aktionscodeVerwendbar(aktCode)) {
             
             synchronized (wartendeAnfragen) {
@@ -591,10 +597,10 @@ public class Scenario
     /**
      * liefert den Ausschnitt der Karte, der in Sichtweite des Agenten liegt.
      *
-     * Identifiziert den Agenten über seinen Aktionscode.
+     * Identifiziert den Agenten ?ber seinen Aktionscode.
      *
      * @param aktcode           der Aktionscode des Agenten.
-     * @return EinfacheKarte    Der für den Agenten sichtbare Ausschnitt der
+     * @return EinfacheKarte    Der f?r den Agenten sichtbare Ausschnitt der
      *                          Spielkarte
      */
     public EinfacheKarte infoAusschnittHolen(long aktcode) {
@@ -622,21 +628,21 @@ public class Scenario
     /**
      * versucht einen Agenten starten zu lassen.
      *
-     * Der Agent wird über seinen Aktionscode identifiziert und
+     * Der Agent wird ?ber seinen Aktionscode identifiziert und
      * seine Anfrage wird synchronisiert - nach erfolgreicher
      * Abarbeitung der Anfrage wird der neue
-     * Aktionscode an den Agenten zurückgegeben.
+     * Aktionscode an den Agenten zur?ckgegeben.
      *
      * @param aktCode       Der Aktionscode des Agenten
-     * @return              Der neue Aktionscode für den Agenten.
-     *                      Ist die Anfrage missglückt, so bekommt
-     *                      er 0 zurück.
+     * @return              Der neue Aktionscode f?r den Agenten.
+     *                      Ist die Anfrage missgl?ckt, so bekommt
+     *                      er 0 zur?ck.
      */
     public long startenLassen(long aktCode) {
         
         boolean erfolgreich;
         if (synchronisiereAktion(aktCode)) {
-            // AUSFÜHRENDERAKTION
+            // AUSF?HRENDERAKTION
             erfolgreich = spielkarte.bieneStartenLassen(aktCode);
             aktionAusgefuehrt(aktCode);
             long newCode=spielkarte.aktionscodeSetzen(aktCode);
@@ -649,21 +655,21 @@ public class Scenario
     /**
      * versucht einen Agenten fliegen zu lassen.
      *
-     * Der Agent wird über seinen Aktionscode identifiziert und
+     * Der Agent wird ?ber seinen Aktionscode identifiziert und
      * seine Anfrage wird synchronisiert - nach erfolgreicher
      * Abarbeitung der Anfrage wird der neue
-     * Aktionscode an den Agenten zurückgegeben.
+     * Aktionscode an den Agenten zur?ckgegeben.
      *
      * @param aktCode       Der Aktionscode des Agenten
-     * @param zielFeld      Das Feld zu dem der Agent fliegen möchte
-     * @return              Der neue Aktionscode für den Agenten.
-     *                      Ist die Anfrage missglückt, so bekommt
-     *                      er 0 zurück.
+     * @param zielFeld      Das Feld zu dem der Agent fliegen m?chte
+     * @return              Der neue Aktionscode f?r den Agenten.
+     *                      Ist die Anfrage missgl?ckt, so bekommt
+     *                      er 0 zur?ck.
      */
     public long fliegenLassen(long aktCode, Koordinate zielFeld) {
         boolean erfolgreich;
         if (synchronisiereAktion(aktCode)) {
-            // AUSFÜHRENDERAKTION
+            // AUSF?HRENDERAKTION
             erfolgreich = spielkarte.bieneFliegenLassen(aktCode, zielFeld);
             
             aktionAusgefuehrt(aktCode);
@@ -678,20 +684,20 @@ public class Scenario
     /**
      * versucht einen Agenten landen zu lassen.
      *
-     * Der Agent wird über seinen Aktionscode identifiziert und
+     * Der Agent wird ?ber seinen Aktionscode identifiziert und
      * seine Anfrage wird synchronisiert - nach erfolgreicher
      * Abarbeitung der Anfrage wird der neue
-     * Aktionscode an den Agenten zurückgegeben.
+     * Aktionscode an den Agenten zur?ckgegeben.
      *
      * @param aktCode       Der Aktionscode des Agenten
-     * @return              Der neue Aktionscode für den Agenten.
-     *                      Ist die Anfrage missglückt, so bekommt
-     *                      er 0 zurück.
+     * @return              Der neue Aktionscode f?r den Agenten.
+     *                      Ist die Anfrage missgl?ckt, so bekommt
+     *                      er 0 zur?ck.
      */
     public long landenLassen(long aktCode) {
         boolean erfolgreich;
         if (synchronisiereAktion(aktCode)) {
-            // AUSFÜHRENDERAKTION
+            // AUSF?HRENDERAKTION
             erfolgreich = spielkarte.bieneLandenLassen(aktCode);
             
             aktionAusgefuehrt(aktCode);
@@ -707,21 +713,21 @@ public class Scenario
     /**
      * versucht einen Agenten warten zu lassen.
      *
-     * Der Agent wird über seinen Aktionscode identifiziert und
+     * Der Agent wird ?ber seinen Aktionscode identifiziert und
      * seine Anfrage wird synchronisiert - nach erfolgreicher
      * Abarbeitung der Anfrage wird der neue
-     * Aktionscode an den Agenten zurückgegeben.
+     * Aktionscode an den Agenten zur?ckgegeben.
      *
      * @param aktCode       Der Aktionscode des Agenten
-     * @return              Der neue Aktionscode für den Agenten.
-     *                      Ist die Anfrage missglückt, so bekommt
-     *                      er 0 zurück.
+     * @return              Der neue Aktionscode f?r den Agenten.
+     *                      Ist die Anfrage missgl?ckt, so bekommt
+     *                      er 0 zur?ck.
      */
     public long wartenLassen(long aktCode) {
         boolean erfolgreich;
         if (synchronisiereAktion(aktCode)) {
             
-            // AUSFÜHRENDERAKTION
+            // AUSF?HRENDERAKTION
             erfolgreich = spielkarte.bieneWartenLassen(aktCode);
             
             aktionAusgefuehrt(aktCode);
@@ -738,19 +744,19 @@ public class Scenario
     /**
      * versucht einen Agenten tanzen zu lassen.
      *
-     * Der Agent wird über seinen Aktionscode identifiziert und
+     * Der Agent wird ?ber seinen Aktionscode identifiziert und
      * seine Anfrage wird synchronisiert - nach erfolgreicher
      * Abarbeitung der Anfrage wird der neue
-     * Aktionscode an den Agenten zurückgegeben.
+     * Aktionscode an den Agenten zur?ckgegeben.
      *
      * @param aktCode       Der Aktionscode des Agenten
      * @param zielX         Die x-Koordinate der mitgeteilten Position
      * @param zielY         Die y-Koordinate der mitgeteilten Position
      * @param richtung      Teilt mit, ob die Richtung mitgeteilt werden soll
      * @param entfernung    Teilt mit, ob die Entfernung mitgeteilt werden soll
-     * @return              Der neue Aktionscode für den Agenten.
-     *                      Ist die Anfrage missglückt, so bekommt
-     *                      er 0 zurück.
+     * @return              Der neue Aktionscode f?r den Agenten.
+     *                      Ist die Anfrage missgl?ckt, so bekommt
+     *                      er 0 zur?ck.
      */
     public long tanzenLassen(long aktCode,
             int zielX,
@@ -760,7 +766,7 @@ public class Scenario
         boolean erfolgreich;
         if (synchronisiereAktion(aktCode)) {
             
-            // AUSFÜHRENDERAKTION
+            // AUSF?HRENDERAKTION
             erfolgreich = spielkarte.bieneTanzenLassen(aktCode,
                     zielX,
                     zielY,
@@ -780,23 +786,23 @@ public class Scenario
     /**
      * versucht einen Agenten zuschauen zu lassen.
      *
-     * Der Agent wird über seinen Aktionscode identifiziert und
+     * Der Agent wird ?ber seinen Aktionscode identifiziert und
      * seine Anfrage wird synchronisiert - nach erfolgreicher
      * Abarbeitung der Anfrage wird der neue
-     * Aktionscode an den Agenten zurückgegeben.
+     * Aktionscode an den Agenten zur?ckgegeben.
      *
      * @param aktCode       Der Aktionscode des Agenten
      * @param idBienie      Die ID der Biene, der der Agent beim Tanzen
-     *                      zuschauen möchte
-     * @return              Der neue Aktionscode für den Agenten.
-     *                      Ist die Anfrage missglückt, so bekommt
-     *                      er 0 zurück.
+     *                      zuschauen m?chte
+     * @return              Der neue Aktionscode f?r den Agenten.
+     *                      Ist die Anfrage missgl?ckt, so bekommt
+     *                      er 0 zur?ck.
      */
     public long zuschauenLassen(long aktCode, int idBienie) {
         boolean erfolgreich;
         if (synchronisiereAktion(aktCode)) {
             
-            // AUSFÜHRENDERAKTION
+            // AUSF?HRENDERAKTION
             erfolgreich = spielkarte.bieneZuschauenLassen(aktCode, idBienie);
             
             aktionAusgefuehrt(aktCode);
@@ -811,22 +817,22 @@ public class Scenario
     /**
      * versucht einen Agenten Honig tanken zu lassen.
      *
-     * Der Agent wird über seinen Aktionscode identifiziert und
+     * Der Agent wird ?ber seinen Aktionscode identifiziert und
      * seine Anfrage wird synchronisiert - nach erfolgreicher
      * Abarbeitung der Anfrage wird der neue
-     * Aktionscode an den Agenten zurückgegeben.
+     * Aktionscode an den Agenten zur?ckgegeben.
      *
      * @param aktCode       Der Aktionscode des Agenten
-     * @param menge         Die gewünschte Honigmenge
-     * @return              Der neue Aktionscode für den Agenten.
-     *                      Ist die Anfrage missglückt, so bekommt
-     *                      er 0 zurück.
+     * @param menge         Die gew?nschte Honigmenge
+     * @return              Der neue Aktionscode f?r den Agenten.
+     *                      Ist die Anfrage missgl?ckt, so bekommt
+     *                      er 0 zur?ck.
      */
     public long honigTankenLassen(long aktCode, int menge) {
         boolean erfolgreich;
         if (synchronisiereAktion(aktCode)) {
             
-            // AUSFÜHRENDERAKTION
+            // AUSF?HRENDERAKTION
             erfolgreich = spielkarte.bieneHonigTankenLassen(aktCode, menge);
             
             aktionAusgefuehrt(aktCode);
@@ -842,21 +848,21 @@ public class Scenario
     /**
      * versucht einen Agenten Nektar abliefern zu lassen.
      *
-     * Der Agent wird über seinen Aktionscode identifiziert und
+     * Der Agent wird ?ber seinen Aktionscode identifiziert und
      * seine Anfrage wird synchronisiert - nach erfolgreicher
      * Abarbeitung der Anfrage wird der neue
-     * Aktionscode an den Agenten zurückgegeben.
+     * Aktionscode an den Agenten zur?ckgegeben.
      *
      * @param aktCode       Der Aktionscode des Agenten
-     * @return              Der neue Aktionscode für den Agenten.
-     *                      Ist die Anfrage missglückt, so bekommt
-     *                      er 0 zurück.
+     * @return              Der neue Aktionscode f?r den Agenten.
+     *                      Ist die Anfrage missgl?ckt, so bekommt
+     *                      er 0 zur?ck.
      */
     public long nektarAbliefernLassen(long aktCode) {
         boolean erfolgreich;
         if (synchronisiereAktion(aktCode)) {
             
-            // AUSFÜHRENDERAKTION
+            // AUSF?HRENDERAKTION
             erfolgreich = spielkarte.bieneNektarAbliefernLassen(aktCode);
             
             aktionAusgefuehrt(aktCode);
@@ -871,22 +877,22 @@ public class Scenario
     /**
      * versucht einen Agenten Nektar abbauen zu lassen.
      *
-     * Der Agent wird über seinen Aktionscode identifiziert und
+     * Der Agent wird ?ber seinen Aktionscode identifiziert und
      * seine Anfrage wird synchronisiert - nach erfolgreicher
      * Abarbeitung der Anfrage wird der neue
-     * Aktionscode an den Agenten zurückgegeben.
+     * Aktionscode an den Agenten zur?ckgegeben.
      *
      * @param aktCode       Der Aktionscode des Agenten
-     * @param menge         Die gewünschte Nekarmenge
-     * @return              Der neue Aktionscode für den Agenten.
-     *                      Ist die Anfrage missglückt, so bekommt
-     *                      er 0 zurück.
+     * @param menge         Die gew?nschte Nekarmenge
+     * @return              Der neue Aktionscode f?r den Agenten.
+     *                      Ist die Anfrage missgl?ckt, so bekommt
+     *                      er 0 zur?ck.
      */
     public long nektarAbbauenLassen(long aktCode, int menge) {
         boolean erfolgreich;
         if (synchronisiereAktion(aktCode)) {
             
-            // AUSFÜHRENDERAKTION
+            // AUSF?HRENDERAKTION
             erfolgreich = spielkarte.bieneNektarAbbauenLassen(aktCode, menge);
             
             aktionAusgefuehrt(aktCode);
@@ -911,7 +917,7 @@ public class Scenario
      * simuliert das komplette Spiel.
      *
      * Ob das Spiel rundenbasiert oder ohne Runden stattfindet, bleibt dem
-     * Implementierer des konkreten Scenarios überlassen.
+     * Implementierer des konkreten Scenarios ?berlassen.
      *
      * @throws InvalidAgentException        Falscher Agententyp
      * @throws NotEnoughEnergyException     Ein Agent hat zu wenig Energie
@@ -925,18 +931,25 @@ public class Scenario
         try {
             visAuthCode = m_visualisationServer.spielAnmelden(m_gameId, 2000);
         } catch (DoppeltesSpielException fehler) {
-            System.out.println("Konnte Spiel für die Visualisierung nicht "
+            System.out.println("Konnte Spiel f?r die Visualisierung nicht "
                                 + "anmelden: Doppelte ID!");
         }
                 
         startphase();
+        
+        //zum Test derVisualisierung
+        //vis.start();
+        //vis.visualisiere(spielkarte.visualisieren());
+        
         while (!endbedingungTrifftZu()) { 
-            // Übertragen der Spielinformationen an die Server-Vis-Komponente
+            // uebertragen der Spielinformationen an die Server-Vis-Komponente
             m_visualisationServer.speichereSpielInformationen(visAuthCode, 
                                                  spielkarte.visualisieren());
             wartephase();
             bearbeitungsphase();
             spielkarte.createRoundStatistik(this.statistik);
+            
+            //vis.visualisiere(spielkarte.visualisieren());
         }
         endphase();
         
@@ -954,7 +967,7 @@ public class Scenario
     public void initializeListOfAllowedSpeachactClasses() { }
     
     /**
-     * sorgt für einen Reset aller Parameterwerte,
+     * sorgt f?r einen Reset aller Parameterwerte,
      * wenn ein Spiel erneut simuliert werden soll.
      */
     public void reset() {
@@ -983,7 +996,7 @@ public class Scenario
     
     
    /* public void reset() {
-                // Alte Identitäten wegwerfen
+                // Alte Identit?ten wegwerfen
                 m_actionKeys.clear();
                 // Alle Parameterwerte reseten
                 m_activeAgents.clear();
@@ -991,7 +1004,7 @@ public class Scenario
                 m_numOfActiveAgents = 0;
                 m_agentsEnergy.clear();
                 Enumeration agents = m_agents.elements();
-                // Flags wieder zurücksetzen.
+                // Flags wieder zur?cksetzen.
                 m_canGetCalculations = false;
                 m_canStartNextRound = false;
                 m_enviroment = new IslandEnviroment();
@@ -1011,7 +1024,7 @@ public class Scenario
         }*/
     
     /**
-     * gibt die Parameter des Szenarios zurück
+     * gibt die Parameter des Szenarios zur?ck
      *
      * @return      Die Liste der Parameter des Szenarios
      */
@@ -1023,7 +1036,7 @@ public class Scenario
      * erzeugt einen neuen ScenarioHandler.
      *
      * Das konkrete Scenario muss hier seinen ScenarioHandler erzeugen. Der
-     * ScenarioHandler wird aus Sicherheitsgründen implementiert. Er soll den
+     * ScenarioHandler wird aus Sicherheitsgr?nden implementiert. Er soll den
      * Agenten einen indirekten Zugriff auf das Scenario erlauben, ohne das die
      * Agenten das Scenario jemals in die Hand bekommen.
      *
@@ -1038,7 +1051,7 @@ public class Scenario
     }
     
     /**
-     * gibt die Nummer der aktuellen Runde zurück.
+     * gibt die Nummer der aktuellen Runde zur?ck.
      *
      * @return      Die Nummer der aktuellen Runde
      */
@@ -1068,7 +1081,7 @@ public class Scenario
     
     
     /**
-     * gibt eine Liste mit den Parametern, die dass Szenario benötigt zurück.
+     * gibt eine Liste mit den Parametern, die dass Szenario ben?tigt zur?ck.
      *
      * @return Liste der Parameter vorbelegt mit Defaultwerten
      */
@@ -1222,7 +1235,7 @@ public class Scenario
     }
     
     /**
-     * erstellt für alle übergebenen Agenten neue Statistikkomponenten
+     * erstellt f?r alle ?bergebenen Agenten neue Statistikkomponenten
      *
      * @param agents     Liste der Agenten zu denen eine neue
      *                   Statistikkomponente erstellt werden soll
@@ -1244,7 +1257,7 @@ public class Scenario
     
     
     /**
-     * gibt eine Liste mit allen Ststistikparametern zurück.
+     * gibt eine Liste mit allen Ststistikparametern zur?ck.
      *
      * @return      Liste aller Statistikparameter
      */
@@ -1256,8 +1269,8 @@ public class Scenario
     }
     
     /**
-     * liefert zu einem Szenario-Parameter-Namen den zugehörigen 
-     * Wert als String zurück.
+     * liefert zu einem Szenario-Parameter-Namen den zugeh?rigen 
+     * Wert als String zur?ck.
      *
      * @throws InvalidElementException  parameterName ist in der Parameter-Liste 
      * nicht vorhanden.

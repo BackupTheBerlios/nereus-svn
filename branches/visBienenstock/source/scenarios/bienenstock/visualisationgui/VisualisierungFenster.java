@@ -76,7 +76,7 @@ public class VisualisierungFenster extends Frame {
     /**
      * der Pfad zu den librarys
      */
-    private String pfad = "/home/philip/workspace/nereus/branches/philip/libs/";
+    private String pfad = "/home/philip/workspace/nereus/branches/visBienenstock/libs/bilder/";
     
     /**
      * das Bild vom Bienenstock
@@ -113,6 +113,8 @@ public class VisualisierungFenster extends Frame {
      */
     private int maxY = -1000000000;
     
+    Panel knoepfe = new Panel();
+    
     /**
      * der Knopf zum Pausieren
      */
@@ -138,7 +140,7 @@ public class VisualisierungFenster extends Frame {
      */
     ActionListener pauseAktion = new ActionListener() {
 	public void actionPerformed(ActionEvent e) {
-            pause.setLabel("weiter");
+            pause.setLabel("Weiter");
             vis.warte();
             pause.addActionListener(weiterAktion);
             pause.removeActionListener(pauseAktion);
@@ -184,6 +186,11 @@ public class VisualisierungFenster extends Frame {
         pause.addActionListener(pauseAktion);
         zurueck.addActionListener(zurueckAktion);
         vor.addActionListener(vorAktion);
+        knoepfe.setLayout(new FlowLayout());
+        knoepfe.add(zurueck, FlowLayout.LEFT);
+        knoepfe.add(pause, FlowLayout.CENTER);
+        knoepfe.add(vor, FlowLayout.RIGHT);
+        add(knoepfe, BorderLayout.SOUTH);
         fenster = this;
 	fenster.setTitle("Bienenstockvisualisierung");
         fenster.setFont(schrift);
@@ -252,7 +259,7 @@ public class VisualisierungFenster extends Frame {
      */
     public void paint(Graphics g) {
         g.setColor(new Color(0, 0, 0));
-
+        
         if (karte != null) {
             HashMap felder = karte.gibFelder();
             VisFeld tmpFeld;
@@ -354,9 +361,6 @@ public class VisualisierungFenster extends Frame {
                     }
                 }
             }
-            add(zurueck);
-            add(pause);
-            add(vor);
         }
     }
 }
