@@ -105,6 +105,15 @@ public class Feld {
      */
     private HashSet tanzendeBienen = new HashSet();
     
+    
+    /**
+     * ist eine Liste der auf dem Feld weder wartenden noch fliegenden 
+     * noch tanzenden Bienen.
+     *
+     * @associates scenario.bienenstock.umgebung.Biene
+     */
+    private HashSet sonstigeBienen= new HashSet();
+    
     /**
      * Konstruktor.
      *
@@ -195,6 +204,20 @@ public class Feld {
         }
     }
     
+    
+     /**
+     * trägt die auf dem Feld sonstige (weder tanzend, noch fliegend, noch wartend) Bienen ein.
+     *
+     * @param sonstigeBiene die einzutragende Biene
+     * @return  true falls sie eingetragen werden konnte
+     */
+    boolean trageSonstigeBieneEin(Biene sonstigeBiene) {
+        sonstigeBienen.add(sonstigeBiene);
+        return true;
+    }
+             
+    
+    
     /**
      * prüft ob die entsprechende Biene auf der Liste wartendeBienen
      * eingetragen ist und entfernt sie gegebenenfalls.
@@ -246,6 +269,24 @@ public class Feld {
         }
     }
     
+    
+    /**
+     * prüft ob die entsprechende Biene auf der Liste sonstigeBienen
+     * eingetragen ist und entfernt sie gegebenenfalls.
+     *
+     * Die Operation gibt zurück ob die Biene entfernt werden konnte.
+     *
+     * @param tanzendeBiene zu öschende Biene
+     * @throws RuntimeException konnte nicht eingtragen werden
+     */
+    void entferneSonstigeBiene(Biene sonstigeBiene){
+        if (!sonstigeBienen.remove(sonstigeBiene)) {
+            throw new RuntimeException("Sonstige Biene existiert nicht "
+                    + "- kann nicht geloescht werden.");
+        }
+    }
+    
+    
     /**
      * gibt die Sichtweite am Boden zurück.
      *
@@ -290,6 +331,16 @@ public class Feld {
     HashSet gibTanzendeBienen() {
         return (HashSet) tanzendeBienen.clone();
     }
+    
+     /**
+     * gibt eine Liste der sonstigen Bienen zurück.
+     *
+     * @return  gibt ein HashSet mit den sonstigen Bienen zurück
+     */
+    HashSet gibSonstigeBienen() {
+        return (HashSet) sonstigeBienen.clone();
+    }
+    
     
     /**
      * gibt die ID des Feldes zurück.

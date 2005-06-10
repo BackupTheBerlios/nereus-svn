@@ -26,7 +26,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package nereus.utils;
+package nereus.agentutils;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;

@@ -34,7 +34,7 @@ import scenarios.bienenstock.interfaces.AbstrakteBiene;
 import scenarios.bienenstock.interfaces.IBienenstockSzenarioHandler;
 import scenarios.bienenstock.einfacheUmgebung.*;
 import nereus.utils.Id;
-import nereus.utils.ActionTargetPair;
+import nereus.agentutils.ActionTargetPair;
 
 import java.util.Iterator;
 import java.util.Random;
@@ -46,11 +46,11 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
-import nereus.utils.Dijkstra;
+import nereus.agentutils.Dijkstra;
 import scenarios.bienenstock.agenteninfo.Info;
 import scenarios.bienenstock.agenteninfo.Koordinate;
-import agents.bienenstock.DesireIntentionPlan;
-import agents.bienenstock.InfoBlume;
+import agents.bienenstock.utils.DesireIntentionPlan;
+import agents.bienenstock.utils.InfoBlume;
 
 /**
  * Die Klasse ist Agent und ist aufgebaut nach der Belief-Desire-Intention Architektur.
@@ -200,11 +200,11 @@ public class SimplerKooperativerBDIAgent
         
         while(true){
             perception();
-       //     System.out.println(id+": alter MODUS  Desire: " + modus.getDesire() + " Intention: "+ modus.getIntention());
-      //      this.visualisiereBiene(selbst);
+            //     System.out.println(id+": alter MODUS  Desire: " + modus.getDesire() + " Intention: "+ modus.getIntention());
+            //      this.visualisiereBiene(selbst);
             evaluate(modus);
             filter(modus);
-      //      System.out.println(id+": neuer MODUS  Desire: " + modus.getDesire() + " Intention: "+ modus.getIntention());
+            //      System.out.println(id+": neuer MODUS  Desire: " + modus.getDesire() + " Intention: "+ modus.getIntention());
             if (modus.getDesireZiel()!=null) System.out.println(id+": Desire Ziel " +  modus.getDesireZiel().toString());
             plan(modus);
             act(modus);
@@ -423,7 +423,7 @@ public class SimplerKooperativerBDIAgent
             }break;
             case DesireIntentionPlan.D_FINDEBLUME:{
                 if (!(myPosition.equals(d_Ziel)))
-                modus.setIntention(DesireIntentionPlan.I_FLIEGENZURKOORDINATE);
+                    modus.setIntention(DesireIntentionPlan.I_FLIEGENZURKOORDINATE);
                 modus.setIntentionZiel(d_Ziel);
                 System.out.println(id + ": neues ZIEL :");
             }break;
@@ -1215,10 +1215,11 @@ public class SimplerKooperativerBDIAgent
         double nutzen=-1;
         int koordX=blumenKoordinate.gibXPosition();
         int koordY=blumenKoordinate.gibYPosition();
-        System.out.println(selbst.gibBienenID()+ ": tanze ");
         InfoBlume infoBlume=(InfoBlume)this.bekannteBlumen.get(blumenKoordinate);
         if (infoBlume.getProbeEntnommen()) nutzen=infoBlume.getNutzen();
         long neuerAktCode = handler.aktionTanzen(aktCode, koordX, koordY, true, true,nutzen);
+        System.out.println(selbst.gibBienenID()+ ": TANZE: habe übermittelt Koordinate : "+ blumenKoordinate.toString() +
+                " Nutzen " + nutzen);
         if (!(neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
         }

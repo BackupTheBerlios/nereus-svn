@@ -1,7 +1,7 @@
 /*
  * Dateiname      : Karte.java
  * Erzeugt        : 26. Juli 2004
- * Letzte Änderung: 6. Juni 2005 durch Eugen Volk
+ * Letzte Änderung: 8. Juni 2005 durch Eugen Volk
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
  *                  Eugen Volk
@@ -138,6 +138,15 @@ public class Karte extends AbstractEnviroment {
     
     /** enthält (bienennId, rundenNr) in der getanzt wurde */
     private Hashtable getanztInRundeNr=new Hashtable();
+    
+    /**
+     * Tanz-Tabelle, die zu jeder getanzten Biene in der jeweiligen Runde
+     * die TanzInfomation speichert.
+     * tanzTab[0] enthält Infomationen aus den geraden Runden,
+     * tanzTab[1] enthält Infomationen aus den ungeraden Runden.
+     */
+     HashMap tanzTab[]={new HashMap(), new HashMap()};
+     
     
     /**
      * Erstellt eine neue Instanz der Karte, bekommt mitgeteilt,
@@ -515,7 +524,13 @@ public class Karte extends AbstractEnviroment {
                 } else {
                     return ((Blume) zielFeld).trageAbbauendeBieneEin(zielBiene);
                 }
-            case Konstanten.TANKENABLIEFERN: return true;               
+            case Konstanten.TANKENABLIEFERN:
+                if (zielFeld.gibSonstigeBienen().contains(
+                        zielBiene)) {
+                    return true;
+                } else {
+                    return zielFeld.trageSonstigeBieneEin(zielBiene);
+                }
                 
             default:
                 return false;
@@ -560,7 +575,8 @@ public class Karte extends AbstractEnviroment {
                         zielBiene);
                 break;
             case Konstanten.TANKENABLIEFERN:{
-                
+                feldSuchen(zielBiene.gibPosition()).entferneSonstigeBiene(
+                        zielBiene);
             }break;
         }
         
@@ -1127,6 +1143,8 @@ public class Karte extends AbstractEnviroment {
         return false;
     }
     
+    
+    
     /**
      * prüft, ob die Biene in der Liste wartendeBienen des
      * entsprechenden Feldes enthalten ist,
@@ -1153,7 +1171,6 @@ public class Karte extends AbstractEnviroment {
         Biene zielBiene = bieneSuchen(aktionscode);
         if (!(zielBiene == null)) {
             Feld zielFeld = feldSuchen(zielBiene.gibPosition());
-            
             aktionAusgefuehrt(zielBiene.gibBienenID());
             int kosten = 0;
             if (richtung && entfernung) {
@@ -1193,19 +1210,20 @@ public class Karte extends AbstractEnviroment {
                     zielBiene.setzeGeladeneHonigmenge(
                             zielBiene.gibGeladeneHonigmenge()
                             - kosten);
-                    
-                    zielBiene.setzeGesendeteInformation(konvertiereInfo(
+                    Info konvInfo=konvertiereInfo(
                             zielBiene.gibPosition(),
                             infoX,
                             infoY,
                             richtung,
                             entfernung,
-                            nutzen));
+                            nutzen);
+                    int rundenNr=this.spielmeister.gibRundennummer();
+                    this.addTanzInfo(zielBiene.gibBienenID(), konvInfo, rundenNr);
+                    
                     /** damit auf die Information auch eine Runde später zugegriffen werden kann */
                     Integer rundenNrInteger=new Integer(this.spielmeister.gibRundennummer());
                     Integer bienenIdInteger=new Integer(zielBiene.gibBienenID());
                     this.getanztInRundeNr.put(bienenIdInteger,rundenNrInteger);
-                    
                     return true;
                 }
             }
@@ -1233,9 +1251,7 @@ public class Karte extends AbstractEnviroment {
                 = (Biene) bienenNachID.get(new Integer(idTanzendeBiene));
         Biene zielBiene = (Biene) bieneSuchen(aktionscodeSitzendeBiene);
         Feld zielFeld = feldSuchen(zielBiene.gibPosition());
-        
         aktionAusgefuehrt(zielBiene.gibBienenID());
-        
         //Haben wir sie gefunden?
         if ((!(zielBiene == null))
                 /*
@@ -1270,8 +1286,12 @@ public class Karte extends AbstractEnviroment {
                         zielBiene.gibGeladeneHonigmenge()
                         - ((Integer) parameter.gibWert(
                         "honigZuschauen")).intValue());
+                
+                int rundenNr=this.spielmeister.gibRundennummer();
+                int vorletzteRundenNr=rundenNr-1;
                 zielBiene.setzeZustand(Konstanten.ZUSCHAUEND);
-                zielBiene.setzeInformation(tanzendeBiene.gibGesendeteInformation());
+                Info tanzInfo=this.getTanzInfo(tanzendeBiene.gibBienenID(), vorletzteRundenNr);
+                zielBiene.setzeInformation(tanzInfo);
                 
                 return true;
             }
@@ -1338,6 +1358,7 @@ public class Karte extends AbstractEnviroment {
                 /*    zielBiene.setzeZustand(Konstanten.WARTEND);
                     zielFeld.trageWartendeBieneEin(zielBiene);*/
                     zielBiene.setzeZustand(Konstanten.TANKENABLIEFERN);
+                    zielFeld.trageSonstigeBieneEin(zielBiene);
                     //wieviel kann sie tanken?
                     if ((geladenerHonig + wunschmenge)
                     > ((Integer) parameter.gibWert(
@@ -1411,7 +1432,7 @@ public class Karte extends AbstractEnviroment {
                             zielBiene.gibGeladeneNektarmenge()));
                     //Aktion setzen
                     zielBiene.setzeZustand(Konstanten.TANKENABLIEFERN);
-                    
+                    zielFeld.trageSonstigeBieneEin(zielBiene);
                     return true;
                 }
             }
@@ -1813,5 +1834,74 @@ public class Karte extends AbstractEnviroment {
         
         
     }
+    
+      
+ 
+     /**
+      * fügt neue TanzInfomation in die Tanz-Tabelle hinzu.
+      * @param bienenId Id der Tanz-Biene
+      * @rundenNr Nummer der aktuellen Runde
+      */
+     private void addTanzInfo(int bienenId, Info tanzInfo, int rundenNr){
+         int rest=rundenNr % 2;
+         TanzInfo ts=new TanzInfo(bienenId, tanzInfo, rundenNr);
+         tanzTab[rest].put(new Integer(bienenId), ts);
+     }
+     
+     /**
+      * liefert mitgeteilte Informationen aus der verhergehenden Rude
+      * @param bienenId Id der Tanz-Biene
+      * @param rundenNr Runden-Nummer in der getanzt wurde
+      * @return mitgeteilte Infomation
+      */
+     private Info getTanzInfo(int bienenId, int rundenNr){
+         int rest=rundenNr % 2;
+         TanzInfo ts;
+         ts=(TanzInfo)tanzTab[rest].get(new Integer(bienenId));
+         if (ts==null) {
+             return null;
+         }
+         int rundeGetanzt=ts.getRundenNr();
+         if (rundenNr==rundeGetanzt) return ts.getInfo();
+         else return null;
+         
+     }
+     
+    
+     /**  eine Datenstruktur, die Bienen-Id, Runden-Nummer und Tanz-Infomation  enthält */
+    class TanzInfo{
+        /** Id der Tanz-Biene */
+        int bienenId;
+        /** RundenNummer in der getanzt wurde */
+        int rundenNr;
+        /** konvertierte TanzInfomation */
+        Info tanzInfo;
+        
+        /** eine Datenstruktur, die Bienen-Id, Runden-Nummer und Tanz-Infomation  enthält 
+         * @param bienenId Id der TanzBiene
+         * @param tanzInfo konvertierte Tanz-Infomation
+         * @param rundenNr RundeNummer in der getanzt wurde
+         */
+        TanzInfo(int bienenId, Info tanzInfo, int rundenNr){
+            this.bienenId=bienenId;
+            this.rundenNr=rundenNr;
+            this.tanzInfo=tanzInfo;
+        }
+        /** liefert die gespeicherte Tanz-Information
+         * @return TanzInfomation
+         */
+        Info getInfo(){
+            return tanzInfo.klonen();
+        }
+        /** liefet die RundenNr in der getanzt wurde 
+         * @return Runden-Nummer
+         */
+        int getRundenNr(){
+            return this.rundenNr;
+        }
+        
+    }
+    
+    
     
 }

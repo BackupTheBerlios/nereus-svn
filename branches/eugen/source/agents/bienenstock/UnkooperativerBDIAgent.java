@@ -34,7 +34,7 @@ import scenarios.bienenstock.interfaces.AbstrakteBiene;
 import scenarios.bienenstock.interfaces.IBienenstockSzenarioHandler;
 import scenarios.bienenstock.einfacheUmgebung.*;
 import nereus.utils.Id;
-import nereus.utils.ActionTargetPair;
+import nereus.agentutils.ActionTargetPair;
 
 import java.util.Iterator;
 import java.util.Random;
@@ -45,11 +45,11 @@ import java.util.Hashtable;
 import java.util.Set;
 import java.util.Map;
 import java.util.Map.Entry;
-import nereus.utils.Dijkstra;
+import nereus.agentutils.Dijkstra;
 import scenarios.bienenstock.agenteninfo.Info;
 import scenarios.bienenstock.agenteninfo.Koordinate;
-import agents.bienenstock.DesireIntentionPlan;
-import agents.bienenstock.InfoBlume;
+import agents.bienenstock.utils.DesireIntentionPlan;
+import agents.bienenstock.utils.InfoBlume;
 
 /**
  * Die Klasse ist Agent und ist aufgebaut nach der Belief-Desire-Intention Architektur.

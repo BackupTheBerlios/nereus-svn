@@ -146,7 +146,7 @@ public class Info {
     /**
      * gibt eine Kopie des Objekts zurück.
      *
-     * @return      Enhält Entfernungs und / oder Richtungsangaben
+     * @return      Enhält Nutzen, Entfernungs und / oder Richtungsangaben
      */
     public Info klonen() {
         return new Info(richtung,

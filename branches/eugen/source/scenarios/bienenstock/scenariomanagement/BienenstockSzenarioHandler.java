@@ -1,7 +1,7 @@
 /*
  * Dateiname      : BienenstockSzenarioHandler.java
  * Erzeugt        : 5. Oktober 2004
- * Letzte Änderung: 25. Januar 2005 durch Philip Funck
+ * Letzte Änderung: 8. Juni 2005 durch Eugen Volk
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
  *
@@ -255,6 +255,8 @@ public class BienenstockSzenarioHandler extends AbstractScenarioHandler
      * @throws InvalidElementException  parameterName ist in der Parameter-Liste
      * nicht vorhanden.
      * @param parameterName der Name des Parameters
+     * @return zu einem Szenario-Parameter-Namen den zugehörigen
+     * Wert als String.
      */
     public String getScenarioParameter(String parameterName)
     throws InvalidElementException{

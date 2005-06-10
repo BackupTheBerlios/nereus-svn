@@ -25,7 +25,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package nereus.utils;
+package nereus.agentutils;
 
 /**
  * Ist eine Klasse die ActionNr und ZielObjekt als ein Wert-Paar kapselt.

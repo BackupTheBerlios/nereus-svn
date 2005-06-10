@@ -44,6 +44,7 @@ import java.util.LinkedList;
 import java.util.HashMap;
 import scenarios.bienenstock.agenteninfo.Info;
 import scenarios.bienenstock.agenteninfo.Koordinate;
+import agents.bienenstock.utils.InfoBlumeEinfach;
 
 
 
@@ -59,7 +60,7 @@ import scenarios.bienenstock.agenteninfo.Koordinate;
  *
  *
  */
-public class BienenstockAgent
+public class EinfacherAgent
         extends AbstrakteBiene
         implements Runnable {
     
@@ -85,7 +86,7 @@ public class BienenstockAgent
     private String name = "";
     private int gesammelterNektar = 0;
     
-    private TestAgentBlume zuBearbeitendeBlume;
+    private InfoBlumeEinfach zuBearbeitendeBlume;
     
     private boolean hinweg = true;
     
@@ -100,7 +101,7 @@ public class BienenstockAgent
     Random zufallsGenerator = new Random();
     
     
-    public BienenstockAgent(String bName, AbstractScenarioHandler bHandler) {
+    public EinfacherAgent(String bName, AbstractScenarioHandler bHandler) {
         super(bName, bHandler);
         name = bName;
         handler = (IBienenstockSzenarioHandler)bHandler;
@@ -108,13 +109,13 @@ public class BienenstockAgent
         zufallsGenerator.setSeed(samen);
     }
     
-    public BienenstockAgent() {
+    public EinfacherAgent() {
         super();
         volksID = 1;
         zufallsGenerator.setSeed(samen);
     }
     
-    public BienenstockAgent(Id bId,String bName) {
+    public EinfacherAgent(Id bId,String bName) {
         super(bId, bName);
         name = bName;
         volksID = 1;
@@ -196,12 +197,12 @@ public class BienenstockAgent
             while (!sucheBlume()) {}
             landen();
             if (blumeHatNektar()) {
-                TestAgentBlume plume = new TestAgentBlume(weg, true);
+                InfoBlumeEinfach plume = new InfoBlumeEinfach(weg, true);
                 blumen.put(weg.getLast(), plume);
                 zuBearbeitendeBlume = plume;
                 vielAbbauen();
             } else {
-                blumen.put(weg.getLast(), new TestAgentBlume(weg, false));
+                blumen.put(weg.getLast(), new InfoBlumeEinfach(weg, false));
             }
             heimFliegen();
         }
@@ -287,7 +288,7 @@ public class BienenstockAgent
     
     private boolean blumeVoll(EinfachesFeld blume) {
         if (blumen.containsKey(blume.gibPosition())) {
-            return ((TestAgentBlume)blumen.get(blume.gibPosition())).besitztHonig();
+            return ((InfoBlumeEinfach)blumen.get(blume.gibPosition())).besitztHonig();
         } else {
             return true;
         }

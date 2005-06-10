@@ -1,7 +1,7 @@
 /*
  * Dateiname      : IBienenstockSzenarioHandler.java
  * Erzeugt        : 6. Oktober 2004
- * Letzte Änderung: 23. Mai 2005 durch Eugen Volk
+ * Letzte Änderung: 8. Juni 2005 durch Eugen Volk
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
  *                  
@@ -57,14 +57,14 @@ public interface IBienenstockSzenarioHandler {
     EinfacheKarte infoAusschnittHolen(long aktCode);
     
     /**
-     *
+     * lässt die Biene von Boden starten.
      * @param aktCode       Der Aktionscode des Agenten
      * @return              Der neue Aktionscode
      */
     long aktionStarten(long aktCode);
     
     /**
-     *
+     * lässt die Biene zum benachbarten Feld fliegen.
      * @param aktCode       Der Aktionscode des Agenten
      * @param ziel          Das gewünschte Flugziel
      * @return              Der neue Aktionscode
@@ -72,21 +72,22 @@ public interface IBienenstockSzenarioHandler {
     long aktionFliegen(long aktCode,
             Koordinate ziel);
     /**
-     *
+     * lässt die Biene landen.
      * @param aktCode       Der Aktionscode des Agenten
      * @return              Der neue Aktionscode
      */
     long aktionLanden(long aktCode);
     
     /**
-     *
+     * lässt die Biene warten.
      * @param aktCode       Der Aktionscode des Agenten
      * @return              Der neue Aktionscode
      */
     long aktionWarten(long aktCode);
     
     /**
-     *
+     * lässt die Biene tanzen, Dadurch teilt die Biene Information den 
+     * anderen Bienen mit.
      * @param aktCode       Der Aktionscode des Agenten
      * @param zielX         Die mitzuteilende X-Koordinate
      * @param zielY         Die Mitzuteilende Y-Koordinate
@@ -101,7 +102,8 @@ public interface IBienenstockSzenarioHandler {
             boolean entfernung);
     
     /**
-     *
+     * lässt die Biene tanzen, Dadurch teilt die Biene Information den 
+     * anderen Bienen mit.
      * @param aktCode       Der Aktionscode des Agenten
      * @param zielX         Die mitzuteilende X-Koordinate
      * @param zielY         Die Mitzuteilende Y-Koordinate
@@ -118,7 +120,7 @@ public interface IBienenstockSzenarioHandler {
             double nutzen);
     
     /**
-     *
+     * lässt die Biene beim einer anderen Biene beim Tanzen zuschauen.
      * @param aktCode       Der Aktionscode des Agenten
      * @param tanzendeBieneID   Die ID der Biene, der der Agent zuschauen möchte
      * @return              Der neue Aktionscode
@@ -127,7 +129,7 @@ public interface IBienenstockSzenarioHandler {
             int tanzendeBieneID);
     
     /**
-     *
+     * lässt die Biene Honig tanken.
      * @param aktCode       Der Aktionscode des Agenten
      * @param menge         Die gewünschte Honigmenge
      * @return              Der neue Aktionscode
@@ -136,14 +138,14 @@ public interface IBienenstockSzenarioHandler {
             int menge);
     
     /**
-     *
+     * lässt die Biene ihren gesammelten Nektar abliefern.
      * @param aktCode       Der Aktionscode des Agenten
      * @return              Der neue Aktionscode
      */
     long aktionNektarAbliefern(long aktCode);
     
     /**
-     *
+     * lässt die Biene von der Blume Nektar abbauen.
      * @param aktCode       Der Aktionscode des Agenten
      * @param menge         Die gewünschte Nektarmenge
      * @return              Der neue Aktionscode
@@ -151,6 +153,19 @@ public interface IBienenstockSzenarioHandler {
     long aktionNektarAbbauen(long aktCode,
             int menge);
     
+    /**
+     * Soll dem Agenten die Parameter des Szenarios übergeben.
+     *
+     *
+     *
+     * @throws InvalidAgentException        ungültiger Agent
+     * @throws InvalidActionKeyException    ungültiger Aktionscode
+     * @throws InvalidElementException      ungültiges Objekt
+     * @param key           Aktionscode des Agenten
+     * @param agentId       ID des Agenten
+     * @param name          Name des Agenten
+     * @return  gibt null zurück
+     */
     public Object getParameter(ActionKey key,
             Id agentId,
             String name) throws InvalidAgentException,
@@ -164,6 +179,8 @@ public interface IBienenstockSzenarioHandler {
      * @throws InvalidElementException  parameterName ist in der Parameter-Liste
      * nicht vorhanden.
      * @param parameterName der Name des Parameters
+     * @return zu einem Szenario-Parameter-Namen den zugehörigen
+     * Wert als String.
      */
     public String getScenarioParameter(String parameterName)
     throws InvalidElementException;
