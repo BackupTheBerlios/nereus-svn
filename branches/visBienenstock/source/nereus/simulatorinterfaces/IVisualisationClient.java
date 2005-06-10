@@ -45,11 +45,11 @@ public interface IVisualisationClient {
     /**
      * Startet die Abfrage und Übergabe der zu visualisierenden Daten.
      */
-    public void start();
+    public void startUebertragung();
 
     /**
      * Beendet die Abfrage und Übergabe der zu visualisierenden Daten.
      */
-    public void stop();
+    public void stopUebertragung();
 }
 
