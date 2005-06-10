@@ -50,7 +50,7 @@ public class VisualisationClient extends Thread implements IVisualisationClient 
 
     private IVisualisationServerExtern visServer = null;
 
-    private IVisualisationOutput ausgabe;
+    private IVisualisationOutput visualisierung;
 
     private String dienstAdresse;
 
@@ -100,7 +100,7 @@ public class VisualisationClient extends Thread implements IVisualisationClient 
      *                 ausgibt.
      */
     public void anmeldung(IVisualisationOutput ausgabe) {
-        this.ausgabe = ausgabe;
+        this.visualisierung = ausgabe;
     }
 
     /**
