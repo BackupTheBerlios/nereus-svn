@@ -1,7 +1,7 @@
 /*
  * Dateiname      : VisualisationClient.java
  * Erzeugt        : 19. Mai 2005
- * Letzte Änderung: 08. Juni 2005 durch Samuel Walz
+ * Letzte Änderung: 10. Juni 2005 durch Samuel Walz
  * Autoren        : Samuel Walz (samuel@gmx.info)
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
@@ -34,10 +34,11 @@ import java.util.List;
 import java.util.ListIterator;
 import java.io.Serializable;
 
-import nereus.utils.Id;
+//import nereus.utils.Id;
 import nereus.simulator.visualisation.Spielende;
 import nereus.simulatorinterfaces.IVisualisationClient;
 import nereus.simulatorinterfaces.IVisualisationServerExtern;
+import nereus.simulatorinterfaces.AbstractVisualisation;
 
 /**
  *
@@ -52,7 +53,7 @@ public class VisualisationClient extends Thread implements IVisualisationClient 
             + "/"
             + nereus.simulatorinterfaces.IVisualisationServerExtern.VISUALISATIONSERVERNAME;
 
-    private static Id spielID = null;
+    private static String spielID = "";
 
     private static Integer wartezeit = new Integer(2000);
 
@@ -67,29 +68,29 @@ public class VisualisationClient extends Thread implements IVisualisationClient 
     /** 
      * Creates a new instance of VisualisationClient 
      */
-    public VisualisationClient(String adresse, Id spiel) 
+    public VisualisationClient(String adresse, String spiel) 
                         throws MalformedURLException,
                                NotBoundException,
                                RemoteException {
         serverAdresse = adresse;
         spielID = spiel;
-        
+        System.out.println("Suche den Server...");
         // Die Client-Vis-Komponente an der Server-Vis-Komponente anmelden
-        IVisualisationServerExtern visServer = 
+        visServer = 
                 (IVisualisationServerExtern) Naming.lookup("rmi://" 
                                                        + serverAdresse);
         
         start();
     }
 
-    public VisualisationClient(Id spiel) 
+    public VisualisationClient(String spiel) 
                         throws MalformedURLException,
                                NotBoundException,
                                RemoteException {
         spielID = spiel;
         
         // Die Client-Vis-Komponente an der Server-Vis-Komponente anmelden
-        IVisualisationServerExtern visServer = 
+        visServer = 
                 (IVisualisationServerExtern) Naming.lookup("rmi://" 
                                                        + serverAdresse);
         
@@ -103,7 +104,7 @@ public class VisualisationClient extends Thread implements IVisualisationClient 
             
         try {
              // Die Visualisierung starten
-             Visualisation visualisierung = new Visualisation();
+             AbstractVisualisation visualisierung = new Visualisierung();
              visualisierung.start();
 
              while ((! alleInformationenAbgeholt) && visualisierung.isAlive()) {
@@ -142,7 +143,7 @@ public class VisualisationClient extends Thread implements IVisualisationClient 
                  }
              }
         } catch(RemoteException fehler) {
-            System.out.println("Server nicht gefunden!\n" 
+            System.out.println("Verbindungsproblem!\n" 
                                 + fehler.getMessage());
         } catch (InterruptedException fehler) {
                 System.out.println("Warten fehlgeschlagen!\n" 
@@ -159,13 +160,13 @@ public class VisualisationClient extends Thread implements IVisualisationClient 
             
             try {
                 VisualisationClient unserClient = 
-                        new VisualisationClient(args[0], new Id(args[1]));
+                        new VisualisationClient(args[0], args[1]);
             
             } catch (MalformedURLException fehler) {
                 System.out.println("Server-URL fehlerhaft!\n" 
                                 + fehler.getMessage());
             } catch (RemoteException fehler) {
-                System.out.println("Server nicht gefunden!\n" 
+                System.out.println("Verbindungsproblem!\n" 
                                 + fehler.getMessage());
             } catch (NotBoundException fehler) {
                 System.out.println("Server-Vis-Komponente nicht gefunden!\n" 

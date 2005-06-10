@@ -1,7 +1,7 @@
 /*
  * Dateiname      : Visualisation.java
  * Erzeugt        : 19. Mai 2005
- * Letzte Änderung: 06. Juni 2005 durch Dietmar Lippold
+ * Letzte Änderung: 10. Juni 2005 durch Dietmar Lippold
  * Autoren        : Samuel Walz (samuel@gmx.info)
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
@@ -25,14 +25,14 @@
 
 package nereus.visualisationclient;
 
-import nereus.simulatorinterfaces.IVisualisation;
+import nereus.simulatorinterfaces.AbstractVisualisation;
 
 /**
  * Die Dummy-Klasse Visualisation.
  *
  * @author  Samuel Walz
  */
-public class Visualisation extends Thread implements IVisualisation {
+public class Visualisation extends AbstractVisualisation {
 
     /** Creates a new instance of Visualisation */
     public Visualisation() {

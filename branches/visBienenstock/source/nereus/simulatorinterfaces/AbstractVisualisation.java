@@ -1,7 +1,7 @@
 /*
- * Dateiname      : IVisualisationServer.java
- * Erzeugt        : 19. Mai 2005
- * Letzte Änderung: 06. Juni 2005 durch Dietmar Lippold
+ * Dateiname      : AbstractVisualisation.java
+ * Erzeugt        : 10. Juni 2005
+ * Letzte Änderung: 10. Juni 2005 durch Samuel Walz
  * Autoren        : Samuel Walz (samuel@gmx.info)
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
@@ -29,8 +29,8 @@ package nereus.simulatorinterfaces;
  *
  * @author  Samuel Walz
  */
-public interface IVisualisation {
+public abstract class AbstractVisualisation extends Thread {
 
-    public void visualisiere(java.lang.Object information);
+    public abstract void visualisiere(java.lang.Object information);
 }
 

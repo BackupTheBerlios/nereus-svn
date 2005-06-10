@@ -1,9 +1,9 @@
 /*
  * Dateiname      : Koordinate.java
  * Erzeugt        : 21. Oktober 2004
- * Letzte Änderung: 24. Mai 2005 durch Eugen Volk
+ * Letzte Änderung: 10. Juni 2005 durch Samuel Walz
  * Autoren        : Philip Funck (mango.3@gmx.de)
- *                  Samuel Walz (felix-kinkowski@gmx.net)
+ *                  Samuel Walz (samuel@gmx.info)
  *                  
  *
  *
@@ -31,13 +31,15 @@
 
 package scenarios.bienenstock.agenteninfo;
 
+import java.io.Serializable;
+
 /**
  * ist der Datentyp mit dem eine Position auf der Spielkarte angegeben wird.
  *
  * @author Philip Funck
  * @author Samuel Walz
  */
-public class Koordinate {
+public class Koordinate implements Serializable{
     /**
      * die X-Koordinate.
      */

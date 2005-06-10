@@ -1,7 +1,7 @@
 /*
  * Dateiname      : VisualisationServer.java
  * Erzeugt        : 19. Mai 2005
- * Letzte Änderung: 08. Juni 2005 durch Samuel Walz
+ * Letzte Änderung: 10. Juni 2005 durch Samuel Walz
  * Autoren        : Samuel Walz (samuel@gmx.info)
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
@@ -130,10 +130,10 @@ public class VisualisationServer extends UnicastRemoteObject
      * @param authCode
      * @return           Eine ganze Zahl größer -1
      */
-    private Id gibSpielID (long authCode) throws AuthentifizierungException {
+    private String gibSpielID (long authCode) throws AuthentifizierungException {
 
         if (authZuordnung.containsKey(new Long(authCode))) {
-            return (Id)authZuordnung.get(new Long(authCode));
+            return (String)authZuordnung.get(new Long(authCode));
         } else {
             throw new AuthentifizierungException("Falscher Authentifizierungscode: " 
                                 + authCode);
@@ -150,7 +150,7 @@ public class VisualisationServer extends UnicastRemoteObject
      *
      * @param spielID      Die Spiel-ID der der Code zugeordnet werden soll
      */
-    private synchronized long authCodeErzeugen(Id spielID) {
+    private synchronized long authCodeErzeugen(String spielID) {
         
         long authCode = 0L;
         /*
@@ -238,14 +238,19 @@ public class VisualisationServer extends UnicastRemoteObject
      * @param spielID
      * @param ausschnittsbeginn      natürliche Zahl größer -1
      */
-    public LinkedList gibSpielInformationen(Id spielID, int ausschnittsbeginn) 
+    public LinkedList gibSpielInformationen(String spielID, 
+                                            int ausschnittsbeginn) 
                                             throws RemoteException {
+        System.out.println("visServer: visClient fordert Informationen ab "
+                            + "Position " + ausschnittsbeginn + " vom Spiel "
+                            + spielID + " an.");
         // Informationen suchen und zurückgeben
         if (informationsspeicher.containsKey(spielID)) {
             return erstelleAusschnitt(
                 (LinkedList)informationsspeicher.get(spielID), 
                 ausschnittsbeginn);
         } else {
+            System.out.println("visServer: Ein Spiel mit dieser ID ist unbekannt!");
             // Sind noch keine Informationen vorhanden, wird null zurückgegeben
             return new LinkedList();
         }
@@ -261,7 +266,7 @@ public class VisualisationServer extends UnicastRemoteObject
                                             Serializable information) {
         try {
             // Die zugehörige Spiel-ID
-            Id spielID = gibSpielID(authCode);
+            String spielID = gibSpielID(authCode);
         
             // Die neue Information an die Liste anhängen
             LinkedList informationen = 
@@ -284,9 +289,10 @@ public class VisualisationServer extends UnicastRemoteObject
      * @param wartezeit      natürliche Zahl >= null (Zeit in Millisekunden)
      * @return               der Authentifizierungscode
      */
-    public long spielAnmelden(Id spielID, int wartezeit) 
-        throws DoppeltesSpielException{
-        
+    public long spielAnmelden(String spielID, int wartezeit) 
+                                throws DoppeltesSpielException{
+        System.out.println("visServer: Ein Spiel versucht sich mit der ID "
+                           + spielID + " anzumelden...");
         if (! informationsspeicher.containsKey(spielID)) {
             // Eine neue Liste für die Informationen des Spiels anlegen
             informationsspeicher.put(spielID, new LinkedList());
@@ -320,7 +326,7 @@ public class VisualisationServer extends UnicastRemoteObject
      */
     public void spielAbmelden(long authCode) {
         try {
-            Id spielID = gibSpielID(authCode);
+            String spielID = gibSpielID(authCode);
             
             // Spielende markieren
             LinkedList informationen = 
@@ -338,6 +344,7 @@ public class VisualisationServer extends UnicastRemoteObject
                     "Falscher Authentifizierungscode: " + authCode);
         }
     }
+    
     
 }
 

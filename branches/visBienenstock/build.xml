@@ -137,7 +137,7 @@
        <fileset dir="${build}/scenarios/" includes="**/agents/*.class, 
                        **/agenteninfo/*.class, **/interfaces/*.class, 
                        **/einfacheUmgebung/*.class"/>    
-   </copy> --> 
+   </copy> -->
    <copy todir="${dist}/client/agents">
      <fileset dir="build/agents/" includes="**/*.class"/>
    </copy>
@@ -157,7 +157,7 @@
         basedir="${build}"
         includes="nereus/utils/**, nereus/communication/**,nereus/exceptions/**,
                   nereus/visualisation/**,nereus/simulatorinterfaces/**,
-                  nereus/simulator/**,nereus/visualisationclient/**"
+                  nereus/simulator/**"
         excludes="**/agents/*.class">
      <manifest>
        <attribute name="Main-Class"
@@ -180,9 +180,12 @@
         basedir="${build}"
         includes="nereus/registrationgui/**,nereus/utils/**, nereus/communication/**,nereus/exceptions/**,
                   nereus/visualisation/**,nereus/simulatorinterfaces/**,
+		  nereus/simulator/visualisation/Spielende.class,
+		  nereus/visualisationclient/**,
                   nereus/webserver/**,
                   nereus/simulator/Coordinator_Stub.class,
-                  nereus/visualisation/VisualisationDelegate_Stub.class">
+                  nereus/visualisation/VisualisationDelegate_Stub.class
+		  nereus/simulator/visualisation/VisualisationServer_Stub.class">
      <manifest>
        <attribute name="Main-Class" value="nereus.registrationgui.MASIMClient"/>
      </manifest>
@@ -316,6 +319,16 @@
                   prefix="/client">
         <include name="Readme.txt" />
         <include name="ReadmeClient.txt"/>
+      </tarfileset>
+      <tarfileset dir="${dist}/server/scenarios"
+                  mode="644"
+                  prefix="/client/scenarios">
+        <include name="**/*.*"/>
+      </tarfileset>
+      <tarfileset dir="${libs}/bilder"
+                  mode="644"
+                  prefix="/client/libs/bilder">
+        <include name="*.gif"/>
       </tarfileset>
     </tar>
   </target>

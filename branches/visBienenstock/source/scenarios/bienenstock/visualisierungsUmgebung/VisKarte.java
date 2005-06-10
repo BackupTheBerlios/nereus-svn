@@ -143,4 +143,13 @@ public class VisKarte implements Serializable{
     public HashMap gibFelder() {
         return spielfeld;
     }
+    
+    /**
+     * gibt die Rundennummer zurueck.
+     *
+     *@return die Rundennummer
+     */
+    public int gibRundennummer() {
+        return rundennummer;
+    }
 }

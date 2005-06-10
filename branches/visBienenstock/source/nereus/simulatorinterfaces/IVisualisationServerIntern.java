@@ -1,7 +1,7 @@
 /*
  * Dateiname      : IVisualisationServerIntern.java
  * Erzeugt        : 18. Mai 2005
- * Letzte Änderung: 08. Juni 2005 durch Samuel Walz
+ * Letzte Änderung: 10. Juni 2005 durch Samuel Walz
  * Autoren        : Samuel Walz (samuel@gmx.info)
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).

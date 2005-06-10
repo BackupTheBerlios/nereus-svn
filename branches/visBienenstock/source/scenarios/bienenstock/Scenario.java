@@ -411,6 +411,23 @@ public class Scenario
                     biene.gibVolksID(), biene.getId());
             biene.aktionscodeSetzen(myActionCode);
         }
+        
+        // Szenario an der Server-Vis-Komponente anmelden
+        try {
+            visAuthCode = 
+                m_visualisationServer.spielAnmelden((String)parameter.gibWert("ScenarioName"), 
+                                                    2000);
+        } catch (DoppeltesSpielException fehler) {
+            System.out.println("Konnte Spiel für die Visualisierung nicht "
+                                + "anmelden: Doppelte ID!");
+        }
+        
+        // Testweiese die Liste aller verfügbaren Parameter ausgeben:
+        Iterator listenlaeufer = parameter.gibParameterHashTabelle().keySet().iterator();
+        System.out.println("Liste aller Parameter:");
+        while (listenlaeufer.hasNext()) {
+            System.out.println((String)listenlaeufer.next());
+        }
     }
     
     /**
@@ -512,6 +529,9 @@ public class Scenario
      * mitteilt und alles abmeldet.
      */
     private synchronized void endphase() {
+        // Spiel von der Server-Vis-Komponente abmelden
+        m_visualisationServer.spielAbmelden(visAuthCode);
+        
         phase = Konstanten.ENDPHASE;
         System.out.println("SPIEL BEENDET.");
         
@@ -921,15 +941,11 @@ public class Scenario
     throws InvalidAgentException,
             NotEnoughEnergyException,
             InvalidElementException {
-        // Szenario an der Server-Vis-Komponente anmelden
-        try {
-            visAuthCode = m_visualisationServer.spielAnmelden(m_gameId, 2000);
-        } catch (DoppeltesSpielException fehler) {
-            System.out.println("Konnte Spiel für die Visualisierung nicht "
-                                + "anmelden: Doppelte ID!");
-        }
+        
                 
         startphase();
+        
+        
         while (!endbedingungTrifftZu()) { 
             // Übertragen der Spielinformationen an die Server-Vis-Komponente
             m_visualisationServer.speichereSpielInformationen(visAuthCode, 
@@ -940,8 +956,7 @@ public class Scenario
         }
         endphase();
         
-        // Spiel von der Server-Vis-Komponente abmelden
-        m_visualisationServer.spielAbmelden(visAuthCode);
+        
         
     }
     
