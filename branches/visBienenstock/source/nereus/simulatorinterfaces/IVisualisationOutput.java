@@ -34,7 +34,10 @@ package nereus.simulatorinterfaces;
 public interface IVisualisationOutput {
 
     /**
-     * Übergibt einen neuen Datensatz zur Visualisierung.
+     * Übernimmt einen neuen Datensatz zur Visualisierung.<P>
+     *
+     * Diese Methode darf nicht blockieren, wenn die implementierende Klasse
+     * die Methode <CODE>IVisualisationClient.stop()</CODE> aufruft.
      *
      * @param visObject  Der auszugebende Datensatz.
      */
