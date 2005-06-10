@@ -1,7 +1,7 @@
 /*
  * Dateiname      : IVisualisationServerExtern.java
  * Erzeugt        : 19. Mai 2005
- * Letzte Änderung: 10. Juni 2005 durch Samuel Walz
+ * Letzte Änderung: 10. Juni 2005 durch Dietmar Lippold
  * Autoren        : Samuel Walz (samuel@gmx.info)
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
@@ -39,27 +39,29 @@ import nereus.utils.Id;
 public interface IVisualisationServerExtern extends Remote {
     
     /**
-     * Der Name unter dem die Server-Vis-Komponente bei RMI angemeldet wird
+     * Der Name unter dem die Server-Vis-Komponente bei der RMI-Registry
+     * angemeldet wird.
      */
-    public final String VISUALISATIONSERVERNAME = "VisualisationServer";
+    public final String DIENST_NAME = "VisualisationServer";
     
     /**
-     * Der Port an dem RMI lauscht
+     * Der Standard-Port der RMI-Registry.
      */
-    public final int SERVERPORT = 1099;
+    public final int SERVER_PORT = 1099;
     
     /**
-     * Die IP-Adresse unseres Servers
+     * Die IP-Adresse unseres Servers.
      */
-    public final String SERVERIP = "127.0.0.1";
+    public final String SERVER_NAME = "127.0.0.1";
 
     /**
      * Gibt den Ausschnitt der Informationen zu einem Spiel ab einer 
      * gewünschten Position zurück.
      *
-     * @param spielID             ID des gewünschten Spiels
-     * @param ausschnittsbeginn   eine ganzzahlige Zahl größer -1 (>0)
-     * @return                    eine Liste der gewünschten Informationen
+     * @param spielID            ID des gewünschten Spiels.
+     * @param ausschnittsbeginn  Eine ganzzahlige Zahl größer -1 (>= 0).
+     *
+     * @return  Eine Liste der gewünschten Informationen
      */
     public LinkedList gibSpielInformationen (String spielID, int ausschnittsbeginn)
         throws RemoteException;
