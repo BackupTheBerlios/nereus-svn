@@ -1,7 +1,7 @@
 /*
  * Dateiname      : VisualisationClient.java
  * Erzeugt        : 19. Mai 2005
- * Letzte Änderung: 10. Juni 2005 durch Samuel Walz
+ * Letzte Änderung: 10. Juni 2005 durch Dietmar Lippold
  * Autoren        : Samuel Walz (samuel@gmx.info)
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
@@ -34,7 +34,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.io.Serializable;
 
-//import nereus.utils.Id;
 import nereus.simulator.visualisation.Spielende;
 import nereus.simulatorinterfaces.IVisualisationClient;
 import nereus.simulatorinterfaces.IVisualisationServerExtern;
@@ -43,59 +42,81 @@ import nereus.simulatorinterfaces.AbstractVisualisation;
 /**
  *
  * @author  Samuel Walz
+ * @author  Dietmar Lippold
  */
 public class VisualisationClient extends Thread implements IVisualisationClient {
 
-    private static String serverAdresse = 
-            nereus.simulatorinterfaces.IVisualisationServerExtern.SERVERIP 
-            + ":"
-            + nereus.simulatorinterfaces.IVisualisationServerExtern.SERVERPORT
-            + "/"
-            + nereus.simulatorinterfaces.IVisualisationServerExtern.VISUALISATIONSERVERNAME;
-
-    private static String spielID = "";
-
     private static Integer wartezeit = new Integer(2000);
+
+    private IVisualisationServerExtern visServer = null;
+
+    private IVisualisationOutput ausgabe;
+
+    private String dienstAdresse;
+
+    private String spielID;
+
+    private int runde;
 
     private int ausschnittsbeginn = 0;
 
     private LinkedList spielinformationen = new LinkedList();
 
     private boolean alleInformationenAbgeholt = false;
-    
-    private IVisualisationServerExtern visServer = null;
 
     /** 
-     * Creates a new instance of VisualisationClient 
+     * Gibt an, ob sich der Thread beenden soll.
      */
-    public VisualisationClient(String adresse, String spiel) 
-                        throws MalformedURLException,
-                               NotBoundException,
-                               RemoteException {
-        serverAdresse = adresse;
-        spielID = spiel;
+    private volatile boolean stop = false;
+
+    /** 
+     * Erzeugt eine neue Instanz.
+     *
+     * @param adresse  Die Adresse der RMI-Registry des Server.
+     * @param port     Der Port der RMI-Registry des Server.
+     * @param spielId  Die Kennung des Spiels, das visualisiert werden soll.
+     * @param runde    Die Runde des Spiels, die visualisiert werden soll.
+     */
+    public VisualisationClient(String adresse, int port, String spielId,
+                               int runde)
+        throws MalformedURLException,
+               NotBoundException,
+               RemoteException {
+
+        this.dienstname = IVisualisationServerExtern.DIENST_NAME;
+        this.spielID = spielId;
+        this.runde = runde;
+
+        dienstAdresse = "//" + adresse + ":" + port + "/" + dienstname;
+
         System.out.println("Suche den Server...");
-        // Die Client-Vis-Komponente an der Server-Vis-Komponente anmelden
-        visServer = 
-                (IVisualisationServerExtern) Naming.lookup("rmi://" 
-                                                       + serverAdresse);
-        
+        visServer = (IVisualisationServerExtern) Naming.lookup(serverAdresse);
+    }
+
+    /**
+     * Registriert eine Visualisierungskomponente beim Spiel.
+     *
+     * @param ausgabe  Die Komponente, die die zu visualisierenden Daten
+     *                 ausgibt.
+     */
+    public void anmeldung(IVisualisationOutput ausgabe) {
+        this.ausgabe = ausgabe;
+    }
+
+    /**
+     * Startet die Abfrage und Übergabe der zu visualisierenden Daten.
+     */
+    public void startUebertragung() {
         start();
     }
 
-    public VisualisationClient(String spiel) 
-                        throws MalformedURLException,
-                               NotBoundException,
-                               RemoteException {
-        spielID = spiel;
-        
-        // Die Client-Vis-Komponente an der Server-Vis-Komponente anmelden
-        visServer = 
-                (IVisualisationServerExtern) Naming.lookup("rmi://" 
-                                                       + serverAdresse);
-        
-        start();
+    /**
+     * Beendet die Abfrage und Übergabe der zu visualisierenden Daten.
+     */
+    public synchronized void stopUebertragung() {
+        stop = true;
     }
+
 
 
     public void run() {
@@ -107,7 +128,7 @@ public class VisualisationClient extends Thread implements IVisualisationClient 
              AbstractVisualisation visualisierung = new Visualisierung();
              visualisierung.start();
 
-             while ((! alleInformationenAbgeholt) && visualisierung.isAlive()) {
+             while ((! alleInformationenAbgeholt) && !stop) {
                 System.out.println("hole informationen...");
                 LinkedList informationen = 
                     visServer.gibSpielInformationen(spielID, ausschnittsbeginn);
@@ -134,7 +155,11 @@ public class VisualisationClient extends Thread implements IVisualisationClient 
                                 (Object)listenlaeufer.next();
       
                         if (! (information instanceof Spielende)) {
-                            visualisierung.visualisiere(information);
+                            synchronized (this) {
+                                if (!stop) {
+                                    visualisierung.visualisiere(information);
+                                }
+                            }
                             ausschnittsbeginn = ausschnittsbeginn + 1;
                         } else {
                             alleInformationenAbgeholt = true;
@@ -143,41 +168,12 @@ public class VisualisationClient extends Thread implements IVisualisationClient 
                  }
              }
         } catch(RemoteException fehler) {
-            System.out.println("Verbindungsproblem!\n" 
-                                + fehler.getMessage());
+            System.err.println("Verbindungsproblem!\n" + fehler.getMessage());
         } catch (InterruptedException fehler) {
-                System.out.println("Warten fehlgeschlagen!\n" 
-                                + fehler.getMessage());
+            System.err.println("Warten fehlgeschlagen!\n" + fehler.getMessage());
         }
 
         System.out.println("Client hat sich beendet...");
-    }
-
-
-    public static void main(String args[]) {
-        System.out.println("Client wird gestartet...");
-        if (args.length >= 2) {
-            
-            try {
-                VisualisationClient unserClient = 
-                        new VisualisationClient(args[0], args[1]);
-            
-            } catch (MalformedURLException fehler) {
-                System.out.println("Server-URL fehlerhaft!\n" 
-                                + fehler.getMessage());
-            } catch (RemoteException fehler) {
-                System.out.println("Verbindungsproblem!\n" 
-                                + fehler.getMessage());
-            } catch (NotBoundException fehler) {
-                System.out.println("Server-Vis-Komponente nicht gefunden!\n" 
-                                + fehler.getMessage());
-            } 
-            //unserClient.kontaktiereServer();
-        } else {
-            System.out.println("Bitte geben Sie Serveradresse, Port, Servername"
-                    + " und die Spiel-ID an.\n"
-                    + "(z.B.: 127.0.0.1:1099/VisualisationServer 23)");
-        }
     }
 }
 
