@@ -43,7 +43,7 @@ public class BienenstockVisualisierung {
     public static void main(String args[]) {
         VisualisationClient     visClient;
         BienenstockVisSteuerung bienenVis;
-        String                  servername, spielId, dienstname;
+        String                  servername, spielId;
         int                     port, runde;
 
         if (args.length == 4) {
@@ -52,9 +52,8 @@ public class BienenstockVisualisierung {
                 port = Integer.parseInt(args[1]);
                 spielId = args[2];
                 runde = Integer.parseInt(args[3]);
-                dienstname = IVisualisationServerExtern.DIENST_NAME;
                 visClient = new VisualisationClient(servername, port,
-                                                    dienstname, spielId, runde);
+                                                    spielId, runde);
                 bienenVis = new BienenstockVisSteuerung(visClient);
             } catch (NumberFormatException fehler) {
                 System.err.println("Die angegebene Port-Nummer oder Runde war"
