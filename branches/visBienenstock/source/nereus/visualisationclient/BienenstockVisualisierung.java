@@ -43,14 +43,22 @@ public class BienenstockVisualisierung {
     public static void main(String args[]) {
         VisualisationClient     visClient;
         BienenstockVisSteuerung bienenVis;
-        String                  dienstname;
+        String                  servername, spielId, dienstname;
+        int                     port, runde;
 
         if (args.length == 4) {
             try {
+                servername = args[0];
+                port = Integer.parseInt(args[1]);
+                spielId = args[2];
+                runde = Integer.parseInt(args[3]);
                 dienstname = IVisualisationServerExtern.DIENST_NAME;
-                visClient = new VisualisationClient(args[0], args[1], dienstname,
-                                                    args[2], args[3]);
+                visClient = new VisualisationClient(servername, port,
+                                                    dienstname, spielId, runde);
                 bienenVis = new BienenstockVisSteuerung(visClient);
+            } catch (NumberFormatException fehler) {
+                System.err.println("Die angegebene Port-Nummer oder Runde war"
+                                   + " keine natürliche Zahl");
             } catch (MalformedURLException fehler) {
                 System.err.println("Server-URL fehlerhaft!\n" 
                                    + fehler.getMessage());
@@ -60,12 +68,11 @@ public class BienenstockVisualisierung {
             } catch (NotBoundException fehler) {
                 System.err.println("Server-Vis-Komponente nicht gefunden!\n" 
                                    + fehler.getMessage());
-            } 
-            //unserClient.kontaktiereServer();
+            }
         } else {
             System.out.println("Bitte geben Sie Serveradresse, Port,"
                                + " Spiel-ID und die Rundennummer an.\n"
-                               + "(z.B.: 127.0.0.1 1099 23 0)");
+                               + "(z.B.: 127.0.0.1 1099 spiel 0)");
         }
     }
 }
