@@ -28,7 +28,7 @@ package nereus.simulatorinterfaces;
 import java.io.Serializable;
 
 import nereus.exceptions.DoppeltesSpielException;
-import nereus.utils.Id;
+//import nereus.utils.Id;
 
 /**
  * Die Schnittstelle der Server-Vis-Komponente für das Szenario.
@@ -51,7 +51,7 @@ public interface IVisualisationServerIntern {
      * @throws doppeltesSpielException  Wenn ein Spiel mit der gleichen ID
      *                                  bereits angemeldet ist.
      */
-    public long spielAnmelden (Id spielID, int wartezeit) 
+    public long spielAnmelden (String spielID, int wartezeit) 
         throws DoppeltesSpielException;
 
     /**

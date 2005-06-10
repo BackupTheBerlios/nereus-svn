@@ -61,7 +61,7 @@ public interface IVisualisationServerExtern extends Remote {
      * @param ausschnittsbeginn   eine ganzzahlige Zahl größer -1 (>0)
      * @return                    eine Liste der gewünschten Informationen
      */
-    public LinkedList gibSpielInformationen (Id spielID, int ausschnittsbeginn)
+    public LinkedList gibSpielInformationen (String spielID, int ausschnittsbeginn)
         throws RemoteException;
 }
 
