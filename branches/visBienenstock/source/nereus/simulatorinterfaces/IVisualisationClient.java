@@ -50,6 +50,6 @@ public interface IVisualisationClient {
     /**
      * Beendet die Abfrage und Übergabe der zu visualisierenden Daten.
      */
-    public void start();
+    public void stop();
 }
 
