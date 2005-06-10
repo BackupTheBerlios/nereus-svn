@@ -1,0 +1,72 @@
+/*
+ * Dateiname      : BienenstockVisualisierung.java
+ * Erzeugt        : 10. Juni 2005
+ * Letzte Änderung: 10. Juni 2005 durch Dietmar Lippold
+ * Autoren        : Samuel Walz (samuel@gmx.info)
+ *                  Dietmar Lippold
+ *
+ * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
+ *
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
+
+package nereus.visualisationclient;
+
+/**
+ * Startet die Visualisierung für das Bienenstock-Szenario.
+ *
+ * @author  Samuel Walz
+ * @author  Dietmar Lippold
+ */
+public class BienenstockVisualisierung {
+
+    /**
+     * Startet die Visualisierung.
+     *
+     * @param args  Die Kommandozeilen-Parameter, bestehend aus dem
+     *              Servernamen, dem Port, der Spiel-ID und der Rundennummer.
+     */
+    public static void main(String args[]) {
+        VisualisationClient     visClient;
+        BienenstockVisSteuerung bienenVis;
+        String                  dienstname;
+
+        if (args.length == 4) {
+            try {
+                dienstname = IVisualisationServerExtern.DIENST_NAME;
+                visClient = new VisualisationClient(args[0], args[1], dienstname,
+                                                    args[2], args[3]);
+                bienenVis = new BienenstockVisSteuerung(visClient);
+            } catch (MalformedURLException fehler) {
+                System.err.println("Server-URL fehlerhaft!\n" 
+                                   + fehler.getMessage());
+            } catch (RemoteException fehler) {
+                System.err.println("Verbindungsproblem!\n" 
+                                   + fehler.getMessage());
+            } catch (NotBoundException fehler) {
+                System.err.println("Server-Vis-Komponente nicht gefunden!\n" 
+                                   + fehler.getMessage());
+            } 
+            //unserClient.kontaktiereServer();
+        } else {
+            System.out.println("Bitte geben Sie Serveradresse, Port,"
+                               + " Spiel-ID und die Rundennummer an.\n"
+                               + "(z.B.: 127.0.0.1 1099 23 0)");
+        }
+    }
+}
+
