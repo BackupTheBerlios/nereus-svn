@@ -201,7 +201,7 @@ public class Coordinator extends UnicastRemoteObject implements ICoordinator {
             // Jetzt fehlt nur der Scenario-Zusatz
             scenarioName.append("Scenario");
             // Erzeuge die Id für das Spiel
-            Id gameId = new Id();
+            Id gameId = newGameId((String) dto.get("GameName"));
             AbstractScenario scenario = null;
             System.out.println("Coordinator: versuche " + scenarioName
                     + " zu registrieren");
@@ -236,10 +236,32 @@ public class Coordinator extends UnicastRemoteObject implements ICoordinator {
             throw new InvalidElementException("Parameter ScenarioName");
         }
     }
-    
-        /* (non-Javadoc)
-         * @see jAgentSimulator.server.ICoordinator#getGameName(jAgentSimulator.utils.Id)
-         */
+
+    /**
+     * Liefert eine neue Id, deren Bezeichnung aus dem übergebenen Namen,
+     * einem Bindestrich und einer ganzen Zahl besteht. Die gelieferte Id
+     * ist unter allen Spielen eindeutig.
+     *
+     * @param gameName  Der Name des Spiels.
+     *
+     * @return  Eine neue eindeutige Spiel-Id.
+     */
+    private Id newGameId(String gameName) {
+        String neueBezeichnung;
+        int zahl;
+
+        zahl = 0;
+        do {
+            zahl++;
+            neueBezeichnung = gameName + "-" + zahl;
+        } while (m_games.containsKey(neueBezeichnung));
+
+        return new Id(neueBezeichnung);
+    }
+
+    /* (non-Javadoc)
+     * @see jAgentSimulator.server.ICoordinator#getGameName(jAgentSimulator.utils.Id)
+     */
     public String getGameName(Id gameId)
     throws RemoteException, InvalidGameException {
         // check ob SPiel existiert.
