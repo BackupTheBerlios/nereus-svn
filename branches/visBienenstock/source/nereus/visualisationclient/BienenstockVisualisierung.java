@@ -26,6 +26,11 @@
 
 package nereus.visualisationclient;
 
+import java.lang.NumberFormatException;
+import java.rmi.RemoteException;
+import java.rmi.NotBoundException;
+import java.net.MalformedURLException;
+
 /**
  * Startet die Visualisierung für das Bienenstock-Szenario.
  *

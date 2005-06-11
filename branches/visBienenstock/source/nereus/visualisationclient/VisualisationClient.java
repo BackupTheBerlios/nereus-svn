@@ -38,6 +38,7 @@ import nereus.simulator.visualisation.Spielende;
 import nereus.simulatorinterfaces.IVisualisationClient;
 import nereus.simulatorinterfaces.IVisualisationServerExtern;
 import nereus.simulatorinterfaces.AbstractVisualisation;
+import nereus.simulatorinterfaces.IVisualisationOutput;
 
 /**
  *
@@ -83,14 +84,14 @@ public class VisualisationClient extends Thread implements IVisualisationClient 
                NotBoundException,
                RemoteException {
 
-        this.dienstname = IVisualisationServerExtern.DIENST_NAME;
+        String dienstname = IVisualisationServerExtern.DIENST_NAME;
         this.spielID = spielId;
         this.runde = runde;
 
         dienstAdresse = "//" + adresse + ":" + port + "/" + dienstname;
 
         System.out.println("Suche den Server...");
-        visServer = (IVisualisationServerExtern) Naming.lookup(serverAdresse);
+        visServer = (IVisualisationServerExtern) Naming.lookup(dienstAdresse);
     }
 
     /**
