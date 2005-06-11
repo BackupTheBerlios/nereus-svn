@@ -101,8 +101,8 @@ public class VisualisationServer extends UnicastRemoteObject
         UnicastRemoteObject.unexportObject((Remote)this, true);
         UnicastRemoteObject.exportObject((Remote)this);
         
-        String visServerAdresse = "//" + SERVERIP + ":" + SERVERPORT + "/"
-                                  + VISUALISATIONSERVERNAME;
+        String visServerAdresse = "//" + SERVER_NAME + ":" + SERVER_PORT + "/"
+                                  + DIENST_NAME;
         
         try {
             Naming.rebind(visServerAdresse, this);
