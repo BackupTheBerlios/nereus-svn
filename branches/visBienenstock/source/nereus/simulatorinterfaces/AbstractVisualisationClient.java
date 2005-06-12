@@ -1,7 +1,7 @@
 /*
  * Dateiname      : IVisualisationClient.java
  * Erzeugt        : 26. Mai 2005
- * Letzte Änderung: 12. Juni 2005 durch Dietmar Lippold
+ * Letzte Änderung: 12. Juni 2005 durch Samuel Walz
  * Autoren        : Samuel Walz (samuel@gmx.info)
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
@@ -50,7 +50,7 @@ public abstract class AbstractVisualisationClient extends Thread {
      * @param ausgabe  Die Komponente, an die die zu visualisierenden Daten
      *                 zu übergeben sind.
      */
-    public abstract void anmeldung(IVisualisationOutput visualisierung) {
+    public void anmeldung(IVisualisationOutput visualisierung) {
         this.visualisierung = visualisierung;
     }
 
