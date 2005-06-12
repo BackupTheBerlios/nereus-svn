@@ -164,7 +164,7 @@ public class BienenstockVisGui extends Frame {
 
     ActionListener zeitAktion = new ActionListener() {
 	public void actionPerformed(ActionEvent e) {
-            vis.setzeZeit(Integer.parseInt(zeitFeld.getText());
+            vis.setzeZeit(Integer.parseInt(zeitFeld.getText()));
         }
     };
     
