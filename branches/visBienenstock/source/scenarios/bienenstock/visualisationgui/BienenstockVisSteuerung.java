@@ -100,6 +100,10 @@ public class BienenstockVisSteuerung extends Thread implements IVisualisationOut
         if (naechste > 0) {
             naechste = naechste - 1;
             fenster.visualisiere((VisKarte)karten.get(naechste));
+            //vor-button wieder sichtbar machen
+            fenster.amEnde(false);
+        } else {
+            fenster.amAnfang(true);
         }
     }
     
@@ -110,6 +114,10 @@ public class BienenstockVisSteuerung extends Thread implements IVisualisationOut
         if ((naechste + 1)< karten.size()) {
             naechste = naechste + 1;
             fenster.visualisiere((VisKarte)karten.get(naechste));
+            //zurueck-button wieder sichtbar machen
+            fenster.amAnfang(false);
+        } else {
+            fenster.amEnde(true);
         }
         
     }
@@ -158,6 +166,8 @@ public class BienenstockVisSteuerung extends Thread implements IVisualisationOut
                 if (naechste < karten.size()) {
                     //neue Karte weiterleiten
                     fenster.visualisiere((VisKarte)karten.get(naechste));
+                    //zurueck-button wieder sichtbar machen
+                    fenster.amAnfang(false);
                     //hochzaehlen
                     naechste = naechste + 1;
                     //warten
