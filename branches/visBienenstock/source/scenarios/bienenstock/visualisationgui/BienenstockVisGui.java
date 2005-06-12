@@ -132,15 +132,43 @@ public class BienenstockVisGui extends Frame {
      */
     Button vor = new Button(">");
     
+     /**
+      * Das Label fuer die Rundennummer
+      */
     Label runde = new Label("Runde: ");
     
+    /**
+     * das Label fuer die Anzeige der Rundennummer
+     */
     Label rundenNr = new Label("0 ");
+    
+    /**
+     * das Label fuer die Einstellung der Zeit
+     */
+    Label zeitLabel = new Label("Geschwindigkeit:");
+    
+    /**
+     * dasFeld fuer die Eingabe der neuen Zeitverzoegerung
+     */
+    TextField zeitFeld = new TextField("1000");
+    
+    /**
+     * der Button zum absenden eines neuen Zeitwertes
+     */
+    Button zeitButton = new Button("ok");
     
     /**
      * Verknuepfung mit dem Puffer
      */
     BienenstockVisSteuerung vis;
 
+    ActionListener zeitAktion = new ActionListener() {
+	public void actionPerformed(ActionEvent e) {
+            Integer bla = bla.valueOf(zeitFeld.getText());
+            vis.setzeZeit(bla.intValue());
+        }
+    };
+    
     /**
      * die Aktion die bei einer Pause ausgefuehrt wird
      */
@@ -192,12 +220,16 @@ public class BienenstockVisGui extends Frame {
         pause.addActionListener(pauseAktion);
         zurueck.addActionListener(zurueckAktion);
         vor.addActionListener(vorAktion);
+        zeitButton.addActionListener(zeitAktion);
         knoepfe.setLayout(new FlowLayout());
 //        knoepfe.add(zurueck, FlowLayout.LEFT);
 //        knoepfe.add(pause, FlowLayout.CENTER);
 //        knoepfe.add(vor, FlowLayout.RIGHT);
 //        knoepfe.add(runde, FlowLayout.LEFT);
 //        knoepfe.add(rundenNr, FlowLayout.LEADING);
+        knoepfe.add(zeitLabel);
+        knoepfe.add(zeitFeld);
+        knoepfe.add(zeitButton);
         knoepfe.add(zurueck);
         knoepfe.add(pause);
         knoepfe.add(vor);
