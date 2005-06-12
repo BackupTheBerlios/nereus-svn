@@ -1,7 +1,7 @@
 /*
  * Dateiname      : IVisualisationClient.java
  * Erzeugt        : 26. Mai 2005
- * Letzte Änderung: 10. Juni 2005 durch Dietmar Lippold
+ * Letzte Änderung: 12. Juni 2005 durch Dietmar Lippold
  * Autoren        : Samuel Walz (samuel@gmx.info)
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
@@ -26,30 +26,46 @@
 package nereus.simulatorinterfaces;
 
 /**
- * Definiert die Schnittstelle der Visualisierung auf Client-Seite zum
+ * Implementiert die Schnittstelle der Visualisierung auf Client-Seite zum
  * Simulator.
  *
  * @author  Samuel Walz
  * @author  Dietmar Lippold
  */
-public interface IVisualisationClient {
+public abstract class AbstractVisualisationClient extends Thread {
+
+    /** 
+     * Die Klasse, das die die zu visualisierenden Daten zu übergeben sind.
+     */
+    protected IVisualisationOutput visualisierung;
+
+    /** 
+     * Gibt an, ob sich der Thread beenden soll.
+     */
+    protected volatile boolean stop = false;
 
     /**
      * Registriert eine Visualisierungskomponente beim Spiel.
      *
-     * @param ausgabe  Die Komponente, die die zu visualisierenden Daten
-     *                 ausgibt.
+     * @param ausgabe  Die Komponente, an die die zu visualisierenden Daten
+     *                 zu übergeben sind.
      */
-    public void anmeldung(IVisualisationOutput ausgabe);
+    public abstract void anmeldung(IVisualisationOutput visualisierung) {
+        this.visualisierung = visualisierung;
+    }
 
     /**
      * Startet die Abfrage und Übergabe der zu visualisierenden Daten.
      */
-    public void startUebertragung();
+    public void startUebertragung() {
+        start();
+    }
 
     /**
      * Beendet die Abfrage und Übergabe der zu visualisierenden Daten.
      */
-    public void stopUebertragung();
+    public synchronized void stopUebertragung() {
+        stop = true;
+    }
 }
 
