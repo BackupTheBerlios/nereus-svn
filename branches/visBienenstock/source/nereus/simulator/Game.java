@@ -1,7 +1,7 @@
 /*
  * Dateiname      : Game.java
  * Erzeugt        : 13. Mai 2003
- * Letzte Änderung: 09. Juni 2005 durch Dietmar Lippold
+ * Letzte Änderung: 12. Juni 2005 durch Samuel Walz
  * Autoren        : Daniel Friedrich
  *
  *
@@ -185,6 +185,9 @@ public class Game extends Thread {
         m_scenarioHandler = m_scenario.createNewScenarioHandler();
         m_maxNumberOfAgents = ((Integer)m_params.get("MaxAgents")).intValue();
         
+        
+        // Anmelden des Spiels an der Server-Vis-Komponente
+        m_scenario.registerAtVisualisation();
     }
     
     /**
@@ -219,6 +222,10 @@ public class Game extends Thread {
         m_scenarioHandler = m_scenario.createNewScenarioHandler();
         m_maxNumberOfAgents = ((Integer)m_params.get("MaxAgents")).intValue();
         
+        
+        // Anmelden des Spiels an der Server-Vis-Komponente
+        m_scenario.registerAtVisualisation();
+        
     }
     
     /**
@@ -248,6 +255,10 @@ public class Game extends Thread {
         
         
         m_scenario.reset();
+        
+        // Anmelden des Spiels an der Server-Vis-Komponente
+        m_scenario.registerAtVisualisation();
+        
         // Agenten neu erzeugen.
         Hashtable tmpAgents = (Hashtable)oldGame.getAgents().clone();
         Enumeration enumer = tmpAgents.elements();
@@ -578,6 +589,9 @@ public class Game extends Thread {
                         m_id,
                         IVisualisation.StateMsg,
                         "Beende die Simulation des " + (i+1) + ". Experiments.");
+                
+                // Abmelden des Spiels bei der Server-Vis-Komponente
+                m_scenario.unegisterAtVisualisation();
                 
             }
             m_simulationIsFinished = true;
