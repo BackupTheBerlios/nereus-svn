@@ -1,7 +1,7 @@
 /*
  * Dateiname      : VisualisationClient.java
  * Erzeugt        : 19. Mai 2005
- * Letzte Änderung: 10. Juni 2005 durch Dietmar Lippold
+ * Letzte Änderung: 12. Juni 2005 durch Samuel Walz
  * Autoren        : Samuel Walz (samuel@gmx.info)
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
@@ -35,9 +35,8 @@ import java.util.ListIterator;
 import java.io.Serializable;
 
 import nereus.simulator.visualisation.Spielende;
-import nereus.simulatorinterfaces.IVisualisationClient;
 import nereus.simulatorinterfaces.IVisualisationServerExtern;
-import nereus.simulatorinterfaces.AbstractVisualisation;
+import nereus.simulatorinterfaces.AbstractVisualisationClient;
 import nereus.simulatorinterfaces.IVisualisationOutput;
 
 /**
@@ -45,7 +44,7 @@ import nereus.simulatorinterfaces.IVisualisationOutput;
  * @author  Samuel Walz
  * @author  Dietmar Lippold
  */
-public class VisualisationClient extends Thread implements IVisualisationClient {
+public class VisualisationClient extends AbstractVisualisationClient {
 
     private static Integer wartezeit = new Integer(2000);
 
@@ -55,9 +54,7 @@ public class VisualisationClient extends Thread implements IVisualisationClient 
 
     private String dienstAdresse;
 
-    private String spielID;
-
-    private int runde;
+    private String spielKennung;
 
     private int ausschnittsbeginn = 0;
 
@@ -76,17 +73,16 @@ public class VisualisationClient extends Thread implements IVisualisationClient 
      * @param adresse  Die Adresse der RMI-Registry des Server.
      * @param port     Der Port der RMI-Registry des Server.
      * @param spielId  Die Kennung des Spiels, das visualisiert werden soll.
-     * @param runde    Die Runde des Spiels, die visualisiert werden soll.
+     * @param durchlauf  Der Durchlauf des Spiels, der visualisiert werden soll.
      */
     public VisualisationClient(String adresse, int port, String spielId,
-                               int runde)
+                               int durchlauf)
         throws MalformedURLException,
                NotBoundException,
                RemoteException {
 
         String dienstname = IVisualisationServerExtern.DIENST_NAME;
-        this.spielID = spielId;
-        this.runde = runde;
+        this.spielKennung = spielId + "." + durchlauf;
 
         dienstAdresse = "//" + adresse + ":" + port + "/" + dienstname;
 
@@ -125,14 +121,16 @@ public class VisualisationClient extends Thread implements IVisualisationClient 
         
             
         try {
-             // Die Visualisierung starten
-             AbstractVisualisation visualisierung = new Visualisierung();
-             visualisierung.start();
-
+             
              while ((! alleInformationenAbgeholt) && !stop) {
                 System.out.println("hole informationen...");
+                
+                // Empfohlene Wartezeit für neue Informationen erfragen
+                wartezeit = new Integer(visServer.gibWartezeit(spielKennung));
+                
                 LinkedList informationen = 
-                    visServer.gibSpielInformationen(spielID, ausschnittsbeginn);
+                    visServer.gibSpielInformationen(spielKennung, 
+                                                    ausschnittsbeginn);
 
                 ListIterator listenlaeufer = informationen.listIterator();
                 /*
@@ -155,16 +153,18 @@ public class VisualisationClient extends Thread implements IVisualisationClient 
                         Object information = 
                                 (Object)listenlaeufer.next();
       
-                        if (! (information instanceof Spielende)) {
-                            synchronized (this) {
-                                if (!stop) {
-                                    visualisierung.visualisiere(information);
-                                }
-                            }
-                            ausschnittsbeginn = ausschnittsbeginn + 1;
-                        } else {
+                        if (information instanceof Spielende) {
                             alleInformationenAbgeholt = true;
                         }
+                        
+                        synchronized (this) {
+                            if (!stop) {
+                                visualisierung.visualisiere(information);
+                            }
+                        }
+                        ausschnittsbeginn = ausschnittsbeginn + 1;
+                        
+                            
                     }
                  }
              }
