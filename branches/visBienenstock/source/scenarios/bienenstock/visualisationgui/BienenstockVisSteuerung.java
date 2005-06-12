@@ -113,7 +113,7 @@ public class BienenstockVisSteuerung extends Thread implements IVisualisationOut
      * setzt die zu visualisierende Karte um einen hoch
      */
     public void vor() {
-        if ((naechste + 1)< karten.size()) {
+        if ((naechste + 1) < karten.size()) {
             naechste = naechste + 1;
             fenster.visualisiere((VisKarte)karten.get(naechste));
             //zurueck-button wieder sichtbar machen
