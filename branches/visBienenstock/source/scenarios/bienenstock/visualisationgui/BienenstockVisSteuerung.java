@@ -129,6 +129,17 @@ public class BienenstockVisSteuerung extends Thread implements IVisualisationOut
     }
     
     /**
+     * veraendert die Zeit, die zwischen 2 Karten gewartet wird
+     *
+     * @param die neue Zeitspanne
+     */
+    public void setzeZeit (int t) {
+        if (t > 0) {
+            zeit = t;
+        }
+    }
+    
+    /**
      * prueft, ob eine zu visualisierende Karte in <code>karten</code> ist und leitet 
      * die gegebenenfalls weiter. Anschliessend wird <code>zeit</code> 
      * lang gewartet.
