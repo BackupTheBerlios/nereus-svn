@@ -5,7 +5,7 @@
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
  *
- * Diese Datei geh?rt zum Projekt Nereus (http://nereus.berlios.de/).
+ * Diese Datei gehoert zum Projekt Nereus (http://nereus.berlios.de/).
  *
  *
  * This program is free software; you can redistribute it and/or modify
@@ -37,7 +37,7 @@ import scenarios.bienenstock.agenteninfo.Koordinate;
 import scenarios.bienenstock.visualisierungsUmgebung.*;
 
 /**
- * das Frame f?r die Bienenstockvisualisierung.
+ * das Frame fuer die Bienenstockvisualisierung.
  * 
  * @author philip
  */
@@ -243,8 +243,8 @@ public class BienenstockVisGui extends Frame {
     }
 
     /**
-     * berechnet die minimalen und maximaken x und y Koordinaten, sowie die
-     * Ma?e in x und y Richtung
+     * berechnet die minimalen und maximalen x und y Koordinaten, sowie die
+     * Masse in x und y Richtung
      *
      */
     private void setzeXY() {
@@ -303,7 +303,7 @@ public class BienenstockVisGui extends Frame {
                     int links = 2;
                     int rechts = 36;
                     
-                    // temporaerer Speicher f?r die anzahl der am Boden 
+                    // temporaerer Speicher fuer die anzahl der am Boden 
                     // befindlichen Bienen
                     int tmpBienen = 0;
                     

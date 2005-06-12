@@ -5,7 +5,7 @@
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
  *
- * Diese Datei geh?rt zum Projekt Nereus (http://nereus.berlios.de/).
+ * Diese Datei gehoert zum Projekt Nereus (http://nereus.berlios.de/).
  *
  *
  * This program is free software; you can redistribute it and/or modify
@@ -46,17 +46,17 @@ public class BienenstockVisSteuerung extends Thread {
     private BienenstockVisGui fenster;
     
     /**
-     * die Liste mit den Karten, die visualisiert wurden und werden m?ssen. 
+     * die Liste mit den Karten, die visualisiert wurden und werden muessen. 
      */
     private LinkedList karten;
     
     /**
-     * die n?chste zu visualisierende Karte, als Position in der Liste. 
+     * die naechste zu visualisierende Karte, als Position in der Liste. 
      */
     private int naechste = 0;
     
     /**
-     * die Zeit in ms, die gewartet werden soll, bevor die n?chste Karte fr?hestens 
+     * die Zeit in ms, die gewartet werden soll, bevor die naechste Karte fruehestens 
      * visualisiert werden soll.
      */
     private long zeit = 1000L;
@@ -74,12 +74,12 @@ public class BienenstockVisSteuerung extends Thread {
     }
     
     /**
-     * wird von dem Szenario aufgerufen um eine neue Karte hinzuzuf?gen
+     * wird von dem Szenario aufgerufen um eine neue Karte hinzuzufuegen
      * 
      * @param karte
      */
     public void visualisiere(VisKarte karte) {
-        // hinzuf?gen der neuen Karte
+        // hinzufuegen der neuen Karte
         karten.addLast(karte);
     }
     
@@ -119,8 +119,8 @@ public class BienenstockVisSteuerung extends Thread {
     }
     
     /**
-     * pr?ft, ob eine zu visualisierende Karte in <code>karten</code> ist und leitet 
-     * die gegebenenfalls weiter. Anschlie?end wird <code>zeit</code> 
+     * prueft, ob eine zu visualisierende Karte in <code>karten</code> ist und leitet 
+     * die gegebenenfalls weiter. Anschliessend wird <code>zeit</code> 
      * lang gewartet.
      */
     public void run () {
@@ -137,7 +137,7 @@ public class BienenstockVisSteuerung extends Thread {
                 if (naechste < karten.size()) {
                     //neue Karte weiterleiten
                     fenster.visualisiere((VisKarte)karten.get(naechste));
-                    //hochz?hlen
+                    //hochzaehlen
                     naechste = naechste + 1;
                     //warten
                     try {
