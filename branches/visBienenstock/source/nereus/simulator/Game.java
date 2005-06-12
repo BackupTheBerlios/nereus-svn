@@ -184,10 +184,6 @@ public class Game extends Thread {
         // ScenarioHandler erstellen
         m_scenarioHandler = m_scenario.createNewScenarioHandler();
         m_maxNumberOfAgents = ((Integer)m_params.get("MaxAgents")).intValue();
-        
-        
-        // Anmelden des Spiels an der Server-Vis-Komponente
-        m_scenario.registerAtVisualisation();
     }
     
     /**
@@ -222,10 +218,6 @@ public class Game extends Thread {
         m_scenarioHandler = m_scenario.createNewScenarioHandler();
         m_maxNumberOfAgents = ((Integer)m_params.get("MaxAgents")).intValue();
         
-        
-        // Anmelden des Spiels an der Server-Vis-Komponente
-        m_scenario.registerAtVisualisation();
-        
     }
     
     /**
@@ -255,9 +247,6 @@ public class Game extends Thread {
         
         
         m_scenario.reset();
-        
-        // Anmelden des Spiels an der Server-Vis-Komponente
-        m_scenario.registerAtVisualisation();
         
         // Agenten neu erzeugen.
         Hashtable tmpAgents = (Hashtable)oldGame.getAgents().clone();
@@ -513,6 +502,10 @@ public class Game extends Thread {
                         "Beginne die Simulation des " + (i+1) + ". Experiments.");
                 System.out.println("Spielnummer: " + i + " von " +numExps);
                 
+                
+                // Anmelden des Spiels an der Server-Vis-Komponente
+                m_scenario.registerAtVisualisation();
+        
                 
                 Vector agents = new Vector();
                 Vector agentIds = new Vector();
