@@ -338,7 +338,7 @@ public abstract class AbstractScenario implements Serializable {
       *
       * @params spielKennung     die Kennung des Spiels
       */
-     public final void deregisterAtVisualisation() {
+     public final void unegisterAtVisualisation() {
          m_visualisationServer.spielAbmelden(m_gameId.toString()
                                              + "."
                                              + m_runCounter);
