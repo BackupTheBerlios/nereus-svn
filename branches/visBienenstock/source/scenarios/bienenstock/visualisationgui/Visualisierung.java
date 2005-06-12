@@ -38,7 +38,7 @@ import scenarios.bienenstock.visualisierungsUmgebung.*;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class Visualisierung extends Thread {
+public class VisualisierungSteuerung extends Thread {
     
     /**
      * das frame der Visualisierung
@@ -67,7 +67,7 @@ public class Visualisierung extends Thread {
      * der Konstruktor initiiert das Frame und die Kartenliste
      *
      */
-    public Visualisierung () {
+    public VisualisierungSteuerung () {
         fenster = new VisualisierungFenster(this);
         fenster.show();
         karten = new LinkedList();
