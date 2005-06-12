@@ -1,7 +1,7 @@
 /*
  * Dateiname      : Coordinator.java
  * Erzeugt        : 13. Mai 2003
- * Letzte Änderung: 14. Mai 2005 durch Eugen Volk
+ * Letzte Änderung: 12 Juni. 2005 durch Samuel Walz
  * Autoren        : Daniel Friedrich
  *                  Eugen Volk
  *
@@ -211,8 +211,8 @@ public class Coordinator extends UnicastRemoteObject implements ICoordinator {
                 scenario.initialize(gameId, 
                                     m_informationHandler, 
                                     new Hashtable(dto),
-                                    gameConf,
-                                    m_visualisationServer);
+                                    gameConf);
+                scenario.setVisServer(m_visualisationServer);
             } catch (Exception e) {
                 e.printStackTrace(System.out);
             }
