@@ -418,7 +418,7 @@ public class BienenstockVisGui extends Frame {
                                         ((x - minX) * groesseX) + rechts,
                                         ((y - minY) * groesseY) + abstandOben + oben - 12,
                                         this);
-                                if (tmpStock.gibFliegendeBienen().size() > 1) {
+                                if (tmpBlume.gibFliegendeBienen().size() > 1) {
                                     g.drawString("" + tmpBlume.gibFliegendeBienen().size(),
                                             ((x - minX) * groesseX) + rechts - bildBieneX,
                                             ((y - minY) * groesseY) + abstandOben 
@@ -453,7 +453,7 @@ public class BienenstockVisGui extends Frame {
                                         ((x - minX) * groesseX) + rechts,
                                         ((y - minY) * groesseY) + abstandOben + oben - 12,
                                         this);
-                                if (tmpStock.gibFliegendeBienen().size() > 1) {
+                                if (tmpFeld.gibFliegendeBienen().size() > 1) {
                                     g.drawString("" + tmpFeld.gibFliegendeBienen().size(),
                                             ((x - minX) * groesseX) + rechts - bildBieneX,
                                             ((y - minY) * groesseY) + abstandOben 
