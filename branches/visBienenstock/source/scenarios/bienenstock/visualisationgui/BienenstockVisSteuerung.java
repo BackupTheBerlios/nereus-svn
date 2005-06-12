@@ -90,6 +90,7 @@ public class BienenstockVisSteuerung extends Thread implements IVisualisationOut
      */
     public void visualisiere(Object visObject) {
         if (visObject instanceof VisKarte) {
+            fenster.amEnde(false);
             // hinzufuegen der neuen Karte
             karten.addLast(visObject);
         }
