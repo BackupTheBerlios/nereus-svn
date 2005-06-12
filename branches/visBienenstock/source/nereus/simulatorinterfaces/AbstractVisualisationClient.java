@@ -55,16 +55,24 @@ public abstract class AbstractVisualisationClient extends Thread {
     }
 
     /**
+     * Gibt zurück ob das Spiel schon zuende ist.
+     *
+     * @return     ein boolean-wert
+     */
+    public boolean spielZuende();
+    
+    
+    /**
      * Startet die Abfrage und Übergabe der zu visualisierenden Daten.
      */
-    public void startUebertragung() {
+    public void starteUebertragung() {
         start();
     }
 
     /**
      * Beendet die Abfrage und Übergabe der zu visualisierenden Daten.
      */
-    public synchronized void stopUebertragung() {
+    public synchronized void stoppeUebertragung() {
         stop = true;
     }
 }
