@@ -59,7 +59,7 @@ public abstract class AbstractVisualisationClient extends Thread {
      *
      * @return     ein boolean-wert
      */
-    public boolean spielZuende();
+    public abstract boolean spielZuende();
     
     
     /**
