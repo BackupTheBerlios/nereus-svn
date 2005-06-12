@@ -100,7 +100,7 @@ public abstract class AbstractScenario implements Serializable {
     /**
      * Die Server-Vis-Komponente
      */
-    protected IVisualisationServerIntern m_visualisationServer = null;
+    private IVisualisationServerIntern m_visualisationServer = null;
     
     /**
      * Konstruktor
