@@ -394,12 +394,12 @@ public class BienenstockVisGui extends Frame {
                                         ((x - minX) * groesseX) + rechts,
                                         ((y - minY) * groesseY) + abstandOben + unten - 12,
                                         this);
-                                //if (tmpBienen > 1) {
+                                if (tmpBienen > 1) {
                                     g.drawString("" + tmpBienen,
                                           ((x - minX) * groesseX) + rechts - bildBieneX,
                                           ((y - minY) * groesseY) + abstandOben 
                                                     + unten - bildBieneY);
-                                //}
+                                }
                             }
                             /*
                              *      BLUME
@@ -418,12 +418,12 @@ public class BienenstockVisGui extends Frame {
                                         ((x - minX) * groesseX) + rechts,
                                         ((y - minY) * groesseY) + abstandOben + oben - 12,
                                         this);
-                                //if (tmpStock.gibFliegendeBienen().size() > 1) {
+                                if (tmpStock.gibFliegendeBienen().size() > 1) {
                                     g.drawString("" + tmpBlume.gibFliegendeBienen().size(),
                                             ((x - minX) * groesseX) + rechts - bildBieneX,
                                             ((y - minY) * groesseY) + abstandOben 
                                                     + oben - bildBieneY);
-                                //}
+                                }
                             }
                             tmpBienen = tmpBlume.gibWartendeBienen().size() 
                                     + tmpBlume.gibTanzendeBienen().size()
@@ -433,12 +433,12 @@ public class BienenstockVisGui extends Frame {
                                         ((x - minX) * groesseX) + rechts,
                                         ((y - minY) * groesseY) + abstandOben + unten - 12,
                                         this);
-                                //if (tmpBienen > 1) {
+                                if (tmpBienen > 1) {
                                     g.drawString("" + tmpBienen,
                                           ((x - minX) * groesseX) + rechts - bildBieneX,
                                           ((y - minY) * groesseY) + abstandOben 
                                                     + unten - bildBieneY);
-                                //}
+                                }
                             }                            
                             /*
                              *          PLATZ
@@ -453,12 +453,12 @@ public class BienenstockVisGui extends Frame {
                                         ((x - minX) * groesseX) + rechts,
                                         ((y - minY) * groesseY) + abstandOben + oben - 12,
                                         this);
-                                //if (tmpStock.gibFliegendeBienen().size() > 1) {
+                                if (tmpStock.gibFliegendeBienen().size() > 1) {
                                     g.drawString("" + tmpFeld.gibFliegendeBienen().size(),
                                             ((x - minX) * groesseX) + rechts - bildBieneX,
                                             ((y - minY) * groesseY) + abstandOben 
                                                     + oben - bildBieneY);
-                                //}
+                                }
                             }
                             tmpBienen = tmpFeld.gibWartendeBienen().size()
                                     + tmpFeld.gibTanzendeBienen().size();
@@ -467,12 +467,12 @@ public class BienenstockVisGui extends Frame {
                                         ((x - minX) * groesseX) + rechts,
                                         ((y - minY) * groesseY) + abstandOben + unten - 12,
                                         this);
-                                //if (tmpBienen > 1) {
+                                if (tmpBienen > 1) {
                                     g.drawString("" + tmpBienen,
                                           ((x - minX) * groesseX) + rechts - bildBieneX,
                                           ((y - minY) * groesseY) + abstandOben 
                                                     + unten - bildBieneY);
-                                //}
+                                }
                             }
                         } else {
                             System.out.println("Vis: ungueltiger FeldTyp!");
