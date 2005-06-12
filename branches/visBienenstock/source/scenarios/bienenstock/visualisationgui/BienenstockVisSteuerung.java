@@ -32,13 +32,17 @@ import java.awt.*;
 
 import scenarios.bienenstock.visualisierungsUmgebung.*;
 
+import nereus.simulatorinterfaces.IVisualisationOutput;
+
+import nereus.visualisationclient.VisualisationClient;
+
 /**
  * @author philip
  *
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class BienenstockVisSteuerung extends Thread {
+public class BienenstockVisSteuerung extends Thread implements IVisualisationOutput{
     
     /**
      * das frame der Visualisierung
@@ -63,14 +67,20 @@ public class BienenstockVisSteuerung extends Thread {
     
     private boolean warten = false;
     
+    VisualisationClient visClient;
+    
     /**
      * der Konstruktor initiiert das Frame und die Kartenliste
      *
      */
-    public BienenstockVisSteuerung () {
+    public BienenstockVisSteuerung (VisualisationClient vClient) {
+        visClient = vClient;
+        visClient.anmeldung(this);
         fenster = new BienenstockVisGui(this);
         fenster.show();
         karten = new LinkedList();
+        this.start();
+        visClient.startUebertragung();
     }
     
     /**
@@ -78,9 +88,9 @@ public class BienenstockVisSteuerung extends Thread {
      * 
      * @param karte
      */
-    public void visualisiere(VisKarte karte) {
+    public void visualisiere(Object visObject) {
         // hinzufuegen der neuen Karte
-        karten.addLast(karte);
+        karten.addLast((VisKarte) visObject);
     }
     
     /**
@@ -157,6 +167,7 @@ public class BienenstockVisSteuerung extends Thread {
                 }
             }
         }
+        visClient.stopUebertragung();
     }
 }
 
