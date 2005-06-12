@@ -41,7 +41,7 @@ import scenarios.bienenstock.visualisierungsUmgebung.*;
  * 
  * @author philip
  */
-public class VisualisierungFenster extends Frame {
+public class BienenstockVisGui extends Frame {
 	
     /**
      * ob die Visualisierung die erste Karte bekommen hat.
@@ -137,7 +137,7 @@ public class VisualisierungFenster extends Frame {
     /**
      * Verknuepfung mit dem Puffer
      */
-    Visualisierung vis;
+    BienenstockVisSteuerung vis;
 
     /**
      * die Aktion die bei einer Pause ausgefuehrt wird
@@ -185,7 +185,7 @@ public class VisualisierungFenster extends Frame {
      * der Konstruktor
      *
      */
-    public VisualisierungFenster(Visualisierung visu) {
+    public BienenstockVisGui(BienenstockVisSteuerung visu) {
         vis = visu;
         pause.addActionListener(pauseAktion);
         zurueck.addActionListener(zurueckAktion);
