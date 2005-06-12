@@ -281,15 +281,6 @@ public abstract class AbstractScenario implements Serializable {
     public abstract LinkedList getScenarioParameter(GameConf gameConf);
     
     /**
-     * Setzt die Server-Vis-Komponente
-     *
-     * @param visServer  die Server-Vis-Komponente
-     */
-    public final void setVisServer(IVisualisationServerIntern visServer) {
-        m_visualisationServer = visServer;
-    }
-    
-    /**
      * Erhöht den Wert von m_runCounter um 1 und meldet das Szanario an der
      * Server-Vis-Komponente an. 
      */
