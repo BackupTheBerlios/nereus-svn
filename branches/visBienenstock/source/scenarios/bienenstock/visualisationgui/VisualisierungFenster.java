@@ -130,6 +130,10 @@ public class VisualisierungFenster extends Frame {
      */
     Button vor = new Button("Vor");
     
+    Label runde = new Label("Runde: ");
+    
+    Label rundenNr = new Label("0 ");
+    
     /**
      * Verknuepfung mit dem Puffer
      */
@@ -190,6 +194,8 @@ public class VisualisierungFenster extends Frame {
         knoepfe.add(zurueck, FlowLayout.LEFT);
         knoepfe.add(pause, FlowLayout.CENTER);
         knoepfe.add(vor, FlowLayout.RIGHT);
+        knoepfe.add(runde, FlowLayout.LEFT);
+        knoepfe.add(rundenNr, FlowLayout.LEADING);
         add(knoepfe, BorderLayout.SOUTH);
         fenster = this;
 	fenster.setTitle("Bienenstockvisualisierung");
@@ -202,9 +208,9 @@ public class VisualisierungFenster extends Frame {
           } );
 
         //Groesse und Position setzen
-	        Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-	        fenster.setSize((int)screen.getWidth(), (int)screen.getHeight() - 30);
-	        fenster.setLocation(0, fenster.getInsets().top);
+	Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+	fenster.setSize((int)screen.getWidth(), (int)screen.getHeight() - 30);
+        fenster.setLocation(0, fenster.getInsets().top);
 
         //Bilder laden
         bildBienenstock = Toolkit.getDefaultToolkit().getImage(pfad + "bienenstock.gif");
@@ -251,7 +257,6 @@ public class VisualisierungFenster extends Frame {
                 maxY = pos.gibYPosition();
             }
         }
-        initiiert = true;
     }
     
     /**
@@ -261,6 +266,7 @@ public class VisualisierungFenster extends Frame {
         g.setColor(new Color(0, 0, 0));
         
         if (karte != null) {
+            rundenNr.setLabel(karte.gibRundennummer() + " ");
             HashMap felder = karte.gibFelder();
             VisFeld tmpFeld;
             int x, y;
