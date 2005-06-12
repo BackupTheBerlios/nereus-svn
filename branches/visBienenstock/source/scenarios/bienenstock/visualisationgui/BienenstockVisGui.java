@@ -216,32 +216,36 @@ public class BienenstockVisGui extends Frame {
      *
      */
     public BienenstockVisGui(BienenstockVisSteuerung visu) {
+        
+        this.setVisible(false);
         vis = visu;
+        
+        //die ActionListener zu den Buttons hinzufuegen
         pause.addActionListener(pauseAktion);
         zurueck.addActionListener(zurueckAktion);
         vor.addActionListener(vorAktion);
         zeitButton.addActionListener(zeitAktion);
+        
+        //das Panel knoepfe fuellen
         knoepfe.setLayout(new FlowLayout());
-//        knoepfe.add(zurueck, FlowLayout.LEFT);
-//        knoepfe.add(pause, FlowLayout.CENTER);
-//        knoepfe.add(vor, FlowLayout.RIGHT);
-//        knoepfe.add(runde, FlowLayout.LEFT);
-//        knoepfe.add(rundenNr, FlowLayout.LEADING);
-        knoepfe.add(zeitLabel);
-        knoepfe.add(zeitFeld);
-        knoepfe.add(zeitButton);
+        knoepfe.add(runde);
+        knoepfe.add(rundenNr);
         knoepfe.add(zurueck);
         knoepfe.add(pause);
         knoepfe.add(vor);
-        knoepfe.add(runde);
-        knoepfe.add(rundenNr);
+        knoepfe.add(zeitLabel);
+        knoepfe.add(zeitFeld);
+        knoepfe.add(zeitButton);
+        
+        //das Panel knoepfe hinzufuegen
         add(knoepfe, BorderLayout.SOUTH);
+        
+        //das Fenster beschriften
         fenster = this;
-        fenster.setVisible(false);
 	fenster.setTitle("Bienenstockvisualisierung");
         fenster.setFont(schrift);
-        //Schliessen
-	        addWindowListener( new WindowAdapter() {
+        //Schliessen ermoeglichen
+	addWindowListener( new WindowAdapter() {
             public void windowClosing ( WindowEvent e ) {
               System.exit(0);
             }
@@ -250,9 +254,9 @@ public class BienenstockVisGui extends Frame {
         //Groesse und Position setzen
 	Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 	fenster.setSize(0,0);
-	fenster.setLocation(0, fenster.getInsets().top);
 
         //Bilder laden
+        bildBiene = Toolkit.getDefaultToolkit().getImage(pfad + "biene.gif");
         bildBienenstock = Toolkit.getDefaultToolkit().getImage(pfad + "bienenstock.gif");
         bildBlume = Toolkit.getDefaultToolkit().getImage(pfad + "blume.gif");
         bildPlatz = Toolkit.getDefaultToolkit().getImage(pfad + "platz.gif");
@@ -304,12 +308,17 @@ public class BienenstockVisGui extends Frame {
         int x = ((maxX - minX + 1) * groesseX) + 10;
         int y = ((maxY - minY + 2) * groesseY) 
             + fenster.getInsets().top;
-	fenster.setSize(
-            x, y);
-	fenster.setLocation(
-            (((int)screen.getWidth()) - x) / 2, 
-            ((((int)screen.getWidth()) - y) / 2) 
-                + fenster.getInsets().top);
+        if (x > screen.getWidth() | y > screen.getHeight()) {
+            fenster.setSize((int)screen.getWidth(), 
+                            ((int)screen.getHeight() + fenster.getInsets().top));
+        } else {
+            fenster.setSize(
+                x, y);
+            fenster.setLocation(
+                (((int)screen.getWidth()) - x) / 2, 
+                ((((int)screen.getWidth()) - y) / 2) 
+                    + fenster.getInsets().top);
+        }
         
         //Fenster sichtbar machen
         fenster.setVisible(true);
@@ -468,6 +477,25 @@ public class BienenstockVisGui extends Frame {
                     }
                 }
             }
+        }
+    }
+    
+    /**
+     * wird benutzt um den vor-Button unsichtbar zu machen, wenns nicht weiter vor geht
+     */
+    public void amEnde(boolean ende) {
+        if (vor.isVisible() == ende) {
+            vor.setVisible(!ende);
+        }
+    }
+    
+    /**
+     * wird benutzt um den zurueck-Button unsichtbar zu machen, 
+     * wenns nicht weiter zurueck geht
+     */
+    public void amAnfang(boolean anfang) {
+        if(zurueck.isVisible() == anfang) {
+            zurueck.setVisible(!anfang);
         }
     }
 }
