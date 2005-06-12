@@ -289,7 +289,7 @@ public class BienenstockVisGui extends Frame {
         g.setColor(new Color(0, 0, 0));
         
         if (karte != null) {
-            rundenNr.setLabel(karte.gibRundennummer() + " ");
+            rundenNr.setText(karte.gibRundennummer() + " ");
             HashMap felder = karte.gibFelder();
             VisFeld tmpFeld;
             int x, y;
