@@ -1,5 +1,5 @@
 /*
- * Dateiname      : Visualisierung.java
+ * Dateiname      : BienenstockVisSteuerung.java
  * Erzeugt        : 06. Mai 2005
  * Letzte ?nderung: 12. Juni 2005 durch Philip Funck
  * Autoren        : Philip Funck (mango.3@gmx.de)

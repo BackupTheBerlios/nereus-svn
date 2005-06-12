@@ -1,5 +1,5 @@
 /*
- * Dateiname      : Bienenstockvisualisierung.java
+ * Dateiname      : BienenstockVisGui.java
  * Erzeugt        : 26. April 2005
  * Letzte ?nderung: 12. Juni 2005 durch Philip Funck
  * Autoren        : Philip Funck (mango.3@gmx.de)
