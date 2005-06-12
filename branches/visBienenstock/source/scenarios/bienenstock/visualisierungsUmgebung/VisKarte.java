@@ -1,17 +1,17 @@
 /*
  * Dateiname      : VisKarte.java
  * Erzeugt        : 6. Oktober 2004
- * Letzte Änderung: 08. Juni 2005 durch Samuel Walz
+ * Letzte ?nderung: 10. Juni 2005 durch Philip Funck
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (samuel@gmx.info)
  *
  *
  *
  *
- * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
+ * Diese Datei geh?rt zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen eines
- * Software-Praktikums von Philip Funck und Samuel Walz am Institut für
- * Intelligente Systeme der Universität Stuttgart unter Betreuung von
+ * Software-Praktikums von Philip Funck und Samuel Walz am Institut f?r
+ * Intelligente Systeme der Universit?t Stuttgart unter Betreuung von
  * Dietmar Lippold (dietmar.lippold@informatik.uni-stuttgart.de).
  *
  *
@@ -39,7 +39,7 @@ import scenarios.bienenstock.agenteninfo.Koordinate;
 
 
 /**
- * Die Spielkartendarstellung für die Visualisierung.
+ * Die Spielkartendarstellung f?r die Visualisierung.
  *
  * @author Philip Funck
  * @author Samuel Walz
@@ -51,7 +51,7 @@ public class VisKarte implements Serializable{
     private HashMap bienen;
     
     /**
-     * Das Spielfeld für die Visualisierung.
+     * Das Spielfeld f?r die Visualisierung.
      *
      * @associates VisFeld
      */
@@ -64,7 +64,7 @@ public class VisKarte implements Serializable{
     
     
     /**
-     * Liste aller Kosten für die Aktionen der Bienen.
+     * Liste aller Kosten f?r die Aktionen der Bienen.
      */
     private HashMap kosten;
     
@@ -74,7 +74,7 @@ public class VisKarte implements Serializable{
      * @param runde die aktuelle Runde
      * @param bienchen  die Bienen
      * @param feldchen  die Felder
-     * @param kostenvoranschlag Kosten für die Aktionen
+     * @param kostenvoranschlag Kosten f?r die Aktionen
      */
     public VisKarte(int runde,
             HashMap bienchen,
@@ -87,16 +87,16 @@ public class VisKarte implements Serializable{
     }
     
     /**
-     * gibt eine Liste der Kosten für alle Aktionen zurück.
+     * gibt eine Liste der Kosten f?r alle Aktionen zur?ck.
      *
-     * @return Kosten  für die Aktionen
+     * @return Kosten  f?r die Aktionen
      */
     public HashMap gibHonigkosten() {
         return kosten;
     }
     
     /**
-     * gibt eine Biene zurück, die in der Liste bienen mit bieneID
+     * gibt eine Biene zur?ck, die in der Liste bienen mit bieneID
      * zu finden ist.
      *
      * @param bieneID ID der Biene
@@ -106,13 +106,13 @@ public class VisKarte implements Serializable{
         if (bienen.containsKey(new Integer(bieneID))) {
             return (VisBiene)bienen.get(new Integer(bieneID));
         } else {
-            //Wurde Biene nicht gefunden, so gib nichts zurück (null)
+            //Wurde Biene nicht gefunden, so gib nichts zur?ck (null)
             return null;
         }
     }
     
     /**
-     * gibt eine Liste aller anwesenden Bienen zurück.
+     * gibt eine Liste aller anwesenden Bienen zur?ck.
      *
      * @return alle Bienen
      */
@@ -121,7 +121,7 @@ public class VisKarte implements Serializable{
     }
     
     /**
-     * gibt ein Feld mit den Koordinaten ort zurück.
+     * gibt ein Feld mit den Koordinaten ort zur?ck.
      *
      * @param ort zu suchendes Feld
      * @return  das Feld was gesucht werden sollte, wenn nicht vorhanden null
@@ -130,13 +130,13 @@ public class VisKarte implements Serializable{
         if (spielfeld.containsKey(ort)) {
             return (VisFeld)spielfeld.get(ort);
         } else {
-            //Wurde das Feld nicht gefunden, so gib nichts zurück (null)
+            //Wurde das Feld nicht gefunden, so gib nichts zur?ck (null)
             return null;
         }
     }
     
     /**
-     * gibt das Spielfeld für die Visualisierung zurück.
+     * gibt das Spielfeld f?r die Visualisierung zur?ck.
      *
      * @return alle Felder
      */

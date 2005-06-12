@@ -1,7 +1,7 @@
 /*
  * Dateiname      : Visualisierung.java
  * Erzeugt        : 06. Mai 2005
- * Letzte ?nderung: 08. Juni 2005 durch Philip Funck
+ * Letzte ?nderung: 12. Juni 2005 durch Philip Funck
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
  *
