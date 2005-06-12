@@ -102,6 +102,10 @@ public class BienenstockVisSteuerung extends Thread implements IVisualisationOut
         if (naechste > 0) {
             naechste = naechste - 1;
             fenster.visualisiere((VisKarte)karten.get(naechste));
+            
+            if (naechste == 0) {
+                fenster.amAnfang(true);
+            }
             //vor-button wieder sichtbar machen
             fenster.amEnde(false);
         } else {
@@ -116,6 +120,9 @@ public class BienenstockVisSteuerung extends Thread implements IVisualisationOut
         if ((naechste + 1) < karten.size()) {
             naechste = naechste + 1;
             fenster.visualisiere((VisKarte)karten.get(naechste));
+            if (naechste == karten.size()) {
+                fenster.amEnde(true);
+            }
             //zurueck-button wieder sichtbar machen
             fenster.amAnfang(false);
         } else {
@@ -181,6 +188,7 @@ public class BienenstockVisSteuerung extends Thread implements IVisualisationOut
                         System.out.println("Visualisierung wurde unterbrochen");
                     }
                 } else {
+                    fenster.amEnde(true);            
                     try {
                         synchronized (this) {
                             this.wait(10);
