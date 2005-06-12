@@ -1,7 +1,7 @@
 /*
  * Dateiname      : VisualisationServer.java
  * Erzeugt        : 19. Mai 2005
- * Letzte Änderung: 10. Juni 2005 durch Samuel Walz
+ * Letzte Änderung: 12. Juni 2005 durch Samuel Walz
  * Autoren        : Samuel Walz (samuel@gmx.info)
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
@@ -41,7 +41,6 @@ import java.io.Serializable;
 
 import nereus.utils.Id;
 import nereus.exceptions.DoppeltesSpielException;
-import nereus.exceptions.AuthentifizierungException;
 import nereus.simulatorinterfaces.IVisualisationServerIntern;
 import nereus.simulatorinterfaces.IVisualisationServerExtern;
 
@@ -71,31 +70,18 @@ public class VisualisationServer extends UnicastRemoteObject
     // Die empfohlenen Wartezeiten für die Client-Vis-Komponenten
     private static HashMap wartezeiten = new HashMap();
 
-    // Die Zuordnung der Authentifizierungscodes zu den Spiel-IDs.
-    private static HashMap authZuordnung = new HashMap();
-
     // Die Standardwartezeit in Millisekunden
     private static int standardwartezeit = 2000;
 
-    //
+    // Die Haltbarkeit gespeicherter Spielinformationen zu einem beendeten Spiel
     private static long informationshaltbarkeit = (1000 * 60 * 60);
 
-    /*
-     * Die angemeldeten Client-Vis-Komponenten, sortiert nach den Spielen,
-     * für die sie sich interessieren.
-     */
-    // Zum Erzeugen zufälliger Werte
-    private final long samen = System.currentTimeMillis();
-
-    private Random zufallsGenerator = new Random();
 
 
     /** 
      * Creates a new instance of VisualisationServer 
      */
     public VisualisationServer() throws RemoteException{
-        // Zufallsgenerator initialisieren
-        zufallsGenerator.setSeed(samen);
         
         System.out.println("Melde den VisualisationServer an...");
         UnicastRemoteObject.unexportObject((Remote)this, true);
@@ -122,50 +108,6 @@ public class VisualisationServer extends UnicastRemoteObject
                 + "    " + fehlerbeschreibung);
     }
 
-    /**
-     * Gibt die zu einem Authentifizierungscode gehörende Spiel-ID zurück.
-     *
-     * Wird eine Exception geworfen, so war der Authentifizierungscode ungültig.
-     *
-     * @param authCode
-     * @return           Eine ganze Zahl größer -1
-     */
-    private String gibSpielID (long authCode) throws AuthentifizierungException {
-
-        if (authZuordnung.containsKey(new Long(authCode))) {
-            return (String)authZuordnung.get(new Long(authCode));
-        } else {
-            throw new AuthentifizierungException("Falscher Authentifizierungscode: " 
-                                + authCode);
-        }
-    }
-
-    /**
-     * Erzeugt einen Athentifizierungscode, der eindeutig einer Spiel-ID
-     * zugeordnet und zufällig generiert ist und speichert diese Zuordnung
-     * ab.
-     *
-     * Diese Methode ist synchronisiert, damit bei einem parallelen Aufruf
-     * nicht zufällig mehrfach der selbe Code erzeugt werden kann.
-     *
-     * @param spielID      Die Spiel-ID der der Code zugeordnet werden soll
-     */
-    private synchronized long authCodeErzeugen(String spielID) {
-        
-        long authCode = 0L;
-        /*
-         * Erzeugen eines Authentifizierungscodes, der noch nicht verwendet
-         * wird.
-         */
-        do {
-            authCode = zufallsGenerator.nextLong();
-        } while (authZuordnung.containsKey(new Long(authCode)));
-        
-        // Speichern der Zuordung des Code zur Spiel-ID
-        authZuordnung.put(new Long(authCode), spielID);
-        
-        return authCode;
-    }
 
     /**
      * Erstellt eine neue Liste, die den Inhalt der übergebenen ab einer
@@ -235,48 +177,67 @@ public class VisualisationServer extends UnicastRemoteObject
     /**
      * Gibt die Spielinformationen zu einem bestimmten Spiel zurück.
      *
-     * @param spielID
+     * @param spielKennung            Die Kennung des gewünschten Spiels
      * @param ausschnittsbeginn      natürliche Zahl größer -1
+     *
+     * @return   Eine Liste der gewünschten Spielinformationen
      */
-    public LinkedList gibSpielInformationen(String spielID, 
+    public LinkedList gibSpielInformationen(String spielKennung, 
                                             int ausschnittsbeginn) 
                                             throws RemoteException {
         System.out.println("visServer: visClient fordert Informationen ab "
                             + "Position " + ausschnittsbeginn + " vom Spiel "
-                            + spielID + " an.");
+                            + spielKennung + " an.");
         // Informationen suchen und zurückgeben
-        if (informationsspeicher.containsKey(spielID)) {
+        if (informationsspeicher.containsKey(spielKennung)) {
             return erstelleAusschnitt(
-                (LinkedList)informationsspeicher.get(spielID), 
+                (LinkedList)informationsspeicher.get(spielKennung), 
                 ausschnittsbeginn);
         } else {
-            System.out.println("visServer: Ein Spiel mit dieser ID ist unbekannt!");
+            gibFehlerAus("gibSpielInformationen", 
+                         "Falsche Spielkennung:" + spielKennung);
             // Sind noch keine Informationen vorhanden, wird null zurückgegeben
             return new LinkedList();
+        }
+    }
+    
+    /**
+     * Gibt die empfohlene Wartezeit zwischen den Informationsanfragen zu
+     * einem Spiel zurück.
+     * 
+     * @param spielKennung       Kennung des gewünschten Spiels.
+     *
+     * @return   Die empfohlene Wartezeit in Millisekunden
+     */
+    public int gibWartezeit(String spielKennung) throws RemoteException {
+        // Informationen suchen und zurückgeben
+        if (informationsspeicher.containsKey(spielKennung)) {
+            return ((Integer)informationsspeicher.get(spielKennung)).intValue();
+        } else {
+            gibFehlerAus("gibWartezeit", 
+                         "Falsche Spielkennung:" + spielKennung);
+            // Sind noch keine Informationen vorhanden, standard zurückgeben
+            return standardwartezeit;
         }
     }
 
     /**
      * Speichert die Spielinformationen der einzelnen Spiele.
      *
-     * @param authCode
+     * @param spielKennung
      * @param information      die zu speichernde Information
      */
-    public void speichereSpielInformationen(long authCode, 
-                                            Serializable information) {
-        try {
-            // Die zugehörige Spiel-ID
-            String spielID = gibSpielID(authCode);
-        
+    public void speichereSpielInformation(String spielKennung, 
+                                          Serializable information) {
+        if (informationsspeicher.containsKey(spielKennung)) {    
             // Die neue Information an die Liste anhängen
             LinkedList informationen = 
-                    (LinkedList)informationsspeicher.get(spielID);
+                    (LinkedList)informationsspeicher.get(spielKennung);
             informationen.addLast(information);
             
-        } catch(Exception fehler) {
-            
+        } else {
             gibFehlerAus("speichereSpielInformationen", 
-                         fehler.getMessage());
+                         "Falsche Spielkennung:" + spielKennung);
         }
     }
 
@@ -285,63 +246,72 @@ public class VisualisationServer extends UnicastRemoteObject
      * 
      * Wird als Wartezeit 0 angegeben, so wird der Defaultwert verwendet.
      *
-     * @param spielID        Die ID des Spiels
+     * @param spielKennung        Die Kennung des Spiels
      * @param wartezeit      natürliche Zahl >= null (Zeit in Millisekunden)
+     *
      * @return               der Authentifizierungscode
      */
-    public long spielAnmelden(String spielID, int wartezeit) 
+    public void spielAnmelden(String spielKennung, int wartezeit) 
                                 throws DoppeltesSpielException{
-        System.out.println("visServer: Ein Spiel versucht sich mit der ID "
-                           + spielID + " anzumelden...");
-        if (! informationsspeicher.containsKey(spielID)) {
+        System.out.println("visServer: Ein Spiel versucht sich mit der Kennung "
+                           + spielKennung + " anzumelden...");
+        if (! informationsspeicher.containsKey(spielKennung)) {
             // Eine neue Liste für die Informationen des Spiels anlegen
-            informationsspeicher.put(spielID, new LinkedList());
+            informationsspeicher.put(spielKennung, new LinkedList());
             
-            // Die empfohlene Wartezeit eintragen
-            if (wartezeit == 0) {
-                wartezeiten.put(spielID, 
-                                new Integer(standardwartezeit));
-            } else {
-                wartezeiten.put(spielID, 
-                                new Integer(wartezeit));
-            }
+            // Standardwartezeit setzen
+            wartezeiten.put(spielKennung, 
+                            new Integer(standardwartezeit));
             
             // Spielinformationsbereinigung starten
             bereinigeInformationsspeicher(informationshaltbarkeit);
-            
-            // Den zugehörigen Authentifizierungscode zurückgeben
-            return authCodeErzeugen(spielID);
+           
             
         } else {
             // Hat das Anmelden nicht geklappt, wird ein Fehler geworfen
-            throw new DoppeltesSpielException("Ein Spiel mit der ID " + spielID
+            throw new DoppeltesSpielException("Ein Spiel mit der Kennung " 
+                        + spielKennung
                         + " ist schon angemeldet!");
         }
     }
 
     /**
+     * Übergibt der Server-Vis-Komponente die Empfohlene Wartezeit für die 
+     * Client-Vis-Komponente beim warten auf neue Informationen des 
+     * aufrufenden Szenarios.
+     * 
+     * @param empfohleneWartezeit    die Zeit in Millisekunden
+     */
+    public void setzeWartezeit(String spielKennung, int empfohleneWartezeit) {
+        // Die empfohlene Wartezeit eintragen
+        if (empfohleneWartezeit != 0) {
+                wartezeiten.put(spielKennung, 
+                                new Integer(empfohleneWartezeit));
+        }
+    }
+    
+    /**
      * Meldet ein Spiel für die Informationsspeicherung ab.
      *
      * @param authCode
      */
-    public void spielAbmelden(long authCode) {
-        try {
-            String spielID = gibSpielID(authCode);
+    public void spielAbmelden(String spielKennung) {
+        if (informationsspeicher.containsKey(spielKennung)) {
             
             // Spielende markieren
             LinkedList informationen = 
-                    (LinkedList)informationsspeicher.get(spielID);
+                    (LinkedList)informationsspeicher.get(spielKennung);
             
             informationen.addLast(new Spielende(System.currentTimeMillis()));
             
             // Den Wartezeiteintrag für das Spiel löschen
-            wartezeiten.remove(spielID);
+            wartezeiten.remove(spielKennung);
             
             
-        } catch (Exception fehler) {
+        } else {
             // Falscher Authentifizierungscode!
             gibFehlerAus("spielAbmelden", 
-                    "Falscher Authentifizierungscode: " + authCode);
+                    "Falsche Spielkennung:" + spielKennung);
         }
     }
     
