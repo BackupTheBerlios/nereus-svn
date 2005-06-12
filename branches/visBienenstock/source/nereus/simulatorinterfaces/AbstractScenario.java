@@ -37,6 +37,7 @@ import java.lang.reflect.Constructor;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.LinkedList;
+import java.io.Serializable;
 
 import nereus.communication.speachacts.Speachact;
 import nereus.utils.Id;
@@ -45,6 +46,7 @@ import nereus.exceptions.InvalidAgentException;
 import nereus.exceptions.InvalidElementException;
 import nereus.exceptions.InvalidGameException;
 import nereus.exceptions.NotEnoughEnergyException;
+import nereus.exceptions.DoppeltesSpielException;
 import nereus.simulatorinterfaces.AbstractAgent;
 import nereus.simulatorinterfaces.AbstractScenarioHandler;
 import nereus.simulatorinterfaces.IVisualisationServerIntern;
@@ -292,10 +294,56 @@ public abstract class AbstractScenario implements Serializable {
      * Server-Vis-Komponente an. 
      */
     public final void registerAtVisualisation() {
-        m_visualisationServer.spielAnmelden(m_gameId.toString() 
-                                            + "-"
-                                            + m_runCounter);
+        // Erhöhen von m_runCounter um 1
+        m_runCounter = m_runCounter + 1;
+        
+        // Anmelden an der Server-Vis-Komponente
+        try {
+            m_visualisationServer.spielAnmelden(m_gameId.toString() 
+                                                + "-"
+                                                + m_runCounter);
+        } catch(DoppeltesSpielException fehler) {
+            System.out.println(fehler.getMessage());
+        }
     }
+    
+    /**
+     * Übergibt Spielinformationen an die Server-Vis-Komponente
+     *
+     * @param information    Die Spielinformation
+     */
+    public final void saveGameInformation(Serializable information) {
+        m_visualisationServer.speichereSpielInformation(m_gameId.toString() 
+                                                        + "-"
+                                                        + m_runCounter,
+                                                        information);
+    
+    }
+    
+    /**
+     * übergibt der Server-Vis-Komponente die empfohlene Wartezeit zum warten
+     * auf neue Spielinformationen für die Client-Vis-Komponente
+     *
+     * @param empfohleneWartezeit     die Zeit in Millisekunden
+     */
+     public final void setWaittime(int empfohleneWartezeit) {
+         m_visualisationServer.setzeWartezeit(m_gameId.toString() 
+                                              + "-"
+                                              + m_runCounter,
+                                              empfohleneWartezeit);
+     }
+     
+     /**
+      *Meldet das Spiel von der Server-Vis-Komponente ab
+      *
+      * @params spielKennung     die Kennung des Spiels
+      */
+     public final void deregisterAtVisualisation() {
+         m_visualisationServer.spielAbmelden(m_gameId.toString()
+                                             + "-"
+                                             + m_runCounter);
+         
+     }
     
     
    

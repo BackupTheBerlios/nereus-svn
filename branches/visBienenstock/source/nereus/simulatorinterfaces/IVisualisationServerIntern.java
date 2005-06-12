@@ -53,9 +53,10 @@ public interface IVisualisationServerIntern {
      * Client-Vis-Komponente beim warten auf neue Informationen des 
      * aufrufenden Szenarios.
      * 
+     * @parem spielKennung           die Kennung des Spiels
      * @param empfohleneWartezeit    die Zeit in Millisekunden
      */
-    public void setzeWartezeit(String spielKennung);
+    public void setzeWartezeit(String spielKennung, int empfohleneWartezeit);
     
     /**
      * Speichert die Informationen eines Spiels.
