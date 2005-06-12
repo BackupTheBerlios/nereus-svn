@@ -80,7 +80,7 @@ public class BienenstockVisSteuerung extends Thread implements IVisualisationOut
         fenster.show();
         karten = new LinkedList();
         this.start();
-        visClient.startUebertragung();
+        visClient.starteUebertragung();
     }
     
     /**
@@ -89,8 +89,10 @@ public class BienenstockVisSteuerung extends Thread implements IVisualisationOut
      * @param karte
      */
     public void visualisiere(Object visObject) {
-        // hinzufuegen der neuen Karte
-        karten.addLast(visObject);
+        if (visObject instanceof VisKarte) {
+            // hinzufuegen der neuen Karte
+            karten.addLast(visObject);
+        }
     }
     
     /**
@@ -188,7 +190,7 @@ public class BienenstockVisSteuerung extends Thread implements IVisualisationOut
                 }
             }
         }
-        visClient.stopUebertragung();
+        visClient.stoppeUebertragung();
     }
 }
 
