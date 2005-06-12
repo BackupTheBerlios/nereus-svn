@@ -97,7 +97,7 @@ public class Visualisierung extends Thread {
      * setzt die zu visualisierende Karte um einen hoch
      */
     public void vor() {
-        if (naechste < karten.size()) {
+        if ((naechste + 1)< karten.size()) {
             naechste = naechste + 1;
             fenster.visualisiere((VisKarte)karten.get(naechste));
         }
@@ -133,7 +133,7 @@ public class Visualisierung extends Thread {
                     } catch (InterruptedException e) {
                     }
             } else {
-                // ?berpr?fen ob eine neue Karte da ist
+                // ueberpruefen ob eine neue Karte da ist
                 if (naechste < karten.size()) {
                     //neue Karte weiterleiten
                     fenster.visualisiere((VisKarte)karten.get(naechste));
@@ -146,6 +146,13 @@ public class Visualisierung extends Thread {
                         }
                     } catch (InterruptedException e) {
                         System.out.println("Visualisierung wurde unterbrochen");
+                    }
+                } else {
+                    try {
+                        synchronized (this) {
+                            this.wait(10);
+                        }
+                    } catch (InterruptedException e) {
                     }
                 }
             }

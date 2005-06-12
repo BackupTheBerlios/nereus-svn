@@ -123,12 +123,12 @@ public class VisualisierungFenster extends Frame {
     /**
      * der zurueck Knopf
      */
-    Button zurueck = new Button("Zurueck");
+    Button zurueck = new Button("<");
     
     /**
      * der vor Knopf
      */
-    Button vor = new Button("Vor");
+    Button vor = new Button(">");
     
     Label runde = new Label("Runde: ");
     
@@ -191,13 +191,19 @@ public class VisualisierungFenster extends Frame {
         zurueck.addActionListener(zurueckAktion);
         vor.addActionListener(vorAktion);
         knoepfe.setLayout(new FlowLayout());
-        knoepfe.add(zurueck, FlowLayout.LEFT);
-        knoepfe.add(pause, FlowLayout.CENTER);
-        knoepfe.add(vor, FlowLayout.RIGHT);
-        knoepfe.add(runde, FlowLayout.LEFT);
-        knoepfe.add(rundenNr, FlowLayout.LEADING);
+//        knoepfe.add(zurueck, FlowLayout.LEFT);
+//        knoepfe.add(pause, FlowLayout.CENTER);
+//        knoepfe.add(vor, FlowLayout.RIGHT);
+//        knoepfe.add(runde, FlowLayout.LEFT);
+//        knoepfe.add(rundenNr, FlowLayout.LEADING);
+        knoepfe.add(zurueck);
+        knoepfe.add(pause);
+        knoepfe.add(vor);
+        knoepfe.add(runde);
+        knoepfe.add(rundenNr);
         add(knoepfe, BorderLayout.SOUTH);
         fenster = this;
+        fenster.setVisible(false);
 	fenster.setTitle("Bienenstockvisualisierung");
         fenster.setFont(schrift);
         //Schliessen
@@ -209,8 +215,8 @@ public class VisualisierungFenster extends Frame {
 
         //Groesse und Position setzen
 	Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-	fenster.setSize((int)screen.getWidth(), (int)screen.getHeight() - 30);
-        fenster.setLocation(0, fenster.getInsets().top);
+	fenster.setSize(0,0);
+	fenster.setLocation(0, fenster.getInsets().top);
 
         //Bilder laden
         bildBienenstock = Toolkit.getDefaultToolkit().getImage(pfad + "bienenstock.gif");
@@ -257,6 +263,23 @@ public class VisualisierungFenster extends Frame {
                 maxY = pos.gibYPosition();
             }
         }
+        initiiert = true;
+        
+        //Groesse und Position neu setzen
+        Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+        int x = ((maxX - minX + 1) * groesseX) + 10;
+        int y = ((maxY - minY + 2) * groesseY) 
+            + fenster.getInsets().top;
+	fenster.setSize(
+            x, y);
+	fenster.setLocation(
+            (((int)screen.getWidth()) - x) / 2, 
+            ((((int)screen.getWidth()) - y) / 2) 
+                + fenster.getInsets().top);
+        
+        //Fenster sichtbar machen
+        fenster.setVisible(true);
+        
     }
     
     /**
