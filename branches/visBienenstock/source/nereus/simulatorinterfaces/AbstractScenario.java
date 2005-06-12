@@ -4,7 +4,6 @@
  * Letzte Änderung: 12. Juni 2005 durch Samuel Walz
  * Autoren        : Daniel Friedrich
  *                  Eugen Volk
- *                  Samuel Walz (samuel@gmx.info)
  *
  *
  *
@@ -134,18 +133,15 @@ public abstract class AbstractScenario implements Serializable {
      * @param InformationHandler vishandler - InformationHandler
      * @param Hashtable parameter - Spielparameter
      * @param gameConf zu verwendende Konfugurationdatei mit Karen-Namen und ScenarioKonfidatei-Namen.
-     * @param visServer zu verwendende Server-Vis-Komponente
      */
     public void initialize(
             Id gameId,
             IInformationHandler visHandler,
             Hashtable parameter,
-            GameConf gameConf,
-            IVisualisationServerIntern visServer){
+            GameConf gameConf){
         m_gameId = gameId;
         m_visHandler = visHandler;
         m_parameter = parameter;
-        m_visualisationServer = visServer;
     }
     
     
@@ -279,6 +275,15 @@ public abstract class AbstractScenario implements Serializable {
      * @return LinkedList - Liste der Parameter
      */
     public abstract LinkedList getScenarioParameter(GameConf gameConf);
+    
+    /**
+     * Setzt die Server-Vis-Komponente
+     *
+     * @param visServer    Die Server-Vis-Komponente
+     */
+    public final void setVisServer(IVisualisationServerIntern visServer) {
+        m_visualisationServer = visServer;
+    }
     
     /**
      * Erhöht den Wert von m_runCounter um 1 und meldet das Szanario an der
