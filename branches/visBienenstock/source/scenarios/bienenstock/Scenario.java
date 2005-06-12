@@ -1,7 +1,7 @@
 /*
  * Dateiname      : Scenario.java
  * Erzeugt        : 16. Oktober 2004
- * Letzte Änderung: 08. Juni 2005 durch Samuel Walz
+ * Letzte Änderung: 12. Juni 2005 durch Samuel Walz
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (samuel@gmx.info)
  *                  Eugen Volk
@@ -235,12 +235,10 @@ public class Scenario
      */
     public Scenario(Id gameId,
             IInformationHandler visHandler,
-            Hashtable parameterTabelle,
-            IVisualisationServerIntern visServer) {
+            Hashtable parameterTabelle) {
         super(gameId,
                 visHandler,
-                parameterTabelle,
-                visServer);
+                parameterTabelle);
         this.serverInfoObject=ServerInfoObject.m_instance;
         this.gameConf=(GameConf)serverInfoObject.getGameConf(this.SZENARIONAME);
         this.KARTENDATEINAME=this.gameConf.getKartenDateiName();
@@ -259,8 +257,6 @@ public class Scenario
     
     
     
-    
-    
     /**
      * Initialisiert die Werte m_gameId, visHandler und parameter.
      * Dient als ersatz des parametrisierten Konstruktors.
@@ -273,12 +269,10 @@ public class Scenario
             Id gameId,
             IInformationHandler visHandler,
             Hashtable parameterTabelle,
-            GameConf gameConf,
-            IVisualisationServerIntern visServer){
+            GameConf gameConf){
         super.m_gameId = gameId;
         super.m_visHandler = visHandler;
         super.m_parameter = parameterTabelle;
-        super.m_visualisationServer = visServer;
         
         this.serverInfoObject=ServerInfoObject.m_instance;
         this.gameConf=gameConf;
@@ -286,7 +280,6 @@ public class Scenario
         this.SZENARIOCONFIGDATEINAME=this.gameConf.getParameterDateiName();
         setzeParameter(parameterTabelle);
     }
-    
     
     
     /**
@@ -412,15 +405,9 @@ public class Scenario
             biene.aktionscodeSetzen(myActionCode);
         }
         
-        // Szenario an der Server-Vis-Komponente anmelden
-        try {
-            visAuthCode = 
-                m_visualisationServer.spielAnmelden((String)parameter.gibWert("ScenarioName"), 
-                                                    2000);
-        } catch (DoppeltesSpielException fehler) {
-            System.out.println("Konnte Spiel für die Visualisierung nicht "
-                                + "anmelden: Doppelte ID!");
-        }
+        
+        //Setzen der empfohlenen Wartezeit an der Server-Vis-Komponente
+        super.setVisClientWaittime(500);
         
         // Testweiese die Liste aller verfügbaren Parameter ausgeben:
         Iterator listenlaeufer = parameter.gibParameterHashTabelle().keySet().iterator();
@@ -529,8 +516,6 @@ public class Scenario
      * mitteilt und alles abmeldet.
      */
     private synchronized void endphase() {
-        // Spiel von der Server-Vis-Komponente abmelden
-        m_visualisationServer.spielAbmelden(visAuthCode);
         
         phase = Konstanten.ENDPHASE;
         System.out.println("SPIEL BEENDET.");
@@ -946,10 +931,10 @@ public class Scenario
         startphase();
         
         
-        while (!endbedingungTrifftZu()) { 
+        while (!endbedingungTrifftZu()) {
             // Übertragen der Spielinformationen an die Server-Vis-Komponente
-            m_visualisationServer.speichereSpielInformationen(visAuthCode, 
-                                                 spielkarte.visualisieren());
+            super.saveGameInformation(spielkarte.visualisieren());
+            
             wartephase();
             bearbeitungsphase();
             spielkarte.createRoundStatistik(this.statistik);
