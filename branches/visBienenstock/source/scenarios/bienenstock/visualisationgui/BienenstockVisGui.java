@@ -76,7 +76,7 @@ public class BienenstockVisGui extends Frame {
     /**
      * der Pfad zu den librarys
      */
-    private String pfad = "../../../../libs/bilder/";
+    private String pfad = "/home/philip/workspace/nereus/branches/visBienenstock/libs/bilder/";
     
     /**
      * das Bild vom Bienenstock
@@ -210,6 +210,7 @@ public class BienenstockVisGui extends Frame {
         }
     };
     
+     
     /**
      * der Konstruktor
      *
@@ -347,7 +348,7 @@ public class BienenstockVisGui extends Frame {
                     int unten = 46;
                     int links = 2;
                     int rechts = 36;
-                    int bildBieneX = 12;
+                    int bildBieneX = - 5;
                     int bildBieneY = 0;
                     
                     // temporaerer Speicher fuer die anzahl der am Boden 
@@ -377,21 +378,21 @@ public class BienenstockVisGui extends Frame {
                             if (tmpStock.gibFliegendeBienen().size() > 0) {
                                 g.drawImage(bildBiene,
                                         ((x - minX) * groesseX) + rechts,
-                                        ((y - minY) * groesseY) + abstandOben + oben,
+                                        ((y - minY) * groesseY) + abstandOben + oben -12,
                                         this);
-                                //if (tmpStock.gibFliegendeBienen().size() > 1) {
+                                if (tmpStock.gibFliegendeBienen().size() > 1) {
                                     g.drawString("" + tmpStock.gibFliegendeBienen().size(),
                                             ((x - minX) * groesseX) + rechts - bildBieneX,
                                             ((y - minY) * groesseY) + abstandOben 
                                                     + oben - bildBieneY);
-                                //}
+                                }
                             }
                             tmpBienen = tmpStock.gibWartendeBienen().size() 
                                     + tmpStock.gibTanzendeBienen().size();
                             if (tmpBienen > 0) {
                                 g.drawImage(bildBiene,
                                         ((x - minX) * groesseX) + rechts,
-                                        ((y - minY) * groesseY) + abstandOben + unten,
+                                        ((y - minY) * groesseY) + abstandOben + unten - 12,
                                         this);
                                 //if (tmpBienen > 1) {
                                     g.drawString("" + tmpBienen,
@@ -415,7 +416,7 @@ public class BienenstockVisGui extends Frame {
                             if (tmpBlume.gibFliegendeBienen().size() > 0) {
                                 g.drawImage(bildBiene,
                                         ((x - minX) * groesseX) + rechts,
-                                        ((y - minY) * groesseY) + abstandOben + oben,
+                                        ((y - minY) * groesseY) + abstandOben + oben - 12,
                                         this);
                                 //if (tmpStock.gibFliegendeBienen().size() > 1) {
                                     g.drawString("" + tmpBlume.gibFliegendeBienen().size(),
@@ -430,7 +431,7 @@ public class BienenstockVisGui extends Frame {
                             if (tmpBienen > 0) {
                                 g.drawImage(bildBiene,
                                         ((x - minX) * groesseX) + rechts,
-                                        ((y - minY) * groesseY) + abstandOben + unten,
+                                        ((y - minY) * groesseY) + abstandOben + unten - 12,
                                         this);
                                 //if (tmpBienen > 1) {
                                     g.drawString("" + tmpBienen,
@@ -450,7 +451,7 @@ public class BienenstockVisGui extends Frame {
                             if (tmpFeld.gibFliegendeBienen().size() > 0) {
                                 g.drawImage(bildBiene,
                                         ((x - minX) * groesseX) + rechts,
-                                        ((y - minY) * groesseY) + abstandOben + oben,
+                                        ((y - minY) * groesseY) + abstandOben + oben - 12,
                                         this);
                                 //if (tmpStock.gibFliegendeBienen().size() > 1) {
                                     g.drawString("" + tmpFeld.gibFliegendeBienen().size(),
@@ -464,7 +465,7 @@ public class BienenstockVisGui extends Frame {
                             if (tmpBienen > 0) {
                                 g.drawImage(bildBiene,
                                         ((x - minX) * groesseX) + rechts,
-                                        ((y - minY) * groesseY) + abstandOben + unten,
+                                        ((y - minY) * groesseY) + abstandOben + unten - 12,
                                         this);
                                 //if (tmpBienen > 1) {
                                     g.drawString("" + tmpBienen,
