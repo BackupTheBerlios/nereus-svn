@@ -308,7 +308,7 @@ public abstract class AbstractScenario implements Serializable {
      *
      * @param information    Die Spielinformation
      */
-    public final void saveGameInformation(Serializable information) {
+    protected final void saveGameInformation(Serializable information) {
         m_visualisationServer.speichereSpielInformation(m_gameId.toString() 
                                                         + "."
                                                         + m_runCounter,
@@ -322,7 +322,7 @@ public abstract class AbstractScenario implements Serializable {
      *
      * @param empfohleneWartezeit     die Zeit in Millisekunden
      */
-     public final void setWaittime(int empfohleneWartezeit) {
+     protected final void setVisClientWaittime(int empfohleneWartezeit) {
          m_visualisationServer.setzeWartezeit(m_gameId.toString() 
                                               + "."
                                               + m_runCounter,
