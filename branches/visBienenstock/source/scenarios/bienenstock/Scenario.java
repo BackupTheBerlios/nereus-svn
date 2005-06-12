@@ -939,6 +939,8 @@ public class Scenario
             bearbeitungsphase();
             spielkarte.createRoundStatistik(this.statistik);
         }
+        // Übertragen der letzten Spielinformationen an die Server-Vis-Komponente
+        super.saveGameInformation(spielkarte.visualisieren());
         endphase();
         
         
