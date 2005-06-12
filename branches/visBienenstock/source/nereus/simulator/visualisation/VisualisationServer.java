@@ -194,8 +194,6 @@ public class VisualisationServer extends UnicastRemoteObject
                 (LinkedList)informationsspeicher.get(spielKennung), 
                 ausschnittsbeginn);
         } else {
-            gibFehlerAus("gibSpielInformationen", 
-                         "Falsche Spielkennung:" + spielKennung);
             // Sind noch keine Informationen vorhanden, wird null zurückgegeben
             return new LinkedList();
         }
@@ -210,13 +208,12 @@ public class VisualisationServer extends UnicastRemoteObject
      * @return   Die empfohlene Wartezeit in Millisekunden
      */
     public int gibWartezeit(String spielKennung) throws RemoteException {
+        
         // Informationen suchen und zurückgeben
-        if (informationsspeicher.containsKey(spielKennung)) {
-            return ((Integer)informationsspeicher.get(spielKennung)).intValue();
+        if (wartezeiten.containsKey(spielKennung)) {
+            return ((Integer)wartezeiten.get(spielKennung)).intValue();
         } else {
-            gibFehlerAus("gibWartezeit", 
-                         "Falsche Spielkennung:" + spielKennung);
-            // Sind noch keine Informationen vorhanden, standard zurückgeben
+            // Ist keine Wartezeit vorhanden, standard zurückgeben
             return standardwartezeit;
         }
     }
@@ -251,7 +248,7 @@ public class VisualisationServer extends UnicastRemoteObject
      *
      * @return               der Authentifizierungscode
      */
-    public void spielAnmelden(String spielKennung, int wartezeit) 
+    public void spielAnmelden(String spielKennung) 
                                 throws DoppeltesSpielException{
         System.out.println("visServer: Ein Spiel versucht sich mit der Kennung "
                            + spielKennung + " anzumelden...");
