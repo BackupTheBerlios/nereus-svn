@@ -58,12 +58,23 @@ public interface IVisualisationServerExtern extends Remote {
      * Gibt den Ausschnitt der Informationen zu einem Spiel ab einer 
      * gewünschten Position zurück.
      *
-     * @param spielID            ID des gewünschten Spiels.
+     * @param spielKennung       Kennung des gewünschten Spiels.
      * @param ausschnittsbeginn  Eine ganzzahlige Zahl größer -1 (>= 0).
      *
      * @return  Eine Liste der gewünschten Informationen
      */
-    public LinkedList gibSpielInformationen (String spielID, int ausschnittsbeginn)
-        throws RemoteException;
+    public LinkedList gibSpielInformationen (String spielKennung, 
+                                             int ausschnittsbeginn)
+                                             throws RemoteException;
+    
+    /**
+     * Gibt die empfohlene Wartezeit zwischen den Informationsanfragen zu
+     * einem Spiel zurück.
+     * 
+     * @param spielKennung       Kennung des gewünschten Spiels.
+     *
+     * @return   Die empfohlene Wartezeit in Millisekunden
+     */
+    public int gibWartezeit (String spielKennung) throws RemoteException;
 }
 

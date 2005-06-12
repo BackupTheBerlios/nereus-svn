@@ -1,9 +1,10 @@
 /*
  * Dateiname      : AbstractScenario.java
  * Erzeugt        : 13. Mai 2003
- * Letzte Änderung: 08. Juni 2005 durch Samuel Walz
+ * Letzte Änderung: 12. Juni 2005 durch Samuel Walz
  * Autoren        : Daniel Friedrich
  *                  Eugen Volk
+ *                  Samuel Walz (samuel@gmx.info)
  *
  *
  *
@@ -85,6 +86,11 @@ public abstract class AbstractScenario implements Serializable {
     protected Id m_gameId;
     
     /**
+     * Nummer des Spieldurchlaufs.
+     */
+    private int m_runCounter = 0;
+    
+    /**
      * Szenariohandler des Szenarios.
      */
     protected AbstractScenarioHandler m_scenarioHandler = null;
@@ -99,18 +105,15 @@ public abstract class AbstractScenario implements Serializable {
      *
      * @param vishandler - InformationHandler
      * @param parameter - Spielparameter
-     * @param visServer - Server-Vis-Komponente
      */
     public AbstractScenario(
             Id gameId,
             IInformationHandler visHandler,
-            Hashtable parameter,
-            IVisualisationServerIntern visServer){
+            Hashtable parameter){
         super();
         m_gameId = gameId;
         m_visHandler = visHandler;
         m_parameter = parameter;
-        m_visualisationServer = visServer;
     }
     
     /**
@@ -274,6 +277,25 @@ public abstract class AbstractScenario implements Serializable {
      * @return LinkedList - Liste der Parameter
      */
     public abstract LinkedList getScenarioParameter(GameConf gameConf);
+    
+    /**
+     * Setzt die Server-Vis-Komponente
+     *
+     * @param visServer  die Server-Vis-Komponente
+     */
+    public final void setVisServer(IVisualisationServerIntern visServer) {
+        m_visualisationServer = visServer;
+    }
+    
+    /**
+     * Erhöht den Wert von m_runCounter um 1 und meldet das Szanario an der
+     * Server-Vis-Komponente an. 
+     */
+    public final void registerAtVisualisation() {
+        m_visualisationServer.spielAnmelden(m_gameId.toString() 
+                                            + "-"
+                                            + m_runCounter);
+    }
     
     
    

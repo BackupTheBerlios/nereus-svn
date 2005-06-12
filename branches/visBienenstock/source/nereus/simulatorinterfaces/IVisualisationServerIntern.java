@@ -1,7 +1,7 @@
 /*
  * Dateiname      : IVisualisationServerIntern.java
  * Erzeugt        : 18. Mai 2005
- * Letzte Änderung: 10. Juni 2005 durch Samuel Walz
+ * Letzte Änderung: 12. Juni 2005 durch Samuel Walz
  * Autoren        : Samuel Walz (samuel@gmx.info)
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
@@ -39,35 +39,38 @@ public interface IVisualisationServerIntern {
 
     /**
      * Meldet ein Spiel für die Speicherung seiner Informationen an.
-     * Gibt eine Zahl zurück, die als Authentifizierung für die Übergabe
-     * der Informationen dient, damit diese dem richtigen Spiel zugeordnet
-     * werden können. 
      *
-     * @param spielID
-     * @param wartezeit
+     * @param spielKennung     die Kennung des Spiels
      *
-     * @return  Eine natürliche Zahl größer Null.
-     *
-     * @throws doppeltesSpielException  Wenn ein Spiel mit der gleichen ID
+     * @throws doppeltesSpielException  Wenn ein Spiel mit der gleichen Kennung
      *                                  bereits angemeldet ist.
      */
-    public long spielAnmelden (String spielID, int wartezeit) 
+    public void spielAnmelden (String spielKennung) 
         throws DoppeltesSpielException;
 
     /**
+     * Übergibt der Server-Vis-Komponente die Empfohlene Wartezeit für die 
+     * Client-Vis-Komponente beim warten auf neue Informationen des 
+     * aufrufenden Szenarios.
+     * 
+     * @param empfohleneWartezeit    die Zeit in Millisekunden
+     */
+    public void setzeWartezeit(String spielKennung);
+    
+    /**
      * Speichert die Informationen eines Spiels.
      *
-     * @param authCode       Eine natürliche Zahl größer Null.
-     * @param information
+     * @param spielKennung     die Kennung des Spiels.
+     * @param information      die zu speichernden Informationen
      */
-    public void speichereSpielInformationen (long authCode, 
-                                             Serializable information);
+    public void speichereSpielInformation (String spielKennung, 
+                                           Serializable information);
 
     /**
      * Meldet ein Spiel für die Speicherungen von Informationen ab.
      *
-     * @param authCode   Eine natürliche Zahl größer Null.
+     * @param spielKennung    die Kennung des Spiels.
      */
-    public void spielAbmelden (long authCode);
+    public void spielAbmelden (String spielKennung);
 }
 
