@@ -261,6 +261,7 @@ public class BienenstockVisGui extends Frame {
         bildPlatz = Toolkit.getDefaultToolkit().getImage(pfad + "platz.gif");
         if (bildBiene == null) {
             System.out.println("Bilder in " + pfad + " nicht gefunden");
+        }
     }
 
     /**
