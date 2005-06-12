@@ -300,7 +300,7 @@ public abstract class AbstractScenario implements Serializable {
         // Anmelden an der Server-Vis-Komponente
         try {
             m_visualisationServer.spielAnmelden(m_gameId.toString() 
-                                                + "-"
+                                                + "."
                                                 + m_runCounter);
         } catch(DoppeltesSpielException fehler) {
             System.out.println(fehler.getMessage());
@@ -314,7 +314,7 @@ public abstract class AbstractScenario implements Serializable {
      */
     public final void saveGameInformation(Serializable information) {
         m_visualisationServer.speichereSpielInformation(m_gameId.toString() 
-                                                        + "-"
+                                                        + "."
                                                         + m_runCounter,
                                                         information);
     
@@ -328,7 +328,7 @@ public abstract class AbstractScenario implements Serializable {
      */
      public final void setWaittime(int empfohleneWartezeit) {
          m_visualisationServer.setzeWartezeit(m_gameId.toString() 
-                                              + "-"
+                                              + "."
                                               + m_runCounter,
                                               empfohleneWartezeit);
      }
@@ -340,7 +340,7 @@ public abstract class AbstractScenario implements Serializable {
       */
      public final void deregisterAtVisualisation() {
          m_visualisationServer.spielAbmelden(m_gameId.toString()
-                                             + "-"
+                                             + "."
                                              + m_runCounter);
          
      }
