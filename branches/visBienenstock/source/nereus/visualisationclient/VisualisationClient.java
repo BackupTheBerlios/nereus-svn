@@ -100,6 +100,15 @@ public class VisualisationClient extends AbstractVisualisationClient {
         this.visualisierung = ausgabe;
     }
 
+     /**
+     * Gibt zurück ob das Spiel schon zuende ist.
+     *
+     * @return     ein boolean-wert
+     */
+    public boolean spielZuende() {
+        return alleInformationenAbgeholt;
+    }
+    
     /**
      * Startet die Abfrage und Übergabe der zu visualisierenden Daten.
      */
@@ -155,14 +164,15 @@ public class VisualisationClient extends AbstractVisualisationClient {
       
                         if (information instanceof Spielende) {
                             alleInformationenAbgeholt = true;
-                        }
+                        } else {
                         
-                        synchronized (this) {
-                            if (!stop) {
-                                visualisierung.visualisiere(information);
+                            synchronized (this) {
+                                if (!stop) {
+                                    visualisierung.visualisiere(information);
+                                }
                             }
+                            ausschnittsbeginn = ausschnittsbeginn + 1;
                         }
-                        ausschnittsbeginn = ausschnittsbeginn + 1;
                         
                             
                     }
