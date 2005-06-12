@@ -1,7 +1,7 @@
 /*
  * Dateiname      : BienenstockVisualisierung.java
  * Erzeugt        : 10. Juni 2005
- * Letzte Änderung: 10. Juni 2005 durch Dietmar Lippold
+ * Letzte Änderung: 12. Juni 2005 durch Dietmar Lippold
  * Autoren        : Samuel Walz (samuel@gmx.info)
  *                  Dietmar Lippold
  *
@@ -24,12 +24,14 @@
  */
 
 
-package nereus.visualisationclient;
+package scenarios.bienenstock.visualisationgui;
 
 import java.lang.NumberFormatException;
 import java.rmi.RemoteException;
 import java.rmi.NotBoundException;
 import java.net.MalformedURLException;
+
+import nereus.visualisationclient.VisualisationClient;
 
 /**
  * Startet die Visualisierung für das Bienenstock-Szenario.
