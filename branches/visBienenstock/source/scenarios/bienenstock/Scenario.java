@@ -41,7 +41,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Vector;
 
-import nereus.exceptions.DoppeltesSpielException;
 import nereus.exceptions.InvalidAgentException;
 import nereus.exceptions.NotEnoughEnergyException;
 import nereus.exceptions.InvalidElementException;
