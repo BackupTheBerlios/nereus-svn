@@ -1,7 +1,7 @@
 /*
  * Dateiname      : BienenstockVisGui.java
  * Erzeugt        : 26. April 2005
- * Letzte ?nderung: 12. Juni 2005 durch Philip Funck
+ * Letzte ?nderung: 13. Juni 2005 durch Philip Funck
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
  *
@@ -93,6 +93,9 @@ public class BienenstockVisGui extends Frame {
      */
     private Image bildPlatz;
     
+    /**
+     * das Bild fuer die Biene
+     */
     private Image bildBiene;
     
     /**
@@ -115,6 +118,10 @@ public class BienenstockVisGui extends Frame {
      */
     private int maxY = -1000000000;
     
+    /**
+     * das Panel fuer die Buttons zur Steuerung 
+     * der darzustellenden Sequenz
+     */
     Panel knoepfe = new Panel();
     
     /**
@@ -138,9 +145,14 @@ public class BienenstockVisGui extends Frame {
     Label runde = new Label("Runde: ");
     
     /**
-     * das Label fuer die Anzeige der Rundennummer
+     * der Button zum abschicken der Rundennummer
      */
-    Label rundenNr = new Label("0 ");
+    Button rundeButton = new Button("ok");
+    
+    /**
+     * das Feld fuer die Eingabe der Rundennummer
+     */
+    TextField rundeFeld = new TextField("0");
     
     /**
      * das Label fuer die Einstellung der Zeit
@@ -168,6 +180,17 @@ public class BienenstockVisGui extends Frame {
     ActionListener zeitAktion = new ActionListener() {
 	public void actionPerformed(ActionEvent e) {
             vis.setzeZeit(Integer.parseInt(zeitFeld.getText()));
+            zeitButton.setVisible(false);
+        }
+    };
+
+    /**
+     * der windowListener fuer das Einstellen der Zeit
+     */
+    ActionListener rundeAktion = new ActionListener() {
+	public void actionPerformed(ActionEvent e) {
+            vis.setzeNaechste(Integer.parseInt(rundeFeld.getText()));
+            rundeButton.setVisible(false);
         }
     };
     
@@ -215,6 +238,26 @@ public class BienenstockVisGui extends Frame {
     
      
     /**
+     * die Aktion, die bei Aenderung des Inhaltes des TextFeldes zeitFeld
+     * ausgefuehrt werden soll
+     */
+    TextListener zeitListen = new TextListener() {
+        public void textValueChanged(TextEvent e) {
+            zeitButton.setVisible(true);
+        }
+    };
+    
+    /**
+     * die Aktion, die bei Aenderung des Inhaltes des TextFeldes rundeFeld
+     * ausgefuehrt werden soll
+     */
+    TextListener rundeListen = new TextListener() {
+        public void textValueChanged(TextEvent e) {
+            rundeButton.setVisible(true);
+        }
+    };
+    
+    /**
      * der Konstruktor
      *
      */
@@ -228,17 +271,25 @@ public class BienenstockVisGui extends Frame {
         zurueck.addActionListener(zurueckAktion);
         vor.addActionListener(vorAktion);
         zeitButton.addActionListener(zeitAktion);
+        rundeButton.addActionListener(rundeAktion);
+        zeitFeld.addTextListener(zeitListen);
+        rundeFeld.addTextListener(rundeListen);
         
         //das Panel knoepfe fuellen
         knoepfe.setLayout(new FlowLayout());
         knoepfe.add(runde);
-        knoepfe.add(rundenNr);
+        knoepfe.add(rundeFeld);
+        knoepfe.add(rundeButton);
         knoepfe.add(zurueck);
         knoepfe.add(pause);
         knoepfe.add(vor);
         knoepfe.add(zeitLabel);
         knoepfe.add(zeitFeld);
         knoepfe.add(zeitButton);
+        
+        //werden erst wieder sichtbar, wenn der Inhalt geaendert wird
+        rundeButton.setVisible(false);
+        zeitButton.setVisible(false);
         
         //das Panel knoepfe hinzufuegen
         add(knoepfe, BorderLayout.SOUTH);
@@ -252,11 +303,14 @@ public class BienenstockVisGui extends Frame {
 	addWindowListener( new WindowAdapter() {
             public void windowClosing ( WindowEvent e ) {
               System.exit(0);
+              
             }
           } );
 
         //Groesse und Position setzen
 	Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+        //Groesse wird auf 0 gesetzt, da 
+        //<code>fenster.setVisible(false);</code> nicht funktioniert
 	fenster.setSize(0,0);
 
         //Bilder laden
@@ -318,6 +372,8 @@ public class BienenstockVisGui extends Frame {
         if (x > screen.getWidth() | y > screen.getHeight()) {
             fenster.setSize((int)screen.getWidth(), 
                             ((int)screen.getHeight() + fenster.getInsets().top));
+        } else if (x == 0 | y == 0) {
+            System.out.println("Karte der Groesse Null erhalten");
         } else {
             fenster.setSize(
                 x, y);
@@ -339,7 +395,7 @@ public class BienenstockVisGui extends Frame {
         g.setColor(new Color(0, 0, 0));
         
         if (karte != null) {
-            rundenNr.setText(karte.gibRundennummer() + " ");
+            rundeFeld.setText(karte.gibRundennummer() + "");
             HashMap felder = karte.gibFelder();
             VisFeld tmpFeld;
             int x, y;
