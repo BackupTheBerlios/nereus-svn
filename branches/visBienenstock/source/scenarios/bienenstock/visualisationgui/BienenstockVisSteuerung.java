@@ -1,7 +1,7 @@
 /*
  * Dateiname      : BienenstockVisSteuerung.java
  * Erzeugt        : 06. Mai 2005
- * Letzte ?nderung: 13. Juni 2005 durch Philip Funck
+ * Letzte ?nderung: 13. Juni 2005 durch Dietmar Lippold
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
  *                  Eugen Volk
@@ -27,18 +27,19 @@
 
 package scenarios.bienenstock.visualisationgui;
 
+import java.util.List;
 import java.util.LinkedList;
-
-import java.awt.*;
+import java.util.Collections;
 
 import scenarios.bienenstock.visualisierungsUmgebung.*;
 
 import nereus.simulatorinterfaces.IVisualisationOutput;
-
 import nereus.visualisationclient.VisualisationClient;
 
 /**
- * @author philip
+ * Steuerung der Visualisierung des Bienenstock-Szenarios.
+ *
+ * @author  Philip Funck
  *
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
@@ -53,7 +54,7 @@ public class BienenstockVisSteuerung extends Thread implements IVisualisationOut
     /**
      * die Liste mit den Karten, die visualisiert wurden und werden muessen. 
      */
-    private LinkedList karten;
+    private List karten;
     
     /**
      * die naechste zu visualisierende Karte, als Position in der Liste. 
@@ -61,10 +62,10 @@ public class BienenstockVisSteuerung extends Thread implements IVisualisationOut
     private volatile int naechste = 0;
     
     /**
-     * die Zeit in ms, die gewartet werden soll, bevor die naechste Karte fruehestens 
-     * visualisiert werden soll.
+     * die Zeit in ms, die gewartet werden soll, bevor die naechste Karte
+     * fruehestens visualisiert werden soll.
      */
-    private long zeit = 1000L;
+    private volatile int zeit = 1000;
     
     /**
      * gibt an, ob das Fenster eine Pause beantragt
@@ -74,7 +75,7 @@ public class BienenstockVisSteuerung extends Thread implements IVisualisationOut
     /**
      * der Link zum Client, bei dem sich die vis. anmeldet, abmeldet
      */    
-    VisualisationClient visClient;
+    private VisualisationClient visClient;
     
     /**
      * der Konstruktor initiiert das Frame und die Kartenliste
@@ -85,7 +86,7 @@ public class BienenstockVisSteuerung extends Thread implements IVisualisationOut
         visClient.anmeldung(this);
         fenster = new BienenstockVisGui(this);
         fenster.show();
-        karten = new LinkedList();
+        karten = Collections.synchronizedList(new LinkedList());
         this.start();
         visClient.starteUebertragung();
     }
@@ -96,11 +97,8 @@ public class BienenstockVisSteuerung extends Thread implements IVisualisationOut
      */
     public BienenstockVisSteuerung () {
         super();
-       }
-    
-    
-    
-    
+    }
+
     /**
      * initiiert das Frame und die Kartenliste
      *
@@ -124,7 +122,7 @@ public class BienenstockVisSteuerung extends Thread implements IVisualisationOut
         if (visObject instanceof VisKarte) {
             fenster.amEnde(false);
             // hinzufuegen der neuen Karte
-            karten.addLast(visObject);
+            karten.add(visObject);
         }
     }
     
@@ -212,9 +210,10 @@ public class BienenstockVisSteuerung extends Thread implements IVisualisationOut
                 try {
                     synchronized (this) {
                         this.wait(10);
-                        }
-                    } catch (InterruptedException e) {
                     }
+                } catch (InterruptedException e) {
+                    // Nichts tun.
+                }
             } else {
                 // ueberpruefen ob eine neue Karte da ist
                 if (naechste < karten.size()) {
@@ -239,6 +238,7 @@ public class BienenstockVisSteuerung extends Thread implements IVisualisationOut
                             this.wait(10);
                         }
                     } catch (InterruptedException e) {
+                        // Nichts tun.
                     }
                 }
             }
