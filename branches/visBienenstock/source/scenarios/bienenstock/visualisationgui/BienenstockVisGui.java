@@ -200,6 +200,7 @@ public class BienenstockVisGui extends Frame {
     ActionListener pauseAktion = new ActionListener() {
 	public void actionPerformed(ActionEvent e) {
             pause.setLabel("Weiter");
+            rundeButton.setVisible(true);
             vis.warte();
             pause.addActionListener(weiterAktion);
             pause.removeActionListener(pauseAktion);
@@ -212,6 +213,7 @@ public class BienenstockVisGui extends Frame {
     ActionListener weiterAktion = new ActionListener () {
         public void actionPerformed(ActionEvent e) {
             pause.setLabel("Pause");
+            rundeButton.setVisible(false);
             vis.weiter();
             pause.addActionListener(pauseAktion);
             pause.removeActionListener(this);
@@ -248,16 +250,6 @@ public class BienenstockVisGui extends Frame {
     };
     
     /**
-     * die Aktion, die bei Aenderung des Inhaltes des TextFeldes rundeFeld
-     * ausgefuehrt werden soll
-     */
-    TextListener rundeListen = new TextListener() {
-        public void textValueChanged(TextEvent e) {
-            rundeButton.setVisible(true);
-        }
-    };
-    
-    /**
      * der Konstruktor
      *
      */
@@ -273,11 +265,11 @@ public class BienenstockVisGui extends Frame {
         zeitButton.addActionListener(zeitAktion);
         rundeButton.addActionListener(rundeAktion);
         zeitFeld.addTextListener(zeitListen);
-        rundeFeld.addTextListener(rundeListen);
         
         //das Panel knoepfe fuellen
         knoepfe.setLayout(new FlowLayout());
         knoepfe.add(runde);
+        rundeFeld.setSize(20, 12);
         knoepfe.add(rundeFeld);
         knoepfe.add(rundeButton);
         knoepfe.add(zurueck);
@@ -302,7 +294,7 @@ public class BienenstockVisGui extends Frame {
         //Schliessen ermoeglichen
 	addWindowListener( new WindowAdapter() {
             public void windowClosing ( WindowEvent e ) {
-              System.exit(0);
+              fenster.dispose();
               
             }
           } );
@@ -367,6 +359,9 @@ public class BienenstockVisGui extends Frame {
         //Groesse und Position neu setzen
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         int x = ((maxX - minX + 1) * groesseX) + 10;
+        if (x < 450) {
+            x = 450;
+        }
         int y = ((maxY - minY + 2) * groesseY) 
             + fenster.getInsets().top;
         if (x > screen.getWidth() | y > screen.getHeight()) {
@@ -441,6 +436,7 @@ public class BienenstockVisGui extends Frame {
                                         ((y - minY) * groesseY) + abstandOben + oben -12,
                                         this);
                                 if (tmpStock.gibFliegendeBienen().size() > 1) {
+                                
                                     g.drawString("" + tmpStock.gibFliegendeBienen().size(),
                                             ((x - minX) * groesseX) + rechts - bildBieneX,
                                             ((y - minY) * groesseY) + abstandOben 
