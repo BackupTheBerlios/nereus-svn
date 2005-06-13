@@ -34,7 +34,7 @@
     <property name="startNektar" wert="100" type="int" changeable="true"/>
     <property name="maxGelHonig" wert="100" type="int" changeable="true"/>
     <property name="maxGelNektar" wert="100" type="int" changeable="true"/>
-    <property name="timeout" wert="100000" type="int" changeable="true"/>
+    <property name="timeout" wert="1000" type="int" changeable="true"/>
     <property name="kursNektarHonig" wert="2.0" type="double" changeable="true"/>
     <property name="maxNektarZuHonig" wert="50" type="int" changeable="true"/>
     <property name="unschaerfeWinkel" wert="0.1" type="double" changeable="false"/>

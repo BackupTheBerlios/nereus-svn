@@ -1,7 +1,7 @@
 /*
  * Dateiname      : Biene.java
  * Erzeugt        : 19. Mai 2004
- * Letzte Änderung: 26. Januar 2005 durch Samuel Walz
+ * Letzte Änderung: 4. Juni 2005 durch Eugen Volk
  *
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
@@ -100,6 +100,9 @@ public class Biene {
      * zuletzt per Tanz mitgeteilte Information der Biene.
      */
     private Info information;
+    
+    /** zuletzt per Tanz gesendete Information */
+    private Info gesendeteInformation;
     
     /**
      * Die ID, unter der die Biene im Simulator verwaltet wird.
@@ -226,6 +229,15 @@ public class Biene {
     }
     
     /**
+     * gibt die zuletzt per Tanz mitzugeteilende Information zurück.
+     *
+     * @return Info
+     */
+    Info gibGesendeteInformation() {
+        return this.gesendeteInformation;
+    }
+    
+    /**
      * gibt die Id innerhalb des Simulators zurück
      *
      * @return simId Id innerhalb des Simulators
@@ -321,6 +333,15 @@ public class Biene {
      */
     void setzeInformation(Info infoObjekt) {
         information = infoObjekt;
+    }
+    
+    /**
+     * setzt eine neue zu sendende bzw zu mitteilende Information.
+     *
+     * @param infoObjekt das zu setzende InfoObject
+     */
+    void setzeGesendeteInformation(Info infoObjekt){
+        this.gesendeteInformation=infoObjekt;
     }
 }
 

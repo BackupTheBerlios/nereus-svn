@@ -26,7 +26,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package nereus.utils;
+package nereus.agentutils;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -47,7 +47,7 @@ public class Dijkstra {
      *
      * @return HashMap mit Vorgaengern zu je Knoten
      */
-    public static HashMap shortestPath(Object start, Set knotenMenge, HashMap nachfolgeKnoten){
+    public static HashMap allShortestPath(Object start, Set knotenMenge, HashMap nachfolgeKnoten){
         
         HashMap distanceTable=new HashMap(); // Distance
         HashMap vorgaenger=new HashMap();  // vorgänger
@@ -111,7 +111,7 @@ public class Dijkstra {
      */
     public static LinkedList shortestPath(Object startKnoten, Object zielKnoten, Set knotenMenge, HashMap nachfolgeKnoten){
         HashMap vorgaengerKnotenMap;
-        vorgaengerKnotenMap=shortestPath(startKnoten, knotenMenge, nachfolgeKnoten);
+        vorgaengerKnotenMap=allShortestPath(startKnoten, knotenMenge, nachfolgeKnoten);
         Object knoten;
         Object vorgaenger;
         LinkedList weg=new LinkedList();
@@ -128,6 +128,38 @@ public class Dijkstra {
         
         return weg;
     }
+    
+     /**
+     * Ermittelt den kuerzesten Weg (als Liste) von dem Start-Knoten zum Ziel-Knoten.
+     *
+     * @param startKnoten Start-Knoten 
+     * @param zielKnoten Ziel-Knoten 
+     * @param vorgaengerKnoten eine HashMap, die zu jedem Knoten seinen Vorganger angibt;
+     * nach der Bestimmung von allen kürzesten Pfaden (z.B. mittels Dijkstra#allShortestPath() )
+     * @param nachfolgeKnoten HashMap die zu jedem Knoten alle seine Nachfolger enthält
+     * @return Weg von startKnoten zum zeilKnoten, wobei der startKnoten nicht in der
+     * Liste enthalten ist. Falls der weg nicht existiert, so wird null zurückgeliefert.
+     */
+    public static LinkedList shortestPath(Object startKnoten, Object zielKnoten, HashMap vorgaengerKnoten){
+        HashMap vorgaengerKnotenMap;
+        Object knoten;
+        Object vorgaenger;
+        LinkedList weg=new LinkedList();
+        knoten=zielKnoten;
+        while((knoten!=null)){
+            weg.addFirst(knoten);
+            vorgaenger=vorgaengerKnoten.get(knoten);
+            knoten=vorgaenger;
+        }
+        /* prüfung, ob der oberste Element in der liste startKnoten ist */
+        if (weg.getFirst().equals(startKnoten)) {
+            weg.removeFirst(); 
+        }else weg=null; // false nicht, dann gibt es kein weg
+        
+        return weg;
+    }
+    
+    
     
 }
 

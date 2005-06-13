@@ -1,7 +1,7 @@
 /*
  * Dateiname      : EinfacheFeld.java
  * Erzeugt        : 6. Oktober 2004
- * Letzte Änderung: 14. Februar 2005 durch Philip Funck
+ * Letzte Änderung: 8. Juni 2005 durch Eugen Volk
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
  *
@@ -72,6 +72,9 @@ public class EinfachesFeld {
      * @associates java.lang.Integer
      */
     private HashSet tanzendeBienen;
+    
+    /** Liste aller Bienen die weder tanzend, fliegend oder wartend sind */
+    private HashSet sonstigeBienen;
     
     /**
      * Konstrukotor.
@@ -146,5 +149,15 @@ public class EinfachesFeld {
      */
     public HashSet gibIDsTanzendeBienen() {
         return (HashSet) tanzendeBienen.clone();
+    }
+    
+     /**
+     * gibt eine Liste der IDs aller auf dem Feld weder fliegenden, tanzenden noch wartenden Bienen zurück.
+     *
+     * @associates java.lang.Integer
+     * @return HashSet
+     */
+     public HashSet gibIDsSonstigeBienen() {
+        return (HashSet) sonstigeBienen.clone();
     }
 }

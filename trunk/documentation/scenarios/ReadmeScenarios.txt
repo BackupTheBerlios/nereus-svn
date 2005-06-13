@@ -1,7 +1,7 @@
 /*
  * Dateiname      : ReadmeScenarios.txt
  * Erzeugt        : 5. Juni 2005
- * Letzte Änderung: 5. Juni 2005 durch Dietmar Lippold
+ * Letzte Änderung: 6. Juni 2005 durch Dietmar Lippold
  * Autoren        : Eugen Volk
  *                  Dietmar Lippold
  *
@@ -29,19 +29,21 @@
  */
 
 
-Hinweise zum Erstellen eines neuen Scenarios
+Hinweise zum Erstellen eines neuen Szenarios
 --------------------------------------------
 
-Um neue Scenarien zu compilieren, müssen diese sich im Ordner
-source/scenarios befinden.
+Um neue Szenarien zu compilieren, müssen diese sich im Ordner
+source/scenarios befinden. Die Datei Scenario.java muss sich im
+Hauptverzeichnis des neuen Szenario-Ordners befinden, d.h. unter
+source/scenarios/<scenario-name>/Scenario.java
 
-Die Struktur eines Scenario muss wie folgt aussehen:
+Für die Agenten zum Szenario gelten folende Regeln:
 
- * Verzeichnis scenario/<scenario-name>/agents enthält Agenten fuer den
-   Client, wobei jeder lauffähige Agent mit "Agent" enden muss z.B:
+ * Das Verzeichnis source/agents/<scenario-name>/ enthält die Agenten für
+   den Client, wobei jeder lauffähige Agent mit "Agent" enden muss, z.B:
    BienenstockAgent.java.
 
- * Die Datei Scenario.java muss sich in dem Hauptverzeichnis des neuen
-   scenario-Ordners befinden, d.h. unter
-   scenario/<scenario-name>/Scenario.java
+ * Jeder Agent, der an einem Spiel teilnehmen sollte, muss in der Datei
+   /config/clientconfig.xml eingetragen sein, um bei der Agentenanmeldung
+   zur Verfügung zu stehen.
 

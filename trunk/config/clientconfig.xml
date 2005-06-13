@@ -10,7 +10,9 @@
 
 <config>
 <scenario name="bienenstock">
+    <agent name="SimplerKooperativerBDIAgent"/>
+    <agent name="SimplerUnkoopBDIAgent"/>
     <agent name="UnkooperativerBDIAgent"/>
-    <agent name="BienenstockAgent"/>
+    <agent name="EinfacherAgent"/>
 </scenario>
 </config>

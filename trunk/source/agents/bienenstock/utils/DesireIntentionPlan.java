@@ -1,10 +1,34 @@
 /*
- * DesireIntentionPlan.java
+ * Dateiname      : DesireIntentionPlan.java
+ * Erzeugt        : 29. Mai 2005
+ * Letzte Änderung: 6. Juni 2005 durch Eugen Volk
+ * Autoren        :  Eugen Volk
  *
- * Created on 29. Mai 2005, 21:20
+ *
+ *
+ * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
+ * Die erste Version dieser Datei wurde erstellt im Rahmen einer
+ * Diplomarbeit von Eugen Volk am Institut für Intelligente Systeme
+ * der Universität Stuttgart unter Betreuung von Dietmar Lippold
+ * (dietmar.lippold@informatik.uni-stuttgart.de).
+ *
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package agents.bienenstock;
+package agents.bienenstock.utils;
 import scenarios.bienenstock.agenteninfo.Koordinate;
 import java.util.*;
 
@@ -16,47 +40,54 @@ import java.util.*;
 public class DesireIntentionPlan {
     // Ziele des Agenten
     /** Konstante für Ziel: Umgebung erforschen */
-    public static final int D_UMGEBUNGERFORSCHEN=0;
+    public static final int G_UMGEBUNGERFORSCHEN=0;
     /** Konstante für Ziel: Blumen suchen */
-    public static final int D_BLUMENSUCHEN=1;
+    public static final int G_FINDEEINEBLUME=1;
     /** Konstante für Ziel: Probe von einer Blume entnehmen */
-    public static final int D_BLUMENPROBEENTNEHMEN=2;
+    public static final int G_BLUMENPROBEENTNEHMEN=2;
     /** Konstante für Ziel: Blume bearbeiten */
-    public static final int D_BLUMEBEARBEITEN=3;
+    public static final int G_BLUMEBEARBEITEN=3;
     /** Konstante für Ziel: mit anderen Agenten kooperieren bzw. Inforamation austauschen */
-    public static final int D_COOPERATION=4;
+    public static final int G_COOPERATION=4;
+    
+    public static final int G_FINDEDIEBLUME=5;
     
     // Absichten des Agenten
     /** Konstante für Absicht: zurück zum Bienenstock kehren und tanken */
-    public static final int I_NACHHAUSETANKEN=10;
+    public static final int P_NACHHAUSETANKEN=10;
     /** Konstante für Absicht: fliegen zur bestimmten Koordinate */
-    public static final int I_FLIEGENZURKOORDINATE=11;
+    public static final int P_FLIEGENZURKOORDINATE=11;
     /** Konstante für Absicht: Nektar abbauen */
-    public static final int I_NEKTARABBAUEN=12;
+    public static final int P_NEKTARABBAUEN=12;
     /** Konstante für Absicht: Nekar abliefern */
-    public static final int I_NEKTARABLIEFERNTANKEN=14;
+    public static final int P_NEKTARABLIEFERNTANKEN=14;
     /** Konstante für Absicht: zurück zur blume kehren */
-    public static final int I_ZURUECKZURBLUME=15;
-    /** Konstante für Absicht: Durchfuührung der Prozedur "am Bienenstock" */
-    public static final int I_AMBIENENSTOCK=16;
+    public static final int P_ZURUECKZURBLUME=15;
+    /** Konstante für Absicht: Kooperieren: tanzen oder zuschauen */
+    public static final int P_COOPERATION=17;
+    
+    public static final int P_FINDEBLUME=18;
+    
     
     // Schlüssel für PlanAktionen
     /** Konstante für atomare Aktion: tanken */
-    public static final int P_TANKEN=100;
+    public static final int A_TANKEN=100;
     /** Konstante für atomare Aktion: starten */
-    public static final int P_STARTEN=101;
+    public static final int A_STARTEN=101;
     /** Konstante für atomare Aktion: für fliegen zum nächst gelegenen Feld */
-    public static final int P_FLIEGEN=102;
+    public static final int A_FLIEGEN=102;
     /** Konstante für atomare Aktion: landen */
-    public static final int P_LANDEN=103;
+    public static final int A_LANDEN=103;
     /** Konstante für atomare Aktion: Nektar abbauen */
-    public static final int P_NEKTARABBAUEN=104;
+    public static final int A_NEKTARABBAUEN=104;
     /** Konstante für atomare Aktion: tanzen */
-    public static final int P_TANZEN=105;
+    public static final int A_TANZEN=105;
     /** Konstante für atomare Aktion: zuschauen */
-    public static final int P_ZUSCHAUEN=106;
+    public static final int A_ZUSCHAUEN=106;
+    /** Konstante für atomare Aktion: warten */
+    public static final int A_WARTEN=107;
     
-    public static final int P_NEKTARABLIEFERN=107;
+    public static final int A_NEKTARABLIEFERN=108;
     
     public static final int NOTSET=-1;
     

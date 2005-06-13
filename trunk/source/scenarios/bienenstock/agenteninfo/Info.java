@@ -57,6 +57,10 @@ public class Info {
      */
     private boolean entfernungMitteilen;
     
+    /** Nutzen der Blume für den Agenten; wird berechnet aus der Entfernung zum 
+     * Bienenstock und Ausbeute der Blume. */
+    private double nutzen=-1;
+    
     /**
      * Der Konstruktor.
      *
@@ -71,6 +75,24 @@ public class Info {
         entfernung = entf;
         richtungMitteilen = richtgMitteilen;
         entfernungMitteilen = entfMitteilen;
+    }
+    
+     /**
+     * Der Konstruktor.
+     *
+     * @param richtg            die neue Richtung
+     * @param entf              die neue Entfernung
+     * @param richtgMitteilen   wird die Richtung mitgeteilt?
+     * @param entfMitteilen     wird die Entfernung mitgeteilt?
+     * @param nutzen            Nutzen der Blume für den Agenten
+     */
+    public Info(double richtg, double entf,
+            boolean richtgMitteilen, boolean entfMitteilen, double nutzen) {
+        richtung = richtg;
+        entfernung = entf;
+        richtungMitteilen = richtgMitteilen;
+        entfernungMitteilen = entfMitteilen;
+        this.nutzen=nutzen;
     }
     
     /**
@@ -100,6 +122,7 @@ public class Info {
         return richtung;
     }
     
+    
     /**
      * gibt die Entfernung zurück.
      *
@@ -110,14 +133,26 @@ public class Info {
     }
     
     /**
+     * gibt den Nutzen der Blume zurück; wird berechnet aus der Entfernung zum Bienenstock
+     * und Ausbeute der Blume. Falls der Nutzen  nicht gesetzt wurde, so wird -1 zurückgegeben.
+     * 
+     *
+     * @return Nutzen der Blume
+     */
+    public double gibNutzen(){
+        return nutzen;
+    }
+    
+    /**
      * gibt eine Kopie des Objekts zurück.
      *
-     * @return      Enhält Entfernungs und / oder Richtungsangaben
+     * @return      Enhält Nutzen, Entfernungs und / oder Richtungsangaben
      */
     public Info klonen() {
         return new Info(richtung,
                 entfernung,
                 richtungMitteilen,
-                entfernungMitteilen);
+                entfernungMitteilen, 
+                nutzen);
     }
 }
