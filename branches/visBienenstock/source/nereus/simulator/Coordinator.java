@@ -183,24 +183,29 @@ public class Coordinator extends UnicastRemoteObject implements ICoordinator {
          * @see jAgentSimulator.server.ICoordinator#registerGame(java.util.Hashtable)
          */
     public Id registerGame(DataTransferObject dto, GameConf gameConf)
-    throws RemoteException, InvalidElementException {
+        throws RemoteException, InvalidElementException {
+
         System.out.println("Coordinator: Spiel soll registriert werden...");
         if (dto.containsKey("ScenarioName")) {
+            m_gameCounter++;
+
+            // Erzeuge die Id für das Spiel
+            Id gameId = new Id(((String) dto.get("GameName")) + "-" + m_gameCounter);
+
             String tmpScenarioString = (String) dto.get("ScenarioName");
-                        /*
-                         * Erstellen des wirklichen ScenarioNamens, d.h. den übergebenen
-                         * Verzeichnisnamen + . + Scenario
-                         */
+            /*
+             * Erstellen des wirklichen ScenarioNamens, d.h. den übergebenen
+             * Verzeichnisnamen + . + Scenario
+             */
             // Beginne mit dem Package(Verzeichnisnamen)
             StringBuffer scenarioName = new StringBuffer(tmpScenarioString);
             scenarioName.append("."); //scenarioName.append("scenariomanagement.");
             // Jetzt fehlt nur der Scenario-Zusatz
             scenarioName.append("Scenario");
-            // Erzeuge die Id für das Spiel
-            Id gameId = newGameId((String) dto.get("GameName"));
+
             AbstractScenario scenario = null;
             System.out.println("Coordinator: versuche " + scenarioName
-                    + " zu registrieren");
+                               + " zu registrieren");
             try {
                 Class scenarioClass = Class.forName("scenarios." + scenarioName);
                 scenario = (AbstractScenario)scenarioClass.newInstance();
@@ -225,36 +230,14 @@ public class Coordinator extends UnicastRemoteObject implements ICoordinator {
             m_gameNameId.put(newGame.getGameName(), gameId);
             // Spiel registrieren
             m_games.put(newGame.getId().toString(), newGame);
-            m_gameCounter++;
+
             // Id des Spiels zurückgeben
             return newGame.getId();
         } else {
             throw new InvalidElementException("Parameter ScenarioName");
         }
     }
-    
-    /**
-     * Liefert eine neue Id, deren Bezeichnung aus dem übergebenen Namen,
-     * einem Bindestrich und einer ganzen Zahl besteht. Die gelieferte Id
-     * ist unter allen Spielen eindeutig.
-     *
-     * @param gameName  Der Name des Spiels.
-     *
-     * @return  Eine neue eindeutige Spiel-Id.
-     */
-    private Id newGameId(String gameName) {
-        String neueBezeichnung;
-        int zahl;
-        
-        zahl = 0;
-        do {
-            zahl++;
-            neueBezeichnung = gameName + "-" + zahl;
-        } while (m_games.containsKey(neueBezeichnung));
-        
-        return new Id(neueBezeichnung);
-    }
-    
+
     /* (non-Javadoc)
      * @see jAgentSimulator.server.ICoordinator#getGameName(jAgentSimulator.utils.Id)
      */
@@ -486,21 +469,26 @@ public class Coordinator extends UnicastRemoteObject implements ICoordinator {
      * @throws RemoteException
      */
     public void restartGame(Id id)
-    throws RemoteException, InvalidGameException {
+        throws RemoteException, InvalidGameException {
+
         // kontrolliere, ob das Spiel registriert ist.
         if (m_games.containsKey(id.toString())) {
-            Game tmpGame = (Game) m_games.get(id.toString());
-                        /* neue Game-Instanz erzeugen und mit den Daten der alten Instanz
-                         * füttern. Ansonsten wird kein neuer Thread erstellt und der alte
-                         * kann nicht mehr verwendet werden.
-                         */
-            String tmpGameName=tmpGame.getGameName(); // "Spiel" + m_gameCounter;
-            if (!tmpGame.isSimulationFinished()) try{
-                tmpGame.join();
-            }catch (InterruptedException ex){
-                System.out.println("tmpGame");
-            }
             m_gameCounter++;
+
+            Game tmpGame = (Game) m_games.get(id.toString());
+            /*
+             * neue Game-Instanz erzeugen und mit den Daten der alten Instanz
+             * füttern. Ansonsten wird kein neuer Thread erstellt und der alte
+             * kann nicht mehr verwendet werden.
+             */
+            String tmpGameName=tmpGame.getGameName();
+            if (!tmpGame.isSimulationFinished()) {
+                try{
+                    tmpGame.join();
+                }catch (InterruptedException ex){
+                    System.out.println("tmpGame");
+                }
+            }
             Game newGame =
                     new Game(tmpGameName,
                     m_informationHandler,
