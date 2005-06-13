@@ -36,26 +36,26 @@ import java.io.Serializable;
 public class Spielanfang implements Serializable {
     
     /**
-     * Die Zeit des Spielanfangs in Millisekunden
+     * Die Zeit der Anmeldung in Millisekunden
      */
-    private static long zeitDesSpielanfangs = 0L;
+    private static long zeitDerAnmeldung = 0L;
 
     /**
      * Der Konstruktor
      *
-     * @param startZeit   die Zeit des Spielanfangs in Millisekunden
+     * @param startZeit   die Zeit der Anmeldung in Millisekunden
      */
-    public Spielanfang(long startZeit) {
-        zeitDesSpielanfangs = startZeit;
+    public Spielanfang(long anmeldungsZeit) {
+        zeitDerAnmeldung = anmeldungsZeit;
     }
     
     /**
-     * Gibt die Zeit des Spielanfangs zurück.
+     * Gibt die Zeit der Anmeldung zurück.
      * 
      * @return     die Zeit in Millisekunden
      */
-    public long gibStartZeit() {
-        return zeitDesSpielanfangs;
+    public long gibAnmeldungsZeit() {
+        return zeitDerAnmeldung;
     }
 }
 

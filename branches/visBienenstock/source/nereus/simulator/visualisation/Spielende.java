@@ -36,26 +36,26 @@ import java.io.Serializable;
 public class Spielende implements Serializable {
     
     /**
-     * Zeit des Spielendes in Millisekunden
+     * Zeit der Abmeldung in Millisekunden
      */
-    private static long zeitDesSpielendes = 0L;
+    private static long zeitDerAbmeldung = 0L;
 
     /**
      * Der Konstruktor
      *
-     * @param endZeit   die Zeit des Spielendes in Millisekunden
+     * @param endZeit   die Zeit der Abmeldung in Millisekunden
      */
-    public Spielende(long endZeit) {
-        zeitDesSpielendes = endZeit;
+    public Spielende(long abmeldungsZeit) {
+        zeitDerAbmeldung = abmeldungsZeit;
     }
     
     /**
-     * Gibt die Zeit des Spielendes zurück.
+     * Gibt die Zeit der Abmeldung zurück.
      * 
      * @return     die Zeit in Millisekunden
      */
-    public long gibEndZeit() {
-        return zeitDesSpielendes;
+    public long gibAbmeldungsZeit() {
+        return zeitDerAbmeldung;
     }
 }
 
