@@ -174,6 +174,9 @@ public class Game extends Thread {
         // Das Hashtable für eine spätere Füllung initialisieren.
         m_scenarioParams = new Hashtable();
         m_scenario = scenario;
+        // Anmelden des Spiels an der Server-Vis-Komponente
+        int runNumer = ((Integer) gameParameters.get("numExps")).intValue();
+        m_scenario.registerAtVisualisation(runNumber);
         // checken ob das Spiel rundenbasiert ist.
         if(gameParameters.containsKey("RoundBased")) {
             Object tmpObject = gameParameters.get("RoundBased");
@@ -244,10 +247,12 @@ public class Game extends Thread {
         m_maxNumberOfAgents = ((Integer)m_params.get("MaxAgents")).intValue();
         m_agentClasses = oldGame.getAgentClasses();
         m_informationHandler = iHandler;
-        
-        
+
         m_scenario.reset();
-        
+        // Anmelden des Spiels an der Server-Vis-Komponente
+        int runNumer = ((Integer) m_params.get("numExps")).intValue();
+        m_scenario.registerAtVisualisation(runNumber);
+
         // Agenten neu erzeugen.
         Hashtable tmpAgents = (Hashtable)oldGame.getAgents().clone();
         Enumeration enumer = tmpAgents.elements();
@@ -500,12 +505,10 @@ public class Game extends Thread {
                         m_id,
                         IVisualisation.StateMsg,
                         "Beginne die Simulation des " + (i+1) + ". Experiments.");
-                System.out.println("Spielnummer: " + i + " von " +numExps);
+                System.out.println("Spielnummer: " + i + " von " + numExps);
                 
-                
-                // Anmelden des Spiels an der Server-Vis-Komponente
-                m_scenario.registerAtVisualisation();
-        
+                // Den Zähler für den Durchlauf erhöhen.
+                m_scenario.incrementRunCounter();
                 
                 Vector agents = new Vector();
                 Vector agentIds = new Vector();

@@ -286,22 +286,34 @@ public abstract class AbstractScenario implements Serializable {
     }
     
     /**
-     * Erhöht den Wert von m_runCounter um 1 und meldet das Szanario an der
-     * Server-Vis-Komponente an.
+     * Meldet das Szanario an der Server-Vis-Komponente für die nächsten
+     * Durchläufe an.
+     *
+     * @param runNumer  Die Anzahl der kommenden Durchläufe, für die das Spiel
+     *                  angemeldet werden soll.
      */
-    public final void registerAtVisualisation() {
-        // Erhöhen von m_runCounter um 1
-        m_runCounter = m_runCounter + 1;
-        
-        // Anmelden an der Server-Vis-Komponente
-        try {
-            m_visualisationServer.spielAnmelden(m_gameId.toString(),
-                                                Integer.toString(m_runCounter));
-        } catch(DoppelterDurchlaufException fehler) {
-            System.out.println(fehler.getMessage());
+    public final void registerAtVisualisation(int runNumer) {
+
+        for (int counter = m_runCounter + 1;
+             counter < m_runCounter + 1 + runNumer;
+             counter++) {
+            // Anmelden an der Server-Vis-Komponente
+            try {
+                m_visualisationServer.spielAnmelden(m_gameId.toString(),
+                                                    Integer.toString(counter));
+            } catch(DoppelterDurchlaufException fehler) {
+                System.out.println(fehler.getMessage());
+            }
         }
     }
-    
+
+    /**
+     * Erhöht den Wert von m_runCounter um 1.
+     */
+    public final void incrementRunCounter() {
+        m_runCounter = m_runCounter + 1;
+    }
+
     /**
      * Übergibt Spielinformationen an die Server-Vis-Komponente
      *
