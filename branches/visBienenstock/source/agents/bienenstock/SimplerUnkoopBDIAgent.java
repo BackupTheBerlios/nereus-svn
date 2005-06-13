@@ -1,7 +1,7 @@
 /*
- * Dateiname      : UnkooperativerBDIAgent.java
- * Erzeugt        : 21. Mai 2005
- * Letzte Änderung: 1. Juni 2005 durch Eugen Volk
+ * Dateiname      : SimplerUnkoopBDIAgent.java
+ * Erzeugt        : 6. Juni 2005
+ * Letzte Änderung: 6. Juni 2005 durch Eugen Volk
  * Autoren        :  Eugen Volk
  *
  *
@@ -54,7 +54,7 @@ import agents.bienenstock.utils.InfoBlume;
 /**
  * Die Klasse ist Agent und ist aufgebaut nach der Belief-Desire-Intention Architektur.
  */
-public class UnkooperativerBDIAgent
+public class SimplerUnkoopBDIAgent
         extends AbstrakteBiene
         implements Runnable {
     
@@ -127,7 +127,7 @@ public class UnkooperativerBDIAgent
     Random zufallsGenerator = new Random();
     
     
-    public UnkooperativerBDIAgent(String bName, AbstractScenarioHandler bHandler) {
+    public SimplerUnkoopBDIAgent(String bName, AbstractScenarioHandler bHandler) {
         super(bName, bHandler);
         name = bName;
         handler = (IBienenstockSzenarioHandler)bHandler;
@@ -136,13 +136,13 @@ public class UnkooperativerBDIAgent
         
     }
     
-    public UnkooperativerBDIAgent() {
+    public SimplerUnkoopBDIAgent() {
         super();
         volksID = 1;
         zufallsGenerator.setSeed(samen);
     }
     
-    public UnkooperativerBDIAgent(Id bId,String bName) {
+    public SimplerUnkoopBDIAgent(Id bId,String bName) {
         super(bId, bName);
         name = bName;
         volksID = 1;
@@ -236,7 +236,12 @@ public class UnkooperativerBDIAgent
                 LinkedList blumen=sucheBlumeInSichtbarenFeldern();
                 if (blumen!=null) {
                     modus.setDesire(DesireIntentionPlan.G_BLUMENPROBEENTNEHMEN);
-                    neuesZiel=(Koordinate)blumen.getFirst();
+                    int anzBlumen=blumen.size()-1;
+                    double zufall=Math.random();
+                    if (zufall<0) zufall=zufall*(-1);
+                    int myZahl=(int)Math.round(zufall*anzBlumen);
+                    System.out.println(id+": MYZAHL = " + myZahl);
+                    neuesZiel=(Koordinate)blumen.get(myZahl);
                     modus.setDesireZiel(neuesZiel.copy());
                 }else{
                     if (altesZiel==null || (altesZiel.equals(myPosition))){
@@ -323,10 +328,10 @@ public class UnkooperativerBDIAgent
                         i_neuesZiel=d_Ziel;
                     }
                 }
-                 if (!nextIntentionOK(newIntention, i_neuesZiel)) {
-                        newIntention=DesireIntentionPlan.P_NEKTARABLIEFERNTANKEN;
-                        i_neuesZiel=this.posBienenstock;
-                    }
+                if (!nextIntentionOK(newIntention, i_neuesZiel)) {
+                    newIntention=DesireIntentionPlan.P_NEKTARABLIEFERNTANKEN;
+                    i_neuesZiel=this.posBienenstock;
+                }
                 modus.setIntention(newIntention);
                 modus.setIntentionZiel(i_neuesZiel);
             }break;
@@ -547,7 +552,7 @@ public class UnkooperativerBDIAgent
             }break;
             case DesireIntentionPlan.P_NACHHAUSETANKEN: return true;
             case DesireIntentionPlan.P_NEKTARABLIEFERNTANKEN: return true;
-                  case DesireIntentionPlan.P_ZURUECKZURBLUME: {
+            case DesireIntentionPlan.P_ZURUECKZURBLUME: {
                 kosten=kostenFliegen(myPosition, i_koordinate) + kostenNachHauseTanken(i_koordinate, this.bieneIstInDerLuft);
                 if (!this.bieneIstInDerLuft) kosten=kosten + this.honigStarten;
                 kosten=2*this.honigAbbauen;
@@ -1042,7 +1047,20 @@ public class UnkooperativerBDIAgent
         return blumenKoord;
     }
     
-    /* ##################### Ende der Primitiven Aktionen ####################### */
     
-    
-}
+    /**
+     * versetzt die Biene in den Warte-Zustand.
+     */
+    public void warten() {
+        System.out.println(id + ": warten " + selbst.gibPosition().toString());
+        long neuerAktCode = handler.aktionWarten(aktCode);
+        if (!(neuerAktCode == 0L)) {
+            aktCode = neuerAktCode;
+        }
+    }
+        
+        
+        /* ##################### Ende der Primitiven Aktionen ####################### */
+        
+        
+    }

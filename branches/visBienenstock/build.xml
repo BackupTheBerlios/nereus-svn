@@ -155,9 +155,9 @@
    <jar destfile="${dist}/Server.jar"
         encoding="ISO-8859-1"
         basedir="${build}"
-        includes="nereus/utils/**, nereus/communication/**,nereus/exceptions/**,
-                  nereus/visualisation/**,nereus/simulatorinterfaces/**,
-                  nereus/simulator/**"
+        includes="nereus/utils/**, nereus/agentutils/**, nereus/communication/**,
+                  nereus/exceptions/**, nereus/visualisation/**,
+                  nereus/simulatorinterfaces/**, nereus/simulator/**"
         excludes="**/agents/*.class">
      <manifest>
        <attribute name="Main-Class"

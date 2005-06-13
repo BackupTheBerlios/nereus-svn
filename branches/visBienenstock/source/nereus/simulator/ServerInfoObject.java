@@ -148,7 +148,9 @@ public class ServerInfoObject {
     
     
     /**
-     * Game-Config-Daten aus einer XML-KonfiguratiosDatei ein.
+     * liest Game-Config-Daten aus einer XML-KonfiguratiosDatei ein.
+     * @param configFileURI URI der Konfi-Datei
+     * @return liste der GameKonfigurationen
      */
     private LinkedList readGameConfList(String configFileURI){
         String gameConfigXMLpath;

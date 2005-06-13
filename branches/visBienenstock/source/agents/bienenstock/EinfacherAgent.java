@@ -44,6 +44,7 @@ import java.util.LinkedList;
 import java.util.HashMap;
 import scenarios.bienenstock.agenteninfo.Info;
 import scenarios.bienenstock.agenteninfo.Koordinate;
+import agents.bienenstock.utils.InfoBlumeEinfach;
 
 
 
@@ -59,7 +60,7 @@ import scenarios.bienenstock.agenteninfo.Koordinate;
  *
  *
  */
-public class BienenstockAgent
+public class EinfacherAgent
         extends AbstrakteBiene
         implements Runnable {
     
@@ -85,7 +86,7 @@ public class BienenstockAgent
     private String name = "";
     private int gesammelterNektar = 0;
     
-    private TestAgentBlume zuBearbeitendeBlume;
+    private InfoBlumeEinfach zuBearbeitendeBlume;
     
     private boolean hinweg = true;
     
@@ -100,7 +101,7 @@ public class BienenstockAgent
     Random zufallsGenerator = new Random();
     
     
-    public BienenstockAgent(String bName, AbstractScenarioHandler bHandler) {
+    public EinfacherAgent(String bName, AbstractScenarioHandler bHandler) {
         super(bName, bHandler);
         name = bName;
         handler = (IBienenstockSzenarioHandler)bHandler;
@@ -108,13 +109,13 @@ public class BienenstockAgent
         zufallsGenerator.setSeed(samen);
     }
     
-    public BienenstockAgent() {
+    public EinfacherAgent() {
         super();
         volksID = 1;
         zufallsGenerator.setSeed(samen);
     }
     
-    public BienenstockAgent(Id bId,String bName) {
+    public EinfacherAgent(Id bId,String bName) {
         super(bId, bName);
         name = bName;
         volksID = 1;
@@ -143,31 +144,39 @@ public class BienenstockAgent
       //  zufallsGenerator.setSeed(1999);
         ausschnittHolen();
         posBienenstock = selbst.gibPosition();
-        /*visualisiereBiene(selbst);
+        
+        visualisiereBiene(selbst);
         starten();
-        if (id == 12) {
-            visualisiereFelder(karte);
-            fliegen(2, 1);
-            landen();
-            for (i = 0; i < 10; i++) {
-                abbauen(1000);
-            }
-        }
+        landen();
+        visualisiereBiene(selbst);
         if (id == 1) {
-            fliegen(3, 1);
-            landen();
-            for (i = 0; i < 10; i++) {
+          //  visualisiereFelder(karte);
+            
+             for (i = 0; i < 1; i++) {
+                 ausschnittHolen();
                 tanzen();
+                 ausschnittHolen();
+                visualisiereBiene(selbst);
             }
         }
-        if (id == 13) {
+        if (id == 2) {
+           
+            for (i = 0; i <2; i++) {
+                ausschnittHolen();
+                visualisiereBiene(selbst);
+                zuschauen();
+                ausschnittHolen();
+                visualisiereBiene(selbst);
+            }
+        }
+        if (id == 3) {
             fliegen(3, 1);
             landen();
-            for(i = 0; i < 15; i++) {
+            for(i = 0; i < 20; i++) {
                 zuschauen();
             }
             starten();
-        }*/
+        }
         
         
         /*while (true) {
@@ -188,12 +197,12 @@ public class BienenstockAgent
             while (!sucheBlume()) {}
             landen();
             if (blumeHatNektar()) {
-                TestAgentBlume plume = new TestAgentBlume(weg, true);
+                InfoBlumeEinfach plume = new InfoBlumeEinfach(weg, true);
                 blumen.put(weg.getLast(), plume);
                 zuBearbeitendeBlume = plume;
                 vielAbbauen();
             } else {
-                blumen.put(weg.getLast(), new TestAgentBlume(weg, false));
+                blumen.put(weg.getLast(), new InfoBlumeEinfach(weg, false));
             }
             heimFliegen();
         }
@@ -279,7 +288,7 @@ public class BienenstockAgent
     
     private boolean blumeVoll(EinfachesFeld blume) {
         if (blumen.containsKey(blume.gibPosition())) {
-            return ((TestAgentBlume)blumen.get(blume.gibPosition())).besitztHonig();
+            return ((InfoBlumeEinfach)blumen.get(blume.gibPosition())).besitztHonig();
         } else {
             return true;
         }
@@ -585,6 +594,7 @@ public class BienenstockAgent
     }
     public void zuschauen() {
         //visualisiereFelder(karte);
+        ausschnittHolen();
         System.out.println(id + ": schaue zu (" + position.gibPosition().gibXPosition() + ", " + position.gibPosition().gibYPosition() + " )");
         if (!(position.gibIDsTanzendeBienen().isEmpty())) {
             int zielBiene = ((Integer)position.gibIDsTanzendeBienen().iterator().next()).intValue();
@@ -592,8 +602,11 @@ public class BienenstockAgent
             if (!( nAktCode == 0L)) {
                 aktCode = nAktCode;
             }
+            System.out.println(id +" habe Folgende INFORMATION : " );
             ausschnittHolen();
-            //visualisiereBiene(selbst);
+            visualisiereBiene(selbst);
+            System.out.println(id + ": visualisation abgeschlossen");
+         //   System.out.println(" INFO :" + "richtung " + selbst.gibInformation().gibRichtung());
         } else {
             System.out.println(id + "keine tanzenden Bienen anwesend!!!");
             long nAktCode = handler.aktionZuschauen(aktCode, 111);

@@ -28,7 +28,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package agents.bienenstock;
+package agents.bienenstock.utils;
 import scenarios.bienenstock.agenteninfo.Koordinate;
 import java.util.*;
 
@@ -56,6 +56,8 @@ public class InfoBlume {
     /** InfoBlume ist eine Datenstruktur zur Verwaltung der Informatinen über eine Blume */
     public InfoBlume() {
     }
+    
+    
     /**
      * InfoBlume ist eine Datenstruktur zur Verwaltung der Informatinen über eine Blume 
      * @param blumenKoordinate Koordinate der Blume
@@ -108,7 +110,7 @@ public class InfoBlume {
      * @param entfernung Entfernung (Weglänge) zum Bienenstock
      */
     public void setEntfernungZumBienenstock(int entfernung){
-        
+        this.entfernungZumBienenstock=entfernung;
     }
     
     /**
@@ -149,5 +151,13 @@ public class InfoBlume {
      */
     public double getNutzen(){
         return this.nutzen;
+    }
+    
+    /**
+     * liefert die Koordinate der Blume
+     * @return Koordinate der Blume
+     */
+    public Koordinate getBlumenKoordinate(){
+        return this.blumenKoordinate.copy();
     }
 }
