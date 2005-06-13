@@ -1,9 +1,10 @@
 /*
  * Dateiname      : BienenstockVisSteuerung.java
  * Erzeugt        : 06. Mai 2005
- * Letzte ?nderung: 12. Juni 2005 durch Philip Funck
+ * Letzte ?nderung: 12. Juni 2005 durch Eugen Volk
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
+ *                  Eugen Volk
  *
  * Diese Datei gehoert zum Projekt Nereus (http://nereus.berlios.de/).
  *
@@ -74,6 +75,31 @@ public class BienenstockVisSteuerung extends Thread implements IVisualisationOut
      *
      */
     public BienenstockVisSteuerung (VisualisationClient vClient) {
+        visClient = vClient;
+        visClient.anmeldung(this);
+        fenster = new BienenstockVisGui(this);
+        fenster.show();
+        karten = new LinkedList();
+        this.start();
+        visClient.starteUebertragung();
+    }
+    
+    /**
+     * der parameterloser Konstruktor
+     *
+     */
+    public BienenstockVisSteuerung () {
+        super();
+       }
+    
+    
+    
+    
+    /**
+     * initiiert das Frame und die Kartenliste
+     *
+     */
+    public void initialize(VisualisationClient vClient){
         visClient = vClient;
         visClient.anmeldung(this);
         fenster = new BienenstockVisGui(this);

@@ -1,7 +1,7 @@
 /*
  * Dateiname      : IVisualisationOutput.java
  * Erzeugt        : 26. Mai 2005
- * Letzte Änderung: 10. Juni 2005 durch Dietmar Lippold
+ * Letzte Änderung: 12. Juni 2005 durch Eugen Volk
  * Autoren        : Samuel Walz (samuel@gmx.info)
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
@@ -24,6 +24,7 @@
 
 
 package nereus.simulatorinterfaces;
+import nereus.visualisationclient.VisualisationClient;
 
 /**
  * Definiert die Schnittstelle zur Ausgabe der Date der Visualisierung auf
@@ -42,5 +43,11 @@ public interface IVisualisationOutput {
      * @param visObject  Der auszugebende Datensatz.
      */
     public void visualisiere(Object visObject);
+    
+    /**
+     * initialisiert das Objekt.
+     * @param vClient VisualisierungsClient
+     */
+    public void initialize(VisualisationClient vClient);
 }
 

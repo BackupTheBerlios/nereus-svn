@@ -1,7 +1,7 @@
 /*
  * Dateiname      : AbstractScenario.java
  * Erzeugt        : 13. Mai 2003
- * Letzte Änderung: 12. Juni 2005 durch Samuel Walz
+ * Letzte Änderung: 12. Juni 2005 durch Eugen Volk
  * Autoren        : Daniel Friedrich
  *                  Eugen Volk
  *
@@ -341,7 +341,12 @@ public abstract class AbstractScenario implements Serializable {
          
      }
     
-    
+    /**
+     * Liefert den KlassenNamen der SteuerungsKomponente für
+     * die Visualiesierung des Szenario.
+     * @return KlassenNamen
+     */
+     public abstract String getScenarioVisualisationClassName();
    
 }
 

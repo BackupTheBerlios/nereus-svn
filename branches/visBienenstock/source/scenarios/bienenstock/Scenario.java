@@ -1,7 +1,7 @@
 /*
  * Dateiname      : Scenario.java
  * Erzeugt        : 16. Oktober 2004
- * Letzte Änderung: 12. Juni 2005 durch Samuel Walz
+ * Letzte Änderung: 12. Juni 2005 durch Eugen Volk
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (samuel@gmx.info)
  *                  Eugen Volk
@@ -1069,6 +1069,8 @@ public class Scenario
     
     
     
+    
+           
     /**
      * gibt eine Liste mit den Parametern, die dass Szenario benötigt zurück.
      *
@@ -1271,5 +1273,14 @@ public class Scenario
             Object obj=this.m_parameter.get(parameterName);
             return new String(obj.toString());
         }else throw new InvalidElementException();
+    }
+    
+   /**
+     * Liefert den KlassenNamen der SteuerungsKomponente für
+     * die Visualiesierung des Szenario.
+     * @return KlassenNamen
+     */
+    public String getScenarioVisualisationClassName(){
+        return new String("scenarios.bienenstock.visualisationgui.BienenstockVisSteuerung");
     }
 }

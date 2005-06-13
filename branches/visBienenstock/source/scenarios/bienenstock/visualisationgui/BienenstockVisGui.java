@@ -76,7 +76,7 @@ public class BienenstockVisGui extends Frame {
     /**
      * der Pfad zu den librarys
      */
-    private String pfad = "/home/philip/workspace/nereus/branches/visBienenstock/libs/bilder/";
+    private String pfad = "../libs/bilder/";
     
     /**
      * das Bild vom Bienenstock

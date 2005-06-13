@@ -1,7 +1,7 @@
 /*
  * Dateiname      : GameParameterPanel.java
  * Erzeugt        : 5. August 2003
- * Letzte Änderung: 12. Mai 2005 durch Eugen Volk
+ * Letzte Änderung: 12. Juni 2005 durch Eugen Volk
  * Autoren        : Daniel Friedrich
  *                  Eugen Volk
  *
@@ -59,6 +59,11 @@ import nereus.utils.Id;
 import nereus.utils.GameConf;
 import nereus.utils.ParameterDescription;
 import nereus.visualisation.VisualisationDelegate;
+import nereus.visualisationclient.VisualisationClient;
+import nereus.registrationgui.ClientInfoObject;
+import nereus.visualisationclient.VisualisationClient;
+import nereus.simulatorinterfaces.IVisualisationOutput;
+
 
 /**
  * Die Klasse stellt ein Panel zur Konfiguration der Spiel- und
@@ -66,7 +71,7 @@ import nereus.visualisation.VisualisationDelegate;
  * Anzahl und die Art der Parameter angepaßt.
  *
  * @author Daniel Friedrich
- * zuletzt geändert von Eugen Volk am 22.04.05
+ *
  */
 public class GameParameterPanel
         extends JPanel {
@@ -101,7 +106,7 @@ public class GameParameterPanel
     /**
      * Layoutmanager für das Button-Panel
      */
-    private GridLayout m_buttonGridLayout = new GridLayout(7,1);
+    private GridLayout m_buttonGridLayout = new GridLayout(8,1);
     /**
      * Layoutmanager für das Panel der Parameternamen
      */
@@ -145,6 +150,12 @@ public class GameParameterPanel
      * Button zum Speichern der Statistikergebnisse.
      */
     private JButton m_saveResultsButton = new JButton();
+    
+    /**
+     * Button zum Visualisierung des Szenario
+     */
+    private JButton m_scenarioVisButton = new JButton();
+    
     /**
      * Aktuelle Anzahl der Parameter im Tab.
      */
@@ -264,9 +275,9 @@ public class GameParameterPanel
         m_buttonPanel.setLayout(m_buttonGridLayout);
         m_buttonPanel.setBorder(BorderFactory.createEtchedBorder());
         m_buttonPanel.setDebugGraphicsOptions(0);
-        m_buttonPanel.setMaximumSize(new Dimension(150, 250));
-        m_buttonPanel.setMinimumSize(new Dimension(150, 250));
-        m_buttonPanel.setPreferredSize(new Dimension(150, 250));
+        m_buttonPanel.setMaximumSize(new Dimension(150, 300));
+        m_buttonPanel.setMinimumSize(new Dimension(150, 300));
+        m_buttonPanel.setPreferredSize(new Dimension(150, 300));
         m_buttonGridLayout.setHgap(0);
         m_buttonGridLayout.setVgap(5);
             /*
@@ -309,6 +320,13 @@ public class GameParameterPanel
         m_saveResultsButton.setEnabled(false);
         m_saveResultsButton.setText("Speichere Resultate");
         m_saveResultsButton.addActionListener(new GameParameterPanel_m_saveResultsButton_actionAdapter(this));
+        
+        
+        m_scenarioVisButton.setEnabled(false);
+        m_scenarioVisButton.setText("Szenario Visualisierung");
+        m_scenarioVisButton.addActionListener(new GameParameterPanel_m_scenarioVisButton_actionAdapter(this));
+        
+        
             /*
              * Buttons auf Panel setzen
              */
@@ -319,6 +337,7 @@ public class GameParameterPanel
         m_buttonPanel.add(m_gameSaveButton, null);
         m_buttonPanel.add(m_simulateGame, null);
         m_buttonPanel.add(m_saveResultsButton,null);
+        m_buttonPanel.add(m_scenarioVisButton,null);
         
                 /*
                  * Rechtes Pane erstellen
@@ -493,6 +512,7 @@ public class GameParameterPanel
      */
     void m_simulateGame_actionPerformed(ActionEvent e) {
         try {
+             m_scenarioVisButton.setEnabled(true);
             // starte Simulation
             this.m_parent.writeStatusMessage("Simulation gestartet.....");
             m_coordinator.startGame(m_gameId);
@@ -658,7 +678,7 @@ public class GameParameterPanel
             m_parent.repaintApplication();
             m_closeGameButton.setEnabled(true);
             m_visRegisterButton.setEnabled(true);
-            
+           
         }
     }
     
@@ -794,6 +814,29 @@ public class GameParameterPanel
         m_parent.repaintApplication();
     }
     
+    
+    /**
+     * Action die Visualisierung des Szenario aufruft
+     */
+    void m_scenarioVisButton_actionPerformed(ActionEvent event){
+        try{
+            int port=1099; // rmi port
+            String gameId=this.m_gameId.toString();
+            String serverName=ClientInfoObject.m_instance.getServerName();
+            VisualisationClient visClient=new VisualisationClient(serverName, port,this.m_gameId.toString(), 1);
+            String scenarioVisClassName=this.m_coordinator.getScenarioVisClassName(gameId);
+            Class scenarioVisClass=Class.forName(scenarioVisClassName);
+            IVisualisationOutput visOutput=(IVisualisationOutput)scenarioVisClass.newInstance();
+            visOutput.initialize(visClient);
+            System.out.println("init Erfolgreich ");
+        }catch (Exception ex){
+            ex.printStackTrace(System.out);
+        }
+    }
+    
+    
+    
+    
         /* (non-Javadoc)
          * @see java.awt.Component#repaint()
          */
@@ -895,3 +938,18 @@ class GameParameterPanel_m_saveResultsButton_actionAdapter implements java.awt.e
         adaptee.m_saveResultsButton_actionPerformed(e);
     }
 }
+
+
+class GameParameterPanel_m_scenarioVisButton_actionAdapter implements java.awt.event.ActionListener {
+    GameParameterPanel adaptee;
+    
+    GameParameterPanel_m_scenarioVisButton_actionAdapter(GameParameterPanel adaptee) {
+        this.adaptee = adaptee;
+    }
+    
+    public void actionPerformed(ActionEvent e) {
+        adaptee.m_scenarioVisButton_actionPerformed(e);
+    }
+}
+
+

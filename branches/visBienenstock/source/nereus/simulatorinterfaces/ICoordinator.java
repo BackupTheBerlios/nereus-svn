@@ -1,7 +1,7 @@
 /*
  * Dateiname      : ICoordinator.java
  * Erzeugt        : 13. Mai 2003
- * Letzte Änderung: Eugen Volk am 12.05.05
+ * Letzte Änderung: Eugen Volk am 12.06.05
  * Autoren        : Daniel Friedrich
  *                  Eugen Volk
  *
@@ -312,4 +312,12 @@ public interface ICoordinator extends Remote {
     public GameConf getGameConfToTag(String tagName) 
     throws RemoteException;
             
+    /**
+     * Liefert den KlassenNamen der SteuerungsKomponente für
+     * die Visualiesierung des Szenario.
+     * @param gameId Id des Spiels
+     * @return KlassenNamen
+     */
+     public String getScenarioVisClassName(String gameId)
+     throws RemoteException;
 }

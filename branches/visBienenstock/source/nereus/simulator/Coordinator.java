@@ -100,11 +100,7 @@ public class Coordinator extends UnicastRemoteObject implements ICoordinator {
      */
     private String m_path;
     
-    /**
-     * PackageName des Scenarios
-     */
-    private String m_packageName = "scenarios";
-    
+       
     /**
      * Hashtable zum mappen der Spielnamen auf die dazugehörige Id.
      */
@@ -782,5 +778,18 @@ public class Coordinator extends UnicastRemoteObject implements ICoordinator {
         GameConf gameConf=this.m_sInfoObject.getGameConfToTag(tagName);
         if (gameConf!=null) return gameConf;
         else throw new NoSuchElementException();
+    }
+    
+    /**
+     * Liefert den KlassenNamen der SteuerungsKomponente für
+     * die Visualiesierung des Szenario.
+     * @param gameId Id des Spiels
+     * @return KlassenNamen
+     */
+    public String getScenarioVisClassName(String gameId){
+        Game game=(Game)m_games.get(gameId);
+        AbstractScenario abstrScenario=game.getScenario();
+        String className=abstrScenario.getScenarioVisualisationClassName();
+        return className;
     }
 }
