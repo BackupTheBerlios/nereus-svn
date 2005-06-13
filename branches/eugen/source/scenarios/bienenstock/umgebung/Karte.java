@@ -1355,6 +1355,8 @@ public class Karte extends AbstractEnviroment {
                             geladenerHonig
                             - ((Integer) parameter.gibWert(
                             "honigHonigTanken")).intValue());
+                    geladenerHonig=geladenerHonig-((Integer) parameter.gibWert(
+                            "honigHonigTanken")).intValue();
                 /*    zielBiene.setzeZustand(Konstanten.WARTEND);
                     zielFeld.trageWartendeBieneEin(zielBiene);*/
                     zielBiene.setzeZustand(Konstanten.TANKENABLIEFERN);
