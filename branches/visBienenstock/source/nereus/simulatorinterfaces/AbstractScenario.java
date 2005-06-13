@@ -1,7 +1,7 @@
 /*
  * Dateiname      : AbstractScenario.java
  * Erzeugt        : 13. Mai 2003
- * Letzte Änderung: 13. Juni 2005 durch Eugen Volk
+ * Letzte Änderung: 13. Juni 2005 durch Samuel Walz
  * Autoren        : Daniel Friedrich
  *                  Eugen Volk
  *
