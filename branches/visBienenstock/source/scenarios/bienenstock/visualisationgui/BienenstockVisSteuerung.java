@@ -1,7 +1,7 @@
 /*
  * Dateiname      : BienenstockVisSteuerung.java
  * Erzeugt        : 06. Mai 2005
- * Letzte ?nderung: 12. Juni 2005 durch Eugen Volk
+ * Letzte ?nderung: 13. Juni 2005 durch Philip Funck
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
  *                  Eugen Volk
@@ -66,8 +66,14 @@ public class BienenstockVisSteuerung extends Thread implements IVisualisationOut
      */
     private long zeit = 1000L;
     
-    private boolean warten = false;
+    /**
+     * gibt an, ob das Fenster eine Pause beantragt
+     */
+    private volatile boolean warten = false;
     
+    /**
+     * der Link zum Client, bei dem sich die vis. anmeldet, abmeldet
+     */    
     VisualisationClient visClient;
     
     /**
@@ -85,7 +91,7 @@ public class BienenstockVisSteuerung extends Thread implements IVisualisationOut
     }
     
     /**
-     * der parameterloser Konstruktor
+     * der parameterlose Konstruktor
      *
      */
     public BienenstockVisSteuerung () {
@@ -180,6 +186,18 @@ public class BienenstockVisSteuerung extends Thread implements IVisualisationOut
     public void setzeZeit (int t) {
         if (t > 0) {
             zeit = t;
+        }
+    }
+    
+    /**
+     * setzt auf Anfrage des Fensters die Naechste zu visualisierende Karte
+     *
+     * @param die angefragte Runde
+     */
+    public void setzeNaechste (int next) {
+        if ((next > 0) && (next <= karten.size())) {
+            naechste = next;
+            fenster.visualisiere((VisKarte)karten.get(naechste));
         }
     }
     
