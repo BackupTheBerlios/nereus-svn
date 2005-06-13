@@ -58,7 +58,7 @@ public class BienenstockVisSteuerung extends Thread implements IVisualisationOut
     /**
      * die naechste zu visualisierende Karte, als Position in der Liste. 
      */
-    private int naechste = 0;
+    private volatile int naechste = 0;
     
     /**
      * die Zeit in ms, die gewartet werden soll, bevor die naechste Karte fruehestens 
