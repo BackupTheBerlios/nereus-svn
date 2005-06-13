@@ -1,7 +1,7 @@
 /*
  * Dateiname      : VisualisationClient.java
  * Erzeugt        : 19. Mai 2005
- * Letzte Änderung: 12. Juni 2005 durch Samuel Walz
+ * Letzte Änderung: 13. Juni 2005 durch Samuel Walz
  * Autoren        : Samuel Walz (samuel@gmx.info)
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
@@ -54,7 +54,9 @@ public class VisualisationClient extends AbstractVisualisationClient {
 
     private String dienstAdresse;
 
-    private String spielKennung;
+    private String visSpielID;
+    
+    private String visSpielDurchlauf;
 
     private int ausschnittsbeginn = 0;
 
@@ -75,23 +77,52 @@ public class VisualisationClient extends AbstractVisualisationClient {
      * @param spielId  Die Kennung des Spiels, das visualisiert werden soll.
      * @param durchlauf  Der Durchlauf des Spiels, der visualisiert werden soll.
      */
-    public VisualisationClient(String adresse, int port, String spielId,
-                               int durchlauf)
-        throws MalformedURLException,
-               NotBoundException,
-               RemoteException {
+    public VisualisationClient(String adresse, int port, String spielID,
+                               String spielDurchlauf)
+                            throws MalformedURLException,
+                                   NotBoundException,
+                                   RemoteException {
 
         String dienstname = IVisualisationServerExtern.DIENST_NAME;
-        this.spielKennung = spielId + "." + durchlauf;
+        this.visSpielID = spielID;
+        this.visSpielDurchlauf = spielDurchlauf;
 
         dienstAdresse = "//" + adresse + ":" + port + "/" + dienstname;
 
         System.out.println("Suche den Server...");
         visServer = (IVisualisationServerExtern) Naming.lookup(dienstAdresse);
     }
+    
+    /**
+     * Gibt eine Liste aller bereits bekannten Durchläufe zu einem Spiel zurück
+     *
+     * @param adresse  Die Adresse der RMI-Registry des Server.
+     * @param port     Der Port der RMI-Registry des Server.
+     * @param spielId  Die Kennung des Spiels, das visualisiert werden soll.
+     *
+     * @return     eine Liste aller Durchläufe
+     */
+    public static LinkedList gibDurchlaeufe (String adresse, 
+                                             int port, 
+                                             String spielID) 
+                                        throws MalformedURLException,
+                                               NotBoundException,
+                                               RemoteException {
+                                                 
+        String tmpDienstname = IVisualisationServerExtern.DIENST_NAME;
+        String tmpDienstAdresse = "//" + adresse + ":" + port + "/" 
+                                  + tmpDienstname;
+        
+        IVisualisationServerExtern tmpVisServer = 
+                (IVisualisationServerExtern) Naming.lookup(tmpDienstAdresse);
+        
+        return tmpVisServer.gibDurchlaeufe(spielID);
+              
+        
+    }
 
     /**
-     * Registriert eine Visualisierungskomponente beim Spiel.
+     * Registriert eine Visualisierungskomponente bei der Client-Vis-Komponente.
      *
      * @param ausgabe  Die Komponente, die die zu visualisierenden Daten
      *                 ausgibt.
@@ -135,10 +166,13 @@ public class VisualisationClient extends AbstractVisualisationClient {
                 System.out.println("hole informationen...");
                 
                 // Empfohlene Wartezeit für neue Informationen erfragen
-                wartezeit = new Integer(visServer.gibWartezeit(spielKennung));
+                wartezeit = new Integer(
+                                visServer.gibWartezeit(visSpielID,
+                                                       visSpielDurchlauf));
                 
                 LinkedList informationen = 
-                    visServer.gibSpielInformationen(spielKennung, 
+                    visServer.gibSpielInformationen(visSpielID,
+                                                    visSpielDurchlauf,
                                                     ausschnittsbeginn);
 
                 ListIterator listenlaeufer = informationen.listIterator();
