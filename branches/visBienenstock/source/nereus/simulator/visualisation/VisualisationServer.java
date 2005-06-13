@@ -40,7 +40,7 @@ import java.util.Set;
 import java.io.Serializable;
 
 import nereus.utils.Id;
-import nereus.exceptions.DoppeltesSpielException;
+import nereus.exceptions.DoppelterDurchlaufException;
 import nereus.simulatorinterfaces.IVisualisationServerIntern;
 import nereus.simulatorinterfaces.IVisualisationServerExtern;
 
@@ -177,25 +177,46 @@ public class VisualisationServer extends UnicastRemoteObject
     /**
      * Gibt die Spielinformationen zu einem bestimmten Spiel zurück.
      *
-     * @param spielKennung            Die Kennung des gewünschten Spiels
+     * @param spielID            die ID des gewünschten Spiels
+     * @param spielDurchlauf      der gewünschte Durchlauf des Spiels
      * @param ausschnittsbeginn      natürliche Zahl größer -1
      *
      * @return   Eine Liste der gewünschten Spielinformationen
      */
-    public LinkedList gibSpielInformationen(String spielKennung, 
+    public LinkedList gibSpielInformationen(String spielID,
+                                            String spielDurchlauf,
                                             int ausschnittsbeginn) 
                                             throws RemoteException {
+                                                
+        String spielKennung = spielID + "." + spielDurchlauf;
+        
         System.out.println("visServer: visClient fordert Informationen ab "
                             + "Position " + ausschnittsbeginn + " vom Spiel "
                             + spielKennung + " an.");
         // Informationen suchen und zurückgeben
-        if (informationsspeicher.containsKey(spielKennung)) {
-            return erstelleAusschnitt(
-                (LinkedList)informationsspeicher.get(spielKennung), 
-                ausschnittsbeginn);
+        if (informationsspeicher.containsKey(spielID)) {
+            
+            HashMap durchlaeufe = (HashMap)informationsspeicher.get(spielID);
+            
+            if (durchlaeufe.containsKey(spielDurchlauf)) {
+                
+                return erstelleAusschnitt(
+                    (LinkedList)durchlaeufe.get(spielDurchlauf), 
+                 ausschnittsbeginn);
+                
+            } else {
+               /*
+                * Ist der gewünschte Durchlauf eines bekannten Spiels noch nicht
+                * vorhanden, so wird eine leere Liste zurückgegeben
+                */ 
+                return new LinkedList();
+            }
         } else {
-            // Sind noch keine Informationen vorhanden, wird null zurückgegeben
-            return new LinkedList();
+            /* 
+             * Ist ein Spiel mit dieser ID noch nicht bekannt, 
+             * so wird null zurückgegeben
+             */
+            return null;
         }
     }
     
@@ -203,11 +224,16 @@ public class VisualisationServer extends UnicastRemoteObject
      * Gibt die empfohlene Wartezeit zwischen den Informationsanfragen zu
      * einem Spiel zurück.
      * 
-     * @param spielKennung       Kennung des gewünschten Spiels.
+     * @param spielID       ID des gewünschten Spiels.
+     * @parem spielDurchlauf   gewünschter Durchlauf des Spiels
      *
      * @return   Die empfohlene Wartezeit in Millisekunden
      */
-    public int gibWartezeit(String spielKennung) throws RemoteException {
+    public int gibWartezeit(String spielID,
+                            String spielDurchlauf) 
+                            throws RemoteException {
+        
+        String spielKennung = spielID + "." + spielDurchlauf;
         
         // Informationen suchen und zurückgeben
         if (wartezeiten.containsKey(spielKennung)) {
@@ -217,44 +243,96 @@ public class VisualisationServer extends UnicastRemoteObject
             return standardwartezeit;
         }
     }
+    
+    /**
+     * Gibt eine Liste aller bereits bekannten Durchläufe zu einem Spiel zurück
+     *
+     * @param spielID           ID des gewünschten Spiels
+     *
+     * @return     eine Liste aller Durchläufe
+     */
+    public LinkedList gibDurchlaeufe (String spielID) throws RemoteException {
+        
+        LinkedList spielDurchlaeufe = new LinkedList();
+        
+        // Suchen der bekannten Durchlaeufe zu einem Spiel
+        if (informationsspeicher.containsKey(spielID)) {
+            HashMap durchlaeufe = (HashMap)informationsspeicher.get(spielID);
+            
+            Iterator durchlaufNummern = durchlaeufe.keySet().iterator();
+            
+            while (durchlaufNummern.hasNext()) {
+                spielDurchlaeufe.addLast(durchlaufNummern.next());
+            }
+        } else {
+            gibFehlerAus("gibDurchlaeufe",
+                         "Ein Spiel mit der ID" + spielID 
+                         + "ist noch nicht bekannt.");
+        }
+        
+        return spielDurchlaeufe;
+    }
 
     /**
      * Speichert die Spielinformationen der einzelnen Spiele.
      *
-     * @param spielKennung
+     * @param spielID        die ID des Spiels
+     * @param spielDurchlauf  der Durchlauf des Spiels
      * @param information      die zu speichernde Information
      */
-    public void speichereSpielInformation(String spielKennung, 
+    public void speichereSpielInformation(String spielID,
+                                          String spielDurchlauf,
                                           Serializable information) {
-        if (informationsspeicher.containsKey(spielKennung)) {    
-            // Die neue Information an die Liste anhängen
-            LinkedList informationen = 
-                    (LinkedList)informationsspeicher.get(spielKennung);
-            informationen.addLast(information);
+                                              
+        if (informationsspeicher.containsKey(spielID)) {
+            
+            HashMap durchlaeufe = (HashMap)informationsspeicher.get(spielID);
+            
+            if (durchlaeufe.containsKey(spielDurchlauf)) {    
+                // Die neue Information an die Liste anhängen
+                LinkedList informationen = 
+                       (LinkedList)durchlaeufe.get(spielDurchlauf);
+                informationen.addLast(information);
+                
+            } else {
+                gibFehlerAus("speichereSpielInformationen",
+                             "Falscher Durchlauf:" + spielDurchlauf);
+            }
             
         } else {
             gibFehlerAus("speichereSpielInformationen", 
-                         "Falsche Spielkennung:" + spielKennung);
+                         "Falsche SpielID:" + spielID);
         }
     }
 
     /**
-     * Meldet ein Spiel für die Informationsspeicherung an.
+     * Meldet einen Spieldurchlauf für die Informationsspeicherung an.
      * 
      * Wird als Wartezeit 0 angegeben, so wird der Defaultwert verwendet.
      *
-     * @param spielKennung        Die Kennung des Spiels
+     * @param spielID        die ID des Spiels
+     * @param spielDurchlauf  der Durchlauf des Spiels
      * @param wartezeit      natürliche Zahl >= null (Zeit in Millisekunden)
      *
      * @return               der Authentifizierungscode
      */
-    public void spielAnmelden(String spielKennung) 
-                                throws DoppeltesSpielException{
+    public void spielAnmelden(String spielID,
+                              String spielDurchlauf) 
+                                throws DoppelterDurchlaufException{
+                                    
+        String spielKennung = spielID + "." + spielDurchlauf;                            
+        
         System.out.println("visServer: Ein Spiel versucht sich mit der Kennung "
                            + spielKennung + " anzumelden...");
-        if (! informationsspeicher.containsKey(spielKennung)) {
-            // Eine neue Liste für die Informationen des Spiels anlegen
-            informationsspeicher.put(spielKennung, new LinkedList());
+        if (! informationsspeicher.containsKey(spielID)) {
+            
+            // Eine neuen Speicher für die Durchläufe des Spiels anlegen
+            informationsspeicher.put(spielID, new HashMap());
+            
+            // Eine neue Liste für die Informationen eines Durchlaufs anlegen
+            ((HashMap)informationsspeicher.get(spielID)).put(spielDurchlauf, 
+                                                             new LinkedList());
+            
             
             // Standardwartezeit setzen
             wartezeiten.put(spielKennung, 
@@ -265,10 +343,16 @@ public class VisualisationServer extends UnicastRemoteObject
            
             
         } else {
-            // Hat das Anmelden nicht geklappt, wird ein Fehler geworfen
-            throw new DoppeltesSpielException("Ein Spiel mit der Kennung " 
-                        + spielKennung
-                        + " ist schon angemeldet!");
+            
+            HashMap durchlaeufe = (HashMap)informationsspeicher.get(spielID);
+            
+            if (! durchlaeufe.containsKey(spielDurchlauf)) {
+            } else {
+                // Hat das Anmelden nicht geklappt, wird ein Fehler geworfen
+                throw new DoppelterDurchlaufException("Ein Spiel mit der ID " 
+                            + spielID
+                            + " ist schon angemeldet!");
+            }
         }
     }
 
@@ -276,10 +360,16 @@ public class VisualisationServer extends UnicastRemoteObject
      * Übergibt der Server-Vis-Komponente die Empfohlene Wartezeit für die 
      * Client-Vis-Komponente beim warten auf neue Informationen des 
      * aufrufenden Szenarios.
-     * 
+     *
+     * @param spielID        die ID des Spiels
+     * @param spielDurchlauf  der Durchlauf des Spiels
      * @param empfohleneWartezeit    die Zeit in Millisekunden
      */
-    public void setzeWartezeit(String spielKennung, int empfohleneWartezeit) {
+    public void setzeWartezeit(String spielID, 
+                               String spielDurchlauf,
+                               int empfohleneWartezeit) {
+        String spielKennung = spielID + "." + spielDurchlauf;
+        
         // Die empfohlene Wartezeit eintragen
         if (empfohleneWartezeit != 0) {
                 wartezeiten.put(spielKennung, 
@@ -288,16 +378,23 @@ public class VisualisationServer extends UnicastRemoteObject
     }
     
     /**
-     * Meldet ein Spiel für die Informationsspeicherung ab.
+     * Meldet einen Spieldurchlauf für die Informationsspeicherung ab.
      *
-     * @param authCode
+     * @param spielID        die ID des Spiels
+     * @param spielDurchlauf  der Durchlauf des Spiels
      */
-    public void spielAbmelden(String spielKennung) {
-        if (informationsspeicher.containsKey(spielKennung)) {
+    public void spielAbmelden(String spielID, 
+                              String spielDurchlauf) {
+        String spielKennung = spielID + "." + spielDurchlauf;                          
+                                
+        if (informationsspeicher.containsKey(spielID)
+            && ((HashMap)informationsspeicher.get(spielID)).containsKey(spielDurchlauf)) {
             
+                
             // Spielende markieren
+            HashMap durchlaeufe = (HashMap)informationsspeicher.get(spielID);
             LinkedList informationen = 
-                    (LinkedList)informationsspeicher.get(spielKennung);
+                            (LinkedList)durchlaeufe.get(spielDurchlauf);
             
             informationen.addLast(new Spielende(System.currentTimeMillis()));
             
