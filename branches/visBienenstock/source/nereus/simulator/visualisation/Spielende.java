@@ -1,7 +1,7 @@
 /*
- * Dateiname      : IVisualisationServer.java
+ * Dateiname      : Spielende.java
  * Erzeugt        : 26. Mai 2005
- * Letzte Änderung: 06. Juni 2005 durch Dietmar Lippold
+ * Letzte Änderung: 13. Juni 2005 durch Samuel Walz
  * Autoren        : Samuel Walz (samuel@gmx.info)
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
@@ -34,16 +34,26 @@ import java.io.Serializable;
  * @author  Samuel Walz
  */
 public class Spielende implements Serializable {
-
+    
+    /**
+     * Zeit des Spielendes in Millisekunden
+     */
     private static long zeitDesSpielendes = 0L;
 
     /**
-     * Creates a new instance of Spielende.
+     * Der Konstruktor
+     *
+     * @param endZeit   die Zeit des Spielendes in Millisekunden
      */
     public Spielende(long endZeit) {
         zeitDesSpielendes = endZeit;
     }
-
+    
+    /**
+     * Gibt die Zeit des Spielendes zurück.
+     * 
+     * @return     die Zeit in Millisekunden
+     */
     public long gibEndZeit() {
         return zeitDesSpielendes;
     }
