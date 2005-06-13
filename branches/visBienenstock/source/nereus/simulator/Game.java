@@ -150,7 +150,7 @@ public class Game extends Thread {
         m_scenarioParams = new Hashtable();
         m_scenario = scenario;
         // Anmelden des Spiels an der Server-Vis-Komponente
-        int runNumer = ((Integer) gameParameters.get("numExps")).intValue();
+        int runNumber = ((Integer) gameParameters.get("numExps")).intValue();
         m_scenario.registerAtVisualisation(runNumber);
         // checken ob das Spiel rundenbasiert ist.
         if(gameParameters.containsKey("RoundBased")) {
@@ -162,40 +162,6 @@ public class Game extends Thread {
         // ScenarioHandler erstellen
         m_scenarioHandler = m_scenario.createNewScenarioHandler();
         m_maxNumberOfAgents = ((Integer)m_params.get("MaxAgents")).intValue();
-    }
-    
-    /**
-     * Konstruktor.
-     *
-     * @param gameParameters -Spielparameter
-     * @param scenario - Szenario
-     * @param scenarioParameters - Szenarioparameter
-     * @throws AgentExecutionException
-     */
-    public Game(
-            Hashtable gameParameters,
-            AbstractScenario scenario,
-            Hashtable scenarioParameters) throws InvalidElementException {
-        super((String)gameParameters.get("GameName"));
-        m_id = new Id();
-        m_gameName = (String)gameParameters.get("GameName");
-        // Parameter wegspeichern
-        m_params = gameParameters;
-        // Scenario-Parameter zwischenspeichern.
-        m_scenarioParams = scenarioParameters;
-        // scenario speichern.
-        m_scenario = scenario;
-        // checken ob das Spiel rundenbasiert ist.
-        if(gameParameters.containsKey("RoundBased")) {
-            Object tmpObject = gameParameters.get("RoundBased");
-            if((tmpObject != null) && (!((Boolean)tmpObject).booleanValue())) {
-                m_roundbased = false;
-            }
-        }
-        //	ScenarioHandler erstellen
-        m_scenarioHandler = m_scenario.createNewScenarioHandler();
-        m_maxNumberOfAgents = ((Integer)m_params.get("MaxAgents")).intValue();
-        
     }
     
     /**
@@ -225,7 +191,7 @@ public class Game extends Thread {
 
         m_scenario.reset();
         // Anmelden des Spiels an der Server-Vis-Komponente
-        int runNumer = ((Integer) m_params.get("numExps")).intValue();
+        int runNumber = ((Integer) m_params.get("numExps")).intValue();
         m_scenario.registerAtVisualisation(runNumber);
 
         // Agenten neu erzeugen.
