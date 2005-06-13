@@ -162,6 +162,9 @@ public class BienenstockVisGui extends Frame {
      */
     BienenstockVisSteuerung vis;
 
+    /**
+     * der windowListener fuer das Einstellen der Zeit
+     */
     ActionListener zeitAktion = new ActionListener() {
 	public void actionPerformed(ActionEvent e) {
             vis.setzeZeit(Integer.parseInt(zeitFeld.getText()));
@@ -244,6 +247,7 @@ public class BienenstockVisGui extends Frame {
         fenster = this;
 	fenster.setTitle("Bienenstockvisualisierung");
         fenster.setFont(schrift);
+        
         //Schliessen ermoeglichen
 	addWindowListener( new WindowAdapter() {
             public void windowClosing ( WindowEvent e ) {
