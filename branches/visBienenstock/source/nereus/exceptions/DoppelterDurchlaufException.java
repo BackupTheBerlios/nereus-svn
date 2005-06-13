@@ -1,7 +1,7 @@
 /*
  * Dateiname      : DoppeltesSpielException.java
- * Erzeugt        : 30. Mai 2005
- * Letzte Änderung: 06. Juni 2005 durch Dietmar Lippold
+ * Erzeugt        : 13. Juni 2005
+ * Letzte Änderung: 13. Juni 2005 durch Samuel Walz
  * Autoren        : Samuel Walz (samuel@gmx.info)
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
@@ -22,27 +22,26 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-
 package nereus.exceptions;
 
 /**
  *
  * @author  Samuel Walz
  */
-public class DoppeltesSpielException extends Exception {
-
+public class DoppelterDurchlaufException extends java.lang.Exception {
+    
     /**
-     * Creates a new instance of <code>doppeltesSpielException</code> without detail message.
+     * Creates a new instance of <code>DoppelterDurchlaufException</code> without detail message.
      */
-    public DoppeltesSpielException() {
+    public DoppelterDurchlaufException() {
     }
-
+    
+    
     /**
-     * Constructs an instance of <code>doppeltesSpielException</code> with the specified detail message.
+     * Constructs an instance of <code>DoppelterDurchlaufException</code> with the specified detail message.
      * @param msg the detail message.
      */
-    public DoppeltesSpielException(String msg) {
+    public DoppelterDurchlaufException(String msg) {
         super(msg);
     }
 }
-
