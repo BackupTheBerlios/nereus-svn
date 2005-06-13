@@ -45,7 +45,7 @@ import nereus.exceptions.InvalidAgentException;
 import nereus.exceptions.InvalidElementException;
 import nereus.exceptions.InvalidGameException;
 import nereus.exceptions.NotEnoughEnergyException;
-import nereus.exceptions.DoppeltesSpielException;
+import nereus.exceptions.DoppelterDurchlaufException;
 import nereus.simulatorinterfaces.AbstractAgent;
 import nereus.simulatorinterfaces.AbstractScenarioHandler;
 import nereus.simulatorinterfaces.IVisualisationServerIntern;
@@ -295,10 +295,9 @@ public abstract class AbstractScenario implements Serializable {
         
         // Anmelden an der Server-Vis-Komponente
         try {
-            m_visualisationServer.spielAnmelden(m_gameId.toString()
-            + "."
-                    + m_runCounter);
-        } catch(DoppeltesSpielException fehler) {
+            m_visualisationServer.spielAnmelden(m_gameId.toString(),
+                                                Integer.toString(m_runCounter));
+        } catch(DoppelterDurchlaufException fehler) {
             System.out.println(fehler.getMessage());
         }
     }
@@ -309,10 +308,9 @@ public abstract class AbstractScenario implements Serializable {
      * @param information    Die Spielinformation
      */
     protected final void saveGameInformation(Serializable information) {
-        m_visualisationServer.speichereSpielInformation(m_gameId.toString()
-        + "."
-                + m_runCounter,
-                information);
+        m_visualisationServer.speichereSpielInformation(m_gameId.toString(), 
+                                                Integer.toString(m_runCounter),
+                                                information);
         
     }
     
@@ -323,10 +321,9 @@ public abstract class AbstractScenario implements Serializable {
      * @param empfohleneWartezeit     die Zeit in Millisekunden
      */
     protected final void setVisClientWaittime(int empfohleneWartezeit) {
-        m_visualisationServer.setzeWartezeit(m_gameId.toString()
-        + "."
-                + m_runCounter,
-                empfohleneWartezeit);
+        m_visualisationServer.setzeWartezeit(m_gameId.toString(),
+                                             Integer.toString(m_runCounter),
+                                             empfohleneWartezeit);
     }
     
     /**
@@ -335,9 +332,8 @@ public abstract class AbstractScenario implements Serializable {
      * @params spielKennung     die Kennung des Spiels
      */
     public final void unegisterAtVisualisation() {
-        m_visualisationServer.spielAbmelden(m_gameId.toString()
-        + "."
-                + m_runCounter);
+        m_visualisationServer.spielAbmelden(m_gameId.toString(),
+                                            Integer.toString(m_runCounter));
         
     }
     
