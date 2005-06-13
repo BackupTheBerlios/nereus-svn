@@ -1,7 +1,7 @@
 /*
  * Dateiname      : Scenario.java
  * Erzeugt        : 16. Oktober 2004
- * Letzte Änderung: 12. Juni 2005 durch Eugen Volk
+ * Letzte Änderung: 13. Juni 2005 durch Eugen Volk
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (samuel@gmx.info)
  *                  Eugen Volk
@@ -222,7 +222,7 @@ public class Scenario
      * Authentifizierungscode zum übertragen der Informationsobjekte an die
      * Server-Vis-Komponente
      */
-    private long visAuthCode = 0L;    
+    private long visAuthCode = 0L;
     
     
     /**
@@ -973,7 +973,7 @@ public class Scenario
             NotEnoughEnergyException,
             InvalidElementException {
         
-                
+        
         startphase();
         
         
@@ -1116,7 +1116,7 @@ public class Scenario
     
     
     
-           
+    
     /**
      * gibt eine Liste mit den Parametern, die dass Szenario benötigt zurück.
      *
@@ -1306,14 +1306,14 @@ public class Scenario
     }
     
     /**
-     * liefert zu einem Szenario-Parameter-Namen den zugehörigen 
+     * liefert zu einem Szenario-Parameter-Namen den zugehörigen
      * Wert als String zurück.
      *
-     * @throws InvalidElementException  parameterName ist in der Parameter-Liste 
+     * @throws InvalidElementException  parameterName ist in der Parameter-Liste
      * nicht vorhanden.
      * @param parameterName der Name des Parameters
      */
-    public String getScenarioParameter(String parameterName) 
+    public String getScenarioParameter(String parameterName)
     throws InvalidElementException{
         if (this.m_parameter.containsKey(parameterName)){
             Object obj=this.m_parameter.get(parameterName);
@@ -1321,12 +1321,4 @@ public class Scenario
         }else throw new InvalidElementException();
     }
     
-   /**
-     * Liefert den KlassenNamen der SteuerungsKomponente für
-     * die Visualiesierung des Szenario.
-     * @return KlassenNamen
-     */
-    public String getScenarioVisualisationClassName(){
-        return new String("scenarios.bienenstock.visualisationgui.BienenstockVisSteuerung");
-    }
 }

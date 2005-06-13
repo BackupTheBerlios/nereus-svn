@@ -52,7 +52,10 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
+import java.awt.Frame;
+import java.awt.Component;
 
+import nereus.registrationgui.JSelectionDialog;
 import nereus.simulatorinterfaces.ICoordinator;
 import nereus.utils.DataTransferObject;
 import nereus.utils.Id;
@@ -512,7 +515,7 @@ public class GameParameterPanel
      */
     void m_simulateGame_actionPerformed(ActionEvent e) {
         try {
-             m_scenarioVisButton.setEnabled(true);
+            m_scenarioVisButton.setEnabled(true);
             // starte Simulation
             this.m_parent.writeStatusMessage("Simulation gestartet.....");
             m_coordinator.startGame(m_gameId);
@@ -678,7 +681,7 @@ public class GameParameterPanel
             m_parent.repaintApplication();
             m_closeGameButton.setEnabled(true);
             m_visRegisterButton.setEnabled(true);
-           
+            
         }
     }
     
@@ -823,12 +826,38 @@ public class GameParameterPanel
             int port=1099; // rmi port
             String gameId=this.m_gameId.toString();
             String serverName=ClientInfoObject.m_instance.getServerName();
-            VisualisationClient visClient=new VisualisationClient(serverName, port,this.m_gameId.toString(), 1);
-            String scenarioVisClassName=this.m_coordinator.getScenarioVisClassName(gameId);
+            VisualisationClient visClient;
+            int rundenNr=1;
+            
+       /*     // für den Test wird nach szenarien Konfigurationen gefragt.
+            LinkedList tagNames=m_coordinator.getGameConfTags("bienenstock");
+            String tagName="1";
+            if ((tagNames!=null) && (tagNames.size()>=1)){
+                if (tagNames.size()==1){
+                    tagName=(String)tagNames.getFirst();
+                }else{
+                    //  tagNames.addFirst(" ");
+        
+                    Component cmp=this.m_parent.getParentComponent();
+                    Frame frame=(Frame)cmp;
+                    JSelectionDialog s2dialog =
+                            new JSelectionDialog(
+                            frame,
+                            "Durchlauf-Auswahl",
+                            "DurchlaufNr ",
+                            tagNames);
+                    s2dialog.show();
+                    tagName= (String)s2dialog.getSelected();
+                }
+            }
+            rundenNr=Integer.parseInt(tagName); */
+            
+            visClient=new VisualisationClient(serverName, port,this.m_gameId.toString(), rundenNr);
+            
+            String scenarioVisClassName=ClientInfoObject.m_instance.getVisualisationClassName(m_scenarioName);
             Class scenarioVisClass=Class.forName(scenarioVisClassName);
             IVisualisationOutput visOutput=(IVisualisationOutput)scenarioVisClass.newInstance();
             visOutput.initialize(visClient);
-            System.out.println("init Erfolgreich ");
         }catch (Exception ex){
             ex.printStackTrace(System.out);
         }

@@ -1,7 +1,7 @@
 /*
  * Dateiname      : AbstractScenario.java
  * Erzeugt        : 13. Mai 2003
- * Letzte Änderung: 12. Juni 2005 durch Eugen Volk
+ * Letzte Änderung: 13. Juni 2005 durch Eugen Volk
  * Autoren        : Daniel Friedrich
  *                  Eugen Volk
  *
@@ -268,9 +268,9 @@ public abstract class AbstractScenario implements Serializable {
      */
     public abstract LinkedList getScenarioParameter();
     
-     /**
+    /**
      * Gibt eine Liste mit den Parametern, die dass Szenario benötigt zurück.
-      * @param gameConf Game-KonfigDatei
+     * @param gameConf Game-KonfigDatei
      *
      * @return LinkedList - Liste der Parameter
      */
@@ -287,7 +287,7 @@ public abstract class AbstractScenario implements Serializable {
     
     /**
      * Erhöht den Wert von m_runCounter um 1 und meldet das Szanario an der
-     * Server-Vis-Komponente an. 
+     * Server-Vis-Komponente an.
      */
     public final void registerAtVisualisation() {
         // Erhöhen von m_runCounter um 1
@@ -295,9 +295,9 @@ public abstract class AbstractScenario implements Serializable {
         
         // Anmelden an der Server-Vis-Komponente
         try {
-            m_visualisationServer.spielAnmelden(m_gameId.toString() 
-                                                + "."
-                                                + m_runCounter);
+            m_visualisationServer.spielAnmelden(m_gameId.toString()
+            + "."
+                    + m_runCounter);
         } catch(DoppeltesSpielException fehler) {
             System.out.println(fehler.getMessage());
         }
@@ -309,11 +309,11 @@ public abstract class AbstractScenario implements Serializable {
      * @param information    Die Spielinformation
      */
     protected final void saveGameInformation(Serializable information) {
-        m_visualisationServer.speichereSpielInformation(m_gameId.toString() 
-                                                        + "."
-                                                        + m_runCounter,
-                                                        information);
-    
+        m_visualisationServer.speichereSpielInformation(m_gameId.toString()
+        + "."
+                + m_runCounter,
+                information);
+        
     }
     
     /**
@@ -322,32 +322,25 @@ public abstract class AbstractScenario implements Serializable {
      *
      * @param empfohleneWartezeit     die Zeit in Millisekunden
      */
-     protected final void setVisClientWaittime(int empfohleneWartezeit) {
-         m_visualisationServer.setzeWartezeit(m_gameId.toString() 
-                                              + "."
-                                              + m_runCounter,
-                                              empfohleneWartezeit);
-     }
-     
-     /**
-      *Meldet das Spiel von der Server-Vis-Komponente ab
-      *
-      * @params spielKennung     die Kennung des Spiels
-      */
-     public final void unegisterAtVisualisation() {
-         m_visualisationServer.spielAbmelden(m_gameId.toString()
-                                             + "."
-                                             + m_runCounter);
-         
-     }
+    protected final void setVisClientWaittime(int empfohleneWartezeit) {
+        m_visualisationServer.setzeWartezeit(m_gameId.toString()
+        + "."
+                + m_runCounter,
+                empfohleneWartezeit);
+    }
     
     /**
-     * Liefert den KlassenNamen der SteuerungsKomponente für
-     * die Visualiesierung des Szenario.
-     * @return KlassenNamen
+     *Meldet das Spiel von der Server-Vis-Komponente ab
+     *
+     * @params spielKennung     die Kennung des Spiels
      */
-     public abstract String getScenarioVisualisationClassName();
-   
+    public final void unegisterAtVisualisation() {
+        m_visualisationServer.spielAbmelden(m_gameId.toString()
+        + "."
+                + m_runCounter);
+        
+    }
+    
 }
 
 

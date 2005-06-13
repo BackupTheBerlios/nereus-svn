@@ -33,7 +33,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import java.util.LinkedList;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
-
+import java.util.HashMap;
 
 
 /**
@@ -54,6 +54,11 @@ public class AgentsXMLConfigHandler extends DefaultHandler{
     
     /** eine Verketete Liste von AgentenNamen */
     private AgentsList agentsList=null;
+    
+    /** HashMap mit (scenarioName,VisualisationKlassenName) paaren. */
+    private HashMap visClassNames=new HashMap();
+    
+    private String lastScenarioName;
     
     /**
      * überschreibt das StandardInterface und wird ausgeführt
@@ -79,6 +84,7 @@ public class AgentsXMLConfigHandler extends DefaultHandler{
         
         if (name.equals("scenario") && (atts.getLength()>0)) {
             scenarioName=atts.getValue("name");
+            lastScenarioName=scenarioName;
             agentsList=new AgentsList(scenarioName);
             scenarioAgentsList.add(agentsList);
         }
@@ -90,6 +96,11 @@ public class AgentsXMLConfigHandler extends DefaultHandler{
             agentsList.addAgentName(atts.getValue("name"));
             
         }
+        if (name.equals("visualisationClassName")){
+            String visName=atts.getValue("name");
+            this.visClassNames.put(new String(lastScenarioName), new String(visName));
+        }
+        
     }
     
     
@@ -102,5 +113,13 @@ public class AgentsXMLConfigHandler extends DefaultHandler{
     public LinkedList getScenarioAgentsList(){
         
         return this.scenarioAgentsList;
+    }
+    
+    /**
+     * Liefert eine HashMap mit (scenarioName,VisualisationKlassenName) paaren.
+     * @return HashMap mit (scenarioName,VisualisationKlassenName) paaren.
+     */
+    public HashMap getVisualisationClassNames(){
+        return this.visClassNames;
     }
 }

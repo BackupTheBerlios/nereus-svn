@@ -40,7 +40,7 @@ import nereus.visualisationclient.VisualisationClient;
  * @author  Dietmar Lippold
  */
 public class BienenstockVisualisierung {
-
+    
     /**
      * Startet die Visualisierung.
      *
@@ -52,7 +52,8 @@ public class BienenstockVisualisierung {
         BienenstockVisSteuerung bienenVis;
         String                  servername, spielId;
         int                     port, runde;
-
+        
+        
         if (args.length == 4) {
             try {
                 servername = args[0];
@@ -60,25 +61,25 @@ public class BienenstockVisualisierung {
                 spielId = args[2];
                 runde = Integer.parseInt(args[3]);
                 visClient = new VisualisationClient(servername, port,
-                                                    spielId, runde);
+                        spielId, runde);
                 bienenVis = new BienenstockVisSteuerung(visClient);
             } catch (NumberFormatException fehler) {
                 System.err.println("Die angegebene Port-Nummer oder Runde war"
-                                   + " keine natürliche Zahl");
+                        + " keine natürliche Zahl");
             } catch (MalformedURLException fehler) {
-                System.err.println("Server-URL fehlerhaft!\n" 
-                                   + fehler.getMessage());
+                System.err.println("Server-URL fehlerhaft!\n"
+                        + fehler.getMessage());
             } catch (RemoteException fehler) {
-                System.err.println("Verbindungsproblem!\n" 
-                                   + fehler.getMessage());
+                System.err.println("Verbindungsproblem!\n"
+                        + fehler.getMessage());
             } catch (NotBoundException fehler) {
-                System.err.println("Server-Vis-Komponente nicht gefunden!\n" 
-                                   + fehler.getMessage());
+                System.err.println("Server-Vis-Komponente nicht gefunden!\n"
+                        + fehler.getMessage());
             }
         } else {
             System.out.println("Bitte geben Sie Serveradresse, Port,"
-                               + " Spiel-ID und die Rundennummer an.\n"
-                               + "(z.B.: 127.0.0.1 1099 spiel 0)");
+                    + " Spiel-ID und die Rundennummer an.\n"
+                    + "(z.B.: 127.0.0.1 1099 spiel 0)");
         }
     }
 }

@@ -80,6 +80,11 @@ public class ClientInfoObject {
      */
     private LinkedList agentsScenarioList;
     
+    /**
+     *
+     */
+    private HashMap visClassNames=null;
+    
     
     /**
      * Konfigurationsdateiname, in der verfügbare Agentennamen gespeichert sind
@@ -126,11 +131,13 @@ public class ClientInfoObject {
         
         
         this.agentsScenarioList=readScenarioAgentsList(this.clientConfigFileURI);
+        this.visClassNames=readVisClassNames(this.clientConfigFileURI);
     }
     
     
     /**
      * Liest aus einer XML-Konfig-Datei verfügbaren Agenten aus.
+     * @param configFileURI URI der Konfigurationsdatei
      * @return eine Liste die aus einer AgentsList-Struktur besteht.
      */
     private LinkedList readScenarioAgentsList(String configFileURI){
@@ -163,6 +170,38 @@ public class ClientInfoObject {
         }
         return retVal;
     }
+    
+    /**
+     * Liest aus einer XML-Konfig-Datei verfügbaren VisalisierungsKlassenNamen aus.
+     * @param configFileURI URI der Konfigurationsdatei
+     */
+     private HashMap readVisClassNames(String configFileURI){
+        String clientConfigXMLpath;
+        if (m_clientBasePath.endsWith(m_pathSeparator))
+            clientConfigXMLpath=m_clientBasePath+CONFIGDATEINAME;
+        else clientConfigXMLpath=m_clientBasePath+ m_pathSeparator + CONFIGDATEINAME;
+        if (configFileURI!="") clientConfigXMLpath=configFileURI;
+        
+        AgentsXMLConfigHandler handler=new AgentsXMLConfigHandler();
+        ScenarioXMLInputReader sceanrioXMLInputReader=new ScenarioXMLInputReader(clientConfigXMLpath,handler);
+        this.visClassNames=handler.getVisualisationClassNames();
+        return this.visClassNames;
+    }
+    
+    /**
+     * liefert zu einem scenarioNamen zugehörigen Namen der Klasse für
+     * die Steuerung der Visualisierung des Szenarios.
+     * @param scenarioName Name des Szenario
+     * @return KlassenName des VisualisierungssteuerungsKlasse.
+     */
+    public String getVisualisationClassName(String scenarioName){
+        String retValue;
+        if (this.visClassNames.containsKey(scenarioName)){
+            retValue=(String)this.visClassNames.get(scenarioName);
+            return retValue;
+        }else return null;
+    }
+    
     
     
     /**

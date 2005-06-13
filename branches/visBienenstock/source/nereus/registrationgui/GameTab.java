@@ -277,5 +277,11 @@ public class GameTab extends JScrollPane {
     public void setGameSaved(boolean value) {
         m_isGameSaved = value;
     }
-    
+    /**
+     * liefert die Eltarn Componente
+     * @return Eltern-Component
+     */
+    public Component getParentComponent(){
+        return this.m_application;
+    }
 }

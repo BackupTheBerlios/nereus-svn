@@ -1,7 +1,7 @@
 /*
  * Dateiname      : Coordinator.java
  * Erzeugt        : 13. Mai 2003
- * Letzte Änderung: 12 Juni. 2005 durch Samuel Walz
+ * Letzte Änderung: 13 Juni. 2005 durch Samuel Walz
  * Autoren        : Daniel Friedrich
  *                  Eugen Volk
  *
@@ -100,7 +100,7 @@ public class Coordinator extends UnicastRemoteObject implements ICoordinator {
      */
     private String m_path;
     
-       
+    
     /**
      * Hashtable zum mappen der Spielnamen auf die dazugehörige Id.
      */
@@ -204,10 +204,10 @@ public class Coordinator extends UnicastRemoteObject implements ICoordinator {
             try {
                 Class scenarioClass = Class.forName("scenarios." + scenarioName);
                 scenario = (AbstractScenario)scenarioClass.newInstance();
-                scenario.initialize(gameId, 
-                                    m_informationHandler, 
-                                    new Hashtable(dto),
-                                    gameConf);
+                scenario.initialize(gameId,
+                        m_informationHandler,
+                        new Hashtable(dto),
+                        gameConf);
                 scenario.setVisServer(m_visualisationServer);
             } catch (Exception e) {
                 e.printStackTrace(System.out);
@@ -232,7 +232,7 @@ public class Coordinator extends UnicastRemoteObject implements ICoordinator {
             throw new InvalidElementException("Parameter ScenarioName");
         }
     }
-
+    
     /**
      * Liefert eine neue Id, deren Bezeichnung aus dem übergebenen Namen,
      * einem Bindestrich und einer ganzen Zahl besteht. Die gelieferte Id
@@ -245,16 +245,16 @@ public class Coordinator extends UnicastRemoteObject implements ICoordinator {
     private Id newGameId(String gameName) {
         String neueBezeichnung;
         int zahl;
-
+        
         zahl = 0;
         do {
             zahl++;
             neueBezeichnung = gameName + "-" + zahl;
         } while (m_games.containsKey(neueBezeichnung));
-
+        
         return new Id(neueBezeichnung);
     }
-
+    
     /* (non-Javadoc)
      * @see jAgentSimulator.server.ICoordinator#getGameName(jAgentSimulator.utils.Id)
      */
@@ -780,16 +780,4 @@ public class Coordinator extends UnicastRemoteObject implements ICoordinator {
         else throw new NoSuchElementException();
     }
     
-    /**
-     * Liefert den KlassenNamen der SteuerungsKomponente für
-     * die Visualiesierung des Szenario.
-     * @param gameId Id des Spiels
-     * @return KlassenNamen
-     */
-    public String getScenarioVisClassName(String gameId){
-        Game game=(Game)m_games.get(gameId);
-        AbstractScenario abstrScenario=game.getScenario();
-        String className=abstrScenario.getScenarioVisualisationClassName();
-        return className;
-    }
 }
