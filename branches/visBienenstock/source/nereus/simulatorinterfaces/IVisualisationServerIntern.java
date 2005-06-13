@@ -27,7 +27,7 @@ package nereus.simulatorinterfaces;
 
 import java.io.Serializable;
 
-import nereus.exceptions.DoppeltesSpielException;
+import nereus.exceptions.DoppelterDurchlaufException;
 //import nereus.utils.Id;
 
 /**
@@ -40,38 +40,46 @@ public interface IVisualisationServerIntern {
     /**
      * Meldet ein Spiel für die Speicherung seiner Informationen an.
      *
-     * @param spielKennung     die Kennung des Spiels
+     * @param spielID                Die ID eines Spiels
+     * @param spielDurchlauf           Der Ducrhlauf eines Spiels
      *
      * @throws doppeltesSpielException  Wenn ein Spiel mit der gleichen Kennung
      *                                  bereits angemeldet ist.
      */
-    public void spielAnmelden (String spielKennung) 
-        throws DoppeltesSpielException;
+    public void spielAnmelden (String spielID,
+                               String spielDurchlauf) 
+                               throws DoppelterDurchlaufException;
 
     /**
      * Übergibt der Server-Vis-Komponente die Empfohlene Wartezeit für die 
      * Client-Vis-Komponente beim warten auf neue Informationen des 
      * aufrufenden Szenarios.
      * 
-     * @parem spielKennung           die Kennung des Spiels
+     * @parem spielID                die ID eines Spiels
+     * @param spielDurchlauf        der Durchlauf eines Spiels
      * @param empfohleneWartezeit    die Zeit in Millisekunden
      */
-    public void setzeWartezeit(String spielKennung, int empfohleneWartezeit);
+    public void setzeWartezeit(String spielID, 
+                               String spielDurchlauf,
+                               int empfohleneWartezeit);
     
     /**
      * Speichert die Informationen eines Spiels.
      *
-     * @param spielKennung     die Kennung des Spiels.
+     * @param spielID               die ID eines Spiels
+     * @param spielDurchlauf    der Durchlauf eines Spiels
      * @param information      die zu speichernden Informationen
      */
-    public void speichereSpielInformation (String spielKennung, 
+    public void speichereSpielInformation (String spielID, 
+                                           String spielDurchlauf,
                                            Serializable information);
 
     /**
      * Meldet ein Spiel für die Speicherungen von Informationen ab.
      *
-     * @param spielKennung    die Kennung des Spiels.
+     * @param spielKennung    die ID eines Spiels
+     * @param spielDurchlauf   der Durchlauf eines Spiels
      */
-    public void spielAbmelden (String spielKennung);
+    public void spielAbmelden (String spielID, String spielDurchlauf);
 }
 

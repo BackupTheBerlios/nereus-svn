@@ -58,12 +58,14 @@ public interface IVisualisationServerExtern extends Remote {
      * Gibt den Ausschnitt der Informationen zu einem Spiel ab einer 
      * gewünschten Position zurück.
      *
-     * @param spielKennung       Kennung des gewünschten Spiels.
-     * @param ausschnittsbeginn  Eine ganzzahlige Zahl größer -1 (>= 0).
+     * @param spielID          ID des gewünschten Spiels
+     * @param spielDurchlauf   gewünschter Durchlauf des Spiels
+     * @param ausschnittsbeginn  Eine ganzzahlige Zahl größer -1 (>= 0)
      *
      * @return  Eine Liste der gewünschten Informationen
      */
-    public LinkedList gibSpielInformationen (String spielKennung, 
+    public LinkedList gibSpielInformationen (String spielID,
+                                             String spielDurchlauf,
                                              int ausschnittsbeginn)
                                              throws RemoteException;
     
@@ -71,10 +73,21 @@ public interface IVisualisationServerExtern extends Remote {
      * Gibt die empfohlene Wartezeit zwischen den Informationsanfragen zu
      * einem Spiel zurück.
      * 
-     * @param spielKennung       Kennung des gewünschten Spiels.
+     * @param spielID          ID des gewünschten Spiels
+     * @param spielDurchlauf   gewünschter Durchlauf des Spiels
      *
      * @return   Die empfohlene Wartezeit in Millisekunden
      */
-    public int gibWartezeit (String spielKennung) throws RemoteException;
+    public int gibWartezeit (String spielID,
+                             String spielDurchlauf) throws RemoteException;
+    
+    /**
+     * Gibt eine Liste aller bereits bekannten Durchläufe zu einem Spiel zurück
+     *
+     * @param spielID           ID des gewünschten Spiels
+     *
+     * @return     eine Liste aller Durchläufe
+     */
+    public LinkedList gibDurchlaeufe (String spielID) throws RemoteException;
 }
 
