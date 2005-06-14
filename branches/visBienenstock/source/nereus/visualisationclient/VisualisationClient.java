@@ -89,9 +89,10 @@ public class VisualisationClient extends AbstractVisualisationClient {
 
         dienstAdresse = "//" + adresse + ":" + port + "/" + dienstname;
 
-        System.out.println("Suche den Server...");
         visServer = (IVisualisationServerExtern) Naming.lookup(dienstAdresse);
     }
+    
+    
     
     /**
      * Gibt eine Liste aller bereits bekannten Durchläufe zu einem Spiel zurück
@@ -157,13 +158,10 @@ public class VisualisationClient extends AbstractVisualisationClient {
 
 
     public void run() {
-        System.out.println("Client ist gestartet...");
-        
             
         try {
              
              while ((! alleInformationenAbgeholt) && !stop) {
-                System.out.println("hole informationen...");
                 
                 // Empfohlene Wartezeit für neue Informationen erfragen
                 wartezeit = new Integer(
@@ -174,22 +172,30 @@ public class VisualisationClient extends AbstractVisualisationClient {
                     visServer.gibSpielInformationen(visSpielID,
                                                     visSpielDurchlauf,
                                                     ausschnittsbeginn);
-
-                ListIterator listenlaeufer = informationen.listIterator();
+                
                 /*
                 * Wird eine leere Liste übergeben, so wird auf weitere
                 * Informationen gewartet.
                 */
-                if (! listenlaeufer.hasNext()) {
+                if (informationen == null) {
+                    
+                    System.out.println("Das Spiel mit der ID " + visSpielID
+                                       + " ist dem Server noch nicht bekannt");
+                    
+                    synchronized (wartezeit) {
+                        wartezeit.wait(wartezeit.intValue());
+                    }
+                    
+                } else if (informationen.isEmpty()) {
 
-                    System.out.println("Habe eine leere Liste erhalten...");
+                    System.out.println("Keine neuen Informationen erhalten...");
 
                     synchronized (wartezeit) {
                         wartezeit.wait(wartezeit.intValue());
                     }
 
                 } else {
-
+                    ListIterator listenlaeufer = informationen.listIterator();
                     System.out.println("Liste enthält Informationen...");
                     //Weitergeben der Informationen an die Visualisierung
                     while (listenlaeufer.hasNext()) {
@@ -217,8 +223,6 @@ public class VisualisationClient extends AbstractVisualisationClient {
         } catch (InterruptedException fehler) {
             System.err.println("Warten fehlgeschlagen!\n" + fehler.getMessage());
         }
-
-        System.out.println("Client hat sich beendet...");
     }
 }
 
