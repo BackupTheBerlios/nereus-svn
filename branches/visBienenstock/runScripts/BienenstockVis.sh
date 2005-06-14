@@ -9,7 +9,7 @@
 
 
 # Pfad zu Bildern des Szenarios Bienenstock
-SCENARIO_IMAGES="$IMAGE_DIR/bienenstock/bilder"
+SCENARIO_IMAGES="$IMAGE_DIR/bienenstock/bilder/"
 
 # Datei in der die Rechte für die Visualisierung vergeben werden.
 POLICY_CONF=client.policy

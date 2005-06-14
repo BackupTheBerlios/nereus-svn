@@ -6,7 +6,7 @@ call setup.bat
 
 
 REM Pfad zu Bildern des Szenarios Bienenstock
-set SCENARIO_IMAGES=%$IMAGE_DIR%\bienenstock\bilder
+set SCENARIO_IMAGES=%$IMAGE_DIR%\bienenstock\bilder\
 
 REM Datei in der die Rechte für die Visualisierung vergeben werden.
 set POLICY_CONF=client.policy
