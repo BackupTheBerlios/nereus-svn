@@ -148,7 +148,10 @@ public class VisualisationServer extends UnicastRemoteObject
             ListIterator listenlaeufer = liste.listIterator(ausschnittsbeginn);
             
             while (listenlaeufer.hasNext()) {
-                ausschnitt.addLast(listenlaeufer.next());
+                Object inhalt = listenlaeufer.next();
+                if (! (inhalt instanceof Spielanfang)) {
+                    ausschnitt.addLast(listenlaeufer.next());
+                }
             }
         } 
         
@@ -311,10 +314,16 @@ public class VisualisationServer extends UnicastRemoteObject
                                             throws RemoteException {
                                                 
         String spielKennung = spielID + "." + spielDurchlauf;
+        int beginn = ausschnittsbeginn;
         
         System.out.println("visServer: visClient fordert Informationen ab "
                             + "Position " + ausschnittsbeginn + " vom Spiel "
                             + spielKennung + " an.");
+        
+        // Ausschnittsbeginn korrigieren
+        if (beginn < 0) {
+            beginn = 0;
+        }
         
         // Informationen suchen und zurückgeben
         if (informationsspeicher.containsKey(spielID)) {
@@ -324,8 +333,8 @@ public class VisualisationServer extends UnicastRemoteObject
             if (durchlaeufe.containsKey(spielDurchlauf)) {
                 
                 return erstelleAusschnitt(
-                    (LinkedList)durchlaeufe.get(spielDurchlauf), 
-                 ausschnittsbeginn);
+                        (LinkedList)durchlaeufe.get(spielDurchlauf), 
+                        beginn);
                 
             } else {
                /*
