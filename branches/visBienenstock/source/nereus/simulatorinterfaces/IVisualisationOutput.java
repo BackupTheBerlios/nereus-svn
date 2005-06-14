@@ -1,7 +1,7 @@
 /*
  * Dateiname      : IVisualisationOutput.java
  * Erzeugt        : 26. Mai 2005
- * Letzte Änderung: 12. Juni 2005 durch Eugen Volk
+ * Letzte Änderung: 14. Juni 2005 durch Dietmar Lippold
  * Autoren        : Samuel Walz (samuel@gmx.info)
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
@@ -45,9 +45,11 @@ public interface IVisualisationOutput {
     public void visualisiere(Object visObject);
     
     /**
-     * initialisiert das Objekt.
-     * @param vClient VisualisierungsClient
+     * Initialisiert das Objekt.
+     *
+     * @param vClient      VisualisierungsClient
+     * @param verzeichnis  Ein Verzeichnis mit Daten für die Visualisierung.
      */
-    public void initialize(VisualisationClient vClient);
+    public void initialize(VisualisationClient vClient, String verzeichnis);
 }
 

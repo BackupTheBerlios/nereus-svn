@@ -1,7 +1,7 @@
 /*
  * Dateiname      : VisualisationClient.java
  * Erzeugt        : 19. Mai 2005
- * Letzte Änderung: 13. Juni 2005 durch Samuel Walz
+ * Letzte Änderung: 14. Juni 2005 durch Dietmar Lippold
  * Autoren        : Samuel Walz (samuel@gmx.info)
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
@@ -72,12 +72,15 @@ public class VisualisationClient extends AbstractVisualisationClient {
     /** 
      * Erzeugt eine neue Instanz.
      *
-     * @param adresse  Die Adresse der RMI-Registry des Server.
-     * @param port     Der Port der RMI-Registry des Server.
-     * @param spielId  Die Kennung des Spiels, das visualisiert werden soll.
-     * @param durchlauf  Der Durchlauf des Spiels, der visualisiert werden soll.
+     * @param adresse         Die Adresse der RMI-Registry des Server,
+     *                        optional mit Angabe des Ports hinter
+     *                        Doppelpunkt.
+     * @param spielID         Die Kennung des Spiels, das visualisiert werden
+     *                        soll.
+     * @param spielDurchlauf  Der Durchlauf des Spiels, der visualisiert
+     *                        werden soll.
      */
-    public VisualisationClient(String adresse, int port, String spielID,
+    public VisualisationClient(String adresse, String spielID,
                                String spielDurchlauf)
                             throws MalformedURLException,
                                    NotBoundException,
@@ -87,7 +90,7 @@ public class VisualisationClient extends AbstractVisualisationClient {
         this.visSpielID = spielID;
         this.visSpielDurchlauf = spielDurchlauf;
 
-        dienstAdresse = "//" + adresse + ":" + port + "/" + dienstname;
+        dienstAdresse = "//" + adresse + "/" + dienstname;
 
         visServer = (IVisualisationServerExtern) Naming.lookup(dienstAdresse);
     }

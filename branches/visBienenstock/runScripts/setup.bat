@@ -34,9 +34,12 @@ set CONFIGFILE_CLIENT=..\config\clientconfig.xml
 REM Das Verzeichnis in dem sich scenario-Datein befinden
 set SCENARIOS_DIR=..\scenarios
 
+REM Verzeichnis in dem sich die Verzeichnisse mit den Bildern der Szenrien
+REM befinden.
+set IMAGE_DIR=..\scenariosconfig
+
 REM Der Rechner, auf dem der Simulator von Nereus läuft.
 set SERVER_HOST=127.0.0.1
- 
 
 REM Der Port, unter dem der ClassFileServer läuft.
 set CLASS_SERVER_PORT=2003

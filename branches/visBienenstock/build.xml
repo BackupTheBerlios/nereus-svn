@@ -144,7 +144,7 @@
    <!-- excludes="**/*Agent*.class"/> -->
  </target>
 
- <target name="bienenstockVisJar" depends="compileAll"
+ <target name="bienenstockVisJar" depends="compileAll, _Stub"
          description="Erzeugt Jar-Datei fuer die Visualisierung vom
                       Bienenstock-Scenario">
    <!-- Durch debug="true" wird bei Exceptions die Zeile im Source   -->
@@ -157,7 +157,14 @@
         basedir="${build}"
         includes="scenarios/bienenstock/visualisationgui/**,
                   scenarios/bienenstock/visualisierungsUmgebung/**,
-                  scenarios/bienenstock/agenteninfo/**">
+                  scenarios/bienenstock/agenteninfo/**,
+                  nereus/visualisationclient/**,
+                  nereus/simulatorinterfaces/*.class,
+                  nereus/simulator/visualisation/VisualisationServer_Stub.class">
+     <manifest>
+       <attribute name="Main-Class"
+                  value="scenarios.bienenstock.visualisationgui.BienenstockVisualisierung"/>
+     </manifest>
     </jar>
  </target>
 
@@ -338,9 +345,9 @@
         <include name="Readme.txt" />
         <include name="ReadmeClient.txt"/>
       </tarfileset>
-      <tarfileset dir="${libs}/bilder"
+      <tarfileset dir="${scenariosconfig}/bienenstock/bilder"
                   mode="644"
-                  prefix="/client/libs/bilder">
+                  prefix="/scenariosconfig/bienenstock/bilder">
         <include name="*.gif"/>
       </tarfileset>
     </tar>

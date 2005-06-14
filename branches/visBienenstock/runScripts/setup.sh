@@ -35,7 +35,12 @@ CONFIGFILE_SERVER="../config/serverconfig.xml"
 # Verzeichnis in dem sich Szanrien befinden
 SCENARIOS_DIR="../scenarios"
 
-# Der Rechner, auf dem der Simulator von Nereus läuft.
+# Verzeichnis in dem sich die Verzeichnisse mit den Bildern der Szenrien
+# befinden.
+IMAGE_DIR="../scenariosconfig"
+
+# Der Rechner, auf dem der Simulator von Nereus läuft, optional mit Port.
+# SERVER_HOST="127.0.0.1:1099"
 SERVER_HOST="127.0.0.1"
 
 # Der Port, unter dem der ClassFielServer lauft.

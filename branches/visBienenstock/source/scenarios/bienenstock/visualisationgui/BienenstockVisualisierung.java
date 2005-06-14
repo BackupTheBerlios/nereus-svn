@@ -1,7 +1,7 @@
 /*
  * Dateiname      : BienenstockVisualisierung.java
  * Erzeugt        : 10. Juni 2005
- * Letzte Änderung: 12. Juni 2005 durch Dietmar Lippold
+ * Letzte Änderung: 14. Juni 2005 durch Dietmar Lippold
  * Autoren        : Samuel Walz (samuel@gmx.info)
  *                  Dietmar Lippold
  *
@@ -29,6 +29,7 @@ package scenarios.bienenstock.visualisationgui;
 import java.lang.NumberFormatException;
 import java.rmi.RemoteException;
 import java.rmi.NotBoundException;
+import java.rmi.RMISecurityManager;
 import java.net.MalformedURLException;
 
 import nereus.visualisationclient.VisualisationClient;
@@ -45,27 +46,26 @@ public class BienenstockVisualisierung {
      * Startet die Visualisierung.
      *
      * @param args  Die Kommandozeilen-Parameter, bestehend aus dem
-     *              Servernamen, dem Port, der Spiel-ID und der Rundennummer.
+     *              Servernamen, dem Port, der Spiel-ID, der Rundennummer und
+     *              dem Namen des Verzeichnisses mit den Bildern.
      */
     public static void main(String args[]) {
         VisualisationClient     visClient;
         BienenstockVisSteuerung bienenVis;
-        String                  servername, spielId;
-        int                     port, runde;
-        
-        
+        String                  servername, spielId, runde, verzeichnis;
+
         if (args.length == 4) {
+            if (System.getSecurityManager() == null) {
+                System.setSecurityManager(new RMISecurityManager());
+            }
+
             try {
                 servername = args[0];
-                port = Integer.parseInt(args[1]);
+                verzeichnis = args[1];
                 spielId = args[2];
-                runde = Integer.parseInt(args[3]);
-                visClient = new VisualisationClient(servername, port,
-                        spielId, String.valueOf(runde));
-                bienenVis = new BienenstockVisSteuerung(visClient);
-            } catch (NumberFormatException fehler) {
-                System.err.println("Die angegebene Port-Nummer oder Runde war"
-                        + " keine natürliche Zahl");
+                runde = args[3];
+                visClient = new VisualisationClient(servername, spielId, runde);
+                bienenVis = new BienenstockVisSteuerung(visClient, verzeichnis);
             } catch (MalformedURLException fehler) {
                 System.err.println("Server-URL fehlerhaft!\n"
                         + fehler.getMessage());
@@ -77,9 +77,11 @@ public class BienenstockVisualisierung {
                         + fehler.getMessage());
             }
         } else {
-            System.out.println("Bitte geben Sie Serveradresse, Port,"
-                    + " Spiel-ID und die Rundennummer an.\n"
-                    + "(z.B.: 127.0.0.1 1099 spiel 0)");
+            System.out.println("Bitte geben Sie Serveradresse, das Verzeichnis"
+                               + " mit den Bildern, die Rundennummer und die"
+                               + " Spiel-ID an.\n"
+                    + "(z.B.: 127.0.0.1 config/bilder spiel 1)");
         }
     }
 }
+

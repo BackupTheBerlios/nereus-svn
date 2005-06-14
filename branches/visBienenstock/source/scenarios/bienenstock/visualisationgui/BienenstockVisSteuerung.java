@@ -1,7 +1,7 @@
 /*
  * Dateiname      : BienenstockVisSteuerung.java
  * Erzeugt        : 06. Mai 2005
- * Letzte ?nderung: 13. Juni 2005 durch Dietmar Lippold
+ * Letzte ?nderung: 14. Juni 2005 durch Dietmar Lippold
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
  *                  Eugen Volk
@@ -35,6 +35,7 @@ import scenarios.bienenstock.visualisierungsUmgebung.*;
 
 import nereus.simulatorinterfaces.IVisualisationOutput;
 import nereus.visualisationclient.VisualisationClient;
+
 
 /**
  * Steuerung der Visualisierung des Bienenstock-Szenarios.
@@ -80,11 +81,15 @@ public class BienenstockVisSteuerung extends Thread implements IVisualisationOut
     /**
      * der Konstruktor initiiert das Frame und die Kartenliste
      *
+     * @param VisualisationClient  Der zu verwendende Visualisation-Client.
+     * @param verzeichnis          Das Verzeichnis mit den Bildern für die
+     *                             Karte.
      */
-    public BienenstockVisSteuerung (VisualisationClient vClient) {
+    public BienenstockVisSteuerung (VisualisationClient vClient,
+                                    String verzeichnis) {
         visClient = vClient;
         visClient.anmeldung(this);
-        fenster = new BienenstockVisGui(this);
+        fenster = new BienenstockVisGui(this, verzeichnis);
         fenster.show();
         karten = Collections.synchronizedList(new LinkedList());
         this.start();
@@ -103,10 +108,10 @@ public class BienenstockVisSteuerung extends Thread implements IVisualisationOut
      * initiiert das Frame und die Kartenliste
      *
      */
-    public void initialize(VisualisationClient vClient){
+    public void initialize(VisualisationClient vClient, String verzeichnis) {
         visClient = vClient;
         visClient.anmeldung(this);
-        fenster = new BienenstockVisGui(this);
+        fenster = new BienenstockVisGui(this, verzeichnis);
         fenster.show();
         karten = new LinkedList();
         this.start();

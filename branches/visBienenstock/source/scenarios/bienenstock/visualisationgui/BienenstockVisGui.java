@@ -74,9 +74,9 @@ public class BienenstockVisGui extends Frame {
     private Font schrift = new Font("Serif", Font.PLAIN, 12);
     
     /**
-     * der Pfad zu den librarys
+     * der Pfad zum Verzeichnis mit den Bildern
      */
-    private String pfad = "../libs/bilder/";
+    private String pfad;
     
     /**
      * das Bild vom Bienenstock
@@ -256,11 +256,12 @@ public class BienenstockVisGui extends Frame {
      * der Konstruktor
      *
      */
-    public BienenstockVisGui(BienenstockVisSteuerung visu) {
-        
+    public BienenstockVisGui(BienenstockVisSteuerung visu, String pfad) {
+
         this.setVisible(false);
-        vis = visu;
-        
+        this.vis = visu;
+        this.pfad = pfad;
+
         //die ActionListener zu den Buttons hinzufuegen
         pause.addActionListener(pauseAktion);
         zurueck.addActionListener(zurueckAktion);

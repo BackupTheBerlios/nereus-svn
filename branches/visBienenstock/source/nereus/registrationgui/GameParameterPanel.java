@@ -855,12 +855,12 @@ public class GameParameterPanel
             }
             rundenNr=new String(tagName); 
             
-            visClient=new VisualisationClient(serverName, port,this.m_gameId.toString(), rundenNr);
+            visClient=new VisualisationClient(serverName, this.m_gameId.toString(), rundenNr);
             
             String scenarioVisClassName=ClientInfoObject.m_instance.getVisualisationClassName(m_scenarioName);
             Class scenarioVisClass=Class.forName(scenarioVisClassName);
             IVisualisationOutput visOutput=(IVisualisationOutput)scenarioVisClass.newInstance();
-            visOutput.initialize(visClient);
+            visOutput.initialize(visClient, "pfad_zu_verzeichnis");
         }catch (Exception ex){
             ex.printStackTrace(System.out);
         }
