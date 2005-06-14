@@ -670,7 +670,7 @@ public class GameParameterPanel
             }
             m_parent.setGameSaved(true);
             // Schreibe den Namen des Spiels in den Reiter des Tabs
-            m_parent.changeTabName(m_gameName);
+            m_parent.changeTabName(m_gameId.toString());
             // Schalte Buttons an und aus
             m_gameSaveButton.setEnabled(false);
             m_cancelDataButton.setEnabled(false);
