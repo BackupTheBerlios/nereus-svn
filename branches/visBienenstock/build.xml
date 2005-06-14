@@ -51,6 +51,7 @@
   <property name="documentation" location="documentation"/>
   <property name="build" location="build"/>
   <property name="dist" location="dist"/>
+  <property name="classes" location="classes"/>
   <property name="scenariosconfig" location="scenariosconfig"/>
   <!-- weka library -->
   <property name="wekaJar" location="libs/weka.jar"/>
@@ -109,7 +110,8 @@
                        **/agenteninfo/*.class, **/interfaces/*.class, 
                        **/einfacheUmgebung/*.class"/>    
    </copy> -->
-   <copy todir="${dist}/client/agents">
+   <mkdir dir="${classes}/agents"/>
+   <copy todir="${classes}/agents">
      <fileset dir="build/agents/" includes="**/*.class"/>
    </copy>
  </target>
@@ -327,9 +329,9 @@
         <include name="setup.*"/>
         <include name="*Client*.*"/>
       </tarfileset>
-      <tarfileset dir="${dist}/client/agents"
+      <tarfileset dir="${classes}/agents"
                   mode="644"
-                  prefix="/client/agents">
+                  prefix="/client/classes/agents">
         <include name="**/*.*"/>
       </tarfileset>
       <tarfileset dir="${documentation}"
@@ -370,6 +372,7 @@
  <target name="clean">
    <delete dir="${build}"/>
    <delete dir="${dist}"/>
+   <delete dir="${classes}"/>
  </target>
 
  <target name="help">

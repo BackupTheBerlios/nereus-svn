@@ -20,9 +20,11 @@ CONFIG_DIR="../config"
 # Das Verzeichnis mit den jar-Dateien fuer die einzelnen Komponenten.
 DIST_DIR="../dist"
 
-# Das Verzeichnis in dem sich alle anderen Ordner (scenario, runSkripts, config)
-# befinden.
+# Das Verzeichnis in dem sichder Ordner scenarios befindet.
 BASIS_PFAD="../"
+
+# Das Verzeichnis in dem die Klassen der Agenten befinden.
+AGENT_PATH="../classes"
 
 # Konfigurationsfile fuer den Client
 CONFIGFILE_CLIENT="../config/clientconfig.xml"

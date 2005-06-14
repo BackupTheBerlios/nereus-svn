@@ -19,9 +19,11 @@ set CONFIG_DIR=..\config
 REM Das Verzeichnis mit den jar-Dateien für die einzelnen Komponenten.
 set DIST_DIR=..\dist
 
-REM Das Verzeichnis in dem sich alle anderen Ordner (scenario, runSkripts, config)
-REM befinden.
+REM Das Verzeichnis in dem sichder Ordner scenarios befindet.
 set BASIS_PFAD=..\
+
+RM Das Verzeichnis in dem die Klassen der Agenten befinden.
+set AGENT_PATH=..\classes
 
 REM Konfigurationsfile fuer den Server
 set CONFIGFILE_SERVER=..\config\serverconfig.xml

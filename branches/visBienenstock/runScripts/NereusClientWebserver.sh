@@ -13,4 +13,5 @@
 # und wird als Main-Class Attribut im jar-Manifest definiert
 MAIN="nereus.webserver.ClassFileServer"
 
-exec $JAVA -cp $DIST_DIR/Client.jar $MAIN $CLASS_SERVER_PORT $BASIS_PFAD
+exec $JAVA -cp $DIST_DIR/Client.jar $MAIN $CLASS_SERVER_PORT $AGENT_PATH
+
