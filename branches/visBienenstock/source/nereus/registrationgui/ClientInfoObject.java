@@ -1,7 +1,7 @@
 /*
  * Dateiname      : ClientInfoObject.java
  * Erzeugt        : 5. August 2003
- * Letzte Änderung: 11. Mai durch Eugen Volk
+ * Letzte Änderung: 15. Juni durch Eugen Volk
  * Autoren        : Daniel Friedrich
  *                  Eugen Volk
  *
@@ -53,7 +53,7 @@ public class ClientInfoObject {
      */
     public static ClientInfoObject m_instance = null;
     
-    protected static String clientConfigFileURI="";
+    protected String clientConfigFileURI="";
     
     /**
      *	Pfadseparator des laufenende Systems
@@ -85,13 +85,7 @@ public class ClientInfoObject {
      */
     private HashMap visClassNames=null;
     
-    
-    /**
-     * Konfigurationsdateiname, in der verfügbare Agentennamen gespeichert sind
-     */
-    private String CONFIGDATEINAME="clientconfig.xml";
-    
-    private String AGENTS_VERZEICHNIS="agents";
+ 
     
     /**
      * Konstruktor.
@@ -100,34 +94,26 @@ public class ClientInfoObject {
      * Konstruktor werden die ganzen Konf-Parameter bestimmt.
      *
      */
-    private ClientInfoObject(String pathName) {
+    private ClientInfoObject(String pathName, String clientConfigFileURI, String agentsPath) {
         super();
-        // Basispfad bestimmen.
-        File dFile = new File("");
-        //String pathName = dFile.getAbsolutePath();
+        
         m_clientBasePath = new String(pathName);
         System.out.println("Clientbasispfad: "+ m_clientBasePath);
-        // Pfadseparator bestimmen
+        this.clientConfigFileURI=new String(clientConfigFileURI);
+        this.m_agentClassesPath=new String(agentsPath);
+        
         String seperator = null;
         if(pathName.indexOf("/") > -1) {
             m_pathSeparator = "/";
         }else {
             m_pathSeparator = "\\";
         }
-        System.out.println("Pfad-Separator: " + m_pathSeparator);
-        // Scenario- und Umweltpfad bestimmen
-        if(m_clientBasePath.endsWith(m_pathSeparator)) {
-            // Agentenklassenpfad festlegen.
-            //m_agentClassesPath = m_clientBasePath + "scenarios" + m_pathSeparator;
-            m_agentClassesPath= m_clientBasePath + AGENTS_VERZEICHNIS +  m_pathSeparator;
-        }else {
-            // Scenariopfad festlegen.
-                        /*m_agentClassesPath = m_clientBasePath + m_pathSeparator +
-                                "scenarios" + m_pathSeparator; */
-            m_agentClassesPath = m_clientBasePath + m_pathSeparator +
-                    AGENTS_VERZEICHNIS  + m_pathSeparator;
+        if (!m_agentClassesPath.endsWith(m_pathSeparator)){
+            m_agentClassesPath=new String(m_agentClassesPath + m_pathSeparator);
         }
-        System.out.println("Szenariopfad: "+ m_agentClassesPath);
+        
+  
+        System.out.println("Agentenpfad: "+ m_agentClassesPath);
         
         
         this.agentsScenarioList=readScenarioAgentsList(this.clientConfigFileURI);
@@ -142,10 +128,7 @@ public class ClientInfoObject {
      */
     private LinkedList readScenarioAgentsList(String configFileURI){
         String clientConfigXMLpath;
-        if (m_clientBasePath.endsWith(m_pathSeparator))
-            clientConfigXMLpath=m_clientBasePath+CONFIGDATEINAME;
-        else clientConfigXMLpath=m_clientBasePath+ m_pathSeparator + CONFIGDATEINAME;
-        if (configFileURI!="") clientConfigXMLpath=configFileURI;
+        clientConfigXMLpath=configFileURI;
         
         AgentsXMLConfigHandler handler=new AgentsXMLConfigHandler();
         ScenarioXMLInputReader sceanrioXMLInputReader=new ScenarioXMLInputReader(clientConfigXMLpath,handler);
@@ -175,13 +158,10 @@ public class ClientInfoObject {
      * Liest aus einer XML-Konfig-Datei verfügbaren VisalisierungsKlassenNamen aus.
      * @param configFileURI URI der Konfigurationsdatei
      */
-     private HashMap readVisClassNames(String configFileURI){
+    private HashMap readVisClassNames(String configFileURI){
         String clientConfigXMLpath;
-        if (m_clientBasePath.endsWith(m_pathSeparator))
-            clientConfigXMLpath=m_clientBasePath+CONFIGDATEINAME;
-        else clientConfigXMLpath=m_clientBasePath+ m_pathSeparator + CONFIGDATEINAME;
-        if (configFileURI!="") clientConfigXMLpath=configFileURI;
-        
+        clientConfigXMLpath=configFileURI;
+       
         AgentsXMLConfigHandler handler=new AgentsXMLConfigHandler();
         ScenarioXMLInputReader sceanrioXMLInputReader=new ScenarioXMLInputReader(clientConfigXMLpath,handler);
         this.visClassNames=handler.getVisualisationClassNames();
@@ -207,15 +187,29 @@ public class ClientInfoObject {
     /**
      * Zugriffsmethode auf das ServerInfoObject.
      *
+     * @param basePath BasisPfad
+     * @param clientConfigFileURI
+     * @param agentsPath Agentenpfad
+     *
      * @return ServerInfoObject
      */
-    public static ClientInfoObject getInstance(String path) {
+    public static ClientInfoObject getInstance(String basePath, String clientConfigFileURI, String agentsPath) {
         // wenn noch keine Instanz existiert, dann eine erstellen
         if(m_instance == null) {
-            m_instance = new ClientInfoObject(path);
+            m_instance = new ClientInfoObject(basePath, clientConfigFileURI, agentsPath);
         }
         return m_instance;
     }
+    
+     /**
+     * Zugriffsmethode auf das ServerInfoObject.
+     *
+     * @return ServerInfoObject
+     */
+    public static ClientInfoObject getInstance(){
+        return m_instance;
+    }
+    
     
     /**
      * Liefert den Pfad an dem die Agentenklassen abgelegt sind.

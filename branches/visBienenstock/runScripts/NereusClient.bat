@@ -12,4 +12,4 @@ REM nereus.client.MASIMClient
 REM und wird als Main-Class Attribut im jar-Manifest definiert
 set MAIN=nereus.registrationgui.MASIMClient
 
-%JAVA% %JVMPAR% -cp %DIST_DIR%\Client.jar;%DIST_DIR%\BienenstockVis.jar %MAIN% %SERVER_HOST% %BASIS_PFAD% %CONFIGFILE_CLIENT%
+%JAVA% %JVMPAR% -cp %DIST_DIR%\Client.jar;%DIST_DIR%\BienenstockVis.jar %MAIN% %SERVER_HOST% %BASIS_PFAD% %CONFIGFILE_CLIENT% %AGENT_PATH%

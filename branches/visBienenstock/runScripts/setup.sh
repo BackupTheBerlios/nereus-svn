@@ -24,7 +24,7 @@ DIST_DIR="../dist"
 BASIS_PFAD="../"
 
 # Das Verzeichnis in dem die Klassen der Agenten befinden.
-AGENT_PATH="../"
+AGENT_PATH="../agents"
 
 # Konfigurationsfile fuer den Client
 CONFIGFILE_CLIENT="../config/clientconfig.xml"

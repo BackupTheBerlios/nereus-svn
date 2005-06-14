@@ -175,7 +175,7 @@ public class AgentRegistrationFrame extends JFrame {
             String scenarioName,
             String pathName) {
         // ClientInfoObject holen
-        m_clientInfoObject = ClientInfoObject.getInstance(pathName);
+        m_clientInfoObject = ClientInfoObject.getInstance();
         enableEvents(AWTEvent.WINDOW_EVENT_MASK);
         try {
             m_coordinator = coordinator;
@@ -210,7 +210,7 @@ public class AgentRegistrationFrame extends JFrame {
             String pathName,
             GameParameterPanel gpp) {
         // ClientInfoObject holen
-        m_clientInfoObject = ClientInfoObject.getInstance(pathName);
+        m_clientInfoObject = ClientInfoObject.getInstance();
         enableEvents(AWTEvent.WINDOW_EVENT_MASK);
         try {
             m_coordinator = coordinator;

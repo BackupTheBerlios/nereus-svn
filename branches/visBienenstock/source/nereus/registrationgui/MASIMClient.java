@@ -453,7 +453,7 @@ public class MASIMClient extends JFrame {
             
             
             // ClientInfoObject mit Servername und Agentenklassenpfad füllen
-            ClientInfoObject clientInfoObject = ClientInfoObject.getInstance(pathName);
+            ClientInfoObject clientInfoObject = ClientInfoObject.getInstance();
             clientInfoObject.setServerName(m_serverName);
             
             if((scenario != null)
@@ -606,18 +606,14 @@ public class MASIMClient extends JFrame {
      * @param args
      */
     public static void main(String[] args) {
-        if (args.length >= 3) {
-            ClientInfoObject.clientConfigFileURI=args[2];
-        }
-        if(args.length >= 1) {
+        if (args.length == 4) {
+            
+                      
             System.out.println("Starte den MALClient");
             MASIMClient client = null;
-            if (args.length > 1) {
-                client = new MASIMClient(args[0], args[1]);
-            } else {
-                File dFile = new File("");
-                client = new MASIMClient(args[0], dFile.getAbsolutePath());
-            }
+            ClientInfoObject.getInstance(args[1], args[2], args[3]);
+            client=new MASIMClient(args[0], args[2]);
+            
             client.setVisible(true);
             Dimension dim = new Dimension(1054,700);
             client.setSize(dim);
@@ -628,7 +624,7 @@ public class MASIMClient extends JFrame {
             System.out.println(
                     "Syntaxfehler: Bitte versuchen Sie es das nächste mal mit ");
             System.out.println(
-                    "MALClient <hostname> <BaisPfad> <Pfad zu Client-KonfigDatei>");
+                    "MALClient <hostname> <BaisPfad> <Pfad zu Client-KonfigDatei> <Agenten-Pfad>");
         }
     }
     
