@@ -6,7 +6,7 @@
  *
  * Dateiname      : build.xml
  * Erzeugt        : 29. April 2005
- * Letzte Änderung: 08. Juni 2005 durch Samuel Walz
+ * Letzte Änderung: 14. Juni 2005 durch Dietmar Lippold
  * Autoren        : Eugen Volk 
  *                  
  *
@@ -110,21 +110,6 @@
    </copy>
    <!-- excludes="**/*Agent*.class"/> -->
  </target>
- 
- <target name="_scenariosServerJar" depends="compileAll"
-         description="Erzeugt Jar-Szenario-Dateien fuer den Server">
-   <!-- Durch debug="true" wird bei Exceptions die Zeile im Source   -->
-   <!-- mit ausgegeben     -->
-   <mkdir dir="${dist}"/>
-   <delete file="${dist}/Scenarios.jar"
-           quiet="true"/>
-   <jar destfile="${dist}/Scenarios.jar"
-        encoding="ISO-8859-1"
-        basedir="${build}"
-        includes="scenarios/**/*.class">
-    </jar>
- </target>  
-   
      
  <target name="_scenariosClient" depends="compileAll"
    description="Erzeugt Szenario-Dateien fuer den Client">
@@ -143,7 +128,40 @@
    </copy>
  </target>
    
-  <!-- Erzeugung der jar-Dateien                                      -->
+ <!-- Erzeugung der jar-Dateien                                      -->
+ <target name="_scenariosServerJar" depends="compileAll"
+         description="Erzeugt Jar-Szenario-Dateien fuer den Server">
+   <!-- Durch debug="true" wird bei Exceptions die Zeile im Source   -->
+   <!-- mit ausgegeben     -->
+   <mkdir dir="${dist}"/>
+   <delete file="${dist}/Scenarios.jar"
+           quiet="true"/>
+   <jar destfile="${dist}/Scenarios.jar"
+        encoding="ISO-8859-1"
+        basedir="${build}"
+        includes="scenarios/**/*.class">
+    </jar>
+ </target>
+
+ <target name="bienenstockVisJar" depends="compileAll"
+         description="Erzeugt Jar-Datei fuer die Visualisierung vom
+                      Bienenstock-Scenario">
+   <!-- Durch debug="true" wird bei Exceptions die Zeile im Source   -->
+   <!-- mit ausgegeben     -->
+   <mkdir dir="${dist}"/>
+   <delete file="${dist}/BienenstockVis.jar"
+           quiet="true"/>
+   <jar destfile="${dist}/BienenstockVis.jar"
+        encoding="ISO-8859-1"
+        basedir="${build}"
+        includes="scenarios/bienenstock/visualisationgui/**,
+                  scenarios/bienenstock/visualisierungsUmgebung/**,
+                  scenarios/bienenstock/agenteninfo/**,
+                  nereus/visualisationclient/**,
+                  nereus/simulator/visualisation/**">
+    </jar>
+ </target>
+
  <target name="serverJar" depends="compileAll, _scenariosServer"
          description="Erstellt die jar-Datei der Server-Klassen">
    <mkdir dir="${dist}"/>
@@ -194,7 +212,7 @@
     
   <target name="_client" depends="clientJar, _scenariosClient"
    description="Erstellt die Jar Dateien für Client-Klassen mit
-   zugehoerigen resource-Dateien.">
+                zugehoerigen resource-Dateien.">
    <mkdir dir="${dist}/client"/>
    <copy file="${dist}/Client.jar" tofile="${dist}/client/dist/Client.jar"/>    
    <copy todir="${dist}/client/config">
@@ -210,8 +228,8 @@
  </target>
     
  <target name="_server" depends="serverJar, _scenariosServer"
-   description="Erstellt die Jar Dateien für Client-Klassen mit
-   zugehoerigen resource-Dateien.">
+   description="Erstellt die Jar Dateien für Server-Klassen mit
+                zugehoerigen resource-Dateien.">
    <mkdir dir="${dist}/server"/>
    <copy file="${dist}/Server.jar" tofile="${dist}/server/dist/Server.jar"/>    
    <copy todir="${dist}/server/config">
@@ -228,11 +246,6 @@
    </copy>
    <copy file="${config}/serverconfig.xml" tofile="${dist}/server/config/serverconfig.xml"/>
  </target>
-     
- <target name="clean">
-   <delete dir="${build}"/>
-   <delete dir="${dist}"/>
- </target>
   
 <!--
  <target name="serverTar" depends="server"
@@ -246,7 +259,7 @@
  </target> 
  --> 
  <target name="serverTar" depends="serverJar, compileAll, _scenariosServer, _scenariosServerJar"
-    description="Erstellt die tar.gz-Datei der User-Dateien für Unix">
+    description="Erstellt die tar.gz-Datei der Server-Dateien">
     <tar destfile="${dist}/Server.tar.gz"
          compression="gzip">
       <tarfileset dir="${dist}"
@@ -284,14 +297,20 @@
     </tar>
   </target>
   
-  <target name="clientTar" depends="clientJar, compileAll, _scenariosClient"
-    description="Erstellt die tar.gz-Datei der User-Dateien für Unix">
+  <target name="clientTar" depends="compileAll, clientJar, _scenariosClient,
+                                    bienenstockVisJar"
+    description="Erstellt die tar.gz-Datei der Client-Dateien">
     <tar destfile="${dist}/Client.tar.gz"
          compression="gzip">
       <tarfileset dir="${dist}"
                   mode="644"
                   prefix="/client/dist">
         <include name="Client.jar"/>
+      </tarfileset>
+      <tarfileset dir="${dist}"
+                  mode="644"
+                  prefix="/client/dist">
+        <include name="BienenstockVis.jar"/>
       </tarfileset>
       <tarfileset dir="${config}"
                   mode="644"
@@ -345,25 +364,20 @@
    </tar>
  </target>
  -->
-  
+ 
  <target name="buildAll" depends="_server, _client"
     description="Erstellt Dateien fuer den Client und den Server">
  </target>
  
  <target name="allTar" depends="serverTar, clientTar"
     description="Erstellt Tar-Dateien fuer den Client und den Server">
-    <!-- Aufraumen -->
-     <delete dir="${dist}/client"/>
-     <delete dir="${dist}/server"/>
-     <delete dir="${build}"/>
-     <delete file="${dist}/Client.jar"
-           quiet="true"/>
-     <delete file="${dist}/Server.jar"
-           quiet="true"/>
-     <delete file="${dist}/Scenarios.jar"
-           quiet="true"/>      
  </target>
-  
+
+ <target name="clean">
+   <delete dir="${build}"/>
+   <delete dir="${dist}"/>
+ </target>
+
  <target name="help">
     <echo message="Benutzung: ant ziel"/>
     <echo message="Moegliche Werte fuer ziel sind:"/>
