@@ -38,7 +38,7 @@ public class Spielende implements Serializable {
     /**
      * Zeit der Abmeldung in Millisekunden
      */
-    private static long zeitDerAbmeldung = 0L;
+    private long zeitDerAbmeldung = 0L;
 
     /**
      * Der Konstruktor

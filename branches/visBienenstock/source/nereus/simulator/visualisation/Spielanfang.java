@@ -38,7 +38,7 @@ public class Spielanfang implements Serializable {
     /**
      * Die Zeit der Anmeldung in Millisekunden
      */
-    private static long zeitDerAnmeldung = 0L;
+    private long zeitDerAnmeldung = 0L;
 
     /**
      * Der Konstruktor
