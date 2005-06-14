@@ -51,7 +51,7 @@
   <property name="documentation" location="documentation"/>
   <property name="build" location="build"/>
   <property name="dist" location="dist"/>
-  <property name="classes" location="classes"/>
+  <property name="agents" location="agents"/>
   <property name="scenariosconfig" location="scenariosconfig"/>
   <!-- weka library -->
   <property name="wekaJar" location="libs/weka.jar"/>
@@ -110,8 +110,8 @@
                        **/agenteninfo/*.class, **/interfaces/*.class, 
                        **/einfacheUmgebung/*.class"/>    
    </copy> -->
-   <mkdir dir="${classes}/agents"/>
-   <copy todir="${classes}/agents">
+   <mkdir dir="${agents}"/>
+   <copy todir="${agents}">
      <fileset dir="build/agents/" includes="**/*.class"/>
    </copy>
  </target>
@@ -328,9 +328,9 @@
         <include name="*Client*.*"/>
         <include name="BienenstockVis.*"/>
       </tarfileset>
-      <tarfileset dir="${classes}/agents"
+      <tarfileset dir="${agents}"
                   mode="644"
-                  prefix="/client/classes/agents">
+                  prefix="/client/agents">
         <include name="**/*.*"/>
       </tarfileset>
       <tarfileset dir="${documentation}"
@@ -371,7 +371,7 @@
  <target name="clean">
    <delete dir="${build}"/>
    <delete dir="${dist}"/>
-   <delete dir="${classes}"/>
+   <delete dir="${agents}"/>
  </target>
 
  <target name="help">

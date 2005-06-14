@@ -23,7 +23,7 @@ REM Das Verzeichnis in dem sichder Ordner scenarios befindet.
 set BASIS_PFAD=..\
 
 REM Das Verzeichnis in dem die Klassen der Agenten befinden.
-set AGENT_PATH=..\classes
+set AGENT_PATH=..\
 
 REM Konfigurationsfile fuer den Server
 set CONFIGFILE_SERVER=..\config\serverconfig.xml
