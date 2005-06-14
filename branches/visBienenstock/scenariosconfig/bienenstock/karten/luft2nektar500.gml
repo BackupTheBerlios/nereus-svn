@@ -114,8 +114,8 @@ graph [
             luft 2
         ]
         koordinate [
-            x 4
-            y 6
+            x 6
+            y 4
         ]
     ]
 
@@ -1236,7 +1236,3 @@ graph [
 
 ]
 
-    
-
-
-    
