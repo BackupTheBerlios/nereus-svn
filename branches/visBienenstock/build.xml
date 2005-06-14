@@ -157,9 +157,7 @@
         basedir="${build}"
         includes="scenarios/bienenstock/visualisationgui/**,
                   scenarios/bienenstock/visualisierungsUmgebung/**,
-                  scenarios/bienenstock/agenteninfo/**,
-                  nereus/visualisationclient/**,
-                  nereus/simulator/visualisation/**">
+                  scenarios/bienenstock/agenteninfo/**">
     </jar>
  </target>
 
