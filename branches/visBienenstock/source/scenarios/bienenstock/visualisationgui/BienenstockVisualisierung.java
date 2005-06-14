@@ -61,7 +61,7 @@ public class BienenstockVisualisierung {
                 spielId = args[2];
                 runde = Integer.parseInt(args[3]);
                 visClient = new VisualisationClient(servername, port,
-                        spielId, runde);
+                        spielId, String.valueOf(runde));
                 bienenVis = new BienenstockVisSteuerung(visClient);
             } catch (NumberFormatException fehler) {
                 System.err.println("Die angegebene Port-Nummer oder Runde war"

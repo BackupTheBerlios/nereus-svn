@@ -827,7 +827,7 @@ public class GameParameterPanel
             String gameId=this.m_gameId.toString();
             String serverName=ClientInfoObject.m_instance.getServerName();
             VisualisationClient visClient;
-            int rundenNr=1;
+            String rundenNr="1";
             
        /*     // für den Test wird nach szenarien Konfigurationen gefragt.
             LinkedList tagNames=m_coordinator.getGameConfTags("bienenstock");
@@ -850,7 +850,7 @@ public class GameParameterPanel
                     tagName= (String)s2dialog.getSelected();
                 }
             }
-            rundenNr=Integer.parseInt(tagName); */
+            rundenNr=new String(tagName); */
             
             visClient=new VisualisationClient(serverName, port,this.m_gameId.toString(), rundenNr);
             
