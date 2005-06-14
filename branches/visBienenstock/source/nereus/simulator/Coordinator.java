@@ -132,7 +132,7 @@ public class Coordinator extends UnicastRemoteObject implements ICoordinator {
         super();
         // starte den InformationHandler
         this.startInformationHandler();
-        m_sInfoObject = ServerInfoObject.getInstance(pathName);
+        m_sInfoObject = ServerInfoObject.getInstance();
         //m_sInfoObject = new ServerInfoObject(pathName);
         
         m_path = m_sInfoObject.getScenarioPath();
@@ -154,7 +154,7 @@ public class Coordinator extends UnicastRemoteObject implements ICoordinator {
         super(port);
         // starte den InformationHandler
         this.startInformationHandler();
-        m_sInfoObject = ServerInfoObject.getInstance(pathName);
+        m_sInfoObject = ServerInfoObject.getInstance();
         m_path = m_sInfoObject.getScenarioPath();
         m_scenarioPath = m_sInfoObject.getScenarioPath();
         

@@ -1,7 +1,7 @@
 /*
  * Dateiname      : ServerInfoObject.java
  * Erzeugt        : 22. Mai 2003
- * Letzte Änderung: 11. Mai 2005
+ * Letzte Änderung: 14. Juni 2005 durch Eugen Volk
  * Autoren        : Daniel Friedrich
  *                  Eugen Volk
  *
@@ -88,10 +88,12 @@ public class ServerInfoObject {
     /**
      * Konfigurationsdateiname
      */
-    private String CONFIGDATEINAME="serverconfig.xml";
+        
+    protected static String configFileURI="";
     
-    protected static String cofigFileURI="";
-    
+    /**
+     * Liste mit SzanarioNamen
+     */
     private LinkedList scenarioNames=null;
     
     /**
@@ -99,51 +101,34 @@ public class ServerInfoObject {
      *
      * Als private, damit niemand irrtümlich mehrere Instanzen anlegt. Im
      * Konstruktor werden die ganzen Konf-Parameter bestimmt.
+     * @param basePath Server basis Pfad
+     * @param configFileURI URI des config-Files
+     * @param scenarioPath Pfad zum scenario
      *
      */
-    private ServerInfoObject(String pathName) {
+    private ServerInfoObject(String basePath, String configFileURI, String scenarioPath) {
         super();
-        // Basispfad bestimmen.
-        //File dFile = new File("");
-        //String pathName = dFile.getAbsolutePath();
-        m_serverBasePath = new String(pathName);
-        System.out.println("Serverbasispfad: "+ m_serverBasePath);
-        // Pfadseparator bestimmen
-        String seperator = null;
-        if(pathName.indexOf("/") > -1) {
+         if(basePath.indexOf("/") > -1) {
             m_pathSeparator = "/";
         }else {
             m_pathSeparator = "\\";
         }
+        
         System.out.println("Pfad-Separator: " + m_pathSeparator);
         // Scenario- und Umweltpfad bestimmen
-        if(m_serverBasePath.endsWith(m_pathSeparator)) {
-            // Scenariopfad festlegen.
-            m_scenarioPath = m_serverBasePath + "scenarios" + m_pathSeparator;
-            // Umweltpfad festlegen
-            m_enviromentsPath =
-                    m_serverBasePath
-                    + "enviroments"
-                    + m_pathSeparator;
-            
-        }else {
-            // Scenariopfad festlegen.
-            m_scenarioPath =
-                    m_serverBasePath
-                    + m_pathSeparator
-                    + "scenarios"
-                    + m_pathSeparator;
-            // Umweltpfad festlegen
-            m_enviromentsPath =
-                    m_serverBasePath
-                    + m_pathSeparator
-                    + "enviroments"
-                    + m_pathSeparator;
+        if(!scenarioPath.endsWith(m_pathSeparator)) {
+            scenarioPath=scenarioPath + m_pathSeparator;
         }
-        System.out.println("Szenariopfad: "+ m_scenarioPath);
+
+        
+        m_serverBasePath = new String(basePath);
+        this.configFileURI=new String(configFileURI);
+        this.m_scenarioPath=new String(scenarioPath);
+        
+        System.out.println("Szenariopfad: " + m_scenarioPath);
         //System.out.println("Umweltpfad: "+ m_enviromentsPath);
         
-        this.gameConfList=readGameConfList(this.cofigFileURI);
+        this.gameConfList=readGameConfList(this.configFileURI);
     }
     
     
@@ -154,10 +139,7 @@ public class ServerInfoObject {
      */
     private LinkedList readGameConfList(String configFileURI){
         String gameConfigXMLpath;
-        if (m_serverBasePath.endsWith(m_pathSeparator))
-            gameConfigXMLpath=m_serverBasePath+CONFIGDATEINAME;
-        else gameConfigXMLpath=m_serverBasePath+ m_pathSeparator + CONFIGDATEINAME;
-        if (configFileURI!="") gameConfigXMLpath=configFileURI;
+        gameConfigXMLpath=configFileURI;
         GameXMLConfigHandler handler=new GameXMLConfigHandler();
         ScenarioXMLInputReader sceanrioXMLInputReader=new ScenarioXMLInputReader(gameConfigXMLpath ,handler);
         return handler.getGameConfList();
@@ -195,6 +177,7 @@ public class ServerInfoObject {
     /**
      * Liefert eine Liste aus einer XML-Datei eingelesenen Game-Config-Daten
      * (scenario, karte, parameter).
+     * @return Liste aus einer XML-Datei eingelesenen Game-Config-Daten
      */
     public LinkedList getGameConfList(){
         return this.gameConfList;
@@ -227,15 +210,29 @@ public class ServerInfoObject {
     /**
      * Zugriffsmethode auf das ServerInfoObject.
      *
+     * @param basePath Server basis Pfad
+     * @param configFileURI URI des config-Files
+     * @param scenarioPath Pfad zum scenario
+     *
+     *
      * @return ServerInfoObject
      */
-    public static ServerInfoObject getInstance(String path) {
+    public static ServerInfoObject getInstance(String basePath, String configFileURI, String scenarioPath) {
         // wenn noch keine Instanz existiert, dann eine erstellen
         if(m_instance == null) {
-            m_instance = new ServerInfoObject(path);
+            m_instance = new ServerInfoObject(basePath, configFileURI, scenarioPath);
         }
         return m_instance;
     }
+    
+    /**
+     *  Zugriffsmethode auf das ServerInfoObject.
+     * @return ServerInfoObject
+     */
+    public static ServerInfoObject getInstance(){
+        return m_instance;
+    }
+    
     
     /**
      * Liefert den Pfad an dem die Scenarios abgelegt sind.
@@ -296,7 +293,7 @@ public class ServerInfoObject {
     
     
     
-     /**
+    /**
      * Liefert die Configuratinsdaten fuer ein bestimmters Szenario,
      * wobei das erste Element aus der Liste ausgewähtlwird.
      *
@@ -338,7 +335,7 @@ public class ServerInfoObject {
     
     
     
-     /**
+    /**
      * Liefert die Configuratinsdaten zu einem bestimmte Konfig-Eintag.
      *
      * @param tagName Name des Eintags, fuer den die Daten
@@ -359,5 +356,5 @@ public class ServerInfoObject {
         return null;
     }
     
-   
+    
 }

@@ -62,34 +62,34 @@ public class MASIMServer {
             System.setSecurityManager(new RMISecurityManager());
             LocateRegistry.createRegistry(1099);
             String name;
+            String scenarioPath;
             String basePath;
-            String enviromentsPath;
             String hostname = "localhost";
             String configFileURI=null;
             ServerInfoObject serverInfoObject;
-            if(args.length >= 1) {
+            if (args.length==4) {
                 hostname = args[0];
                 name = "rmi://" + hostname + ":1099" +"/Coordinator";
                 System.out.println("register as: " + name);
-            }else {
-                name = "rmi://localhost/Coordinator";
-            }
-            if (args.length >=2) basePath=args[1];
-            else {
-                File dFile = new File("");
-                basePath = dFile.getAbsolutePath();
-            }
-            if (args.length ==3) {
+                
+                basePath=args[1];
                 configFileURI=args[2];
-                ServerInfoObject.cofigFileURI=configFileURI;
+                scenarioPath=args[3];
+                
+                
+                serverInfoObject=ServerInfoObject.getInstance(basePath, configFileURI, scenarioPath);
+                m_coordinator = new Coordinator(hostname, basePath);
+                Naming.rebind(name, m_coordinator);
+                System.out.println(
+                        "MultiAgentSimulator: Coordinator wurde erfolgreich registriert.");
+                
+                System.out.println("register ready");
+            }else {
+                System.out.println(" Fehler !");
+                System.out.println(" Erwartet: ");
+                System.out.println(" hostname  basisPfad ConfigFileURI Scenario-Pfad");
             }
-            serverInfoObject=ServerInfoObject.getInstance(basePath);
-            m_coordinator = new Coordinator(hostname, basePath);
-            Naming.rebind(name, m_coordinator);
-            System.out.println(
-                    "MultiAgentSimulator: Coordinator wurde erfolgreich registriert.");
             
-            System.out.println("register ready");
         }catch (Exception e) {
             System.out.println(
                     "Fehler: Der Coordinator konnte nicht bei der RMI-Registry registriert werden.");
