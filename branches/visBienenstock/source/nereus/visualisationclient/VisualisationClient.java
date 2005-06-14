@@ -179,7 +179,8 @@ public class VisualisationClient extends AbstractVisualisationClient {
                 */
                 if (informationen == null) {
                     
-                    System.out.println("Das Spiel mit der ID " + visSpielID
+                    System.out.println("visClient: Das Spiel mit der ID " 
+                                       + visSpielID
                                        + " ist dem Server noch nicht bekannt");
                     
                     synchronized (wartezeit) {
@@ -188,7 +189,8 @@ public class VisualisationClient extends AbstractVisualisationClient {
                     
                 } else if (informationen.isEmpty()) {
 
-                    System.out.println("Keine neuen Informationen erhalten...");
+                    System.out.println("visClient: "
+                                     + "Keine neuen Informationen erhalten...");
 
                     synchronized (wartezeit) {
                         wartezeit.wait(wartezeit.intValue());
@@ -196,7 +198,8 @@ public class VisualisationClient extends AbstractVisualisationClient {
 
                 } else {
                     ListIterator listenlaeufer = informationen.listIterator();
-                    System.out.println("Liste enthält Informationen...");
+                    System.out.println("visClient: "
+                                       + "Liste enthält Informationen...");
                     //Weitergeben der Informationen an die Visualisierung
                     while (listenlaeufer.hasNext()) {
                         Object information = 
@@ -208,6 +211,9 @@ public class VisualisationClient extends AbstractVisualisationClient {
                         
                             synchronized (this) {
                                 if (!stop) {
+                                    System.out.println("visClient: "
+                                            + "übergebe Objekt No. "
+                                            + ausschnittsbeginn);
                                     visualisierung.visualisiere(information);
                                 }
                             }
