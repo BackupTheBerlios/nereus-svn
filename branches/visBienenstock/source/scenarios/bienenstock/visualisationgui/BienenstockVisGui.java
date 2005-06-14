@@ -1,7 +1,7 @@
 /*
  * Dateiname      : BienenstockVisGui.java
  * Erzeugt        : 26. April 2005
- * Letzte ?nderung: 13. Juni 2005 durch Philip Funck
+ * Letzte ?nderung: 15. Juni 2005 durch Dietmar Lippold
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
  *
@@ -46,12 +46,12 @@ public class BienenstockVisGui extends Frame {
     /**
      * ob die Visualisierung die erste Karte bekommen hat.
      */
-    private boolean initiiert = false;
+    private volatile boolean initiiert = false;
     
     /**
      * die zu visualisierende Karte
      */
-    private VisKarte karte;
+    private volatile VisKarte karte;
     
     /**
      * die groesse der Karte in x Richtung
@@ -101,22 +101,22 @@ public class BienenstockVisGui extends Frame {
     /**
      * die minimale x Koordinate
      */
-    private int minX = 1000000000;
+    private volatile int minX = 1000000000;
     
     /**
      * die minimale Y Koordinate
      */
-    private int minY = 1000000000;
+    private volatile int minY = 1000000000;
     
     /**
      * die maximale X Koordinate
      */
-    private int maxX = -1000000000;
+    private volatile int maxX = -1000000000;
     
     /**
      * die maximale Y Koordiante
      */
-    private int maxY = -1000000000;
+    private volatile int maxY = -1000000000;
     
     /**
      * das Panel fuer die Buttons zur Steuerung 
@@ -295,10 +295,10 @@ public class BienenstockVisGui extends Frame {
         //Schliessen ermoeglichen
 	addWindowListener( new WindowAdapter() {
             public void windowClosing ( WindowEvent e ) {
-              fenster.dispose();
-              
+                fenster.dispose();
+                vis.beenden();
             }
-          } );
+        });
 
         //Groesse und Position setzen
 	Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();

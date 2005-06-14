@@ -1,7 +1,7 @@
 /*
  * Dateiname      : BienenstockVisSteuerung.java
  * Erzeugt        : 06. Mai 2005
- * Letzte ?nderung: 14. Juni 2005 durch Dietmar Lippold
+ * Letzte ?nderung: 15. Juni 2005 durch Dietmar Lippold
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
  *                  Eugen Volk
@@ -41,9 +41,6 @@ import nereus.visualisationclient.VisualisationClient;
  * Steuerung der Visualisierung des Bienenstock-Szenarios.
  *
  * @author  Philip Funck
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
  */
 public class BienenstockVisSteuerung extends Thread implements IVisualisationOutput{
     
@@ -72,7 +69,12 @@ public class BienenstockVisSteuerung extends Thread implements IVisualisationOut
      * gibt an, ob das Fenster eine Pause beantragt
      */
     private volatile boolean warten = false;
-    
+
+    /**
+     * gibt an, ob sich der Thread beenden soll
+     */
+    private volatile boolean beenden = false;
+
     /**
      * der Link zum Client, bei dem sich die vis. anmeldet, abmeldet
      */    
@@ -203,14 +205,21 @@ public class BienenstockVisSteuerung extends Thread implements IVisualisationOut
             fenster.visualisiere((VisKarte)karten.get(naechste));
         }
     }
-    
+
+    /**
+     * Fordert den Thread auf, sich zu beenden.
+     */
+    public void beenden() {
+        beenden = true;
+    }
+
     /**
      * prueft, ob eine zu visualisierende Karte in <code>karten</code> ist und leitet 
      * die gegebenenfalls weiter. Anschliessend wird <code>zeit</code> 
      * lang gewartet.
      */
     public void run () {
-        while (fenster.isActive()) {
+        while (!beenden) {
             if (warten) {
                 try {
                     synchronized (this) {
