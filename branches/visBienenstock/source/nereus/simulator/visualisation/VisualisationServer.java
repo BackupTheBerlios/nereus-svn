@@ -1,7 +1,7 @@
 /*
  * Dateiname      : VisualisationServer.java
  * Erzeugt        : 19. Mai 2005
- * Letzte Änderung: 12. Juni 2005 durch Samuel Walz
+ * Letzte Änderung: 13. Juni 2005 durch Samuel Walz
  * Autoren        : Samuel Walz (samuel@gmx.info)
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
@@ -37,6 +37,7 @@ import java.util.ListIterator;
 import java.util.Iterator;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.TreeMap;
 import java.io.Serializable;
 
 import nereus.utils.Id;
@@ -64,19 +65,39 @@ import nereus.simulatorinterfaces.IVisualisationServerExtern;
 public class VisualisationServer extends UnicastRemoteObject
     implements IVisualisationServerIntern, IVisualisationServerExtern {
 
-    // Die Informationen der Spiele, sortiert nach der Spiel-ID.
+    /**
+     * Die Informationen der Spiele, sortiert nach der Spiel-ID.
+     */
     private static HashMap informationsspeicher = new HashMap();
 
-    // Die empfohlenen Wartezeiten für die Client-Vis-Komponenten
+    /** 
+     * Die empfohlenen Wartezeiten für die Client-Vis-Komponenten
+     */
     private static HashMap wartezeiten = new HashMap();
+    
+    /**
+     * Die mimimale Wartezeit in Millisekunden
+     */
+    private final int MIN_WARTEZEIT = 50;
+    
+    /**
+     * Die Standardwartezeit in Millisekunden (größer als MIN_WARTEZEIT !)
+     */
+    private final int STANDARDWARTEZEIT = 2000;
 
-    // Die Standardwartezeit in Millisekunden
-    private static int standardwartezeit = 2000;
+    /**
+     * Die maximale Menge speicherbarer Spielinformationen
+     */
+    private final int  MAX_INFORMATIONEN = 1300;
+    
+    /**
+     * Der gewünschte Abstand der Anzahl der gespeicherten Informationen
+     * von der Obergrenze MAX_INFORMATIONEN.
+     * Sollte maximal 25% von MAX_INFORMATIONEN sein.
+     */
+    private final int ABSTAND_MAX_INFORMATIONEN = 350;
 
-    // Die Haltbarkeit gespeicherter Spielinformationen zu einem beendeten Spiel
-    private static long informationshaltbarkeit = (1000 * 60 * 60);
-
-
+   
 
     /** 
      * Creates a new instance of VisualisationServer 
@@ -135,43 +156,144 @@ public class VisualisationServer extends UnicastRemoteObject
     }
 
     /**
-     * Löscht alle Spielinformationen aus dem Speicher, deren Haltbarkeit
-     * abgelaufen ist.
+     * Löscht so viele Spielinformationen aus dem Speicher, das die Anzahl der 
+     * Informationsobjekte eine gewünschte Entferneung zur Obergrenze hat.
      *
-     * @param haltbarkeit             eine positive Zahl
+     * Die Informationen zu den Spieldurchläufen werden dem Alter nach gelöscht,
+     * bis wieder ausreichend Platz vorhanden ist.
+     *
+     * @param obergrenze             maximale Anzahl der speicherbaren Objekte
+     * @param obergrenzeAbstand      gewünschter Abstand zur Obergrenze
      */
-    private void bereinigeInformationsspeicher(long haltbarkeit) {
-        // Aktuelle Zeit
-        long zeit = System.currentTimeMillis();
+    private void bereinigeInformationsspeicher(int obergrenze,
+                                               int obergrenzeAbstand) {
+        
+        System.out.println(
+                "\n\n"
+                + "visServer: Bereinigung des Informationsspeichers angestossen:\n"
+                + "           Maximale Anzahl zu speichernder Informationsobjekte: "
+                + obergrenze + "\n"
+                + "           Mindestabstand der Anzahl gespeicherter Objekte von der "
+                + "maximalen Anzahl: " + obergrenzeAbstand + "\n"
+                + "\n"
+                + "           Ermittle den Inhalt des Informationsspeichers...\n"
+                + "           [spielID].[spielDurchlauf] - [Informationsobjekte] - "
+                + "[Alter]");
         
         synchronized (informationsspeicher) {
-            // Alle Informationslisten durchgehen
-            Set alleSpiele = informationsspeicher.keySet();
-            Iterator spiellaeufer = alleSpiele.iterator();
-            while (spiellaeufer.hasNext()) {
-                Object spielID = spiellaeufer.next();
-                LinkedList informationen = 
-                        (LinkedList)informationsspeicher.get(spielID);
-                
-                // Wenn die Liste nicht leer ist
-                if (! informationen.isEmpty()) {
-                    Object letzterEintrag = informationen.getLast();
+            // Speichert alle Spielkennungen nach ihrem Anmelde-Zeitstempel
+            TreeMap NachAlterSortiert = new TreeMap();
             
-                    // Ist das zugehörige Spiel zuende?
-                    if ((letzterEintrag instanceof Spielende)) {
-                        /*
-                        * Ist die Haltbarkeit abgelaufen, 
-                        * so lösche die Informationen
-                        */
-                        long eintragszeit = 
-                                ((Spielende)letzterEintrag).gibEndZeit();
-                        if ((eintragszeit + haltbarkeit) < zeit) {
-                            informationsspeicher.remove(spielID);
-                        }
+            // Speichert die Anzahl der gescpeicherten Informationsobjekte
+            int gespeicherteObjekte = 0;
+            
+            /*
+             * Einfügen aller Spielkennungen und zählen der Informationsobjekte
+             */
+            Iterator spielIDs = informationsspeicher.keySet().iterator();
+            while (spielIDs.hasNext()) {
+                Object aktuelleSpielID = spielIDs.next();
+                
+                HashMap durchlaeufe = 
+                        (HashMap)informationsspeicher.get(aktuelleSpielID);
+                
+                Iterator durchlaufNummern = durchlaeufe.keySet().iterator();
+                while (durchlaufNummern.hasNext()) {
+                    Object aktuellerSpielDurchlauf = durchlaufNummern.next();
+                    
+                    LinkedList informationen = 
+                           (LinkedList)durchlaeufe.get(aktuellerSpielDurchlauf);
+                    
+                    if (informationen.getFirst() instanceof Spielanfang) {
+                        
+                        Spielanfang aktuellerSpielanfang = 
+                                       (Spielanfang)informationen.getFirst();
+                        int aktuelleInformationsMenge = informationen.size();
+                        long aktuelleAnmeldungszeit  = 
+                                       aktuellerSpielanfang.gibAnmeldungsZeit();
+                        HashMap neueBeschreibung = new HashMap();
+                        
+                        
+                        neueBeschreibung.put("spielID", 
+                                             aktuelleSpielID);
+                        neueBeschreibung.put("spielDurchlauf", 
+                                             aktuellerSpielDurchlauf); 
+                        neueBeschreibung.put("informationsMenge",
+                                        new Integer(aktuelleInformationsMenge));
+                        
+                        NachAlterSortiert.put(new Long(aktuelleAnmeldungszeit), 
+                                              neueBeschreibung);
+                        
+                        gespeicherteObjekte = gespeicherteObjekte 
+                                              + aktuelleInformationsMenge;
+                        
+                        System.out.println("visServer: " + aktuelleSpielID + "." 
+                                           + aktuellerSpielDurchlauf 
+                                           + " - " + aktuelleInformationsMenge
+                                           + " St. - "
+                                           + aktuelleAnmeldungszeit);
                     }
                 }
+                
             }
+            
+           
+            /*
+             * Löschen von Informationen zu Durchläufen, bis die Anzahl der 
+             * gespeicherten Informationsobjekte wieder gering genug ist.
+             */
+            System.out.println("\n"
+                    + "visServer: "
+                    + "Loesche Informationen zu den Durchlaeufen...\n"
+                    + "           "
+                    + "[spielID].[spielDurchlauf] - [Informationsobjekte]");
+            Iterator informationsDaten = NachAlterSortiert.keySet().iterator();
+            while (informationsDaten.hasNext()
+                   && (gespeicherteObjekte + obergrenzeAbstand > obergrenze)) {
+                
+                HashMap beschreibung = 
+                       (HashMap)NachAlterSortiert.get(informationsDaten.next());
+                
+                Object aktuelleSpielID = 
+                        beschreibung.get("spielID");
+                Object aktuellerSpielDurchlauf = 
+                        beschreibung.get("spielDurchlauf");
+                Integer aktuelleInformationsMenge =
+                        (Integer)beschreibung.get("informationsMenge");
+                
+                
+                // Löschen der Informationen zum ältesten Durchlauf
+                HashMap durchlaeufe = 
+                            (HashMap)informationsspeicher.get(aktuelleSpielID);
+                durchlaeufe.remove(aktuellerSpielDurchlauf);
+                
+                /*
+                 * Ist die Liste der Durchläufe leer, so kann auch der Eintrag
+                 * für das Spiel gelöscht werden.
+                 */
+                if (durchlaeufe.isEmpty()) {
+                    informationsspeicher.remove(aktuelleSpielID);
+                }
+                
+                /*
+                 * Abziehen der gelöschten Informationsobjekte von der 
+                 * Gesamtanzahl.
+                 */
+                gespeicherteObjekte = gespeicherteObjekte
+                                      - aktuelleInformationsMenge.intValue();
+                
+                System.out.println("visServer: " + aktuelleSpielID + "." 
+                                           + aktuellerSpielDurchlauf 
+                                           + " - " + aktuelleInformationsMenge
+                                           + " St.");
+            }
+            
+            System.out.println("visServer: "
+                    + "Bereinigung des Informationsspeichers abgeschlossen.\n"
+                    + "           Verbleibende Informationsobjekte: "
+                    + gespeicherteObjekte);
         }
+        
     }
 
     /**
@@ -240,7 +362,7 @@ public class VisualisationServer extends UnicastRemoteObject
             return ((Integer)wartezeiten.get(spielKennung)).intValue();
         } else {
             // Ist keine Wartezeit vorhanden, standard zurückgeben
-            return standardwartezeit;
+            return STANDARDWARTEZEIT;
         }
     }
     
@@ -286,17 +408,33 @@ public class VisualisationServer extends UnicastRemoteObject
                                               
         if (informationsspeicher.containsKey(spielID)) {
             
+            // Liste aller Durchlaeufe
             HashMap durchlaeufe = (HashMap)informationsspeicher.get(spielID);
             
             if (durchlaeufe.containsKey(spielDurchlauf)) {    
-                // Die neue Information an die Liste anhängen
+                
+                // Liste aller Spielinformationen
                 LinkedList informationen = 
                        (LinkedList)durchlaeufe.get(spielDurchlauf);
-                informationen.addLast(information);
+                
+                if (! (informationen.getLast() instanceof Spielende)) {
+                    
+                    // Die neue Information an die Liste anhängen
+                    informationen.addLast(information);
+                    
+                } else {
+                    gibFehlerAus("speichereSpielInformationen",
+                                 "SpielID: " + spielID 
+                                 + " Durchlauf:" + spielDurchlauf
+                                 + " es können keine weiteren Informationen"
+                                 + " mehr gespeichert werden"
+                                 + " (Liste abgeschlossen).");
+                }
                 
             } else {
                 gibFehlerAus("speichereSpielInformationen",
-                             "Falscher Durchlauf:" + spielDurchlauf);
+                             "SpielID: " + spielID 
+                             + " Falscher Durchlauf:" + spielDurchlauf);
             }
             
         } else {
@@ -324,36 +462,46 @@ public class VisualisationServer extends UnicastRemoteObject
         
         System.out.println("visServer: Ein Spiel versucht sich mit der Kennung "
                            + spielKennung + " anzumelden...");
-        if (! informationsspeicher.containsKey(spielID)) {
+        
+        synchronized (informationsspeicher) {
+            if (! informationsspeicher.containsKey(spielID)) {
             
-            // Eine neuen Speicher für die Durchläufe des Spiels anlegen
-            informationsspeicher.put(spielID, new HashMap());
-            
-            // Eine neue Liste für die Informationen eines Durchlaufs anlegen
-            ((HashMap)informationsspeicher.get(spielID)).put(spielDurchlauf, 
-                                                             new LinkedList());
-            
-            
-            // Standardwartezeit setzen
-            wartezeiten.put(spielKennung, 
-                            new Integer(standardwartezeit));
-            
-            // Spielinformationsbereinigung starten
-            bereinigeInformationsspeicher(informationshaltbarkeit);
-           
-            
-        } else {
+                // Eine neuen Speicher für die Durchläufe des Spiels anlegen
+                informationsspeicher.put(spielID, new HashMap());
+            }
             
             HashMap durchlaeufe = (HashMap)informationsspeicher.get(spielID);
             
             if (! durchlaeufe.containsKey(spielDurchlauf)) {
+                
+                // Eine neue Liste für die Informationen eines Durchlaufs anlegen
+                durchlaeufe.put(spielDurchlauf, new LinkedList());
+            
+                // Spielanfang markieren
+                LinkedList informationen = 
+                                (LinkedList)durchlaeufe.get(spielDurchlauf);
+            
+                informationen.addFirst(new Spielanfang(System.currentTimeMillis()));
+            
+                // Standardwartezeit setzen
+                wartezeiten.put(spielKennung, 
+                               new Integer(STANDARDWARTEZEIT));
+           
             } else {
                 // Hat das Anmelden nicht geklappt, wird ein Fehler geworfen
-                throw new DoppelterDurchlaufException("Ein Spiel mit der ID " 
-                            + spielID
-                            + " ist schon angemeldet!");
+                throw new DoppelterDurchlaufException(
+                                            "Ein Spiel mit der Kennung " 
+                                            + spielKennung
+                                            + " ist schon angemeldet!");
             }
+            
+        
+            
         }
+        
+        // Spielinformationsbereinigung starten
+        bereinigeInformationsspeicher(MAX_INFORMATIONEN, 
+                                      ABSTAND_MAX_INFORMATIONEN);
     }
 
     /**
@@ -371,9 +519,12 @@ public class VisualisationServer extends UnicastRemoteObject
         String spielKennung = spielID + "." + spielDurchlauf;
         
         // Die empfohlene Wartezeit eintragen
-        if (empfohleneWartezeit != 0) {
-                wartezeiten.put(spielKennung, 
-                                new Integer(empfohleneWartezeit));
+        if (empfohleneWartezeit >= MIN_WARTEZEIT) {
+            wartezeiten.put(spielKennung, 
+                            new Integer(empfohleneWartezeit));
+        } else {
+            wartezeiten.put(spielKennung, 
+                            new Integer(MIN_WARTEZEIT));
         }
     }
     
@@ -387,12 +538,14 @@ public class VisualisationServer extends UnicastRemoteObject
                               String spielDurchlauf) {
         String spielKennung = spielID + "." + spielDurchlauf;                          
                                 
-        if (informationsspeicher.containsKey(spielID)
-            && ((HashMap)informationsspeicher.get(spielID)).containsKey(spielDurchlauf)) {
+        if (informationsspeicher.containsKey(spielID)) {
+            
+            HashMap durchlaeufe = (HashMap)informationsspeicher.get(spielID);
+            
+            if (durchlaeufe.containsKey(spielDurchlauf)) {
             
                 
             // Spielende markieren
-            HashMap durchlaeufe = (HashMap)informationsspeicher.get(spielID);
             LinkedList informationen = 
                             (LinkedList)durchlaeufe.get(spielDurchlauf);
             
@@ -401,11 +554,16 @@ public class VisualisationServer extends UnicastRemoteObject
             // Den Wartezeiteintrag für das Spiel löschen
             wartezeiten.remove(spielKennung);
             
+            } else {
+                gibFehlerAus("spielAbmelden", 
+                             "SpielID:" + spielID
+                             + " falscher Durchlauf: " + spielDurchlauf);
+            }
             
         } else {
-            // Falscher Authentifizierungscode!
+            // Falsche Spiel-ID
             gibFehlerAus("spielAbmelden", 
-                    "Falsche Spielkennung:" + spielKennung);
+                         "Falsche SpielID:" + spielID);
         }
     }
     
