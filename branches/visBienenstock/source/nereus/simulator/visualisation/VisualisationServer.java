@@ -150,7 +150,7 @@ public class VisualisationServer extends UnicastRemoteObject
             while (listenlaeufer.hasNext()) {
                 Object inhalt = listenlaeufer.next();
                 if (! (inhalt instanceof Spielanfang)) {
-                    ausschnitt.addLast(listenlaeufer.next());
+                    ausschnitt.addLast(inhalt);
                 }
             }
         } 
