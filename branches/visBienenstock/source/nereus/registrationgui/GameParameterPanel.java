@@ -680,7 +680,8 @@ public class GameParameterPanel
             m_saveResultsButton.setEnabled(true);
             m_parent.repaintApplication();
             m_closeGameButton.setEnabled(true);
-            m_visRegisterButton.setEnabled(true);
+            //m_visRegisterButton.setEnabled(true);
+            this.m_scenarioVisButton.setEnabled(true);
             
         }
     }
