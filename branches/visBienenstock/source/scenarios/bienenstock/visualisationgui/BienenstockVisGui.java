@@ -152,7 +152,7 @@ public class BienenstockVisGui extends Frame {
     /**
      * das Feld fuer die Eingabe der Rundennummer
      */
-    TextField rundeFeld = new TextField("0");
+    TextField rundeFeld = new TextField(" 0");
     
     /**
      * das Label fuer die Einstellung der Zeit
@@ -181,6 +181,7 @@ public class BienenstockVisGui extends Frame {
 	public void actionPerformed(ActionEvent e) {
             vis.setzeZeit(Integer.parseInt(zeitFeld.getText()));
             zeitButton.setVisible(false);
+            knoepfe.validate();
         }
     };
 
@@ -190,7 +191,6 @@ public class BienenstockVisGui extends Frame {
     ActionListener rundeAktion = new ActionListener() {
 	public void actionPerformed(ActionEvent e) {
             vis.setzeNaechste(Integer.parseInt(rundeFeld.getText()));
-            rundeButton.setVisible(false);
         }
     };
     
@@ -201,6 +201,7 @@ public class BienenstockVisGui extends Frame {
 	public void actionPerformed(ActionEvent e) {
             pause.setLabel("Weiter");
             rundeButton.setVisible(true);
+            knoepfe.validate();
             vis.warte();
             pause.addActionListener(weiterAktion);
             pause.removeActionListener(pauseAktion);
@@ -214,6 +215,7 @@ public class BienenstockVisGui extends Frame {
         public void actionPerformed(ActionEvent e) {
             pause.setLabel("Pause");
             rundeButton.setVisible(false);
+            knoepfe.validate();
             vis.weiter();
             pause.addActionListener(pauseAktion);
             pause.removeActionListener(this);
@@ -246,6 +248,7 @@ public class BienenstockVisGui extends Frame {
     TextListener zeitListen = new TextListener() {
         public void textValueChanged(TextEvent e) {
             zeitButton.setVisible(true);
+            knoepfe.validate();
         }
     };
     
@@ -269,7 +272,7 @@ public class BienenstockVisGui extends Frame {
         //das Panel knoepfe fuellen
         knoepfe.setLayout(new FlowLayout());
         knoepfe.add(runde);
-        rundeFeld.setSize(20, 12);
+        //rundeFeld.setSize(20, 12);
         knoepfe.add(rundeFeld);
         knoepfe.add(rundeButton);
         knoepfe.add(zurueck);
@@ -278,6 +281,7 @@ public class BienenstockVisGui extends Frame {
         knoepfe.add(zeitLabel);
         knoepfe.add(zeitFeld);
         knoepfe.add(zeitButton);
+        knoepfe.validate();
         
         //das Panel knoepfe hinzufuegen
         add(knoepfe, BorderLayout.SOUTH);
@@ -356,6 +360,7 @@ public class BienenstockVisGui extends Frame {
         //werden erst wieder sichtbar, wenn der Inhalt geaendert wird
         rundeButton.setVisible(false);
         zeitButton.setVisible(false);
+        knoepfe.validate();
         
         //Groesse und Position neu setzen
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
@@ -438,10 +443,12 @@ public class BienenstockVisGui extends Frame {
                                         this);
                                 if (tmpStock.gibFliegendeBienen().size() > 1) {
                                 
+                                    g.setColor(new Color(254, 0, 0));
                                     g.drawString("" + tmpStock.gibFliegendeBienen().size(),
                                             ((x - minX) * groesseX) + rechts - bildBieneX,
                                             ((y - minY) * groesseY) + abstandOben 
                                                     + oben - bildBieneY);
+                                    g.setColor(new Color(0, 0, 0));
                                 }
                             }
                             tmpBienen = tmpStock.gibWartendeBienen().size() 
@@ -452,10 +459,12 @@ public class BienenstockVisGui extends Frame {
                                         ((y - minY) * groesseY) + abstandOben + unten - 12,
                                         this);
                                 if (tmpBienen > 1) {
+                                    g.setColor(new Color(254, 0, 0));
                                     g.drawString("" + tmpBienen,
                                           ((x - minX) * groesseX) + rechts - bildBieneX,
                                           ((y - minY) * groesseY) + abstandOben 
                                                     + unten - bildBieneY);
+                                    g.setColor(new Color(0, 0, 0));
                                 }
                             }
                             /*
@@ -476,10 +485,12 @@ public class BienenstockVisGui extends Frame {
                                         ((y - minY) * groesseY) + abstandOben + oben - 12,
                                         this);
                                 if (tmpBlume.gibFliegendeBienen().size() > 1) {
+                                    g.setColor(new Color(254, 0, 0));
                                     g.drawString("" + tmpBlume.gibFliegendeBienen().size(),
                                             ((x - minX) * groesseX) + rechts - bildBieneX,
                                             ((y - minY) * groesseY) + abstandOben 
                                                     + oben - bildBieneY);
+                                    g.setColor(new Color(0, 0, 0));
                                 }
                             }
                             tmpBienen = tmpBlume.gibWartendeBienen().size() 
@@ -491,10 +502,12 @@ public class BienenstockVisGui extends Frame {
                                         ((y - minY) * groesseY) + abstandOben + unten - 12,
                                         this);
                                 if (tmpBienen > 1) {
+                                    g.setColor(new Color(254, 0, 0));
                                     g.drawString("" + tmpBienen,
                                           ((x - minX) * groesseX) + rechts - bildBieneX,
                                           ((y - minY) * groesseY) + abstandOben 
                                                     + unten - bildBieneY);
+                                    g.setColor(new Color(0, 0, 0));
                                 }
                             }                            
                             /*
@@ -511,10 +524,12 @@ public class BienenstockVisGui extends Frame {
                                         ((y - minY) * groesseY) + abstandOben + oben - 12,
                                         this);
                                 if (tmpFeld.gibFliegendeBienen().size() > 1) {
+                                    g.setColor(new Color(254, 0, 0));
                                     g.drawString("" + tmpFeld.gibFliegendeBienen().size(),
                                             ((x - minX) * groesseX) + rechts - bildBieneX,
                                             ((y - minY) * groesseY) + abstandOben 
                                                     + oben - bildBieneY);
+                                    g.setColor(new Color(0, 0, 0));
                                 }
                             }
                             tmpBienen = tmpFeld.gibWartendeBienen().size()
@@ -525,10 +540,12 @@ public class BienenstockVisGui extends Frame {
                                         ((y - minY) * groesseY) + abstandOben + unten - 12,
                                         this);
                                 if (tmpBienen > 1) {
+                                    g.setColor(new Color(254, 0, 0));
                                     g.drawString("" + tmpBienen,
                                           ((x - minX) * groesseX) + rechts - bildBieneX,
                                           ((y - minY) * groesseY) + abstandOben 
                                                     + unten - bildBieneY);
+                                    g.setColor(new Color(0, 0, 0));
                                 }
                             }
                         } else {
