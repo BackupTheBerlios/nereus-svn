@@ -315,6 +315,7 @@ public class VisualisationServer extends UnicastRemoteObject
         System.out.println("visServer: visClient fordert Informationen ab "
                             + "Position " + ausschnittsbeginn + " vom Spiel "
                             + spielKennung + " an.");
+        
         // Informationen suchen und zurückgeben
         if (informationsspeicher.containsKey(spielID)) {
             
@@ -405,41 +406,42 @@ public class VisualisationServer extends UnicastRemoteObject
     public void speichereSpielInformation(String spielID,
                                           String spielDurchlauf,
                                           Serializable information) {
-                                              
-        if (informationsspeicher.containsKey(spielID)) {
+        synchronized (informationsspeicher) {                                      
+            if (informationsspeicher.containsKey(spielID)) {
             
-            // Liste aller Durchlaeufe
-            HashMap durchlaeufe = (HashMap)informationsspeicher.get(spielID);
+                // Liste aller Durchlaeufe
+                HashMap durchlaeufe = (HashMap)informationsspeicher.get(spielID);
             
-            if (durchlaeufe.containsKey(spielDurchlauf)) {    
+                if (durchlaeufe.containsKey(spielDurchlauf)) {    
                 
-                // Liste aller Spielinformationen
-                LinkedList informationen = 
-                       (LinkedList)durchlaeufe.get(spielDurchlauf);
+                    // Liste aller Spielinformationen
+                    LinkedList informationen = 
+                        (LinkedList)durchlaeufe.get(spielDurchlauf);
                 
-                if (! (informationen.getLast() instanceof Spielende)) {
+                    if (! (informationen.getLast() instanceof Spielende)) {
                     
-                    // Die neue Information an die Liste anhängen
-                    informationen.addLast(information);
+                        // Die neue Information an die Liste anhängen
+                        informationen.addLast(information);
                     
+                    } else {
+                        gibFehlerAus("speichereSpielInformationen",
+                                    "SpielID: " + spielID 
+                                    + " Durchlauf:" + spielDurchlauf
+                                    + " es können keine weiteren Informationen"
+                                    + " mehr gespeichert werden"
+                                    + " (Liste abgeschlossen).");
+                    }
+                
                 } else {
                     gibFehlerAus("speichereSpielInformationen",
-                                 "SpielID: " + spielID 
-                                 + " Durchlauf:" + spielDurchlauf
-                                 + " es können keine weiteren Informationen"
-                                 + " mehr gespeichert werden"
-                                 + " (Liste abgeschlossen).");
+                                "SpielID: " + spielID 
+                                + " Falscher Durchlauf:" + spielDurchlauf);
                 }
-                
-            } else {
-                gibFehlerAus("speichereSpielInformationen",
-                             "SpielID: " + spielID 
-                             + " Falscher Durchlauf:" + spielDurchlauf);
-            }
             
-        } else {
-            gibFehlerAus("speichereSpielInformationen", 
+            } else {
+                gibFehlerAus("speichereSpielInformationen", 
                          "Falsche SpielID:" + spielID);
+            }
         }
     }
 
@@ -537,33 +539,35 @@ public class VisualisationServer extends UnicastRemoteObject
     public void spielAbmelden(String spielID, 
                               String spielDurchlauf) {
         String spielKennung = spielID + "." + spielDurchlauf;                          
-                                
-        if (informationsspeicher.containsKey(spielID)) {
+        
+        synchronized (informationsspeicher) {
+            if (informationsspeicher.containsKey(spielID)) {
             
-            HashMap durchlaeufe = (HashMap)informationsspeicher.get(spielID);
+                HashMap durchlaeufe = (HashMap)informationsspeicher.get(spielID);
             
-            if (durchlaeufe.containsKey(spielDurchlauf)) {
+                if (durchlaeufe.containsKey(spielDurchlauf)) {
             
                 
-            // Spielende markieren
-            LinkedList informationen = 
-                            (LinkedList)durchlaeufe.get(spielDurchlauf);
+                // Spielende markieren
+                LinkedList informationen = 
+                                (LinkedList)durchlaeufe.get(spielDurchlauf);
             
-            informationen.addLast(new Spielende(System.currentTimeMillis()));
+                informationen.addLast(new Spielende(System.currentTimeMillis()));
             
-            // Den Wartezeiteintrag für das Spiel löschen
-            wartezeiten.remove(spielKennung);
+                // Den Wartezeiteintrag für das Spiel löschen
+                wartezeiten.remove(spielKennung);
+            
+                } else {
+                    gibFehlerAus("spielAbmelden", 
+                                 "SpielID:" + spielID
+                                 + " falscher Durchlauf: " + spielDurchlauf);
+                }
             
             } else {
+                // Falsche Spiel-ID
                 gibFehlerAus("spielAbmelden", 
-                             "SpielID:" + spielID
-                             + " falscher Durchlauf: " + spielDurchlauf);
+                             "Falsche SpielID:" + spielID);
             }
-            
-        } else {
-            // Falsche Spiel-ID
-            gibFehlerAus("spielAbmelden", 
-                         "Falsche SpielID:" + spielID);
         }
     }
     
