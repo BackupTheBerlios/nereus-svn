@@ -96,20 +96,6 @@
    <!-- Durch debug="true" wird bei Exceptions die Zeile im Source   -->
    <!-- mit ausgegeben                                               -->
  </target>
-  
- <target name="_scenariosServer" depends="compileAll, _scenariosServerJar"
-         description="Erzeugt Szenario-Dateien fuer den Server">
-   <!-- Durch debug="true" wird bei Exceptions die Zeile im Source   -->
-   <!-- mit ausgegeben     -->
-   <echo message="erzeuge Szenario-Dateien fuer den Server... "/>                                      
-   <mkdir dir="${dist}"/>
-   <mkdir dir="${dist}/server/scenarios"/>
-   <copy file="${dist}/Scenarios.jar" tofile="${dist}/server/scenarios/Scenarios.jar"/>
-   <copy todir="${dist}/server/scenarios">
-     <fileset dir="${scenariosconfig}" includes="**/*.gml, **/*.xml"/>
-   </copy>
-   <!-- excludes="**/*Agent*.class"/> -->
- </target>
      
  <target name="_scenariosClient" depends="compileAll"
    description="Erzeugt Szenario-Dateien fuer den Client">
@@ -129,18 +115,31 @@
  </target>
    
  <!-- Erzeugung der jar-Dateien                                      -->
- <target name="_scenariosServerJar" depends="compileAll"
-         description="Erzeugt Jar-Szenario-Dateien fuer den Server">
+ <target name="_bienenstockScenarioJar" depends="compileAll"
+         description="Erzeugt die jar-Datei vom Bienenstock-Szenarion">
    <!-- Durch debug="true" wird bei Exceptions die Zeile im Source   -->
    <!-- mit ausgegeben     -->
    <mkdir dir="${dist}"/>
-   <delete file="${dist}/Scenarios.jar"
+   <delete file="${dist}/BienenstockScenario.jar"
            quiet="true"/>
-   <jar destfile="${dist}/Scenarios.jar"
+   <jar destfile="${dist}/BienenstockScenario.jar"
         encoding="ISO-8859-1"
         basedir="${build}"
-        includes="scenarios/**/*.class">
+        includes="scenarios/bienenstock/**/*.class">
     </jar>
+ </target>
+
+ <target name="_scenariosServer" depends="compileAll, _bienenstockScenarioJar"
+         description="Erzeugt Szenario-Dateien fuer den Server">
+   <!-- Durch debug="true" wird bei Exceptions die Zeile im Source   -->
+   <!-- mit ausgegeben     -->
+   <echo message="erzeuge Szenario-Dateien fuer den Server... "/>                                      
+   <mkdir dir="${dist}"/>
+<!-- umbenennen -->
+   <copy todir="${dist}/server/scenarios">
+     <fileset dir="${scenariosconfig}" includes="**/*.gml, **/*.xml"/>
+   </copy>
+   <!-- excludes="**/*Agent*.class"/> -->
  </target>
 
  <target name="bienenstockVisJar" depends="compileAll"
@@ -258,7 +257,8 @@
    </tar>
  </target> 
  --> 
- <target name="serverTar" depends="serverJar, compileAll, _scenariosServer, _scenariosServerJar"
+ <target name="serverTar" depends="serverJar, compileAll, _scenariosServer,
+                                   _bienenstockScenarioJar"
     description="Erstellt die tar.gz-Datei der Server-Dateien">
     <tar destfile="${dist}/Server.tar.gz"
          compression="gzip">
@@ -266,6 +266,7 @@
                   mode="644"
                   prefix="/server/dist">
         <include name="Server.jar"/>
+        <include name="BienenstockScenario.jar"/>
       </tarfileset>
       <tarfileset dir="${config}"
                   mode="644"
@@ -283,6 +284,7 @@
         <include name="setup.*"/>
         <include name="*Server.*"/>
       </tarfileset>
+<!-- umbenennen -->
       <tarfileset dir="${dist}/server/scenarios"
                   mode="644"
                   prefix="/server/scenarios">
@@ -306,10 +308,7 @@
                   mode="644"
                   prefix="/client/dist">
         <include name="Client.jar"/>
-      </tarfileset>
-      <tarfileset dir="${dist}"
-                  mode="644"
-                  prefix="/client/dist">
+        <include name="BienenstockScenario.jar"/>
         <include name="BienenstockVis.jar"/>
       </tarfileset>
       <tarfileset dir="${config}"
@@ -338,11 +337,6 @@
                   prefix="/client">
         <include name="Readme.txt" />
         <include name="ReadmeClient.txt"/>
-      </tarfileset>
-      <tarfileset dir="${dist}/server/scenarios"
-                  mode="644"
-                  prefix="/client/scenarios">
-        <include name="**/*.*"/>
       </tarfileset>
       <tarfileset dir="${libs}/bilder"
                   mode="644"
