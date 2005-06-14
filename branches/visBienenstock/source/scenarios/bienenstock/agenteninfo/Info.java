@@ -1,10 +1,10 @@
 /*
  * Dateiname      : Info.java
  * Erzeugt        : 18. November 2004
- * Letzte Änderung: 14. Februar 2005 durch Samuel Walz
+ * Letzte Änderung: 14. Juni 2005 durch Eugen Volk
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
- *
+ *                  Eugen Volk
  *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
@@ -29,14 +29,14 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 package scenarios.bienenstock.agenteninfo;
-
+import java.io.Serializable;
 /**
  * enthält Angaben über Richtung und Entfernung eines Ziels.
  *
  * @author Philip Funck
  * @author Samuel Walz
  */
-public class Info {
+public class Info implements Serializable {
     /**
      * die Richtung eines Ziels
      */

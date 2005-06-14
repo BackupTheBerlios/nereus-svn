@@ -145,8 +145,8 @@ public class Karte extends AbstractEnviroment {
      * tanzTab[0] enthält Infomationen aus den geraden Runden,
      * tanzTab[1] enthält Infomationen aus den ungeraden Runden.
      */
-     HashMap tanzTab[]={new HashMap(), new HashMap()};
-     
+    HashMap tanzTab[]={new HashMap(), new HashMap()};
+    
     
     /**
      * Erstellt eine neue Instanz der Karte, bekommt mitgeteilt,
@@ -338,9 +338,17 @@ public class Karte extends AbstractEnviroment {
             
             VisBiene visSelbst;
             
-            if (originalBiene.gibListenKennung() == Konstanten.ZUSCHAUEND
-                    | originalBiene.gibListenKennung() == Konstanten.TANZEND
-                    ) {
+            int listenKenn=originalBiene.gibListenKennung();
+            
+            if ((listenKenn == Konstanten.ZUSCHAUEND)
+            || (listenKenn== Konstanten.TANZEND)){
+                
+                Info info;
+                
+                if (listenKenn== Konstanten.ZUSCHAUEND) {
+                    info=originalBiene.gibInformation().klonen();
+                } else info = originalBiene.gibGesendeteInformation().klonen();
+                
                 visSelbst = new VisBiene(
                         konvertiereZustand(originalBiene.gibListenKennung()),
                         originalBiene.gibBienenID(),
@@ -352,9 +360,7 @@ public class Karte extends AbstractEnviroment {
                         originalBiene.gibGeladeneNektarmenge(),
                         ((Integer) parameter.gibWert("maxGelHonig")).intValue(),
                         ((Integer) parameter.gibWert("maxGelNektar")).intValue(),
-                        ((Info) originalBiene.gibInformation()).klonen());
-                
-                
+                        info);
             } else {
                 visSelbst = new VisBiene(
                         konvertiereZustand(originalBiene.gibListenKennung()),
@@ -391,8 +397,17 @@ public class Karte extends AbstractEnviroment {
             
             VisBiene visSelbst;
             
-            if (originalBiene.gibListenKennung() == Konstanten.ZUSCHAUEND
-                    | originalBiene.gibListenKennung() == Konstanten.TANZEND) {
+            int listenKenn=originalBiene.gibListenKennung();
+            
+            if ((listenKenn == Konstanten.ZUSCHAUEND)
+            || (listenKenn== Konstanten.TANZEND)){
+                
+                Info info;
+                
+                if (listenKenn== Konstanten.ZUSCHAUEND) {
+                    info=originalBiene.gibInformation().klonen();
+                } else info = originalBiene.gibGesendeteInformation().klonen();
+                
                 visSelbst = new VisBiene(
                         konvertiereZustand(originalBiene.gibListenKennung()),
                         originalBiene.gibBienenID(),
@@ -404,8 +419,7 @@ public class Karte extends AbstractEnviroment {
                         originalBiene.gibGeladeneNektarmenge(),
                         ((Integer) parameter.gibWert("maxGelHonig")).intValue(),
                         ((Integer) parameter.gibWert("maxGelNektar")).intValue(),
-                        ((Info) originalBiene.gibInformation()).klonen()
-                        );
+                        info);
             } else {
                 visSelbst = new VisBiene(
                         konvertiereZustand(originalBiene.gibListenKennung()),
@@ -669,6 +683,8 @@ public class Karte extends AbstractEnviroment {
                 return "zuschauend";
             case Konstanten.ABBAUEND :
                 return "abbauend";
+            case Konstanten.TANKENABLIEFERN :
+                return "tankenabliefern";
             default:
                 return "FEHLER";
         }
@@ -940,10 +956,10 @@ public class Karte extends AbstractEnviroment {
             
             Hashtable neueNachbarfelder = new Hashtable();
             while (originalNachbarfelder.hasNext()) {
-                Koordinate nachbarkoordinate = 
-                        ((Feld) originalNachbarfelder.next()).gibPosition(); 
-                neueNachbarfelder.put(nachbarkoordinate, 
-                                      neuesSpielfeld.get(nachbarkoordinate));
+                Koordinate nachbarkoordinate =
+                        ((Feld) originalNachbarfelder.next()).gibPosition();
+                neueNachbarfelder.put(nachbarkoordinate,
+                        neuesSpielfeld.get(nachbarkoordinate));
             }
             ((VisFeld)neuesSpielfeld.get(vollstFeld.gibPosition())).setzeNachbarfelder(neueNachbarfelder);
         }
@@ -1223,7 +1239,7 @@ public class Karte extends AbstractEnviroment {
                             nutzen);
                     int rundenNr=this.spielmeister.gibRundennummer();
                     this.addTanzInfo(zielBiene.gibBienenID(), konvInfo, rundenNr);
-                    
+                    zielBiene.setzeGesendeteInformation(konvInfo.klonen());
                     /** damit auf die Information auch eine Runde später zugegriffen werden kann */
                     Integer rundenNrInteger=new Integer(this.spielmeister.gibRundennummer());
                     Integer bienenIdInteger=new Integer(zielBiene.gibBienenID());
@@ -1841,40 +1857,40 @@ public class Karte extends AbstractEnviroment {
         
     }
     
-      
- 
-     /**
-      * fügt neue TanzInfomation in die Tanz-Tabelle hinzu.
-      * @param bienenId Id der Tanz-Biene
-      * @rundenNr Nummer der aktuellen Runde
-      */
-     private void addTanzInfo(int bienenId, Info tanzInfo, int rundenNr){
-         int rest=rundenNr % 2;
-         TanzInfo ts=new TanzInfo(bienenId, tanzInfo, rundenNr);
-         tanzTab[rest].put(new Integer(bienenId), ts);
-     }
-     
-     /**
-      * liefert mitgeteilte Informationen aus der verhergehenden Rude
-      * @param bienenId Id der Tanz-Biene
-      * @param rundenNr Runden-Nummer in der getanzt wurde
-      * @return mitgeteilte Infomation
-      */
-     private Info getTanzInfo(int bienenId, int rundenNr){
-         int rest=rundenNr % 2;
-         TanzInfo ts;
-         ts=(TanzInfo)tanzTab[rest].get(new Integer(bienenId));
-         if (ts==null) {
-             return null;
-         }
-         int rundeGetanzt=ts.getRundenNr();
-         if (rundenNr==rundeGetanzt) return ts.getInfo();
-         else return null;
-         
-     }
-     
     
-     /**  eine Datenstruktur, die Bienen-Id, Runden-Nummer und Tanz-Infomation  enthält */
+    
+    /**
+     * fügt neue TanzInfomation in die Tanz-Tabelle hinzu.
+     * @param bienenId Id der Tanz-Biene
+     * @rundenNr Nummer der aktuellen Runde
+     */
+    private void addTanzInfo(int bienenId, Info tanzInfo, int rundenNr){
+        int rest=rundenNr % 2;
+        TanzInfo ts=new TanzInfo(bienenId, tanzInfo, rundenNr);
+        tanzTab[rest].put(new Integer(bienenId), ts);
+    }
+    
+    /**
+     * liefert mitgeteilte Informationen aus der verhergehenden Rude
+     * @param bienenId Id der Tanz-Biene
+     * @param rundenNr Runden-Nummer in der getanzt wurde
+     * @return mitgeteilte Infomation
+     */
+    private Info getTanzInfo(int bienenId, int rundenNr){
+        int rest=rundenNr % 2;
+        TanzInfo ts;
+        ts=(TanzInfo)tanzTab[rest].get(new Integer(bienenId));
+        if (ts==null) {
+            return null;
+        }
+        int rundeGetanzt=ts.getRundenNr();
+        if (rundenNr==rundeGetanzt) return ts.getInfo();
+        else return null;
+        
+    }
+    
+    
+    /**  eine Datenstruktur, die Bienen-Id, Runden-Nummer und Tanz-Infomation  enthält */
     class TanzInfo{
         /** Id der Tanz-Biene */
         int bienenId;
@@ -1883,7 +1899,7 @@ public class Karte extends AbstractEnviroment {
         /** konvertierte TanzInfomation */
         Info tanzInfo;
         
-        /** eine Datenstruktur, die Bienen-Id, Runden-Nummer und Tanz-Infomation  enthält 
+        /** eine Datenstruktur, die Bienen-Id, Runden-Nummer und Tanz-Infomation  enthält
          * @param bienenId Id der TanzBiene
          * @param tanzInfo konvertierte Tanz-Infomation
          * @param rundenNr RundeNummer in der getanzt wurde
@@ -1899,7 +1915,7 @@ public class Karte extends AbstractEnviroment {
         Info getInfo(){
             return tanzInfo.klonen();
         }
-        /** liefet die RundenNr in der getanzt wurde 
+        /** liefet die RundenNr in der getanzt wurde
          * @return Runden-Nummer
          */
         int getRundenNr(){
