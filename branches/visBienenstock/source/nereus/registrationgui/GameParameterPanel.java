@@ -818,8 +818,10 @@ public class GameParameterPanel
     }
     
     
+    
     /**
      * Action die Visualisierung des Szenario aufruft
+     * @event ClickEreignis
      */
     void m_scenarioVisButton_actionPerformed(ActionEvent event){
         try{
@@ -828,13 +830,14 @@ public class GameParameterPanel
             String serverName=ClientInfoObject.m_instance.getServerName();
             VisualisationClient visClient;
             String rundenNr="1";
+            LinkedList rundenListe;
+            rundenListe=VisualisationClient.gibDurchlaeufe(serverName, port, gameId);
+           // für den Test wird nach szenarien Konfigurationen gefragt.
             
-       /*     // für den Test wird nach szenarien Konfigurationen gefragt.
-            LinkedList tagNames=m_coordinator.getGameConfTags("bienenstock");
             String tagName="1";
-            if ((tagNames!=null) && (tagNames.size()>=1)){
-                if (tagNames.size()==1){
-                    tagName=(String)tagNames.getFirst();
+            if ((rundenListe!=null) && (rundenListe.size()>=1)){
+                if (false && rundenListe.size()==1){
+                    tagName=(String)rundenListe.getFirst();
                 }else{
                     //  tagNames.addFirst(" ");
         
@@ -845,12 +848,12 @@ public class GameParameterPanel
                             frame,
                             "Durchlauf-Auswahl",
                             "DurchlaufNr ",
-                            tagNames);
+                            rundenListe);
                     s2dialog.show();
                     tagName= (String)s2dialog.getSelected();
                 }
             }
-            rundenNr=new String(tagName); */
+            rundenNr=new String(tagName); 
             
             visClient=new VisualisationClient(serverName, port,this.m_gameId.toString(), rundenNr);
             
