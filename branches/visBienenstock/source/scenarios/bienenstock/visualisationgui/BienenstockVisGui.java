@@ -279,10 +279,6 @@ public class BienenstockVisGui extends Frame {
         knoepfe.add(zeitFeld);
         knoepfe.add(zeitButton);
         
-        //werden erst wieder sichtbar, wenn der Inhalt geaendert wird
-        rundeButton.setVisible(false);
-        zeitButton.setVisible(false);
-        
         //das Panel knoepfe hinzufuegen
         add(knoepfe, BorderLayout.SOUTH);
         
@@ -356,11 +352,16 @@ public class BienenstockVisGui extends Frame {
         }
         initiiert = true;
         
+                
+        //werden erst wieder sichtbar, wenn der Inhalt geaendert wird
+        rundeButton.setVisible(false);
+        zeitButton.setVisible(false);
+        
         //Groesse und Position neu setzen
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         int x = ((maxX - minX + 1) * groesseX) + 10;
-        if (x < 450) {
-            x = 450;
+        if (x < 500) {
+            x = 500;
         }
         int y = ((maxY - minY + 2) * groesseY) 
             + fenster.getInsets().top;
