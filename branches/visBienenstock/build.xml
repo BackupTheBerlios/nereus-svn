@@ -160,6 +160,7 @@
                   scenarios/bienenstock/agenteninfo/**,
                   nereus/visualisationclient/**,
                   nereus/simulatorinterfaces/*.class,
+		  nereus/simulator/visualisation/Spielende.class,
                   nereus/simulator/visualisation/VisualisationServer_Stub.class">
      <manifest>
        <attribute name="Main-Class"
@@ -190,7 +191,7 @@
    </jar>
  </target>
   
- <target name="clientJar" depends="compileAll,_scenariosClient"
+ <target name="clientJar" depends="compileAll, _scenariosClient"
          description="Erstellt die jar-Datei der Client-Klassen">
    <mkdir dir="${dist}"/>
    <mkdir dir="${dist}/client"/>
@@ -278,12 +279,8 @@
       <tarfileset dir="${config}"
                   mode="644"
                   prefix="/server/config">
-        <include name="server.policy"/>        
-      </tarfileset>
-      <tarfileset dir="${config}"
-                  mode="644"
-                  prefix="/server/config">
-        <include name="serverconfig.xml"/>        
+        <include name="server.policy"/>
+        <include name="serverconfig.xml"/>
       </tarfileset>
       <tarfileset dir="${runScripts}"
                   mode="755"
@@ -322,17 +319,14 @@
                   mode="644"
                   prefix="/client/config">
         <include name="client.policy"/>
+        <include name="clientconfig.xml"/>
       </tarfileset>
-      <tarfileset dir="${config}"
-                  mode="644"
-                  prefix="/client/config">
-        <include name="clientconfig.xml"/>   
-      </tarfileset>     
       <tarfileset dir="${runScripts}"
                   mode="755"
                   prefix="/client/runScripts">
         <include name="setup.*"/>
         <include name="*Client*.*"/>
+        <include name="BienenstockVis.*"/>
       </tarfileset>
       <tarfileset dir="${classes}/agents"
                   mode="644"
@@ -347,7 +341,7 @@
       </tarfileset>
       <tarfileset dir="${scenariosconfig}/bienenstock/bilder"
                   mode="644"
-                  prefix="/scenariosconfig/bienenstock/bilder">
+                  prefix="/client/scenariosconfig/bienenstock/bilder">
         <include name="*.gif"/>
       </tarfileset>
     </tar>
