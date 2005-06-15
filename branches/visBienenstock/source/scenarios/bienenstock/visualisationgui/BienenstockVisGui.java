@@ -416,12 +416,6 @@ public class BienenstockVisGui extends Frame {
      */
     public void paint(Graphics g) {
         
-        Iterator bienchen = karte.gibBienen().values().iterator();
-        while (bienchen.hasNext()) {
-            VisBiene biene = (VisBiene)bienchen.next();
-            System.out.println("Biene " + biene.gibBienenID() + " macht " + biene.gibZustand());
-        }
-        
         //Breite der headline
         int abstandOben = fenster.getInsets().top + 5;
         
