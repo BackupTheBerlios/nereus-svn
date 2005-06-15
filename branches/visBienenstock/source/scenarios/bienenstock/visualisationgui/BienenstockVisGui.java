@@ -389,7 +389,16 @@ public class BienenstockVisGui extends Frame {
         fenster.setVisible(true);
         
     }
-    
+
+    /**
+     * Zeichnet das Fenster neu, ohne es vorher zu löschen.
+     *
+     * @g  Das zu aktualisierende Fenster.
+     */
+    public void update(Graphics g){
+        paint(g);
+    }
+
     /**
      * zeichnet den Fensterinhalt
      */
