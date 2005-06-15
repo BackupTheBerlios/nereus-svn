@@ -394,7 +394,9 @@ public class BienenstockVisGui extends Frame {
      * zeichnet den Fensterinhalt
      */
     public void paint(Graphics g) {
-        g.setColor(new Color(0, 0, 0));
+        Color farbe1 = new Color(0,0,0);
+        Color farbe2 = new Color(254, 254, 254);
+        g.setColor(farbe1);
         
         if (karte != null) {
             rundeFeld.setText(karte.gibRundennummer() + "");
@@ -444,12 +446,12 @@ public class BienenstockVisGui extends Frame {
                                         this);
                                 if (tmpStock.gibFliegendeBienen().size() > 1) {
                                 
-                                    g.setColor(new Color(254, 0, 0));
+                                    g.setColor(farbe2);
                                     g.drawString("" + tmpStock.gibFliegendeBienen().size(),
                                             ((x - minX) * groesseX) + rechts - bildBieneX,
                                             ((y - minY) * groesseY) + abstandOben 
                                                     + oben - bildBieneY);
-                                    g.setColor(new Color(0, 0, 0));
+                                    g.setColor(farbe1);
                                 }
                             }
                             tmpBienen = tmpStock.gibWartendeBienen().size() 
@@ -460,12 +462,12 @@ public class BienenstockVisGui extends Frame {
                                         ((y - minY) * groesseY) + abstandOben + unten - 12,
                                         this);
                                 if (tmpBienen > 1) {
-                                    g.setColor(new Color(254, 0, 0));
+                                    g.setColor(farbe2);
                                     g.drawString("" + tmpBienen,
                                           ((x - minX) * groesseX) + rechts - bildBieneX,
                                           ((y - minY) * groesseY) + abstandOben 
                                                     + unten - bildBieneY);
-                                    g.setColor(new Color(0, 0, 0));
+                                    g.setColor(farbe1);
                                 }
                             }
                             /*
@@ -486,12 +488,12 @@ public class BienenstockVisGui extends Frame {
                                         ((y - minY) * groesseY) + abstandOben + oben - 12,
                                         this);
                                 if (tmpBlume.gibFliegendeBienen().size() > 1) {
-                                    g.setColor(new Color(254, 0, 0));
+                                    g.setColor(farbe2);
                                     g.drawString("" + tmpBlume.gibFliegendeBienen().size(),
                                             ((x - minX) * groesseX) + rechts - bildBieneX,
                                             ((y - minY) * groesseY) + abstandOben 
                                                     + oben - bildBieneY);
-                                    g.setColor(new Color(0, 0, 0));
+                                    g.setColor(farbe1);
                                 }
                             }
                             tmpBienen = tmpBlume.gibWartendeBienen().size() 
@@ -503,12 +505,12 @@ public class BienenstockVisGui extends Frame {
                                         ((y - minY) * groesseY) + abstandOben + unten - 12,
                                         this);
                                 if (tmpBienen > 1) {
-                                    g.setColor(new Color(254, 0, 0));
+                                    g.setColor(farbe2);
                                     g.drawString("" + tmpBienen,
                                           ((x - minX) * groesseX) + rechts - bildBieneX,
                                           ((y - minY) * groesseY) + abstandOben 
                                                     + unten - bildBieneY);
-                                    g.setColor(new Color(0, 0, 0));
+                                    g.setColor(farbe1);
                                 }
                             }                            
                             /*
@@ -525,12 +527,12 @@ public class BienenstockVisGui extends Frame {
                                         ((y - minY) * groesseY) + abstandOben + oben - 12,
                                         this);
                                 if (tmpFeld.gibFliegendeBienen().size() > 1) {
-                                    g.setColor(new Color(254, 0, 0));
+                                    g.setColor(farbe2);
                                     g.drawString("" + tmpFeld.gibFliegendeBienen().size(),
                                             ((x - minX) * groesseX) + rechts - bildBieneX,
                                             ((y - minY) * groesseY) + abstandOben 
                                                     + oben - bildBieneY);
-                                    g.setColor(new Color(0, 0, 0));
+                                    g.setColor(farbe1);
                                 }
                             }
                             tmpBienen = tmpFeld.gibWartendeBienen().size()
@@ -541,12 +543,12 @@ public class BienenstockVisGui extends Frame {
                                         ((y - minY) * groesseY) + abstandOben + unten - 12,
                                         this);
                                 if (tmpBienen > 1) {
-                                    g.setColor(new Color(254, 0, 0));
+                                    g.setColor(farbe2);
                                     g.drawString("" + tmpBienen,
                                           ((x - minX) * groesseX) + rechts - bildBieneX,
                                           ((y - minY) * groesseY) + abstandOben 
                                                     + unten - bildBieneY);
-                                    g.setColor(new Color(0, 0, 0));
+                                    g.setColor(farbe1);
                                 }
                             }
                         } else {
