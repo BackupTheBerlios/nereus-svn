@@ -606,12 +606,11 @@ public class MASIMClient extends JFrame {
      * @param args
      */
     public static void main(String[] args) {
-        if (args.length == 4) {
-            
+        if (args.length >= 3) {            
                       
             System.out.println("Starte den MALClient");
             MASIMClient client = null;
-            ClientInfoObject.getInstance(args[1], args[2], args[3]);
+            ClientInfoObject.getInstance(args[1], args[2]);
             client=new MASIMClient(args[0], args[2]);
             
             client.setVisible(true);

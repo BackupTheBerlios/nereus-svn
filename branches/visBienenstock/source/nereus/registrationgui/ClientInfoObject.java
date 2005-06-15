@@ -94,13 +94,12 @@ public class ClientInfoObject {
      * Konstruktor werden die ganzen Konf-Parameter bestimmt.
      *
      */
-    private ClientInfoObject(String pathName, String clientConfigFileURI, String agentsPath) {
+    private ClientInfoObject(String pathName, String clientConfigFileURI) {
         super();
         
         m_clientBasePath = new String(pathName);
         System.out.println("Clientbasispfad: "+ m_clientBasePath);
         this.clientConfigFileURI=new String(clientConfigFileURI);
-        this.m_agentClassesPath=new String(agentsPath);
         
         String seperator = null;
         if(pathName.indexOf("/") > -1) {
@@ -108,14 +107,11 @@ public class ClientInfoObject {
         }else {
             m_pathSeparator = "\\";
         }
-        if (!m_agentClassesPath.endsWith(m_pathSeparator)){
-            m_agentClassesPath=new String(m_agentClassesPath + m_pathSeparator);
+        if (!m_clientBasePath.endsWith(m_pathSeparator)){
+            m_clientBasePath=new String(m_clientBasePath + m_pathSeparator);
         }
         
-  
-        System.out.println("Agentenpfad: "+ m_agentClassesPath);
-        
-        
+         
         this.agentsScenarioList=readScenarioAgentsList(this.clientConfigFileURI);
         this.visClassNames=readVisClassNames(this.clientConfigFileURI);
     }
@@ -193,10 +189,10 @@ public class ClientInfoObject {
      *
      * @return ServerInfoObject
      */
-    public static ClientInfoObject getInstance(String basePath, String clientConfigFileURI, String agentsPath) {
+    public static ClientInfoObject getInstance(String basePath, String clientConfigFileURI) {
         // wenn noch keine Instanz existiert, dann eine erstellen
         if(m_instance == null) {
-            m_instance = new ClientInfoObject(basePath, clientConfigFileURI, agentsPath);
+            m_instance = new ClientInfoObject(basePath, clientConfigFileURI);
         }
         return m_instance;
     }

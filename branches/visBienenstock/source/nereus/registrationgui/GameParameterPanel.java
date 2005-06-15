@@ -863,7 +863,7 @@ public class GameParameterPanel
             IVisualisationOutput visOutput=(IVisualisationOutput)scenarioVisClass.newInstance();
             String basisPfad=ClientInfoObject.m_instance.getClientBasePath();
             String ps=ClientInfoObject.m_instance.getPathSeparator();
-            basisPfad=new String(basisPfad + ps+"scenariosconfig"+ ps + m_scenarioName +
+            basisPfad=new String(basisPfad + "scenariosconfig"+ ps + m_scenarioName +
                     ps+ "bilder"+ps);
             visOutput.initialize(visClient, basisPfad);//"pfad_zu_verzeichnis");
         }catch (Exception ex){
