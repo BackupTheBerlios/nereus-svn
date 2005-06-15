@@ -1,7 +1,7 @@
 /*
  * Dateiname      : VisFeld.java
  * Erzeugt        : 6. Oktober 2004
- * Letzte Änderung: 08. Juni 2005 durch Samuel Walz
+ * Letzte Änderung: 15. Juni 2005 durch Philip Funck
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (samuel@gmx.info)
  *
@@ -81,6 +81,12 @@ public class VisFeld implements Serializable {
      * @associates VisBiene
      */
     private HashSet tanzendeBienen;
+    
+    /**
+     * die tollen "sonstigeBienen"
+     *@associates VisBiene
+     */
+    private HashSet sonstigeBienen;
 
     /**
      * Konstruktor.
@@ -97,12 +103,14 @@ public class VisFeld implements Serializable {
             int sichtLuft,
             HashSet wBienen,
             HashSet fBienen,
-            HashSet tBienen) {
+            HashSet tBienen,
+            HashSet sBienen) {
         sichtweiteAmBoden = sichtBoden;
         sichtweiteInDerLuft = sichtLuft;
         wartendeBienen = wBienen;
         fliegendeBienen = fBienen;
         tanzendeBienen = tBienen;
+        sonstigeBienen = sBienen;
         position = feldPosition;
     }
 
@@ -169,6 +177,15 @@ public class VisFeld implements Serializable {
         return (HashSet) tanzendeBienen.clone();
     }
 
+    /**
+     * gibt die tollen "sonstigeBienen" zurueck
+     *
+     * @return sonstige Bienen
+     */
+    public HashSet gibSonstigeBienen() {
+        return (HashSet) sonstigeBienen.clone();
+    }
+    
     /**
      * setzt dem Feld seine direkt angrenzenden Nachbarfelder.
      *

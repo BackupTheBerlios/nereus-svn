@@ -1,7 +1,7 @@
 /*
  * Dateiname      : VisBienenstock.java
  * Erzeugt        : 06. Oktober 2004
- * Letzte Änderung: 08. Juni 2005 durch Samuel Walz
+ * Letzte Änderung: 15. Juni 2005 durch Philip Funck
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (samuel@gmx.info)
  *
@@ -95,6 +95,7 @@ public class VisBienenstock extends VisFeld implements Serializable {
             HashSet wBienen,
             HashSet fBienen,
             HashSet tBienen,
+            HashSet sBienen,
             int maxGelagerterNektar,
             int vorhNektar,
             int vorhHonig,
@@ -105,7 +106,8 @@ public class VisBienenstock extends VisFeld implements Serializable {
                 sichtLuft,
                 wBienen,
                 fBienen,
-                tBienen);
+                tBienen,
+                sBienen);
         
         /*position = feldPosition;
         sichtweiteAmBoden = sichtBoden;
