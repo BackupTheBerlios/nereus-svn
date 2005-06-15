@@ -202,6 +202,15 @@ public class BienenstockVisSteuerung extends Thread implements IVisualisationOut
     public void setzeNaechste (int next) {
         if ((next > 0) && (next <= karten.size())) {
             naechste = next;
+            
+            //pruefen der Position in der Liste der Karten
+            if (naechste == 1) {
+                fenster.amAnfang(true);
+                fenster.amEnde(false);
+            } else if (naechste == karten.size() - 1) {
+                fenster.amEnde(true);
+                fenster.amAnfang(false);
+            }
             fenster.visualisiere((VisKarte)karten.get(naechste));
         }
     }
