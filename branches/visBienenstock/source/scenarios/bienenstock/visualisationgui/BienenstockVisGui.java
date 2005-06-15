@@ -394,6 +394,8 @@ public class BienenstockVisGui extends Frame {
                     + fenster.getInsets().top);
         }
         
+        fenster.setResizable(false);
+        
         //Fenster sichtbar machen
         fenster.setVisible(true);
         this.validate();
@@ -414,6 +416,12 @@ public class BienenstockVisGui extends Frame {
      */
     public void paint(Graphics g) {
         
+        Iterator bienchen = karte.gibBienen().values().iterator();
+        while (bienchen.hasNext()) {
+            VisBiene biene = (VisBiene)bienchen.next();
+            System.out.println("Biene " + biene.gibBienenID() + " macht " + biene.gibZustand());
+        }
+        
         //Breite der headline
         int abstandOben = fenster.getInsets().top + 5;
         
@@ -422,11 +430,11 @@ public class BienenstockVisGui extends Frame {
                 (fenster.getWidth() - ((maxX - minX + 1) * groesseX)) / 2;
         
         //saeubern des Bereiches fuer die Karte
-        g.clearRect(
-            0, 
-            0, 
-            ((maxX - minX + 1) * groesseX) + imagePosXZentrieren, 
-            ((maxY - minY + 1) * groesseY) + 50);
+        //g.clearRect(
+        //    0, 
+        //    0, 
+        //    ((maxX - minX + 1) * groesseX) + imagePosXZentrieren, 
+        //    ((maxY - minY + 1) * groesseY) + 50);
         
         Color farbe1 = new Color(0,0,0);
         Color farbe2 = new Color(254, 254, 254);
@@ -495,7 +503,8 @@ public class BienenstockVisGui extends Frame {
                                 }
                             }
                             tmpBienen = tmpStock.gibWartendeBienen().size() 
-                                    + tmpStock.gibTanzendeBienen().size();
+                                    + tmpStock.gibTanzendeBienen().size()
+                                    + tmpStock.gibSonstigeBienen().size();
                             if (tmpBienen > 0) {
                                 g.drawImage(bildBiene,
                                         ((x - minX) * groesseX) + rechts + imagePosXZentrieren,
@@ -544,7 +553,8 @@ public class BienenstockVisGui extends Frame {
                             }
                             tmpBienen = tmpBlume.gibWartendeBienen().size() 
                                     + tmpBlume.gibTanzendeBienen().size()
-                                    + tmpBlume.gibAbbauendeBienen().size();
+                                    + tmpBlume.gibAbbauendeBienen().size()
+                                    + tmpBlume.gibSonstigeBienen().size();
                             if (tmpBienen > 0) {
                                 g.drawImage(bildBiene,
                                         ((x - minX) * groesseX) + rechts + imagePosXZentrieren,
@@ -588,7 +598,8 @@ public class BienenstockVisGui extends Frame {
                                 }
                             }
                             tmpBienen = tmpFeld.gibWartendeBienen().size()
-                                    + tmpFeld.gibTanzendeBienen().size();
+                                    + tmpFeld.gibTanzendeBienen().size()
+                                    + + tmpFeld.gibSonstigeBienen().size();
                             if (tmpBienen > 0) {
                                 g.drawImage(bildBiene,
                                         ((x - minX) * groesseX) + rechts + imagePosXZentrieren,
