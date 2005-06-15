@@ -105,6 +105,12 @@ public class BienenstockVisGui extends Frame {
     private Image bildBiene;
     
     /**
+     * das Bild fuer die Biene implements tanzenden Zustand
+     */
+    private Image bildBieneTanzend;
+    
+    
+    /**
      * die minimale x Koordinate
      */
     private volatile int minX = 1000000000;
@@ -158,7 +164,7 @@ public class BienenstockVisGui extends Frame {
     /**
      * das Feld fuer die Eingabe der Rundennummer
      */
-    TextField rundeFeld = new TextField(" 0");
+    TextField rundeFeld = new TextField("   0");
     
     /**
      * das Label fuer die Einstellung der Zeit
@@ -316,6 +322,7 @@ public class BienenstockVisGui extends Frame {
 
         //Bilder laden
         bildBiene = Toolkit.getDefaultToolkit().getImage(pfad + "biene.gif");
+        bildBieneTanzend = Toolkit.getDefaultToolkit().getImage(pfad + "bieneTanzend.gif");
         bildBienenstock = Toolkit.getDefaultToolkit().getImage(pfad + "bienenstock.gif");
         bildBlume = Toolkit.getDefaultToolkit().getImage(pfad + "blume.gif");
         bildPlatz = Toolkit.getDefaultToolkit().getImage(pfad + "platz.gif");
@@ -500,10 +507,17 @@ public class BienenstockVisGui extends Frame {
                                     + tmpStock.gibTanzendeBienen().size()
                                     + tmpStock.gibSonstigeBienen().size();
                             if (tmpBienen > 0) {
-                                g.drawImage(bildBiene,
+                                if (tmpStock.gibTanzendeBienen().size() > 0) {
+                                    g.drawImage(bildBieneTanzend,
                                         ((x - minX) * groesseX) + rechts + imagePosXZentrieren,
                                         ((y - minY) * groesseY) + abstandOben + unten - 12,
                                         this);
+                                } else {
+                                    g.drawImage(bildBiene,
+                                            ((x - minX) * groesseX) + rechts + imagePosXZentrieren,
+                                            ((y - minY) * groesseY) + abstandOben + unten - 12,
+                                            this);
+                                }
                                 if (tmpBienen > 1) {
                                     g.setColor(farbe2);
                                     fenster.setFont(schriftFett);
@@ -550,10 +564,17 @@ public class BienenstockVisGui extends Frame {
                                     + tmpBlume.gibAbbauendeBienen().size()
                                     + tmpBlume.gibSonstigeBienen().size();
                             if (tmpBienen > 0) {
-                                g.drawImage(bildBiene,
+                                if (tmpBlume.gibTanzendeBienen().size() > 0) {
+                                    g.drawImage(bildBieneTanzend,
                                         ((x - minX) * groesseX) + rechts + imagePosXZentrieren,
                                         ((y - minY) * groesseY) + abstandOben + unten - 12,
                                         this);
+                                } else {
+                                  g.drawImage(bildBiene,
+                                        ((x - minX) * groesseX) + rechts + imagePosXZentrieren,
+                                        ((y - minY) * groesseY) + abstandOben + unten - 12,
+                                        this);
+                                }
                                 if (tmpBienen > 1) {
                                     g.setColor(farbe2);
                                     fenster.setFont(schriftFett);
@@ -595,10 +616,17 @@ public class BienenstockVisGui extends Frame {
                                     + tmpFeld.gibTanzendeBienen().size()
                                     + + tmpFeld.gibSonstigeBienen().size();
                             if (tmpBienen > 0) {
-                                g.drawImage(bildBiene,
+                                if (tmpFeld.gibTanzendeBienen().size() > 0) {
+                                    g.drawImage(bildBieneTanzend,
                                         ((x - minX) * groesseX) + rechts + imagePosXZentrieren,
                                         ((y - minY) * groesseY) + abstandOben + unten - 12,
                                         this);
+                                } else {
+                                  g.drawImage(bildBiene,
+                                            ((x - minX) * groesseX) + rechts + imagePosXZentrieren,
+                                            ((y - minY) * groesseY) + abstandOben + unten - 12,
+                                            this);
+                                }
                                 if (tmpBienen > 1) {
                                     g.setColor(farbe2);
                                     fenster.setFont(schriftFett);
