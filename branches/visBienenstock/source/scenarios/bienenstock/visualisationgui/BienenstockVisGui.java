@@ -225,6 +225,7 @@ public class BienenstockVisGui extends Frame {
             vis.weiter();
             pause.addActionListener(pauseAktion);
             pause.removeActionListener(this);
+            knoepfe.validate();
         }
     };
     
@@ -265,6 +266,7 @@ public class BienenstockVisGui extends Frame {
     public BienenstockVisGui(BienenstockVisSteuerung visu, String pfad) {
 
         this.setVisible(false);
+        this.validate();
         this.vis = visu;
         this.pfad = pfad;
 
@@ -394,6 +396,7 @@ public class BienenstockVisGui extends Frame {
         
         //Fenster sichtbar machen
         fenster.setVisible(true);
+        this.validate();
         
     }
 
@@ -618,6 +621,7 @@ public class BienenstockVisGui extends Frame {
     public void amEnde(boolean ende) {
         if (vor.isVisible() == ende) {
             vor.setVisible(!ende);
+            knoepfe.validate();
         }
     }
     
@@ -628,6 +632,7 @@ public class BienenstockVisGui extends Frame {
     public void amAnfang(boolean anfang) {
         if(zurueck.isVisible() == anfang) {
             zurueck.setVisible(!anfang);
+            knoepfe.validate();
         }
     }
 }
