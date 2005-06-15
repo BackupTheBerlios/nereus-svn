@@ -1,7 +1,7 @@
 /*
  * Dateiname      : Karte.java
  * Erzeugt        : 26. Juli 2004
- * Letzte Änderung: 8. Juni 2005 durch Eugen Volk
+ * Letzte Änderung: 15. Juni 2005 durch Philip Funck
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (samuel@gmx.info)
  *                  Eugen Volk
@@ -904,7 +904,8 @@ public class Karte extends AbstractEnviroment {
                         vollstFeld.gibSichtweiteInDerLuft(),
                         konvertiereBienenHash(vollstFeld.gibWartendeBienen()),
                         konvertiereBienenHash(vollstFeld.gibFliegendeBienen()),
-                        konvertiereBienenHash(vollstFeld.gibTanzendeBienen())
+                        konvertiereBienenHash(vollstFeld.gibTanzendeBienen()),
+                        konvertiereBienenHash(vollstFeld.gibSonstigeBienen())
                         ));
             } else if (vollstFeld instanceof Bienenstock) {
                 neuesSpielfeld.put(vollstFeld.gibPosition(),
@@ -918,6 +919,7 @@ public class Karte extends AbstractEnviroment {
                         konvertiereBienenHash(vollstFeld.gibWartendeBienen()),
                         konvertiereBienenHash(vollstFeld.gibFliegendeBienen()),
                         konvertiereBienenHash(vollstFeld.gibTanzendeBienen()),
+                        konvertiereBienenHash(vollstFeld.gibSonstigeBienen()),
                         ((Bienenstock) vollstFeld).gibMaxGelagerterNektar(),
                         ((Bienenstock) vollstFeld).gibVorhandenerNektar(),
                         ((Bienenstock) vollstFeld).gibVorhandenerHonig(),
@@ -936,6 +938,7 @@ public class Karte extends AbstractEnviroment {
                         konvertiereBienenHash(vollstFeld.gibWartendeBienen()),
                         konvertiereBienenHash(vollstFeld.gibFliegendeBienen()),
                         konvertiereBienenHash(vollstFeld.gibTanzendeBienen()),
+                        konvertiereBienenHash(vollstFeld.gibSonstigeBienen()),
                         ((Blume) vollstFeld).gibMerkmal(),
                         ((Blume) vollstFeld).gibVorhandenerNektar(),
                         ((Blume) vollstFeld).gibMaxNektarProRunde(),
