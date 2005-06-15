@@ -1,7 +1,7 @@
 /*
  * Dateiname      : BienenstockVisGui.java
  * Erzeugt        : 26. April 2005
- * Letzte ?nderung: 15. Juni 2005 durch Dietmar Lippold
+ * Letzte ?nderung: 15. Juni 2005 durch Philip Funck
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
  *
@@ -72,6 +72,12 @@ public class BienenstockVisGui extends Frame {
      * die Schrift der Elemente
      */
     private Font schrift = new Font("Serif", Font.PLAIN, 12);
+    
+    /**
+     * eine fett geschriebene Schrift, fuer die Anzahl der Bienen
+     * auf einem Feld
+     */
+    private Font schriftFett = new Font("Serif", Font.BOLD, 12);
     
     /**
      * der Pfad zum Verzeichnis mit den Bildern
@@ -342,6 +348,7 @@ public class BienenstockVisGui extends Frame {
     private void setzeXY() {
         Iterator felder = karte.gibFelder().values().iterator();
         Koordinate pos;
+        int minBreite = 470;
         while (felder.hasNext()) {
             pos = ((VisFeld)felder.next()).gibPosition();
             if (pos.gibXPosition() < minX) {
@@ -366,8 +373,8 @@ public class BienenstockVisGui extends Frame {
         //Groesse und Position neu setzen
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         int x = ((maxX - minX + 1) * groesseX) + 10;
-        if (x < 500) {
-            x = 500;
+        if (x < minBreite) {
+            x = minBreite;
         }
         int y = ((maxY - minY + 2) * groesseY) 
             + fenster.getInsets().top;
@@ -403,6 +410,21 @@ public class BienenstockVisGui extends Frame {
      * zeichnet den Fensterinhalt
      */
     public void paint(Graphics g) {
+        
+        //Breite der headline
+        int abstandOben = fenster.getInsets().top + 5;
+        
+        //zentrieren der Karte
+        int imagePosXZentrieren = 
+                (fenster.getWidth() - ((maxX - minX + 1) * groesseX)) / 2;
+        
+        //saeubern des Bereiches fuer die Karte
+        g.clearRect(
+            0, 
+            0, 
+            ((maxX - minX + 1) * groesseX) + imagePosXZentrieren, 
+            ((maxY - minY + 1) * groesseY) + 50);
+        
         Color farbe1 = new Color(0,0,0);
         Color farbe2 = new Color(254, 254, 254);
         g.setColor(farbe1);
@@ -414,8 +436,7 @@ public class BienenstockVisGui extends Frame {
             int x, y;
             for (x = minX; x <= maxX; x++) {
                 for (y = minY; y <= maxY; y++) {
-                    //Breite der headline
-                    int abstandOben = fenster.getInsets().top + 5;
+           
                     //Positionierung der Schrift
                     int oben = 12;
                     int unten = 46;
@@ -428,6 +449,10 @@ public class BienenstockVisGui extends Frame {
                     // befindlichen Bienen
                     int tmpBienen = 0;
                     
+                    int imagePosX = (x - minX) * groesseX 
+                            + imagePosXZentrieren;
+                    int imagePosY = ((y - minY) * groesseY) + abstandOben;
+                    
                     Koordinate koord = new Koordinate(x, y);
                     //gibt es das Feld ueberhaupt
                     if (felder.containsKey(koord)) {
@@ -439,44 +464,50 @@ public class BienenstockVisGui extends Frame {
                         if (tmpFeld instanceof VisBienenstock) {
                             VisBienenstock tmpStock = (VisBienenstock) tmpFeld;
                             g.drawImage(bildBienenstock, 
-                                    (x - minX) * groesseX, 
-                                    ((y - minY) * groesseY) + abstandOben, 
+                                    imagePosX, 
+                                    imagePosY, 
                                     this);
                             g.drawString("" + tmpStock.gibVorhandenerHonig(),
-                                    ((x - minX) * groesseX) + links,
+                                    ((x - minX) * groesseX) + links + imagePosXZentrieren,
                                     ((y - minY) * groesseY) + abstandOben + oben);
                             g.drawString("" + tmpStock.gibVorhandenerNektar(),
-                                    ((x - minX) * groesseX) + links,
+                                    ((x - minX) * groesseX) + links + imagePosXZentrieren,
                                     ((y - minY) * groesseY) + abstandOben + unten);
                             if (tmpStock.gibFliegendeBienen().size() > 0) {
                                 g.drawImage(bildBiene,
-                                        ((x - minX) * groesseX) + rechts,
+                                        ((x - minX) * groesseX) + rechts + imagePosXZentrieren,
                                         ((y - minY) * groesseY) + abstandOben + oben -12,
                                         this);
                                 if (tmpStock.gibFliegendeBienen().size() > 1) {
                                 
                                     g.setColor(farbe2);
+                                    fenster.setFont(schriftFett);
                                     g.drawString("" + tmpStock.gibFliegendeBienen().size(),
-                                            ((x - minX) * groesseX) + rechts - bildBieneX,
+                                            ((x - minX) * groesseX) + rechts 
+                                                    - bildBieneX  + imagePosXZentrieren,
                                             ((y - minY) * groesseY) + abstandOben 
                                                     + oben - bildBieneY);
                                     g.setColor(farbe1);
+                                    fenster.setFont(schrift);
                                 }
                             }
                             tmpBienen = tmpStock.gibWartendeBienen().size() 
                                     + tmpStock.gibTanzendeBienen().size();
                             if (tmpBienen > 0) {
                                 g.drawImage(bildBiene,
-                                        ((x - minX) * groesseX) + rechts,
+                                        ((x - minX) * groesseX) + rechts + imagePosXZentrieren,
                                         ((y - minY) * groesseY) + abstandOben + unten - 12,
                                         this);
                                 if (tmpBienen > 1) {
                                     g.setColor(farbe2);
+                                    fenster.setFont(schriftFett);
                                     g.drawString("" + tmpBienen,
-                                          ((x - minX) * groesseX) + rechts - bildBieneX,
+                                          ((x - minX) * groesseX) + rechts 
+                                                - bildBieneX + imagePosXZentrieren,
                                           ((y - minY) * groesseY) + abstandOben 
                                                     + unten - bildBieneY);
                                     g.setColor(farbe1);
+                                    fenster.setFont(schrift);
                                 }
                             }
                             /*
@@ -485,24 +516,27 @@ public class BienenstockVisGui extends Frame {
                         } else if (tmpFeld instanceof VisBlume) {
                             VisBlume tmpBlume = (VisBlume) tmpFeld;
                             g.drawImage(bildBlume, 
-                                    (x - minX) * groesseX, 
-                                    ((y - minY) * groesseY) + abstandOben, 
+                                    imagePosX, 
+                                    imagePosY, 
                                     this);
                             g.drawString("" + tmpBlume.gibVorhandenerNektar(),
-                                    ((x - minX) * groesseX) + links,
+                                    ((x - minX) * groesseX) + links + imagePosXZentrieren,
                                     ((y - minY) * groesseY) + abstandOben + unten);
                             if (tmpBlume.gibFliegendeBienen().size() > 0) {
                                 g.drawImage(bildBiene,
-                                        ((x - minX) * groesseX) + rechts,
+                                        ((x - minX) * groesseX) + rechts + imagePosXZentrieren,
                                         ((y - minY) * groesseY) + abstandOben + oben - 12,
                                         this);
                                 if (tmpBlume.gibFliegendeBienen().size() > 1) {
                                     g.setColor(farbe2);
+                                    fenster.setFont(schriftFett);
                                     g.drawString("" + tmpBlume.gibFliegendeBienen().size(),
-                                            ((x - minX) * groesseX) + rechts - bildBieneX,
+                                            ((x - minX) * groesseX) + rechts 
+                                                    - bildBieneX + imagePosXZentrieren,
                                             ((y - minY) * groesseY) + abstandOben 
                                                     + oben - bildBieneY);
                                     g.setColor(farbe1);
+                                    fenster.setFont(schrift);
                                 }
                             }
                             tmpBienen = tmpBlume.gibWartendeBienen().size() 
@@ -510,16 +544,19 @@ public class BienenstockVisGui extends Frame {
                                     + tmpBlume.gibAbbauendeBienen().size();
                             if (tmpBienen > 0) {
                                 g.drawImage(bildBiene,
-                                        ((x - minX) * groesseX) + rechts,
+                                        ((x - minX) * groesseX) + rechts + imagePosXZentrieren,
                                         ((y - minY) * groesseY) + abstandOben + unten - 12,
                                         this);
                                 if (tmpBienen > 1) {
                                     g.setColor(farbe2);
+                                    fenster.setFont(schriftFett);
                                     g.drawString("" + tmpBienen,
-                                          ((x - minX) * groesseX) + rechts - bildBieneX,
+                                          ((x - minX) * groesseX) + rechts 
+                                                - bildBieneX + imagePosXZentrieren,
                                           ((y - minY) * groesseY) + abstandOben 
                                                     + unten - bildBieneY);
                                     g.setColor(farbe1);
+                                    fenster.setFont(schrift);
                                 }
                             }                            
                             /*
@@ -527,37 +564,43 @@ public class BienenstockVisGui extends Frame {
                              */
                         } else if (tmpFeld instanceof VisPlatz) {
                             g.drawImage(bildPlatz, 
-                                    (x - minX) * groesseX, 
-                                    ((y - minY) * groesseY) + abstandOben, 
+                                    imagePosX, 
+                                    imagePosY, 
                                     this);
                             if (tmpFeld.gibFliegendeBienen().size() > 0) {
                                 g.drawImage(bildBiene,
-                                        ((x - minX) * groesseX) + rechts,
+                                        ((x - minX) * groesseX) + rechts + imagePosXZentrieren,
                                         ((y - minY) * groesseY) + abstandOben + oben - 12,
                                         this);
                                 if (tmpFeld.gibFliegendeBienen().size() > 1) {
                                     g.setColor(farbe2);
+                                    fenster.setFont(schriftFett);
                                     g.drawString("" + tmpFeld.gibFliegendeBienen().size(),
-                                            ((x - minX) * groesseX) + rechts - bildBieneX,
+                                            ((x - minX) * groesseX) + rechts 
+                                                    - bildBieneX + imagePosXZentrieren,
                                             ((y - minY) * groesseY) + abstandOben 
                                                     + oben - bildBieneY);
                                     g.setColor(farbe1);
+                                    fenster.setFont(schrift);
                                 }
                             }
                             tmpBienen = tmpFeld.gibWartendeBienen().size()
                                     + tmpFeld.gibTanzendeBienen().size();
                             if (tmpBienen > 0) {
                                 g.drawImage(bildBiene,
-                                        ((x - minX) * groesseX) + rechts,
+                                        ((x - minX) * groesseX) + rechts + imagePosXZentrieren,
                                         ((y - minY) * groesseY) + abstandOben + unten - 12,
                                         this);
                                 if (tmpBienen > 1) {
                                     g.setColor(farbe2);
+                                    fenster.setFont(schriftFett);
                                     g.drawString("" + tmpBienen,
-                                          ((x - minX) * groesseX) + rechts - bildBieneX,
+                                          ((x - minX) * groesseX) + rechts 
+                                                - bildBieneX + imagePosXZentrieren,
                                           ((y - minY) * groesseY) + abstandOben 
                                                     + unten - bildBieneY);
                                     g.setColor(farbe1);
+                                    fenster.setFont(schrift);
                                 }
                             }
                         } else {
