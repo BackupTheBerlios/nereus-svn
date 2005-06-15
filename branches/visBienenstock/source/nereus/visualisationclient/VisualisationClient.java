@@ -1,7 +1,7 @@
 /*
  * Dateiname      : VisualisationClient.java
  * Erzeugt        : 19. Mai 2005
- * Letzte Änderung: 14. Juni 2005 durch Dietmar Lippold
+ * Letzte Änderung: 15. Juni 2005 durch Samuel Walz
  * Autoren        : Samuel Walz (samuel@gmx.info)
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
@@ -214,9 +214,6 @@ public class VisualisationClient extends AbstractVisualisationClient {
                         
                             synchronized (this) {
                                 if (!stop) {
-                                    System.out.println("visClient: "
-                                            + "übergebe Objekt No. "
-                                            + ausschnittsbeginn);
                                     visualisierung.visualisiere(information);
                                 }
                             }
