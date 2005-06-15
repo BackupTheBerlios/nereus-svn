@@ -289,9 +289,9 @@
         <include name="*Server.*"/>
       </tarfileset>
 <!-- umbenennen -->
-      <tarfileset dir="${dist}/server/scenarios"
+      <tarfileset dir="${scenariosconfig}"
                   mode="644"
-                  prefix="/server/scenarios">
+                  prefix="/server/scenariosconfig">
         <include name="**/*.*"/>
       </tarfileset>
       <tarfileset dir="${documentation}"

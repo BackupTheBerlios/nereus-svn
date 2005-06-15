@@ -32,8 +32,9 @@ CONFIGFILE_CLIENT="../config/clientconfig.xml"
 # Konfigurationsfile fuer den Server
 CONFIGFILE_SERVER="../config/serverconfig.xml"
 
-# Verzeichnis in dem sich Szanrien befinden
-SCENARIOS_DIR="../scenarios"
+# Verzeichnis in dem sich zu jedem Szenario ein Verzeichnis mit
+# Konfigurationsdateien befindet.
+SCENARIOS_DIR="../scenariosconfig"
 
 # Verzeichnis in dem sich die Verzeichnisse mit den Bildern der Szenrien
 # befinden.

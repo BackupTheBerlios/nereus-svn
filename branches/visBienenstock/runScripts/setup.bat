@@ -31,8 +31,9 @@ set CONFIGFILE_SERVER=..\config\serverconfig.xml
 REM Konfigurationsfile fuer den Client
 set CONFIGFILE_CLIENT=..\config\clientconfig.xml
 
-REM Das Verzeichnis in dem sich scenario-Datein befinden
-set SCENARIOS_DIR=..\scenarios
+REM Verzeichnis in dem sich zu jedem Szenario ein Verzeichnis mit
+REM Konfigurationsdateien befindet.
+set SCENARIOS_DIR=..\scenariosconfig
 
 REM Verzeichnis in dem sich die Verzeichnisse mit den Bildern der Szenrien
 REM befinden.
