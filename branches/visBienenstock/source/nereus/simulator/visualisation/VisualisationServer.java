@@ -1,7 +1,7 @@
 /*
  * Dateiname      : VisualisationServer.java
  * Erzeugt        : 19. Mai 2005
- * Letzte Änderung: 13. Juni 2005 durch Samuel Walz
+ * Letzte Änderung: 15. Juni 2005 durch Samuel Walz
  * Autoren        : Samuel Walz (samuel@gmx.info)
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
@@ -76,6 +76,11 @@ public class VisualisationServer extends UnicastRemoteObject
     private static HashMap wartezeiten = new HashMap();
     
     /**
+     * Die Anzahl der gespeicherten Informationsobjekte
+     */
+    private static int anzahlGespeicherteInformationen = 0;
+    
+    /**
      * Die mimimale Wartezeit in Millisekunden
      */
     private final int MIN_WARTEZEIT = 50;
@@ -128,7 +133,6 @@ public class VisualisationServer extends UnicastRemoteObject
         System.out.println("Server-Vis-Komponente : " + methodenname + " : \n"
                 + "    " + fehlerbeschreibung);
     }
-
 
     /**
      * Erstellt eine neue Liste, die den Inhalt der übergebenen ab einer
@@ -295,12 +299,15 @@ public class VisualisationServer extends UnicastRemoteObject
                     + "Bereinigung des Informationsspeichers abgeschlossen.\n"
                     + "           Verbleibende Informationsobjekte: "
                     + gespeicherteObjekte);
+            
+            // Synchronisieren der Anzahl gespeicherter Objekte
+            anzahlGespeicherteInformationen = gespeicherteObjekte;
         }
         
     }
 
     /**
-     * Gibt die Spielinformationen zu einem bestimmten Spiel zurück.
+     * Gibt die Spielinformationen zu einem bestimmten Durchlauf zurück.
      *
      * @param spielID            die ID des gewünschten Spiels
      * @param spielDurchlauf      der gewünschte Durchlauf des Spiels
@@ -415,6 +422,20 @@ public class VisualisationServer extends UnicastRemoteObject
     public void speichereSpielInformation(String spielID,
                                           String spielDurchlauf,
                                           Serializable information) {
+                                              
+        /*
+         * Testen, ob im Informationsspeicher noch 
+         * genügend Platz ist. Falls der Platz nicht ausreicht, 
+         * die Speicherbereinigung anstossen, on neuen Platz
+         * zu schaffen.
+         */
+        if ((anzahlGespeicherteInformationen + 1) 
+                > MAX_INFORMATIONEN) {
+                            
+            bereinigeInformationsspeicher(MAX_INFORMATIONEN,
+                                          ABSTAND_MAX_INFORMATIONEN);
+        }
+        
         synchronized (informationsspeicher) {                                      
             if (informationsspeicher.containsKey(spielID)) {
             
@@ -428,9 +449,14 @@ public class VisualisationServer extends UnicastRemoteObject
                         (LinkedList)durchlaeufe.get(spielDurchlauf);
                 
                     if (! (informationen.getLast() instanceof Spielende)) {
-                    
+                        
                         // Die neue Information an die Liste anhängen
                         informationen.addLast(information);
+                        
+                        // Anzahl der gespeicherten Informationen um 1 erhöhen
+                        anzahlGespeicherteInformationen =
+                                anzahlGespeicherteInformationen + 1;
+                        
                     
                     } else {
                         gibFehlerAus("speichereSpielInformationen",
@@ -510,9 +536,6 @@ public class VisualisationServer extends UnicastRemoteObject
             
         }
         
-        // Spielinformationsbereinigung starten
-        bereinigeInformationsspeicher(MAX_INFORMATIONEN, 
-                                      ABSTAND_MAX_INFORMATIONEN);
     }
 
     /**
