@@ -21,27 +21,27 @@
     <property name="StartEnergy" wert="100" type="double" changeable="true"/>
     <property name="honigStarten" wert="2" type="int" changeable="true"/>
     <property name="honigFliegen" wert="5" type="int" changeable="true"/>
-    <property name="honigLanden" wert="2" type="int" changeable="true"/>
+    <property name="honigLanden" wert="1" type="int" changeable="true"/>
     <property name="honigWarten" wert="1" type="int" changeable="true"/>
-    <property name="honigTanzenAlles" wert="10" type="int" changeable="true"/>
-    <property name="honigTanzenRichtung" wert="5" type="int" changeable="true"/>
-    <property name="honigTanzenEntfernung" wert="5" type="int" changeable="true"/>
-    <property name="honigZuschauen" wert="5" type="int" changeable="true"/>
+    <property name="honigTanzenAlles" wert="5" type="int" changeable="true"/>
+    <property name="honigTanzenRichtung" wert="3" type="int" changeable="true"/>
+    <property name="honigTanzenEntfernung" wert="3" type="int" changeable="true"/>
+    <property name="honigZuschauen" wert="3" type="int" changeable="true"/>
     <property name="honigHonigTanken" wert="1" type="int" changeable="true"/>
     <property name="honigNektarAbliefern" wert="1" type="int" changeable="true"/>
-    <property name="honigNektarAbbauen" wert="10" type="int" changeable="true"/>
+    <property name="honigNektarAbbauen" wert="7" type="int" changeable="true"/>
     <property name="startHonig" wert="100" type="int" changeable="true"/>
     <property name="startNektar" wert="100" type="int" changeable="true"/>
     <property name="maxGelHonig" wert="100" type="int" changeable="true"/>
     <property name="maxGelNektar" wert="100" type="int" changeable="true"/>
-    <property name="timeout" wert="1000" type="int" changeable="true"/>
+    <property name="timeout" wert="2000" type="int" changeable="true"/>
     <property name="kursNektarHonig" wert="2.0" type="double" changeable="true"/>
     <property name="maxNektarZuHonig" wert="50" type="int" changeable="true"/>
     <property name="unschaerfeWinkel" wert="0.1" type="double" changeable="false"/>
     <property name="unschaerfeEntfernung" wert="0.1" type="double" changeable="false"/>
     <property name="endbedingungMaxNektar" wert="0" type="int" changeable="true"/>
     <property name="endbedingungMaxHonig" wert="0" type="int" changeable="true"/>
-    <property name="endbedingungMaxRunden" wert="700" type="int" changeable="true"/>
+    <property name="endbedingungMaxRunden" wert="500" type="int" changeable="true"/>
     <property name="endbedingung" wert="2000" type="int" changeable="true"/>
 </bienenstockconfig>
 

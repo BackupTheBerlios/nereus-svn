@@ -19,7 +19,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 4
@@ -30,8 +30,8 @@ graph [
     node [
         id 8
         blume [
-            nektar 2000
-            nektarProRunde 100
+            nektar 1000
+            nektarProRunde 50
             merkmal 23
         ]
         kapazitaet [
@@ -42,7 +42,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 8
@@ -65,7 +65,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 5
@@ -88,7 +88,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 2
@@ -111,7 +111,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 2
@@ -134,7 +134,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 5
@@ -157,7 +157,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 2
@@ -180,7 +180,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 8
@@ -201,7 +201,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 1
@@ -219,7 +219,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 2
@@ -237,7 +237,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 3
@@ -255,7 +255,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 4
@@ -273,7 +273,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 5
@@ -291,7 +291,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 6
@@ -309,7 +309,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 7
@@ -327,7 +327,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 1
@@ -345,7 +345,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 2
@@ -363,7 +363,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 3
@@ -381,7 +381,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 4
@@ -399,7 +399,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 6
@@ -417,7 +417,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 7
@@ -435,7 +435,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 8
@@ -453,7 +453,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 1
@@ -471,7 +471,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 3
@@ -489,7 +489,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 4
@@ -507,7 +507,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 5
@@ -525,7 +525,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 6
@@ -543,7 +543,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 7
@@ -561,7 +561,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 8
@@ -579,7 +579,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 1
@@ -597,7 +597,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 2
@@ -615,7 +615,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 3
@@ -633,7 +633,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 4
@@ -651,7 +651,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 5
@@ -669,7 +669,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 6
@@ -687,7 +687,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 7
@@ -705,7 +705,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 8
@@ -723,7 +723,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 1
@@ -741,7 +741,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 2
@@ -759,7 +759,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 3
@@ -777,7 +777,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 5
@@ -795,7 +795,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 6
@@ -813,7 +813,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 7
@@ -831,7 +831,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 8
@@ -849,7 +849,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 1
@@ -867,7 +867,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 3
@@ -885,7 +885,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 4
@@ -903,7 +903,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 5
@@ -921,7 +921,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 6
@@ -939,7 +939,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 7
@@ -957,7 +957,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 8
@@ -975,7 +975,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 1
@@ -993,7 +993,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 2
@@ -1011,7 +1011,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 3
@@ -1029,7 +1029,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 4
@@ -1047,7 +1047,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 6
@@ -1065,7 +1065,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 7
@@ -1083,7 +1083,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 8
@@ -1101,7 +1101,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 1
@@ -1119,7 +1119,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 3
@@ -1137,7 +1137,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 4
@@ -1155,7 +1155,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 5
@@ -1173,7 +1173,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 6
@@ -1191,7 +1191,7 @@ graph [
         ]
         sichtweite [
             boden 1
-            luft 2
+            luft 1
         ]
         koordinate [
             x 7

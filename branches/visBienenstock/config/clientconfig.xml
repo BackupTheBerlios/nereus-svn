@@ -13,7 +13,6 @@
     <visualisationClassName name="scenarios.bienenstock.visualisationgui.BienenstockVisSteuerung"/>
     <agent name="SimplerKooperativerBDIAgent"/>
     <agent name="SimplerUnkoopBDIAgent"/>
-    <agent name="UnkooperativerBDIAgent"/>
     <agent name="EinfacherAgent"/>
 </scenario>
 </config>

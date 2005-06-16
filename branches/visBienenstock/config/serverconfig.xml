@@ -20,8 +20,8 @@
 -->
 
 <config>
-<gameconf name="Bienenstock_1" scenario="bienenstock" karte="test2.gml" parameters="bienenstockconfig.xml"/>
 <gameconf name="Bienenstock_L2" scenario="bienenstock" karte="luft2nektar500.gml" parameters="bienenstockconfig.xml"/>
+<gameconf name="Bienenstock_L1" scenario="bienenstock" karte="luft1nektar500.gml" parameters="bienenstockconfig.xml"/>
 <gameconf name="Bienenstock_3" scenario="bienenstock" karte="test2.gml" parameters="bienenstockconfig_2.xml"/>
 </config>
 

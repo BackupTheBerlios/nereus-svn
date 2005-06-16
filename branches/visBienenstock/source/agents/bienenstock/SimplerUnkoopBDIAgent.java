@@ -1,7 +1,7 @@
 /*
  * Dateiname      : SimplerUnkoopBDIAgent.java
  * Erzeugt        : 6. Juni 2005
- * Letzte Änderung: 6. Juni 2005 durch Eugen Volk
+ * Letzte Änderung: 17. Juni 2005 durch Eugen Volk
  * Autoren        :  Eugen Volk
  *
  *
@@ -672,13 +672,14 @@ public class SimplerUnkoopBDIAgent
             Koordinate position=selbst.gibPosition();
             EinfachesFeld aFeld=(EinfachesFeld)this.lokaleKarte.gibFelder().get(position);
             LinkedList nachbarFelder=new LinkedList(aFeld.gibNachbarfelder().keySet());
-            int anzFelder=nachbarFelder.size()-1;
+            int anzFelder=nachbarFelder.size();
             int indexNr=(int) Math.round(Math.random()*(anzFelder-1));
             return (Koordinate)nachbarFelder.get(indexNr);
         }else{
              /*   TODO    ergänzen mit der Auswahl der Koordinate, die
               sowohl der Biene als auch dem Bienenstock am nächsten ist */
-            return (Koordinate)randFelder.getFirst();
+            int indexNr=(int) Math.round(Math.random()*(size-1));
+            return (Koordinate)randFelder.get(indexNr);
         }
         
         
