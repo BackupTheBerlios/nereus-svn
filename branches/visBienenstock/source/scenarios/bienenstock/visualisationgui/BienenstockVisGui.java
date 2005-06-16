@@ -191,6 +191,10 @@ public class BienenstockVisGui extends Frame {
      */
     Button zeitButton = new Button("ok");
     
+    Scrollbar scrollVert = new Scrollbar(Scrollbar.VERTICAL);
+    
+    Scrollbar scrollHori = new Scrollbar(Scrollbar.HORIZONTAL);
+    
     /**
      * Verknuepfung mit dem Puffer
      */
@@ -411,12 +415,17 @@ public class BienenstockVisGui extends Frame {
         }
         int y = ((maxY - minY + 2) * groesseY) 
             + fenster.getInsets().top;
+        //die Karte ist groesser als der Screen
         if (x > screen.getWidth() | y > screen.getHeight()) {
+            //fenster.add(scrollVert);
+            //fenster.add(scrollHori);
             fenster.setSize((int)screen.getWidth(), 
                             ((int)screen.getHeight() + fenster.getInsets().top));
         } else if (x == 0 | y == 0) {
+            //die Karte ist 0 gross
             System.out.println("Karte der Groesse Null erhalten");
         } else {
+            //die Fenstergroesse orientiert sich an der Karte
             fenster.setSize(
                 x, y);
             fenster.setLocation(
@@ -679,12 +688,14 @@ public class BienenstockVisGui extends Frame {
     public void amEnde(boolean ende) {
         if (vor.isVisible() == ende) {
             vor.setVisible(!ende);
-            pause.setLabel("Weiter");
-            rundeButton.setVisible(true);
+            if (initiiert) {
+                pause.setLabel("Weiter");
+                rundeButton.setVisible(true);
+                vis.warte();
+                pause.addActionListener(weiterAktion);
+                pause.removeActionListener(pauseAktion);
+            }
             knoepfe.validate();
-            vis.warte();
-            pause.addActionListener(weiterAktion);
-            pause.removeActionListener(pauseAktion);
         }
     }
     
