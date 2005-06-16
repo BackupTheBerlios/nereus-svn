@@ -1,1 +1,0 @@
-6.5.05 die Visualisierung tut fürs erste ihren Dienst, Namen der Classen müssen noch angepasst werden. philip
