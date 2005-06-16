@@ -1,7 +1,7 @@
 /*
  * Dateiname      : VisualisationClient.java
  * Erzeugt        : 19. Mai 2005
- * Letzte Änderung: 15. Juni 2005 durch Samuel Walz
+ * Letzte Änderung: 16. Juni 2005 durch Samuel Walz
  * Autoren        : Samuel Walz (samuel@gmx.info)
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
@@ -39,6 +39,8 @@ import nereus.simulatorinterfaces.IVisualisationServerExtern;
 import nereus.simulatorinterfaces.AbstractVisualisationClient;
 import nereus.simulatorinterfaces.IVisualisationOutput;
 
+//Debugging
+import scenarios.bienenstock.visualisierungsUmgebung.VisKarte;
 /**
  *
  * @author  Samuel Walz

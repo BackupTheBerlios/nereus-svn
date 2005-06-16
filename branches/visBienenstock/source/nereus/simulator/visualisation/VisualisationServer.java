@@ -69,6 +69,11 @@ public class VisualisationServer extends UnicastRemoteObject
      * Die Informationen der Spiele, sortiert nach der Spiel-ID.
      */
     private static HashMap informationsspeicher = new HashMap();
+    
+    /**
+     * Statistische Daten zu den gespeicherten Informationen der Spiele
+     */
+    private static HashMap statistischeDaten = new HashMap();
 
     /** 
      * Die empfohlenen Wartezeiten für die Client-Vis-Komponenten
@@ -93,14 +98,14 @@ public class VisualisationServer extends UnicastRemoteObject
     /**
      * Die maximale Menge speicherbarer Spielinformationen
      */
-    private final int  MAX_INFORMATIONEN = 1300;
+    private final int  MAX_INFORMATIONEN = 3500;
     
     /**
      * Der gewünschte Abstand der Anzahl der gespeicherten Informationen
      * von der Obergrenze MAX_INFORMATIONEN.
      * Sollte maximal 25% von MAX_INFORMATIONEN sein.
      */
-    private final int ABSTAND_MAX_INFORMATIONEN = 350;
+    private final int ABSTAND_MAX_INFORMATIONEN = 700;
 
    
 
@@ -153,9 +158,8 @@ public class VisualisationServer extends UnicastRemoteObject
             
             while (listenlaeufer.hasNext()) {
                 Object inhalt = listenlaeufer.next();
-                if (! (inhalt instanceof Spielanfang)) {
-                    ausschnitt.addLast(inhalt);
-                }
+                ausschnitt.addLast(inhalt);
+                
             }
         } 
         
@@ -211,35 +215,38 @@ public class VisualisationServer extends UnicastRemoteObject
                     LinkedList informationen = 
                            (LinkedList)durchlaeufe.get(aktuellerSpielDurchlauf);
                     
-                    if (informationen.getFirst() instanceof Spielanfang) {
+                    
                         
-                        Spielanfang aktuellerSpielanfang = 
-                                       (Spielanfang)informationen.getFirst();
-                        int aktuelleInformationsMenge = informationen.size();
-                        long aktuelleAnmeldungszeit  = 
+                    Spielanfang aktuellerSpielanfang = 
+                              (Spielanfang)statistischeDaten.get(aktuelleSpielID 
+                                                     + "." 
+                                                     + aktuellerSpielDurchlauf);
+                        
+                    int aktuelleInformationsMenge = informationen.size();
+                    long aktuelleAnmeldungszeit  = 
                                        aktuellerSpielanfang.gibAnmeldungsZeit();
-                        HashMap neueBeschreibung = new HashMap();
+                    HashMap neueBeschreibung = new HashMap();
                         
                         
-                        neueBeschreibung.put("spielID", 
-                                             aktuelleSpielID);
-                        neueBeschreibung.put("spielDurchlauf", 
-                                             aktuellerSpielDurchlauf); 
-                        neueBeschreibung.put("informationsMenge",
+                    neueBeschreibung.put("spielID", 
+                                         aktuelleSpielID);
+                    neueBeschreibung.put("spielDurchlauf", 
+                                         aktuellerSpielDurchlauf); 
+                    neueBeschreibung.put("informationsMenge",
                                         new Integer(aktuelleInformationsMenge));
                         
-                        NachAlterSortiert.put(new Long(aktuelleAnmeldungszeit), 
-                                              neueBeschreibung);
+                    NachAlterSortiert.put(new Long(aktuelleAnmeldungszeit), 
+                                          neueBeschreibung);
                         
-                        gespeicherteObjekte = gespeicherteObjekte 
-                                              + aktuelleInformationsMenge;
+                    gespeicherteObjekte = gespeicherteObjekte 
+                                          + aktuelleInformationsMenge;
                         
-                        System.out.println("visServer: " + aktuelleSpielID + "." 
-                                           + aktuellerSpielDurchlauf 
-                                           + " - " + aktuelleInformationsMenge
-                                           + " St. - "
-                                           + aktuelleAnmeldungszeit);
-                    }
+                    System.out.println("visServer: " + aktuelleSpielID + "." 
+                                       + aktuellerSpielDurchlauf 
+                                       + " - " + aktuelleInformationsMenge
+                                       + " St. - "
+                                       + aktuelleAnmeldungszeit);
+                    
                 }
                 
             }
@@ -434,6 +441,7 @@ public class VisualisationServer extends UnicastRemoteObject
                             
             bereinigeInformationsspeicher(MAX_INFORMATIONEN,
                                           ABSTAND_MAX_INFORMATIONEN);
+            
         }
         
         synchronized (informationsspeicher) {                                      
@@ -448,7 +456,8 @@ public class VisualisationServer extends UnicastRemoteObject
                     LinkedList informationen = 
                         (LinkedList)durchlaeufe.get(spielDurchlauf);
                 
-                    if (! (informationen.getLast() instanceof Spielende)) {
+                    if (informationen.isEmpty() 
+                          || ! (informationen.getLast() instanceof Spielende)) {
                         
                         // Die neue Information an die Liste anhängen
                         informationen.addLast(information);
@@ -489,7 +498,6 @@ public class VisualisationServer extends UnicastRemoteObject
      * @param spielDurchlauf  der Durchlauf des Spiels
      * @param wartezeit      natürliche Zahl >= null (Zeit in Millisekunden)
      *
-     * @return               der Authentifizierungscode
      */
     public void spielAnmelden(String spielID,
                               String spielDurchlauf) 
@@ -505,6 +513,7 @@ public class VisualisationServer extends UnicastRemoteObject
             
                 // Eine neuen Speicher für die Durchläufe des Spiels anlegen
                 informationsspeicher.put(spielID, new HashMap());
+                
             }
             
             HashMap durchlaeufe = (HashMap)informationsspeicher.get(spielID);
@@ -514,11 +523,9 @@ public class VisualisationServer extends UnicastRemoteObject
                 // Eine neue Liste für die Informationen eines Durchlaufs anlegen
                 durchlaeufe.put(spielDurchlauf, new LinkedList());
             
-                // Spielanfang markieren
-                LinkedList informationen = 
-                                (LinkedList)durchlaeufe.get(spielDurchlauf);
-            
-                informationen.addFirst(new Spielanfang(System.currentTimeMillis()));
+                // Spielanfang merken
+                statistischeDaten.put(spielKennung, 
+                                   new Spielanfang(System.currentTimeMillis()));
             
                 // Standardwartezeit setzen
                 wartezeiten.put(spielKennung, 
