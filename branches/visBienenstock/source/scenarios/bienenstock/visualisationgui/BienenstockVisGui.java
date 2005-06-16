@@ -167,6 +167,11 @@ public class BienenstockVisGui extends Frame {
     TextField rundeFeld = new TextField("   0");
     
     /**
+     * zum Speichern des letzten Wertes im rundeFeld
+     */
+    int alteRunde = 0;
+    
+    /**
      * das Label fuer die Einstellung der Zeit
      */
     Label zeitLabel = new Label("Geschwindigkeit:");
@@ -175,6 +180,11 @@ public class BienenstockVisGui extends Frame {
      * dasFeld fuer die Eingabe der neuen Zeitverzoegerung
      */
     TextField zeitFeld = new TextField("1000");
+    
+    /**
+     * zum Speichern des letzten Wertes implements zeitFeld
+     */
+    int alteZeit = 1000;
     
     /**
      * der Button zum absenden eines neuen Zeitwertes
@@ -191,7 +201,13 @@ public class BienenstockVisGui extends Frame {
      */
     ActionListener zeitAktion = new ActionListener() {
 	public void actionPerformed(ActionEvent e) {
-            vis.setzeZeit(Integer.parseInt(zeitFeld.getText()));
+            try {
+                int tmp = Integer.parseInt(zeitFeld.getText());
+                vis.setzeZeit(tmp);
+                alteZeit = tmp;
+            } catch (NumberFormatException ex) {
+                zeitFeld.setText("" + alteZeit);
+            }
             zeitButton.setVisible(false);
             knoepfe.validate();
         }
@@ -202,7 +218,13 @@ public class BienenstockVisGui extends Frame {
      */
     ActionListener rundeAktion = new ActionListener() {
 	public void actionPerformed(ActionEvent e) {
-            vis.setzeNaechste(Integer.parseInt(rundeFeld.getText()));
+            try {
+                int tmp = Integer.parseInt(rundeFeld.getText());
+                vis.setzeNaechste(tmp);
+                alteRunde = tmp;
+            } catch (NumberFormatException ex) {
+                rundeFeld.setText(alteRunde + "");
+            }
         }
     };
     
@@ -443,6 +465,7 @@ public class BienenstockVisGui extends Frame {
         
         if (karte != null) {
             rundeFeld.setText(karte.gibRundennummer() + "");
+            alteRunde = karte.gibRundennummer();
             HashMap felder = karte.gibFelder();
             VisFeld tmpFeld;
             int x, y;
