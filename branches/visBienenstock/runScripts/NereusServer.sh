@@ -10,7 +10,7 @@
 POLICY_CONF=server.policy
 
 # die Parameter für die JVM
-JVMPAR=" " 
+JVMPAR=" -Xms200m -Xmx200m" 
 JVMPAR="$JVMPAR -Djava.security.policy=$CONFIG_DIR/$POLICY_CONF"
 JVMPAR="$JVMPAR -Djava.rmi.server.hostname=$SERVER_HOST"
 
