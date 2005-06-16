@@ -93,17 +93,17 @@ public class KartenErzeugung {
     /**
      * Die maximale Menge des Nektars im Bienenstock.
      */
-    private static final int MAX_NEKTAR = -1;
+    private static final int MAX_NEKTAR = 10000;
 
     /**
      * Die Anfangsmenge des Honigs im Bienenstock.
      */
-    private static final int STOCK_HONIG = 0;
+    private static final int STOCK_HONIG = 200;
 
     /**
      * Die maximale Menge des Honigs im Bienenstock.
      */
-    private static final int MAX_HONIG = -1;
+    private static final int MAX_HONIG = 10000;
 
     /**
      * Die Menge des Nektars, die pro Runde zu Honig verarbeitet werden kann.
@@ -141,7 +141,7 @@ public class KartenErzeugung {
      * Die IDs von Felder, die leer sind. Diese müssen aufsteigend geordnet
      * sein.
      */
-    private static final int[] LEERE_FELDER = new int[] {50, 51, 52, 250};
+    private static final int[] LEERE_FELDER = new int[] {60, 61, 62, 260};
 
     /**
      * Gibt an, ob Kanten zwischen diagonal zueinander gelegenen Feldern
