@@ -54,16 +54,6 @@ public class BienenstockVisGui extends Frame {
     private volatile VisKarte karte;
     
     /**
-     * die groesse der Karte in x Richtung
-     */
-    private int groesseX = 51;
-    
-    /**
-     * die groesse der Karte in Y Richtung
-     */
-    private int groesseY = 51;
-    
-    /**
      * das Fenster
      */
     private Frame fenster;
@@ -83,52 +73,6 @@ public class BienenstockVisGui extends Frame {
      * der Pfad zum Verzeichnis mit den Bildern
      */
     private String pfad;
-    
-    /**
-     * das Bild vom Bienenstock
-     */
-    private Image bildBienenstock;
-    
-    /** 
-     * das Bild von der Blume
-     */
-    private Image bildBlume;
-    
-    /**
-     * das Bild vom Platz
-     */
-    private Image bildPlatz;
-    
-    /**
-     * das Bild fuer die Biene
-     */
-    private Image bildBiene;
-    
-    /**
-     * das Bild fuer die Biene implements tanzenden Zustand
-     */
-    private Image bildBieneTanzend;
-    
-    
-    /**
-     * die minimale x Koordinate
-     */
-    private volatile int minX = 1000000000;
-    
-    /**
-     * die minimale Y Koordinate
-     */
-    private volatile int minY = 1000000000;
-    
-    /**
-     * die maximale X Koordinate
-     */
-    private volatile int maxX = -1000000000;
-    
-    /**
-     * die maximale Y Koordiante
-     */
-    private volatile int maxY = -1000000000;
     
     /**
      * das Panel fuer die Buttons zur Steuerung 
@@ -191,9 +135,9 @@ public class BienenstockVisGui extends Frame {
      */
     Button zeitButton = new Button("ok");
     
-    Scrollbar scrollVert = new Scrollbar(Scrollbar.VERTICAL);
+    ScrollPane scroll = new ScrollPane();
     
-    Scrollbar scrollHori = new Scrollbar(Scrollbar.HORIZONTAL);
+    BienenstockVisKarte karteFeld;
     
     /**
      * Verknuepfung mit dem Puffer
@@ -304,6 +248,8 @@ public class BienenstockVisGui extends Frame {
         this.vis = visu;
         this.pfad = pfad;
 
+        karteFeld = new BienenstockVisKarte(this, pfad, scroll);
+        
         //die ActionListener zu den Buttons hinzufuegen
         pause.addActionListener(pauseAktion);
         zurueck.addActionListener(zurueckAktion);
@@ -326,8 +272,11 @@ public class BienenstockVisGui extends Frame {
         knoepfe.add(zeitButton);
         knoepfe.validate();
         
+        scroll.add(karteFeld);
+        
         //das Panel knoepfe hinzufuegen
         add(knoepfe, BorderLayout.SOUTH);
+        add(scroll, BorderLayout.CENTER);
         
         //das Fenster beschriften
         fenster = this;
@@ -346,17 +295,14 @@ public class BienenstockVisGui extends Frame {
 	Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         //Groesse wird auf 0 gesetzt, da 
         //<code>fenster.setVisible(false);</code> nicht funktioniert
-	fenster.setSize(0,0);
-
-        //Bilder laden
-        bildBiene = Toolkit.getDefaultToolkit().getImage(pfad + "biene.gif");
-        bildBieneTanzend = Toolkit.getDefaultToolkit().getImage(pfad + "bieneTanzend.gif");
-        bildBienenstock = Toolkit.getDefaultToolkit().getImage(pfad + "bienenstock.gif");
-        bildBlume = Toolkit.getDefaultToolkit().getImage(pfad + "blume.gif");
-        bildPlatz = Toolkit.getDefaultToolkit().getImage(pfad + "platz.gif");
-        if (bildBiene == null) {
-            System.out.println("Bilder in " + pfad + " nicht gefunden");
-        }
+	fenster.setSize(500,500);
+        scroll.setSize(0, 0);
+        
+        //werden erst wieder sichtbar, wenn der Inhalt geaendert wird
+        rundeButton.setVisible(false);
+        zeitButton.setVisible(false);
+        knoepfe.validate();
+        //pack();
     }
 
     /**
@@ -368,317 +314,19 @@ public class BienenstockVisGui extends Frame {
     public void visualisiere (VisKarte neueKarte) {
         if (neueKarte != null) {
 	    karte = neueKarte;
+            karteFeld.setzeKarte(karte);
             if (!initiiert) {
-                setzeXY();
+                
+                karteFeld.setzeXY();
+                initiiert = true;
+                karteFeld.repaint();
+                pack();
+                zeitButton.setVisible(false);
+            } else {
+                karteFeld.repaint();
             }
-	    repaint();
         } else {
             System.out.println("Vis: Keine Gueltige Karte uebergeben bekommen.");
-        }
-    }
-
-    /**
-     * berechnet die minimalen und maximalen x und y Koordinaten, sowie die
-     * Masse in x und y Richtung
-     *
-     */
-    private void setzeXY() {
-        Iterator felder = karte.gibFelder().values().iterator();
-        Koordinate pos;
-        int minBreite = 470;
-        while (felder.hasNext()) {
-            pos = ((VisFeld)felder.next()).gibPosition();
-            if (pos.gibXPosition() < minX) {
-                minX = pos.gibXPosition();
-            } else if (pos.gibXPosition() > maxX){
-                maxX = pos.gibXPosition();
-            } 
-            if (pos.gibYPosition() < minY) {
-                minY = pos.gibYPosition();
-            } else if (pos.gibYPosition() > maxY) {
-                maxY = pos.gibYPosition();
-            }
-        }
-        initiiert = true;
-        
-                
-        //werden erst wieder sichtbar, wenn der Inhalt geaendert wird
-        rundeButton.setVisible(false);
-        zeitButton.setVisible(false);
-        knoepfe.validate();
-        
-        //Groesse und Position neu setzen
-        Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-        int x = ((maxX - minX + 1) * groesseX) + 10;
-        if (x < minBreite) {
-            x = minBreite;
-        }
-        int y = ((maxY - minY + 2) * groesseY) 
-            + fenster.getInsets().top;
-        //die Karte ist groesser als der Screen
-        if (x > screen.getWidth() | y > screen.getHeight()) {
-            //fenster.add(scrollVert);
-            //fenster.add(scrollHori);
-            fenster.setSize((int)screen.getWidth(), 
-                            ((int)screen.getHeight() + fenster.getInsets().top));
-        } else if (x == 0 | y == 0) {
-            //die Karte ist 0 gross
-            System.out.println("Karte der Groesse Null erhalten");
-        } else {
-            //die Fenstergroesse orientiert sich an der Karte
-            fenster.setSize(
-                x, y);
-            fenster.setLocation(
-                (((int)screen.getWidth()) - x) / 2, 
-                ((((int)screen.getWidth()) - y) / 2) 
-                    + fenster.getInsets().top);
-        }
-        
-        fenster.setResizable(false);
-        
-        //Fenster sichtbar machen
-        fenster.setVisible(true);
-        this.validate();
-        
-    }
-
-    /**
-     * Zeichnet das Fenster neu, ohne es vorher zu löschen.
-     *
-     * @g  Das zu aktualisierende Fenster.
-     */
-    public void update(Graphics g){
-        paint(g);
-    }
-
-    /**
-     * zeichnet den Fensterinhalt
-     */
-    public void paint(Graphics g) {
-        
-        //Breite der headline
-        int abstandOben = fenster.getInsets().top + 5;
-        
-        //zentrieren der Karte
-        int imagePosXZentrieren = 
-                (fenster.getWidth() - ((maxX - minX + 1) * groesseX)) / 2;
-        
-        //saeubern des Bereiches fuer die Karte
-        //g.clearRect(
-        //    0, 
-        //    0, 
-        //    ((maxX - minX + 1) * groesseX) + imagePosXZentrieren, 
-        //    ((maxY - minY + 1) * groesseY) + 50);
-        
-        Color farbe1 = new Color(0,0,0);
-        Color farbe2 = new Color(254, 254, 254);
-        g.setColor(farbe1);
-        
-        if (karte != null) {
-            rundeFeld.setText(karte.gibRundennummer() + "");
-            alteRunde = karte.gibRundennummer();
-            HashMap felder = karte.gibFelder();
-            VisFeld tmpFeld;
-            int x, y;
-            for (x = minX; x <= maxX; x++) {
-                for (y = minY; y <= maxY; y++) {
-           
-                    //Positionierung der Schrift
-                    int oben = 12;
-                    int unten = 46;
-                    int links = 2;
-                    int rechts = 36;
-                    int bildBieneX = - 5;
-                    int bildBieneY = 0;
-                    
-                    // temporaerer Speicher fuer die anzahl der am Boden 
-                    // befindlichen Bienen
-                    int tmpBienen = 0;
-                    
-                    int imagePosX = (x - minX) * groesseX 
-                            + imagePosXZentrieren;
-                    int imagePosY = ((y - minY) * groesseY) + abstandOben;
-                    
-                    Koordinate koord = new Koordinate(x, y);
-                    //gibt es das Feld ueberhaupt
-                    if (felder.containsKey(koord)) {
-                        tmpFeld = (VisFeld) felder.get(koord);
-                        Image bild;
-                        /*
-                         *          BIENENSTOCK
-                         */
-                        if (tmpFeld instanceof VisBienenstock) {
-                            VisBienenstock tmpStock = (VisBienenstock) tmpFeld;
-                            g.drawImage(bildBienenstock, 
-                                    imagePosX, 
-                                    imagePosY, 
-                                    this);
-                            g.drawString("" + tmpStock.gibVorhandenerHonig(),
-                                    ((x - minX) * groesseX) + links + imagePosXZentrieren,
-                                    ((y - minY) * groesseY) + abstandOben + oben);
-                            g.drawString("" + tmpStock.gibVorhandenerNektar(),
-                                    ((x - minX) * groesseX) + links + imagePosXZentrieren,
-                                    ((y - minY) * groesseY) + abstandOben + unten);
-                            if (tmpStock.gibFliegendeBienen().size() > 0) {
-                                g.drawImage(bildBiene,
-                                        ((x - minX) * groesseX) + rechts + imagePosXZentrieren,
-                                        ((y - minY) * groesseY) + abstandOben + oben -12,
-                                        this);
-                                if (tmpStock.gibFliegendeBienen().size() > 1) {
-                                
-                                    g.setColor(farbe2);
-                                    fenster.setFont(schriftFett);
-                                    g.drawString("" + tmpStock.gibFliegendeBienen().size(),
-                                            ((x - minX) * groesseX) + rechts 
-                                                    - bildBieneX  + imagePosXZentrieren,
-                                            ((y - minY) * groesseY) + abstandOben 
-                                                    + oben - bildBieneY);
-                                    g.setColor(farbe1);
-                                    fenster.setFont(schrift);
-                                }
-                            }
-                            tmpBienen = tmpStock.gibWartendeBienen().size() 
-                                    + tmpStock.gibTanzendeBienen().size()
-                                    + tmpStock.gibSonstigeBienen().size();
-                            if (tmpBienen > 0) {
-                                if (tmpStock.gibTanzendeBienen().size() > 0) {
-                                    g.drawImage(bildBieneTanzend,
-                                        ((x - minX) * groesseX) + rechts + imagePosXZentrieren,
-                                        ((y - minY) * groesseY) + abstandOben + unten - 12,
-                                        this);
-                                } else {
-                                    g.drawImage(bildBiene,
-                                            ((x - minX) * groesseX) + rechts + imagePosXZentrieren,
-                                            ((y - minY) * groesseY) + abstandOben + unten - 12,
-                                            this);
-                                }
-                                if (tmpBienen > 1) {
-                                    g.setColor(farbe2);
-                                    fenster.setFont(schriftFett);
-                                    g.drawString("" + tmpBienen,
-                                          ((x - minX) * groesseX) + rechts 
-                                                - bildBieneX + imagePosXZentrieren,
-                                          ((y - minY) * groesseY) + abstandOben 
-                                                    + unten - bildBieneY);
-                                    g.setColor(farbe1);
-                                    fenster.setFont(schrift);
-                                }
-                            }
-                            /*
-                             *      BLUME
-                             */
-                        } else if (tmpFeld instanceof VisBlume) {
-                            VisBlume tmpBlume = (VisBlume) tmpFeld;
-                            g.drawImage(bildBlume, 
-                                    imagePosX, 
-                                    imagePosY, 
-                                    this);
-                            g.drawString("" + tmpBlume.gibVorhandenerNektar(),
-                                    ((x - minX) * groesseX) + links + imagePosXZentrieren,
-                                    ((y - minY) * groesseY) + abstandOben + unten);
-                            if (tmpBlume.gibFliegendeBienen().size() > 0) {
-                                g.drawImage(bildBiene,
-                                        ((x - minX) * groesseX) + rechts + imagePosXZentrieren,
-                                        ((y - minY) * groesseY) + abstandOben + oben - 12,
-                                        this);
-                                if (tmpBlume.gibFliegendeBienen().size() > 1) {
-                                    g.setColor(farbe2);
-                                    fenster.setFont(schriftFett);
-                                    g.drawString("" + tmpBlume.gibFliegendeBienen().size(),
-                                            ((x - minX) * groesseX) + rechts 
-                                                    - bildBieneX + imagePosXZentrieren,
-                                            ((y - minY) * groesseY) + abstandOben 
-                                                    + oben - bildBieneY);
-                                    g.setColor(farbe1);
-                                    fenster.setFont(schrift);
-                                }
-                            }
-                            tmpBienen = tmpBlume.gibWartendeBienen().size() 
-                                    + tmpBlume.gibTanzendeBienen().size()
-                                    + tmpBlume.gibAbbauendeBienen().size()
-                                    + tmpBlume.gibSonstigeBienen().size();
-                            if (tmpBienen > 0) {
-                                if (tmpBlume.gibTanzendeBienen().size() > 0) {
-                                    g.drawImage(bildBieneTanzend,
-                                        ((x - minX) * groesseX) + rechts + imagePosXZentrieren,
-                                        ((y - minY) * groesseY) + abstandOben + unten - 12,
-                                        this);
-                                } else {
-                                  g.drawImage(bildBiene,
-                                        ((x - minX) * groesseX) + rechts + imagePosXZentrieren,
-                                        ((y - minY) * groesseY) + abstandOben + unten - 12,
-                                        this);
-                                }
-                                if (tmpBienen > 1) {
-                                    g.setColor(farbe2);
-                                    fenster.setFont(schriftFett);
-                                    g.drawString("" + tmpBienen,
-                                          ((x - minX) * groesseX) + rechts 
-                                                - bildBieneX + imagePosXZentrieren,
-                                          ((y - minY) * groesseY) + abstandOben 
-                                                    + unten - bildBieneY);
-                                    g.setColor(farbe1);
-                                    fenster.setFont(schrift);
-                                }
-                            }                            
-                            /*
-                             *          PLATZ
-                             */
-                        } else if (tmpFeld instanceof VisPlatz) {
-                            g.drawImage(bildPlatz, 
-                                    imagePosX, 
-                                    imagePosY, 
-                                    this);
-                            if (tmpFeld.gibFliegendeBienen().size() > 0) {
-                                g.drawImage(bildBiene,
-                                        ((x - minX) * groesseX) + rechts + imagePosXZentrieren,
-                                        ((y - minY) * groesseY) + abstandOben + oben - 12,
-                                        this);
-                                if (tmpFeld.gibFliegendeBienen().size() > 1) {
-                                    g.setColor(farbe2);
-                                    fenster.setFont(schriftFett);
-                                    g.drawString("" + tmpFeld.gibFliegendeBienen().size(),
-                                            ((x - minX) * groesseX) + rechts 
-                                                    - bildBieneX + imagePosXZentrieren,
-                                            ((y - minY) * groesseY) + abstandOben 
-                                                    + oben - bildBieneY);
-                                    g.setColor(farbe1);
-                                    fenster.setFont(schrift);
-                                }
-                            }
-                            tmpBienen = tmpFeld.gibWartendeBienen().size()
-                                    + tmpFeld.gibTanzendeBienen().size()
-                                    + + tmpFeld.gibSonstigeBienen().size();
-                            if (tmpBienen > 0) {
-                                if (tmpFeld.gibTanzendeBienen().size() > 0) {
-                                    g.drawImage(bildBieneTanzend,
-                                        ((x - minX) * groesseX) + rechts + imagePosXZentrieren,
-                                        ((y - minY) * groesseY) + abstandOben + unten - 12,
-                                        this);
-                                } else {
-                                  g.drawImage(bildBiene,
-                                            ((x - minX) * groesseX) + rechts + imagePosXZentrieren,
-                                            ((y - minY) * groesseY) + abstandOben + unten - 12,
-                                            this);
-                                }
-                                if (tmpBienen > 1) {
-                                    g.setColor(farbe2);
-                                    fenster.setFont(schriftFett);
-                                    g.drawString("" + tmpBienen,
-                                          ((x - minX) * groesseX) + rechts 
-                                                - bildBieneX + imagePosXZentrieren,
-                                          ((y - minY) * groesseY) + abstandOben 
-                                                    + unten - bildBieneY);
-                                    g.setColor(farbe1);
-                                    fenster.setFont(schrift);
-                                }
-                            }
-                        } else {
-                            System.out.println("Vis: ungueltiger FeldTyp!");
-                        }
-                    }
-                }
-            }
         }
     }
     
@@ -708,6 +356,14 @@ public class BienenstockVisGui extends Frame {
             zurueck.setVisible(!anfang);
             knoepfe.validate();
         }
+    }
+    
+    void setzeAlteRunde(int olle) {
+        alteRunde = olle;
+    }
+    void setzeRundeFeld(String round) {
+        rundeFeld.setText(round);
+        knoepfe.validate();
     }
 }
 
