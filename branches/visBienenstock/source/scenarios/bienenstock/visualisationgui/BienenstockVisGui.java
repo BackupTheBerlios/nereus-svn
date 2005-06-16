@@ -247,13 +247,15 @@ public class BienenstockVisGui extends Frame {
      */
     ActionListener weiterAktion = new ActionListener () {
         public void actionPerformed(ActionEvent e) {
-            pause.setLabel("Pause");
-            rundeButton.setVisible(false);
-            knoepfe.validate();
-            vis.weiter();
-            pause.addActionListener(pauseAktion);
-            pause.removeActionListener(this);
-            knoepfe.validate();
+            if (vor.isVisible() == true) {
+                pause.setLabel("Pause");
+                rundeButton.setVisible(false);
+                knoepfe.validate();
+                vis.weiter();
+                pause.addActionListener(pauseAktion);
+                pause.removeActionListener(this);
+                knoepfe.validate();
+            }
         }
     };
     
@@ -677,7 +679,12 @@ public class BienenstockVisGui extends Frame {
     public void amEnde(boolean ende) {
         if (vor.isVisible() == ende) {
             vor.setVisible(!ende);
+            pause.setLabel("Weiter");
+            rundeButton.setVisible(true);
             knoepfe.validate();
+            vis.warte();
+            pause.addActionListener(weiterAktion);
+            pause.removeActionListener(pauseAktion);
         }
     }
     
