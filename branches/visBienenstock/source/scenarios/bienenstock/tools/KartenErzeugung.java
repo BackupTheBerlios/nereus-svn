@@ -38,12 +38,12 @@ public class KartenErzeugung {
     /**
      * Die Anzahl der Felder in der Breite.
      */
-    private static final int BREITE = 25;
+    private static final int BREITE = 23;
 
     /**
      * Die Anzahl der Felder in der Höhe.
      */
-    private static final int HOEHE = 13;
+    private static final int HOEHE = 15;
 
     /**
      * Der Name der Karte.
