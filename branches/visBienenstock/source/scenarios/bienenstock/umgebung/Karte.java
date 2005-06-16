@@ -1,7 +1,7 @@
 /*
  * Dateiname      : Karte.java
  * Erzeugt        : 26. Juli 2004
- * Letzte Änderung: 15. Juni 2005 durch Philip Funck
+ * Letzte Änderung: 16. Juni 2005 durch Dietmar Lippold
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (samuel@gmx.info)
  *                  Eugen Volk
@@ -1033,7 +1033,7 @@ public class Karte extends AbstractEnviroment {
      * @return ob die Aktion ausgeführt werden konnte
      */
     public boolean bieneFliegenLassen(long aktionscode,
-            Koordinate zielFeldPosition) {
+                                      Koordinate zielFeldPosition) {
         Biene zielBiene = bieneSuchen(aktionscode);
         Feld ursprung = feldSuchen(zielBiene.gibPosition());
         Feld zielFeld = feldSuchen(zielFeldPosition);
@@ -1042,9 +1042,10 @@ public class Karte extends AbstractEnviroment {
         
         //Existiert das Zielfeld?
         //genug Honig zum Fliegen vorhanden?
-        if ((!(zielFeld == null
-                && (!ursprung.gibNachbarfelder().contains(zielFeld))))
-                && (zielBiene.gibGeladeneHonigmenge()
+        if ((zielFeld != null)
+            && ((zielFeld.equals(ursprung)
+                || (ursprung.gibNachbarfelder().contains(zielFeld))))
+            && (zielBiene.gibGeladeneHonigmenge()
                 >= ((Integer) parameter.gibWert("honigFliegen")).intValue())) {
             
             //Fliegt die Biene schon?
