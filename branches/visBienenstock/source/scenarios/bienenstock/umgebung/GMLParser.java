@@ -742,12 +742,19 @@ public class GMLParser {
     }
     
     /**
-     * Testroutine zum ausgeben eines Baumes vom Typ GMLBaumknoten.
+     * Testroutine zum Ausgeben des gesamten GML-Baums.
+     */
+    public void gmlBaumAusgeben() {
+        gmlBaumTeilAusgeben(gmlBaum, 0);
+    }
+    
+    /**
+     * Testroutine zum ausgeben eines Baumeteils vom Typ GMLBaumknoten.
      *
      * @param gmlBaumteil
      * @param baumtiefe
      */
-    public void gmlBaumAusgeben(LinkedList gmlBaumTeil, int baumtiefe) {
+    public void gmlBaumTeilAusgeben(LinkedList gmlBaumTeil, int baumtiefe) {
         GMLBaumknoten aktuellerKnoten;
         StringBuffer abstand = new StringBuffer();
         int i;
@@ -773,7 +780,7 @@ public class GMLParser {
                 System.out.print("\"\n");
             } else if (aktuellerKnoten.istListe()) {
                 System.out.print("[\n");
-                gmlBaumAusgeben(aktuellerKnoten.gibListe(), (baumtiefe + 1));
+                gmlBaumTeilAusgeben(aktuellerKnoten.gibListe(), (baumtiefe + 1));
                 System.out.print(abstand);
                 System.out.print("]\n");
             } else {
@@ -793,6 +800,7 @@ public class GMLParser {
         GMLParser testParser = new GMLParser(args[0]);
         System.out.println("Gebe Spielfeld aus...");
         Hashtable testSpielfeld = testParser.gibSpielfeld();
+        testParser.gmlBaumAusgeben();
         System.out.println("Fertig.");
     }
     
