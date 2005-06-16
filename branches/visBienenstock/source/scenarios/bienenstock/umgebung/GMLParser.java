@@ -1,10 +1,10 @@
 /*
  * Dateiname      : GMLParser.java
  * Erzeugt        : 24. Oktober 2004
- * Letzte Änderung: 26. Januar 2005 durch Samuel Walz
+ * Letzte Änderung: 16. Juni 2005 durch Samuel Walz
  *
  * Autoren        : Philip Funck (mango.3@gmx.de)
- *                  Samuel Walz (felix-kinkowski@gmx.net)
+ *                  Samuel Walz (samuel@gmx.info)
  *
  *
  *
