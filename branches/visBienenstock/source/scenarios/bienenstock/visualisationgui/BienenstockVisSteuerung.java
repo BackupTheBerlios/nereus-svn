@@ -200,12 +200,11 @@ public class BienenstockVisSteuerung extends Thread implements IVisualisationOut
      * @param die angefragte Runde
      */
     public void setzeNaechste (int next) {
-        System.out.println("next: " + next + " karten.size: " + karten.size());
         if ((next >= 0) && (next < karten.size())) {
             naechste = next;
             
             //pruefen der Position in der Liste der Karten
-            if (naechste == 1) {
+            if (naechste == 0) {
                 fenster.amAnfang(true);
                 fenster.amEnde(false);
             } else if (naechste == karten.size() - 1) {
@@ -216,8 +215,17 @@ public class BienenstockVisSteuerung extends Thread implements IVisualisationOut
                 fenster.amEnde(false);
                 fenster.amAnfang(false);
             }
-            fenster.visualisiere((VisKarte)karten.get(naechste));
+            
+        } else if (next < 0) {
+            naechste = 0;
+            fenster.amAnfang(true);
+            fenster.amEnde(false);
+        } else {
+            naechste = karten.size() - 1;
+            fenster.amEnde(true);
+            fenster.amAnfang(false);
         }
+        fenster.visualisiere((VisKarte)karten.get(naechste));
     }
 
     /**
