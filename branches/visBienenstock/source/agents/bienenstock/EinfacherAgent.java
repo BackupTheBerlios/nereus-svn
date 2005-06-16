@@ -144,7 +144,7 @@ public class EinfacherAgent
       //  zufallsGenerator.setSeed(1999);
         ausschnittHolen();
         posBienenstock = selbst.gibPosition();
-        
+       /* 
         visualisiereBiene(selbst);
         starten();
         landen();
@@ -176,7 +176,7 @@ public class EinfacherAgent
                 zuschauen();
             }
             starten();
-        }
+        } */
         
         
         /*while (true) {
