@@ -1,7 +1,7 @@
 /*
  * Dateiname      : BienenstockVisKarte.java
  * Erzeugt        : 16. Juni 2005
- * Letzte Änderung: 16. Juni 2005 durch Philip Funck
+ * Letzte Änderung: 17. Juni 2005 durch Dietmar Lippold
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *
  * Diese Datei gehoert zum Projekt Nereus (http://nereus.berlios.de/).
@@ -39,8 +39,8 @@ import scenarios.bienenstock.visualisierungsUmgebung.*;
  *
  * @author  philip
  */
-public class BienenstockVisKarte extends java.awt.Container {
-    
+public class BienenstockVisKarte extends Panel {
+
     VisKarte karte;
     BienenstockVisGui fenster;
     ScrollPane scroll;
