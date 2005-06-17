@@ -90,7 +90,7 @@ public class SimplerKooperativerBDIAgent
     /** zähler für die begrenzte Kooperationsbereitschaft der biene  (Z.B. Kooperatin für 5 Runden erhalten) */
     private int rundeNrKooperation=0;
     /** Konstante für die Erhaltung der Kooperation (warten auf Kommunikationspartner) über mehrere Runden */
-    private int maxAnzahlKooperationsRunden=3;
+    private int maxAnzahlKooperationsRunden=5;
     
     private boolean neueMitteilungErhalten=false;
     
