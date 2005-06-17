@@ -42,6 +42,5 @@
     <property name="unschaerfeWinkel" wert="0.1" type="double" changeable="false"/>
     <property name="unschaerfeEntfernung" wert="0.1" type="double" changeable="false"/>
     <property name="timeout" wert="2000" type="int" changeable="true"/>
-    <property name="endbedingung" wert="2000" type="int" changeable="true"/>
 </bienenstockconfig>
 

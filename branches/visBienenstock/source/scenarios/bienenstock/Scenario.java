@@ -1,11 +1,10 @@
 /*
  * Dateiname      : Scenario.java
  * Erzeugt        : 16. Oktober 2004
- * Letzte Änderung: 13. Juni 2005 durch Eugen Volk
+ * Letzte Änderung: 17. Juni 2005 durch Dietmar Lippold
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (samuel@gmx.info)
  *                  Eugen Volk
- *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
  * Die erste Version dieser Datei wurde erstellt im Rahmen eines
@@ -28,8 +27,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-
-
 
 
 package scenarios.bienenstock;
@@ -1261,12 +1258,7 @@ public class Scenario
                 "endbedingungMaxRunden",
                 ParameterDescription.IntegerType,
                 new Integer(2000)));
-        parameterListe.add(
-                new ParameterDescription(
-                "endbedingung",
-                ParameterDescription.IntegerType,
-                new Integer(2000)));
-        
+
         return parameterListe;
     }
     
