@@ -1521,17 +1521,14 @@ public class Karte extends AbstractEnviroment {
                 zielBiene.setzeZustand(Konstanten.ABBAUEND);
                 //wieviel will sie denn haben?
                 int nektarmenge = 0;
-                if (wunschmenge + zielBiene.gibGeladeneNektarmenge()
-                > ((Integer) parameter.gibWert(
-                        "maxGelNektar")).intValue()) {
-                    nektarmenge = ((Blume) zielFeld).nektarAbgeben(
-                            ((Integer) parameter.gibWert(
-                            "maxGelNektar")).intValue()
-                            - zielBiene.gibGeladeneNektarmenge());
-                } else {
-                    nektarmenge = ((Blume) zielFeld).nektarAbgeben(wunschmenge);
-                    
+                int maxGelNektar=((Integer) parameter.gibWert("maxGelNektar")).intValue();
+                if ((wunschmenge + zielBiene.gibGeladeneNektarmenge()) > maxGelNektar) {
+                    wunschmenge = (maxGelNektar- zielBiene.gibGeladeneNektarmenge());
                 }
+                
+                nektarmenge = ((Blume) zielFeld).nektarAbgeben(wunschmenge);
+                
+                
                 /*
                  * muss die Biene mit den neuen werten in
                  * abbauendeBienen neu gespeichert werden?
@@ -1546,6 +1543,7 @@ public class Karte extends AbstractEnviroment {
         alternativeAktionAusfuehrenLassen(zielBiene);
         return false;
     }
+ 
     
     /**
      * Fügt eine Biene in die Spielkarte ein.
