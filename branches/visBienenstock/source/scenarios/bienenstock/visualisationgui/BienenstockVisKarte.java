@@ -1,8 +1,27 @@
 /*
- * KarteFeld.java
+ * Dateiname      : BienenstockVisKarte.java
+ * Erzeugt        : 16. Juni 2005
+ * Letzte Änderung: 16. Juni 2005 durch Philip Funck
+ * Autoren        : Philip Funck (mango.3@gmx.de)
  *
- * Created on June 16, 2005, 8:22 PM
+ * Diese Datei gehoert zum Projekt Nereus (http://nereus.berlios.de/).
+ *
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+
 
 package scenarios.bienenstock.visualisationgui;
 
@@ -15,6 +34,7 @@ import java.awt.event.*;
 
 import scenarios.bienenstock.agenteninfo.Koordinate;
 import scenarios.bienenstock.visualisierungsUmgebung.*;
+
 /**
  *
  * @author  philip
@@ -25,8 +45,7 @@ public class BienenstockVisKarte extends java.awt.Container {
     BienenstockVisGui fenster;
     ScrollPane scroll;
     int x, x1, y;
-    
-        
+
     /**
      * die minimale x Koordinate
      */
