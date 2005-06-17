@@ -108,6 +108,11 @@ public class BienenstockVisKarte extends Panel {
     private Image bildPlatz;
     
     /**
+     * das Bild des nicht existenten Feldes
+     */
+    private Image bildUnbegehbar;
+    
+    /**
      * das Bild fuer die Biene
      */
     private Image bildBiene;
@@ -131,6 +136,7 @@ public class BienenstockVisKarte extends Panel {
         bildBienenstock = Toolkit.getDefaultToolkit().getImage(pfad + "bienenstock.gif");
         bildBlume = Toolkit.getDefaultToolkit().getImage(pfad + "blume.gif");
         bildPlatz = Toolkit.getDefaultToolkit().getImage(pfad + "platz.gif");
+        bildUnbegehbar = Toolkit.getDefaultToolkit().getImage(pfad + "berg.gif");
         if (bildBiene == null) {
             System.out.println("Bilder in " + pfad + " nicht gefunden");
         }
@@ -171,8 +177,8 @@ public class BienenstockVisKarte extends Panel {
         }
         y = ((maxY - minY) * groesseY) 
                 + fenster.gibHoeheKnoepfe() 
-                + fenster.getInsets().top
-                + 5;
+                + fenster.getInsets().top;
+                //+ scroll.getHScrollbarHeight();
         //die Karte ist groesser als der Screen
         if (x > screen.getWidth() | y > screen.getHeight()) {
             scroll.setSize((int)screen.getWidth() - 5, 
@@ -226,12 +232,12 @@ public class BienenstockVisKarte extends Panel {
         int imagePosYZentrieren = 0;
         if ((x < groesseScrollX) && (y < groesseScrollY)) {
             imagePosXZentrieren =
-                    (groesseScrollX - ((maxX - minX + 1) * groesseX) - 20) / 2;
+                    (groesseScrollX - ((maxX - minX + 1) * groesseX)) / 2;
             imagePosYZentrieren =
                     (groesseScrollY - ((maxY - minY + 1) * groesseY)) / 2;
         } else if (x < groesseScrollX) {
             imagePosXZentrieren =
-                    (groesseScrollX - ((maxX - minX + 1) * groesseX) - 20) / 2;
+                    (groesseScrollX - ((maxX - minX + 1) * groesseX)) / 2;
         } else if (y < groesseScrollY) {
             imagePosYZentrieren =
                     (groesseScrollY - ((maxY - minY + 1) * groesseY)) / 2; 
@@ -281,10 +287,13 @@ public class BienenstockVisKarte extends Panel {
                     int imagePosY = ((y - minY) * groesseY) + abstandOben;
                     
                     Koordinate koord = new Koordinate(x, y);
+                    
+                    tmpFeld = (VisFeld) felder.get(koord);
+                    Image bild;
+                    
                     //gibt es das Feld ueberhaupt
                     if (felder.containsKey(koord)) {
-                        tmpFeld = (VisFeld) felder.get(koord);
-                        Image bild;
+                        
                         /*
                          *          BIENENSTOCK
                          */
@@ -457,6 +466,11 @@ public class BienenstockVisKarte extends Panel {
                         } else {
                             System.out.println("Vis: ungueltiger FeldTyp!");
                         }
+                    } else {
+                        g.drawImage(bildUnbegehbar, 
+                                    imagePosX, 
+                                    imagePosY, 
+                                    this);
                     }
                 }
             }
