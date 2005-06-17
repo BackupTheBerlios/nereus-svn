@@ -295,7 +295,7 @@ public class BienenstockVisGui extends Frame {
 	Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         //Groesse wird auf 0 gesetzt, da 
         //<code>fenster.setVisible(false);</code> nicht funktioniert
-	fenster.setSize(500,500);
+	fenster.setSize(0,0);
         scroll.setSize(0, 0);
         
         //werden erst wieder sichtbar, wenn der Inhalt geaendert wird
