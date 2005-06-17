@@ -2880,7 +2880,7 @@ graph [
             volksID 1
             nektar 0
             nektarMax 10000
-            honig 200
+            honig 500
             honigMax 10000
             nektarZuHonig 20
         ]

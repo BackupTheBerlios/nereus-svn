@@ -1,7 +1,7 @@
 /*
  * Dateiname      : KartenErzeugung.java
  * Erzeugt        : 16. Juni 2005
- * Letzte Änderung: 16. Juni 2005 durch Dietmar Lippold
+ * Letzte Änderung: 17. Juni 2005 durch Dietmar Lippold
  * Autoren        : Dietmar Lippold
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
@@ -98,7 +98,7 @@ public class KartenErzeugung {
     /**
      * Die Anfangsmenge des Honigs im Bienenstock.
      */
-    private static final int STOCK_HONIG = 200;
+    private static final int STOCK_HONIG = 500;
 
     /**
      * Die maximale Menge des Honigs im Bienenstock.
