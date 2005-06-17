@@ -457,7 +457,7 @@ graph [
         blume [
             merkmal 0
             nektar 300
-            nektarProRunde 25
+            nektarProRunde 30
         ]
         kapazitaet [
             wartend -1
@@ -786,7 +786,7 @@ graph [
         blume [
             merkmal 0
             nektar 300
-            nektarProRunde 25
+            nektarProRunde 30
         ]
         kapazitaet [
             wartend -1
@@ -1007,7 +1007,7 @@ graph [
         blume [
             merkmal 0
             nektar 300
-            nektarProRunde 25
+            nektarProRunde 15
         ]
         kapazitaet [
             wartend -1
@@ -1552,7 +1552,7 @@ graph [
         blume [
             merkmal 0
             nektar 300
-            nektarProRunde 25
+            nektarProRunde 5
         ]
         kapazitaet [
             wartend -1
@@ -1791,7 +1791,7 @@ graph [
         blume [
             merkmal 0
             nektar 300
-            nektarProRunde 25
+            nektarProRunde 30
         ]
         kapazitaet [
             wartend -1
@@ -1904,7 +1904,7 @@ graph [
         blume [
             merkmal 0
             nektar 300
-            nektarProRunde 25
+            nektarProRunde 30
         ]
         kapazitaet [
             wartend -1
@@ -2539,7 +2539,7 @@ graph [
         blume [
             merkmal 0
             nektar 300
-            nektarProRunde 25
+            nektarProRunde 15
         ]
         kapazitaet [
             wartend -1
@@ -2724,7 +2724,7 @@ graph [
         blume [
             merkmal 0
             nektar 300
-            nektarProRunde 25
+            nektarProRunde 15
         ]
         kapazitaet [
             wartend -1
@@ -3611,7 +3611,7 @@ graph [
         blume [
             merkmal 0
             nektar 300
-            nektarProRunde 25
+            nektarProRunde 5
         ]
         kapazitaet [
             wartend -1
@@ -4595,7 +4595,7 @@ graph [
         blume [
             merkmal 0
             nektar 300
-            nektarProRunde 25
+            nektarProRunde 5
         ]
         kapazitaet [
             wartend -1
@@ -4798,7 +4798,7 @@ graph [
         blume [
             merkmal 0
             nektar 300
-            nektarProRunde 25
+            nektarProRunde 30
         ]
         kapazitaet [
             wartend -1
@@ -4929,7 +4929,7 @@ graph [
         blume [
             merkmal 0
             nektar 300
-            nektarProRunde 25
+            nektarProRunde 5
         ]
         kapazitaet [
             wartend -1
@@ -5114,7 +5114,7 @@ graph [
         blume [
             merkmal 0
             nektar 300
-            nektarProRunde 25
+            nektarProRunde 5
         ]
         kapazitaet [
             wartend -1
