@@ -456,14 +456,14 @@ graph [
         id 26
         blume [
             merkmal 0
-            nektar 300
+            nektar 420
             nektarProRunde 30
         ]
         kapazitaet [
             wartend -1
             fliegend -1
             tanzend 3
-            abbauend 1
+            abbauend 3
         ]
         sichtweite [
             boden 1
@@ -785,14 +785,14 @@ graph [
         id 44
         blume [
             merkmal 0
-            nektar 300
+            nektar 420
             nektarProRunde 30
         ]
         kapazitaet [
             wartend -1
             fliegend -1
             tanzend 3
-            abbauend 1
+            abbauend 3
         ]
         sichtweite [
             boden 1
@@ -1006,14 +1006,14 @@ graph [
         id 56
         blume [
             merkmal 0
-            nektar 300
+            nektar 420
             nektarProRunde 15
         ]
         kapazitaet [
             wartend -1
             fliegend -1
             tanzend 3
-            abbauend 1
+            abbauend 3
         ]
         sichtweite [
             boden 1
@@ -1551,14 +1551,14 @@ graph [
         id 86
         blume [
             merkmal 0
-            nektar 300
+            nektar 420
             nektarProRunde 5
         ]
         kapazitaet [
             wartend -1
             fliegend -1
             tanzend 3
-            abbauend 1
+            abbauend 3
         ]
         sichtweite [
             boden 1
@@ -1790,14 +1790,14 @@ graph [
         id 99
         blume [
             merkmal 0
-            nektar 300
+            nektar 420
             nektarProRunde 30
         ]
         kapazitaet [
             wartend -1
             fliegend -1
             tanzend 3
-            abbauend 1
+            abbauend 3
         ]
         sichtweite [
             boden 1
@@ -1903,14 +1903,14 @@ graph [
         id 106
         blume [
             merkmal 0
-            nektar 300
+            nektar 420
             nektarProRunde 30
         ]
         kapazitaet [
             wartend -1
             fliegend -1
             tanzend 3
-            abbauend 1
+            abbauend 3
         ]
         sichtweite [
             boden 1
@@ -2538,14 +2538,14 @@ graph [
         id 143
         blume [
             merkmal 0
-            nektar 300
+            nektar 420
             nektarProRunde 15
         ]
         kapazitaet [
             wartend -1
             fliegend -1
             tanzend 3
-            abbauend 1
+            abbauend 3
         ]
         sichtweite [
             boden 1
@@ -2723,14 +2723,14 @@ graph [
         id 154
         blume [
             merkmal 0
-            nektar 300
+            nektar 420
             nektarProRunde 15
         ]
         kapazitaet [
             wartend -1
             fliegend -1
             tanzend 3
-            abbauend 1
+            abbauend 3
         ]
         sichtweite [
             boden 1
@@ -3610,14 +3610,14 @@ graph [
         id 205
         blume [
             merkmal 0
-            nektar 300
+            nektar 420
             nektarProRunde 5
         ]
         kapazitaet [
             wartend -1
             fliegend -1
             tanzend 3
-            abbauend 1
+            abbauend 3
         ]
         sichtweite [
             boden 1
@@ -4594,14 +4594,14 @@ graph [
         id 260
         blume [
             merkmal 0
-            nektar 300
+            nektar 420
             nektarProRunde 5
         ]
         kapazitaet [
             wartend -1
             fliegend -1
             tanzend 3
-            abbauend 1
+            abbauend 3
         ]
         sichtweite [
             boden 1
@@ -4797,14 +4797,14 @@ graph [
         id 273
         blume [
             merkmal 0
-            nektar 300
+            nektar 420
             nektarProRunde 30
         ]
         kapazitaet [
             wartend -1
             fliegend -1
             tanzend 3
-            abbauend 1
+            abbauend 3
         ]
         sichtweite [
             boden 1
@@ -4928,14 +4928,14 @@ graph [
         id 280
         blume [
             merkmal 0
-            nektar 300
+            nektar 420
             nektarProRunde 5
         ]
         kapazitaet [
             wartend -1
             fliegend -1
             tanzend 3
-            abbauend 1
+            abbauend 3
         ]
         sichtweite [
             boden 1
@@ -5113,14 +5113,14 @@ graph [
         id 290
         blume [
             merkmal 0
-            nektar 300
+            nektar 420
             nektarProRunde 5
         ]
         kapazitaet [
             wartend -1
             fliegend -1
             tanzend 3
-            abbauend 1
+            abbauend 3
         ]
         sichtweite [
             boden 1
