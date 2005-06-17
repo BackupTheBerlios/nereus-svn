@@ -319,8 +319,7 @@ public class Scenario
      *              ob eine der Endbedingungen zutrifft
      */
     private boolean endbedingungTrifftZu() {
-        if (((Integer) parameter.gibWert("endbedingungMaxNektar")).intValue()
-        > 0) {
+        if (((Integer) parameter.gibWert("endbedingungMaxNektar")).intValue() > 0) {
             Iterator stoecke = bienenStoecke.iterator();
             while (stoecke.hasNext()) {
                 Bienenstock tmp = (Bienenstock) stoecke.next();
@@ -331,9 +330,9 @@ public class Scenario
                     return true;
                 }
             }
-            
-        } else if (((Integer) parameter.gibWert(
-                "endbedingungMaxHonig")).intValue() > 0) {
+        }
+
+        if (((Integer) parameter.gibWert("endbedingungMaxHonig")).intValue() > 0) {
             Iterator stoecke = bienenStoecke.iterator();
             while (stoecke.hasNext()) {
                 Bienenstock tmp = (Bienenstock) stoecke.next();
@@ -347,19 +346,20 @@ public class Scenario
                     return true;
                 }
             }
-            
-        } else if (rundennummer
-                == ((Integer) parameter.gibWert(
-                "endbedingungMaxRunden")).intValue()) {
+        }
+
+        if (rundennummer
+            == ((Integer) parameter.gibWert("endbedingungMaxRunden")).intValue()) {
             System.out.println("endbedingungMaxRunden erreicht.");
             return true;
-        } else if (spielkarte.alleBienenTot()) {
+        }
+
+        if (spielkarte.alleBienenTot()) {
             System.out.println("Alle Bienen sind verstorben.");
             return true;
         }
-        
+
         return false;
-        
     }
     
     /**
