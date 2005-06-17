@@ -128,6 +128,8 @@ public class SimplerKooperativerBDIAgent
     private int gesammelterNektar = 0;
     /** kurs Nektar zu Honig */
     private double kursNektarHonig=1;
+    /** Reserver für den Fall dass Biene Warten muss */
+    private int reserve=2;
     /** getanzte Bienen, seit kooperatinReset */
     private HashSet getanzteBienen=new HashSet();
     /** habe ich schon seit kooperationReset getanzt? */
@@ -879,7 +881,7 @@ public class SimplerKooperativerBDIAgent
         }else{
             kostenFliegen=kostenFliegen(vonPosition, this.posBienenstock);
             if (kostenFliegen>this.startHonig) kostenFliegen=kostenFliegen(this.posBienenstock, vonPosition);
-            kosten=this.honigLanden+this.honigTanken + kostenFliegen;
+            kosten=this.honigLanden+this.honigTanken + this.reserve + kostenFliegen;
             if (bieneIstInLuft) return kosten;
             else return (kosten+this.honigStarten);
         }
