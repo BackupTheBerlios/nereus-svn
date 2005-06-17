@@ -1,7 +1,7 @@
 /*
  * Dateiname      : KartenErzeugung.java
  * Erzeugt        : 16. Juni 2005
- * Letzte Änderung: 17. Juni 2005 durch Dietmar Lippold
+ * Letzte Änderung: 17. Juni 2005 durch Samuel Walz
  * Autoren        : Dietmar Lippold
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
@@ -129,25 +129,30 @@ public class KartenErzeugung {
     /**
      * Die ID des Feldes des Bienenstocks.
      */
-    private static final int STOCK_FELD = 163;
+    private static final int STOCK_FELD = 216;
 
     /**
      * Die IDs von Felder, auf denen sich Blumen befinden. Die Felder müssen
      * aufsteigend geordnet sein.
      */
-    private static final int[] BLUMEN_FELDER = new int[] {100, 150, 170, 200};
+    private static final int[] BLUMEN_FELDER = new int[] {26, 44, 56, 86,
+                                                          99, 106, 143, 154,
+                                                          205, 260, 273, 280,
+                                                          290};
 
     /**
      * Die IDs von Felder, die leer sind. Diese müssen aufsteigend geordnet
      * sein.
      */
-    private static final int[] LEERE_FELDER = new int[] {60, 61, 62, 260};
+    private static final int[] LEERE_FELDER = new int[] {104, 127, 128, 151,
+                                                         174, 186, 247, 263,
+                                                         270};
 
     /**
      * Gibt an, ob Kanten zwischen diagonal zueinander gelegenen Feldern
      * vorhanden sein sollen.
      */
-    private static final boolean DIAGONAL_KANTEN = false;
+    private static final boolean DIAGONAL_KANTEN = true;
 
     /**
      * Gibt den Header der Datei aus.VOLKS_ID
