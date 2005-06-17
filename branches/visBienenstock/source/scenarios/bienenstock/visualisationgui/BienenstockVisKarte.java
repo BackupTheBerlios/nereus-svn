@@ -72,6 +72,11 @@ public class BienenstockVisKarte extends Panel {
     private boolean initiiert = false;
     
     /**
+     * gibt an, ob die Karte kleiner ist, als das ScrollPanel
+     */
+    boolean kleiner;
+    
+    /**
      * der Pfad zum Verzeichnis mit den Bildern
      */
     private String pfad;
@@ -140,6 +145,8 @@ public class BienenstockVisKarte extends Panel {
         Iterator felder = karte.gibFelder().values().iterator();
         Koordinate pos;
         int minBreite = 470;
+        
+        //berechnen der Ausmasse der Karte
         while (felder.hasNext()) {
             pos = ((VisFeld)felder.next()).gibPosition();
             if (pos.gibXPosition() < minX) {
@@ -156,18 +163,18 @@ public class BienenstockVisKarte extends Panel {
         
         //Groesse und Position neu setzen
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-        x = ((maxX - minX) * groesseX) - 50;
+        x = ((maxX - minX + 1) * groesseX);
         if (x < minBreite) {
             x1 = minBreite;
         } else {
             x1 = x;
         }
-        y = ((maxY - minY + 1) * groesseY);
-        System.out.println("x = " + x + " y = " + y);
+        y = ((maxY - minY) * groesseY) 
+                + fenster.gibHoeheKnoepfe() 
+                + fenster.getInsets().top
+                + 5;
         //die Karte ist groesser als der Screen
         if (x > screen.getWidth() | y > screen.getHeight()) {
-            //fenster.add(scrollVert);
-            //fenster.add(scrollHori);
             scroll.setSize((int)screen.getWidth() - 5, 
                             ((int)screen.getHeight() - 90));
         } else if (x == 0 | y == 0) {
@@ -175,7 +182,7 @@ public class BienenstockVisKarte extends Panel {
             System.out.println("Karte der Groesse Null erhalten");
         } else {
             //die Fenstergroesse orientiert sich an der Karte
-            setSize(x, y);
+            //setSize(x, y);
             scroll.setSize(
                 x1, y);
 //            fenster.setLocation(
@@ -208,12 +215,32 @@ public class BienenstockVisKarte extends Panel {
      */
     public void paint(Graphics g) {
         
+        int groesseScrollX = scroll.getWidth();
+        int groesseScrollY = scroll.getHeight(); 
+        
         //Breite der headline
         int abstandOben = 0; //fenster.getInsets().top + 5;
         
-        //zentrieren der Karte
+        //zentrieren der Karte wenn noetig
         int imagePosXZentrieren = 0;
-                //(fenster.getWidth() - ((maxX - minX + 1) * groesseX)) / 2;
+        int imagePosYZentrieren = 0;
+        if ((x < groesseScrollX) && (y < groesseScrollY)) {
+            imagePosXZentrieren =
+                    (groesseScrollX - ((maxX - minX + 1) * groesseX) - 20) / 2;
+            imagePosYZentrieren =
+                    (groesseScrollY - ((maxY - minY + 1) * groesseY)) / 2;
+        } else if (x < groesseScrollX) {
+            imagePosXZentrieren =
+                    (groesseScrollX - ((maxX - minX + 1) * groesseX) - 20) / 2;
+        } else if (y < groesseScrollY) {
+            imagePosYZentrieren =
+                    (groesseScrollY - ((maxY - minY + 1) * groesseY)) / 2; 
+        } else {
+            imagePosXZentrieren = 0;
+            imagePosYZentrieren = 0;
+        }
+        
+        abstandOben = abstandOben + imagePosYZentrieren;
         
         //saeubern des Bereiches fuer die Karte
         //g.clearRect(

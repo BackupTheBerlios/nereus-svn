@@ -365,5 +365,9 @@ public class BienenstockVisGui extends Frame {
         rundeFeld.setText(round);
         knoepfe.validate();
     }
+    
+    int gibHoeheKnoepfe() {
+        return knoepfe.getHeight();
+    }
 }
 
