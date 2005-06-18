@@ -349,9 +349,12 @@ public class KartenErzeugung {
                 sourceId = x + (y - 1) * BREITE;
 
                 for (int dy = 0; dy <= 1; dy++) {
-                    for (int dx = 0; dx <= 1; dx++) {
-                        if ((Math.abs(dy) + Math.abs(dx) == 1)
-                            || DIAGONAL_KANTEN && (Math.abs(dy) + Math.abs(dx) == 2)) {
+                    for (int dx = -1; dx <= 1; dx++) {
+                        if ((dy == 1) && (dx == 0)
+                            || (dy == 0) && (dx == 1)
+                            || DIAGONAL_KANTEN && (dy == 1) && (dx == -1)
+                            || DIAGONAL_KANTEN && (dy == 1) && (dx == 1)) {
+
                             if ((y + dy >= 1) && (y + dy <= HOEHE)
                                 && (x + dx >= 1) && (x + dx <= BREITE)) {
 
@@ -361,7 +364,9 @@ public class KartenErzeugung {
 
                                     printWeg(sourceId, targetId);
                                 }
+
                             }
+
                         }
                     }
                 }
