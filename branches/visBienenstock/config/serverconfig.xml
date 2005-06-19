@@ -2,7 +2,7 @@
 <!--
     Document   : serverconfig.xml
     Created on : 11. Mai 2005, 12:45
-    Last change: 17. Juni 2005 by Samuel Walz
+    Last change: 19. Juni 2005 by Dietmar Lippold
     Author     : Eugen Volk
     Description:
         Diese Datei dient zur Konfiguration der Parameter-Werte für
@@ -20,9 +20,9 @@
 -->
 
 <config>
-<gameconf name="Bienenstock_L2" scenario="bienenstock" karte="luft2nektar500.gml" parameters="bienenstockconfig1.xml"/>
-<gameconf name="Bienenstock_L1" scenario="bienenstock" karte="luft1nektar500.gml" parameters="bienenstockconfig1.xml"/>
-<gameconf name="Bienenstock_23x15" scenario="bienenstock" karte="f23x15-sl2-n300.gml" parameters="bienenstockconfig2.xml"/>
-<gameconf name="Bienenstock_23x15_2" scenario="bienenstock" karte="f23x15-sl2-n420.gml" parameters="bienenstockconfig2.xml"/>
+<gameconf name="Bienenstock_L2_od" scenario="bienenstock" karte="luft2nektar500-od.gml" parameters="bienenstockconfig1.xml"/>
+<gameconf name="Bienenstock_L1_od" scenario="bienenstock" karte="luft1nektar500-od.gml" parameters="bienenstockconfig1.xml"/>
+<gameconf name="Bienenstock_23x15_od" scenario="bienenstock" karte="f23x15-sl2-n420-od.gml" parameters="bienenstockconfig2.xml"/>
+<gameconf name="Bienenstock_23x15_md" scenario="bienenstock" karte="f23x15-sl2-n420-md.gml" parameters="bienenstockconfig2.xml"/>
 </config>
 
