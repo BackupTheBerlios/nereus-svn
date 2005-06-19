@@ -1,0 +1,49 @@
+                         Zu erledigende Punkte
+
+
+Stand: 19. Juli 2005
+
+
+Wichtige Punkte
+---------------
+
+ * Fehler bei maximaler Anzahl tanzender Bienen von 1 beseitigen.
+
+
+Weniger wichtige Punkte
+-----------------------
+
+ * Die Positionsangaben der Karte sollten in der Visualisierung mit
+   steigenden x-Werten nach oben dargestellt werden.
+
+ * Formatierung der Dateien ReadmeServer.txt und ReadmeClient.txt
+   überarbeiten.
+
+ * Es sollte ein Paramater unschaerfeMenge (entsprechend unschaerfeWinkel)
+   eingeführt werden, der den Fehler bei der Kommunikation der Menge
+   angibt.
+
+ * Es sollte ein Parameter honigTanzenMenge eingeführt werden (analog zu
+   honigTanzenRichtung und honigTanzenEntfernung), der den Verbaruch an Honig
+   angibt, wenn eine Biene beim Tanzen nur die Menge des Nektars mitteilt
+   (ist auch in der Datei bienenstockconfig.xml aufzunehmen).
+
+ * Die Vorgabe vom Wert -1 (für unendlich) für die Parameter nektarMax und
+   honigMax im Bienenstock auf der Karte ermöglichen.
+
+ * Scenario: Im Konstruktor und in initialize werden m_parameter die
+   übergebenen Parameter zugewiesen, nicht jedoch die von setzeParameter
+   ermittelten Parameter.
+
+ * Den Paramater StartEnergy aus der Standardliste (getScenarioParameter)
+   entfernen und in setzeParameter hinzunehmen (bekommt Wert von startHonig).
+
+ * Parameter endbedingungMaxNektar entfernen (in Scenario und in
+   Parametersätzen).
+
+ * Das Interface scenarios.bienenstock.interfaces.IBienenstockSzenarioHandler
+   sollte nereus.simulatorinterfaces.IScenarioHandler erweitern und die
+   Methoden getParameter und getScenarioParameter entfernen.
+
+ * Idee: Verblühende und nachwachsende Blumen einführen.
+
