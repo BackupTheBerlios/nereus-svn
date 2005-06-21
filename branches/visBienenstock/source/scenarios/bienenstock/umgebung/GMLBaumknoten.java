@@ -1,10 +1,11 @@
 /*
  * Dateiname      : GMLBaumknoten.java
  * Erzeugt        : 31. Oktober 2004
- * Letzte Änderung: 26. Januar 2005 durch Samuel Walz
+ * Letzte Änderung: 21. Juni 2005 durch Eugen Volk  
  *
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
+ *                  Eugen Volk
  *
  *
  *
@@ -54,6 +55,14 @@ public class GMLBaumknoten {
      * GML-Wert vom Typ Double.
      */
     private double wertDouble = 0.0;
+    /**
+     * GML-Wert vom Typ Boolean
+     */
+    private boolean wertBoolean=false;
+    /**
+     * ist boolean gesetzt
+     */
+    private boolean booleanGesetzt=false;
     
     /**
      * GML-Wert vom Typ String.
@@ -112,6 +121,14 @@ public class GMLBaumknoten {
         doubleGesetzt = true;
     }
     
+     /**
+     * Speichert einen GML-Wert vom Typ Boolean.
+     */
+    void setzeBoolean(boolean wert) {
+        this.wertBoolean = wert;
+        this.booleanGesetzt = true;
+    }
+    
     /**
      * Speichert einen GML-Wert vom Typ String.
      */
@@ -150,6 +167,13 @@ public class GMLBaumknoten {
     }
     
     /**
+     * Gibt zurück, ob der GML-Wert als String gespeichert wurde.
+     */
+    boolean istBoolean() {
+        return booleanGesetzt;
+    }
+    
+    /**
      * Gibt zurück, ob der GML-Wert als Liste gespeichert wurde.
      */
     boolean istListe() {
@@ -175,6 +199,13 @@ public class GMLBaumknoten {
      */
     double gibDouble() {
         return wertDouble;
+    }
+    
+        /**
+     * Gibt den GML-Wert vom Typ Double zurück.
+     */
+    boolean gibBoolean() {
+        return wertBoolean;
     }
     
     /**

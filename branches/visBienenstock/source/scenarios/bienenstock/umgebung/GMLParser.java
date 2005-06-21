@@ -1,7 +1,7 @@
 /*
  * Dateiname      : GMLParser.java
  * Erzeugt        : 24. Oktober 2004
- * Letzte Änderung: 16. Juni 2005 durch Samuel Walz
+ * Letzte Änderung: 21. Juni 2005 durch Eugen Volk
  *
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (samuel@gmx.info)
@@ -107,6 +107,9 @@ public class GMLParser {
      */
     private static Pattern patternDouble =
             Pattern.compile("[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?");
+    
+    
+
     
     /**
      * Dient der Erkennung eines korrekt formatierten GML-Wertes
@@ -218,6 +221,16 @@ public class GMLParser {
         Matcher matcherDouble =
                 patternDouble.matcher(moeglicherDouble);
         return matcherDouble.matches();
+    }
+    
+    /**
+     * Testet, ob ein String wie ein Wert vom Typ Boolean des GML-Formats
+     * aufgebaut ist.
+     */
+    private boolean istBoolean(String moeglicherBoolean){
+        if ((moeglicherBoolean.equals("true")) ||
+                (moeglicherBoolean.equals("false"))) return true;
+        else return false;
     }
     
     /**
@@ -383,6 +396,9 @@ public class GMLParser {
                         aktuellerKnoten.setzeInteger(Integer.parseInt(aktuellerWert));
                     } else if (istDouble(aktuellerWert)) {
                         aktuellerKnoten.setzeDouble(Double.parseDouble(aktuellerWert));
+                    } else if (this.istBoolean(aktuellerWert)){
+                        boolean wert=Boolean.valueOf(aktuellerWert).booleanValue();
+                        aktuellerKnoten.setzeBoolean(wert);
                     } else {
                         gibFehlerAus(holeZeilennummer(codePosition
                                 - aktuellerWert.length()),
@@ -475,7 +491,7 @@ public class GMLParser {
         int honigMax = 0; //Bienenstock
         int volksID = 0; //Bienenstock
         int merkmal = 0; //Blume
-        
+        boolean nektarAuslesbar=false;
         int id = 0; //Eindeutige ID des Feldes für die Kanten
         
         int i;
@@ -565,7 +581,9 @@ public class GMLParser {
                         volksID = ((GMLBaumknoten)merkmale.get(e)).gibInteger();
                     } else if (((GMLBaumknoten)merkmale.get(e)).gibSchluessel().equals("merkmal")) {
                         merkmal = ((GMLBaumknoten)merkmale.get(e)).gibInteger();
-                    } else {
+                    } else if (((GMLBaumknoten)merkmale.get(e)).gibSchluessel().equals("nektarAuslesbar")){
+                        nektarAuslesbar=((GMLBaumknoten)merkmale.get(e)).gibBoolean();
+                    }else {
                         //Sonstige Schluessel werden ignoriert
                     }
                 }
@@ -601,7 +619,8 @@ public class GMLParser {
                     kapazitaetFliegend,
                     merkmal,
                     new Koordinate(koordinateX, koordinateY),
-                    kapazitaetTanzend);
+                    kapazitaetTanzend,
+                    nektarAuslesbar);
         } else {
                 /*
                  * Falls der Typ nicht korrekt erkannt werden konnte,

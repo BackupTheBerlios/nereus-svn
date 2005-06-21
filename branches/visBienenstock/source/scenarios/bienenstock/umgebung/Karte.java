@@ -1,7 +1,7 @@
 /*
  * Dateiname      : Karte.java
  * Erzeugt        : 26. Juli 2004
- * Letzte Änderung: 16. Juni 2005 durch Dietmar Lippold
+ * Letzte Änderung: 21. Juni 2005 durch Dietmar Lippold
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (samuel@gmx.info)
  *                  Eugen Volk
@@ -263,6 +263,8 @@ public class Karte extends AbstractEnviroment {
      * @param vollstFeld die vollständige Blume
      */
     private EinfacheBlume konvertiereBlume(Blume vollstFeld) {
+        int nektarmenge=-1;
+        if (vollstFeld.nektarAuslesbar()) nektarmenge=vollstFeld.gibVorhandenerNektar();
         return new EinfacheBlume(
                 new Koordinate(vollstFeld.gibPosition().gibXPosition(),
                 vollstFeld.gibPosition().gibYPosition()),
@@ -270,8 +272,9 @@ public class Karte extends AbstractEnviroment {
                 konvertiereHash(vollstFeld.gibFliegendeBienen()),
                 konvertiereHash(vollstFeld.gibTanzendeBienen()),
                 vollstFeld.gibMerkmal(),
-                konvertiereHash(vollstFeld.gibAbbauendeBienen())
-                );
+                konvertiereHash(vollstFeld.gibAbbauendeBienen()), 
+                vollstFeld.nektarAuslesbar(), 
+                nektarmenge);
     }
     
     /**

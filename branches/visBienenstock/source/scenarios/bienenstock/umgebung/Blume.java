@@ -1,7 +1,7 @@
 /*
  * Dateiname      : Blume.java
  * Erzeugt        : 19. Mai 2004
- * Letzte Änderung: 2. Juni 2005 durch Eugen Volk
+ * Letzte Änderung: 21. Juni 2005 durch Eugen Volk
  *
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
@@ -53,6 +53,8 @@ public class Blume extends Feld {
      */
     private int vorhandenerNektar;
     
+    private boolean nektarAuslesbar=false;
+    
     /**
      * ist das Maximum, das von einer Biene pro Runde bezogen werden kann.
      */
@@ -83,6 +85,57 @@ public class Blume extends Feld {
      * @param blumenMerkmal merkmal der Blume
      * @param feldPosition  koordinate der Blume
      * @param maxTanzendeBienen maximum der tanzenden Bienen
+     * @param nektarAuslesenLassen erlaubt den Bienen die Information über den Nektargehalt auszulesen.
+     */
+    Blume(int eigenID,
+            int sichtBoden,
+            int sichtLuft,
+            int vorhNektar,
+            int maxNektarProRunde,
+            int maxAbbauendeBienen,
+            int maxWartendeBienen,
+            int maxFliegendeBienen,
+            int blumenMerkmal,
+            Koordinate feldPosition,
+            int maxTanzendeBienen,
+            boolean nektarAuslesbar) {
+        super(eigenID,
+                sichtBoden,
+                sichtLuft,
+                maxWartendeBienen,
+                maxFliegendeBienen,
+                maxTanzendeBienen,
+                feldPosition);
+        /*id = eigenID;
+        sichtweiteAmBoden = sichtBoden;
+        sichtweiteInDerLuft = sichtLuft;
+        maximumWartendeBienen = maxWartendeBienen;
+        maximumFliegendeBienen = maxFliegendeBienen;
+        maximumTanzendeBienen = maxTanzendeBienen;
+        position = feldPosition;*/
+        
+        merkmal = blumenMerkmal;
+        vorhandenerNektar = vorhNektar;
+        maximumNektarProRunde = maxNektarProRunde;
+        maximumAbbauendeBienen = maxAbbauendeBienen;
+        this.nektarAuslesbar=nektarAuslesbar;
+    }
+    
+    /**
+     * Konstruktor.
+     *
+     * @param eigenID   die ID
+     * @param sichtBoden    die sichtweite am Boden
+     * @param sichtLuft     die Sichtweite in der Luft
+     * @param vorhNektar    die vorhndene Nektarmenge
+     * @param maxNektarProRunde maximale Nektarmenge pro runde
+     * @param maxAbbauendeBienen    maximum abbauende Bienen
+     * @param maxWartendeBienen     maximum wartende Bienen
+     * @param maxFliegendeBienen    maximum fliegende Bienen
+     * @param blumenMerkmal merkmal der Blume
+     * @param feldPosition  koordinate der Blume
+     * @param maxTanzendeBienen maximum der tanzenden Bienen
+     * 
      */
     Blume(int eigenID,
             int sichtBoden,
@@ -114,7 +167,11 @@ public class Blume extends Feld {
         vorhandenerNektar = vorhNektar;
         maximumNektarProRunde = maxNektarProRunde;
         maximumAbbauendeBienen = maxAbbauendeBienen;
+        nektarAuslesbar=false;
     }
+    
+    
+    
     
     /**
      * fordert von der Blume Nektar an.
@@ -215,4 +272,13 @@ public class Blume extends Feld {
     HashSet gibAbbauendeBienen() {
         return (HashSet) abbauendeBienen.clone();
     }
+    
+    /**
+     * Prüft, ob der Nektargehalt der Blume für die Biene auslesbar ist.
+     *@return true, falls die Biene den BlumenNektarGehalt auslesen darf
+     */
+    boolean nektarAuslesbar(){
+        return this.nektarAuslesbar;
+    }
+    
 }

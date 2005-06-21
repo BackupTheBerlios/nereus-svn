@@ -1,7 +1,7 @@
 /*
  * Dateiname      : EinfacheBlume.java
  * Erzeugt        : 6. Oktober 2004
- * Letzte Änderung: 14. Februar 2005 durch Philip Funck
+ * Letzte Änderung: 21. Juni 2005 durch Eugen Volk
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
  *
@@ -46,14 +46,25 @@ public class EinfacheBlume extends EinfachesFeld {
      */
     private int merkmal;
     
+    
+    /**
+     * ist der Nektargehalt für die Biene auslesbar?
+     */
+    private boolean nektarAuslesbar=false;
+    
+    /**
+     * Nektargehalt der Blume
+     */
+    private int nektarInhalt=-1;
+            
     /**
      * Liste aller Bienen, die gerade an dieser Blume Nektar abbauen.
      *
      * @associates java.lang.Integer
      */
     private HashSet abbauendeBienen;
-    
-    /**
+
+     /**
      * Konstruktor.
      *
      * @param pos       Position der Blume auf der Karte
@@ -68,7 +79,9 @@ public class EinfacheBlume extends EinfachesFeld {
             HashSet fBienen,
             HashSet tBienen,
             int merk,
-            HashSet aBienen) {
+            HashSet aBienen,
+            boolean nektarAuslesbar,
+            int nektarInhalt) {
         super(pos,
                 wBienen,
                 fBienen,
@@ -79,7 +92,11 @@ public class EinfacheBlume extends EinfachesFeld {
         tanzendeBienen = tBienen;*/
         merkmal = merk;
         abbauendeBienen = aBienen;
+        this.nektarAuslesbar=nektarAuslesbar;
+        this.nektarInhalt=nektarInhalt;
+        
     }
+    
     
     /**
      * gibt das Merkmal der Blume zurück.
@@ -100,5 +117,20 @@ public class EinfacheBlume extends EinfachesFeld {
         return (HashSet) abbauendeBienen.clone();
     }
     
+    /**
+     * gibt an, ob Information über den Nektarinhalt auslesbar ist.
+     * @return true, falls Information über Nektarinhalt auslesbar ist.
+     */
+    public boolean gibNektarAuslesbar(){
+        return this.nektarAuslesbar;
+    }
+    
+    /**
+     * gibt den NektarInhalt der Blume zurück
+     * @return NektarInhalt der Blume.
+     */
+    public int gibVorhandenerNektar(){
+        return this.nektarInhalt;
+    }
     
 }
