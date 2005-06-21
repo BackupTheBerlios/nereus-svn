@@ -36,6 +36,7 @@ import scenarios.bienenstock.interfaces.AbstrakteBiene;
 import scenarios.bienenstock.interfaces.IBienenstockSzenarioHandler;
 import scenarios.bienenstock.einfacheUmgebung.*;
 import nereus.utils.Id;
+import nereus.utils.BooleanWrapper;
 
 import java.util.Iterator;
 import java.util.Random;
@@ -85,6 +86,8 @@ public class EinfacherAgent
     private int honigAbliefern = 0;
     private String name = "";
     private int gesammelterNektar = 0;
+    
+    private BooleanWrapper erfolg=new BooleanWrapper(false);
     
     private InfoBlumeEinfach zuBearbeitendeBlume;
     
@@ -422,7 +425,7 @@ public class EinfacherAgent
         Koordinate ziel = new Koordinate(x, y);
         int honigAlt = selbst.gibGeladeneHonigmenge();
         System.out.println(id + ": fliege nach (" + ziel.gibXPosition() + ", " + ziel.gibYPosition() + " )");
-        long neuerAktCode = handler.aktionFliegen(aktCode, ziel);
+        long neuerAktCode = handler.aktionFliegen(aktCode, erfolg, ziel);
         if (!(neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
             if (hinweg) {
@@ -441,7 +444,7 @@ public class EinfacherAgent
         //visualisiereBiene(selbst);
         int honigAlt = selbst.gibGeladeneHonigmenge();
         System.out.println(id + ": fliege nach (" + ziel.gibXPosition() + ", " + ziel.gibYPosition() + " )");
-        long neuerAktCode = handler.aktionFliegen(aktCode, ziel);
+        long neuerAktCode = handler.aktionFliegen(aktCode, erfolg, ziel);
         if (!(neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
             if (hinweg) {
@@ -463,7 +466,7 @@ public class EinfacherAgent
     public void abbauen(int menge) {
         int alterHonig = selbst.gibGeladeneHonigmenge();
         System.out.println(id + ": baue ab (" + position.gibPosition().gibXPosition() + ", " + position.gibPosition().gibYPosition() + " )");
-        long neuerAktCode = handler.aktionNektarAbbauen(aktCode, menge);
+        long neuerAktCode = handler.aktionNektarAbbauen(aktCode, erfolg, menge);
         if (!(neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
         }
@@ -477,7 +480,7 @@ public class EinfacherAgent
     public void starten() {
         System.out.println(id + ": starte (" + position.gibPosition().gibXPosition() + ", " + position.gibPosition().gibYPosition() + " )");
         int honigAlt = selbst.gibGeladeneHonigmenge();
-        long neuerAktCode = handler.aktionStarten(aktCode);
+        long neuerAktCode = handler.aktionStarten(aktCode, erfolg);
         if (!(neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
         } else {
@@ -493,7 +496,7 @@ public class EinfacherAgent
     public void landen() {
         System.out.println(id + ": lande (" + position.gibPosition().gibXPosition() + ", " + position.gibPosition().gibYPosition() + " )");
         int honigAlt = selbst.gibGeladeneHonigmenge();
-        long neuerAktCode = handler.aktionLanden(aktCode);
+        long neuerAktCode = handler.aktionLanden(aktCode, erfolg);
         if (!(neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
         } 
@@ -507,7 +510,7 @@ public class EinfacherAgent
     
     public void warten() {
         System.out.println(id + ": daeumchendrehen... (" + position.gibPosition().gibXPosition() + ", " + position.gibPosition().gibYPosition() + " )");
-        long neuerAktCode = handler.aktionWarten(aktCode);
+        long neuerAktCode = handler.aktionWarten(aktCode, erfolg);
         if (!(neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
         } else {
@@ -520,7 +523,7 @@ public class EinfacherAgent
     public void tanken(int menge) {
         int honigAlt = selbst.gibGeladeneHonigmenge();
         System.out.println(id + ": tanke (" + position.gibPosition().gibXPosition() + ", " + position.gibPosition().gibYPosition() + " )");
-        long neuerAktCode = handler.aktionHonigTanken(aktCode, menge);
+        long neuerAktCode = handler.aktionHonigTanken(aktCode, erfolg, menge);
         if (!(neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
         } else {
@@ -537,7 +540,7 @@ public class EinfacherAgent
         System.out.println(id + ": liefere Nektar ab (" + position.gibPosition().gibXPosition() + ", " + position.gibPosition().gibYPosition() + " )");
         int honigAlt = selbst.gibGeladeneHonigmenge();
         int nektarAlt = selbst.gibGeladeneNektarmenge();
-        long neuerAktCode = handler.aktionNektarAbliefern(aktCode);
+        long neuerAktCode = handler.aktionNektarAbliefern(aktCode, erfolg);
         if (!(neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
         } else {
@@ -585,7 +588,7 @@ public class EinfacherAgent
     
     public void tanzen() {
         System.out.println(id + ": tanze (" + position.gibPosition().gibXPosition() + ", " + position.gibPosition().gibYPosition() + " )");
-        long neuerAktCode = handler.aktionTanzen(aktCode, 2, 1, true, true);
+        long neuerAktCode = handler.aktionTanzen(aktCode, erfolg, 2, 1, true, true);
         if (!(neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
         }
@@ -598,7 +601,7 @@ public class EinfacherAgent
         System.out.println(id + ": schaue zu (" + position.gibPosition().gibXPosition() + ", " + position.gibPosition().gibYPosition() + " )");
         if (!(position.gibIDsTanzendeBienen().isEmpty())) {
             int zielBiene = ((Integer)position.gibIDsTanzendeBienen().iterator().next()).intValue();
-            long nAktCode = handler.aktionZuschauen(aktCode, zielBiene);
+            long nAktCode = handler.aktionZuschauen(aktCode, erfolg, zielBiene);
             if (!( nAktCode == 0L)) {
                 aktCode = nAktCode;
             }
@@ -609,7 +612,7 @@ public class EinfacherAgent
          //   System.out.println(" INFO :" + "richtung " + selbst.gibInformation().gibRichtung());
         } else {
             System.out.println(id + "keine tanzenden Bienen anwesend!!!");
-            long nAktCode = handler.aktionZuschauen(aktCode, 111);
+            long nAktCode = handler.aktionZuschauen(aktCode, erfolg, 111);
             if (!( nAktCode == 0L)) {
                 aktCode = nAktCode;
             }

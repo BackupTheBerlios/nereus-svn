@@ -34,6 +34,7 @@ import scenarios.bienenstock.interfaces.AbstrakteBiene;
 import scenarios.bienenstock.interfaces.IBienenstockSzenarioHandler;
 import scenarios.bienenstock.einfacheUmgebung.*;
 import nereus.utils.Id;
+import nereus.utils.BooleanWrapper;
 import nereus.agentutils.ActionTargetPair;
 
 import java.util.Iterator;
@@ -85,7 +86,8 @@ public class SimplerKooperativerBDIAgent
     /** Id der Biene */
     private int id = 0;
     private Koordinate posBienenstock;
-    
+    /** falls eine beabsichtigte Aktiin tatsächlich ausgeführt wurde, wird erfold.value den Wert true haben. */
+     private BooleanWrapper erfolg=new BooleanWrapper(false);
     
     /** zähler für die begrenzte Kooperationsbereitschaft der biene  (Z.B. Kooperatin für 5 Runden erhalten) */
     private int rundeNrKooperation=0;
@@ -142,7 +144,7 @@ public class SimplerKooperativerBDIAgent
     private boolean  bienenstockHatHonig=true;
     
     private HashSet ignorierteBienenId=new HashSet();
-    
+
     
     /**
      * Zahl zur initialisierung des Zufallsgenerators.
@@ -473,11 +475,11 @@ public class SimplerKooperativerBDIAgent
                     Set gespKoord=this.gespeicherteFelder.keySet();
                     if (gespKoord.contains(d_Ziel)){
                         i_neuesZiel=d_Ziel;
-                        i_altesZiel=i_neuesZiel;  
+                        i_altesZiel=i_neuesZiel;
                     }else{
-                      i_neuesZiel=this.findeRandKoord(d_Ziel);
-                      i_altesZiel=i_neuesZiel;                        
-                    }     
+                        i_neuesZiel=this.findeRandKoord(d_Ziel);
+                        i_altesZiel=i_neuesZiel;
+                    }
                 }
                 
                 if ((myPosition.equals(i_altesZiel)) && (!d_Ziel.equals(i_altesZiel))){
@@ -485,7 +487,7 @@ public class SimplerKooperativerBDIAgent
                     i_altesZiel=i_neuesZiel;
                 }
                 modus.setIntentionZiel(i_neuesZiel);
-               
+                
             }break;
         }
         
@@ -515,7 +517,7 @@ public class SimplerKooperativerBDIAgent
                     }
                     LinkedList weg=this.kuerzesterWeg(myPosition, i_ziel, this.gespeicherteFelder);
                     actionNr=DesireIntentionPlan.A_FLIEGEN;
-                    if (weg==null) { /* darf nicht passieren, da nur Koordinate mitgeteilt 
+                    if (weg==null) { /* darf nicht passieren, da nur Koordinate mitgeteilt
                      werden zu denen ein Weg existierr*/
                         System.out.println(id+" KEIN WEG zum fliegen nach " + i_ziel.toString() );
                     } else{
@@ -1365,7 +1367,7 @@ public class SimplerKooperativerBDIAgent
     private void tanken(){
         System.out.println(selbst.gibBienenID()+ ": tanke " + selbst.gibPosition().toString());
         int mengeZuTanken=this.startHonig-selbst.gibGeladeneHonigmenge()+this.honigTanken;
-        long neuerAktCode = handler.aktionHonigTanken(aktCode,mengeZuTanken);
+        long neuerAktCode = handler.aktionHonigTanken(aktCode, erfolg, mengeZuTanken);
         if (!(neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
         }
@@ -1376,7 +1378,7 @@ public class SimplerKooperativerBDIAgent
     /** lässt die Biene starten */
     private void starten(){
         System.out.println(selbst.gibBienenID()+ ": starte " + selbst.gibPosition().toString());
-        long neuerAktCode = handler.aktionStarten(aktCode);
+        long neuerAktCode = handler.aktionStarten(aktCode, erfolg);
         if (!(neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
         }
@@ -1386,7 +1388,7 @@ public class SimplerKooperativerBDIAgent
     /** lässt die Biene landen */
     private void landen(){
         System.out.println(selbst.gibBienenID()+ ": lande " + selbst.gibPosition().toString());
-        long neuerAktCode = handler.aktionLanden(aktCode);
+        long neuerAktCode = handler.aktionLanden(aktCode, erfolg);
         if (!(neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
         }
@@ -1400,7 +1402,7 @@ public class SimplerKooperativerBDIAgent
      */
     private void fliegen(Koordinate nextZiel){
         System.out.println(selbst.gibBienenID()+ ": fliege zur " + nextZiel.toString());
-        long neuerAktCode = handler.aktionFliegen(aktCode, nextZiel);
+        long neuerAktCode = handler.aktionFliegen(aktCode, erfolg, nextZiel);
         if (!(neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
         }
@@ -1409,7 +1411,7 @@ public class SimplerKooperativerBDIAgent
     /** lässt die Biene Nektar abbauen */
     private void nektarAbbauen(){
         System.out.println(selbst.gibBienenID()+ ": baue Nektar ab " + selbst.gibPosition().toString());
-        long neuerAktCode = handler.aktionNektarAbbauen(aktCode,MAX);
+        long neuerAktCode = handler.aktionNektarAbbauen(aktCode, erfolg,MAX);
         if (!(neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
         }
@@ -1419,7 +1421,7 @@ public class SimplerKooperativerBDIAgent
     private void nektarAbliefern(){
         System.out.println(selbst.gibBienenID()+ ": liefere Nektar ab " + selbst.gibPosition().toString());
         this.gesammelterNektar=this.gesammelterNektar + selbst.gibGeladeneNektarmenge();
-        long neuerAktCode = handler.aktionNektarAbliefern(aktCode);
+        long neuerAktCode = handler.aktionNektarAbliefern(aktCode, erfolg);
         if (!(neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
         }
@@ -1436,7 +1438,7 @@ public class SimplerKooperativerBDIAgent
         int koordY=blumenKoordinate.gibYPosition();
         InfoBlume infoBlume=(InfoBlume)this.bekannteBlumen.get(blumenKoordinate);
         if (infoBlume.getProbeEntnommen()) nutzen=infoBlume.getNutzen();
-        long neuerAktCode = handler.aktionTanzen(aktCode, koordX, koordY, true, true,nutzen);
+        long neuerAktCode = handler.aktionTanzen(aktCode, erfolg, koordX, koordY, true, true,nutzen);
         System.out.println(selbst.gibBienenID()+ ": TANZE: habe übermittelt Koordinate : "+ blumenKoordinate.toString() +
                 " Nutzen " + nutzen);
         if (!(neuerAktCode == 0L)) {
@@ -1456,7 +1458,7 @@ public class SimplerKooperativerBDIAgent
     private Koordinate zuschauen(int tanzendeBieneID){
         Info infoAnf=selbst.gibInformation();
         Koordinate blumenKoord=null;
-        long neuerAktCode = handler.aktionZuschauen(aktCode, tanzendeBieneID);
+        long neuerAktCode = handler.aktionZuschauen(aktCode, erfolg, tanzendeBieneID);
         if (!( neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
         }
@@ -1484,7 +1486,7 @@ public class SimplerKooperativerBDIAgent
      */
     public void warten() {
         System.out.println(id + ": warten " + selbst.gibPosition().toString() );
-        long neuerAktCode = handler.aktionWarten(aktCode);
+        long neuerAktCode = handler.aktionWarten(aktCode, erfolg);
         if (!(neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
         }

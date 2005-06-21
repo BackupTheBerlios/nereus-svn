@@ -34,6 +34,7 @@ import scenarios.bienenstock.einfacheUmgebung.EinfacheKarte;
 import nereus.simulatorinterfaces.AbstractScenarioHandler;
 import nereus.utils.ActionKey;
 import nereus.utils.Id;
+import nereus.utils.BooleanWrapper;
 import nereus.exceptions.InvalidAgentException;
 import nereus.exceptions.InvalidActionKeyException;
 import nereus.exceptions.InvalidElementException;
@@ -85,10 +86,13 @@ public class BienenstockSzenarioHandler extends AbstractScenarioHandler
      * Szenarios weiter.
      *
      * @param aktCode           Aktionscode des Agenten
+     * @param erfolg        Platzhalter, der nach der Ausführung true enthält,
+     *                      fals die beabsichtigte Aktion ausgeführt wurde.
+     *
      * @return                   neuer Aktionscode für den Agenten
      */
-    public long aktionStarten(long aktCode) {
-        return spielmeister.startenLassen(aktCode);
+    public long aktionStarten(long aktCode, BooleanWrapper erfolg) {
+        return spielmeister.startenLassen(aktCode, erfolg);
     }
     
     /**
@@ -96,12 +100,15 @@ public class BienenstockSzenarioHandler extends AbstractScenarioHandler
      * Szenarios weiter.
      *
      * @param aktCode           Aktionscode des Agenten
+     * @param erfolg        Platzhalter, der nach der Ausführung true enthält,
+     *                      fals die beabsichtigte Aktion ausgeführt wurde.
+     *
      * @param ziel              Das anzufliegende Feld
      * @return              neuer Aktionscode für den Agenten
      */
-    public long aktionFliegen(long aktCode,
+    public long aktionFliegen(long aktCode, BooleanWrapper erfolg,
             Koordinate ziel) {
-        return spielmeister.fliegenLassen(aktCode, ziel);
+        return spielmeister.fliegenLassen(aktCode, erfolg, ziel);
     }
     
     /**
@@ -109,10 +116,13 @@ public class BienenstockSzenarioHandler extends AbstractScenarioHandler
      * Szenarios weiter.
      *
      * @param aktCode           Aktionscode des Agenten
+     * @param erfolg        Platzhalter, der nach der Ausführung true enthält,
+     *                      fals die beabsichtigte Aktion ausgeführt wurde.
+     *
      * @return                  neuer Aktionscode für den Agenten
      */
-    public long aktionLanden(long aktCode) {
-        return spielmeister.landenLassen(aktCode);
+    public long aktionLanden(long aktCode, BooleanWrapper erfolg) {
+        return spielmeister.landenLassen(aktCode, erfolg);
     }
     
     /**
@@ -120,10 +130,13 @@ public class BienenstockSzenarioHandler extends AbstractScenarioHandler
      * Szenarios weiter.
      *
      * @param aktCode           Aktionscode des Agenten
+     * @param erfolg        Platzhalter, der nach der Ausführung true enthält,
+     *                      fals die beabsichtigte Aktion ausgeführt wurde.
+     *
      * @return                  neuer Aktionscode für den Agenten
      */
-    public long aktionWarten(long aktCode) {
-        return spielmeister.wartenLassen(aktCode);
+    public long aktionWarten(long aktCode, BooleanWrapper erfolg) {
+        return spielmeister.wartenLassen(aktCode, erfolg);
     }
     
     /**
@@ -131,18 +144,20 @@ public class BienenstockSzenarioHandler extends AbstractScenarioHandler
      * Szenarios weiter.
      *
      * @param aktCode          Aktionscode des Agenten
+     * @param erfolg        Platzhalter, der nach der Ausführung true enthält,
+     *                      fals die beabsichtigte Aktion ausgeführt wurde.
      * @param zielX                 X-Koordinate des Ziels
      * @param zielY                Y-Koordinate des Ziels
      * @param richtung          mitteilen der Richtung?
      * @param entfernung     mitteilen der Entfernung?
      * @return                  neuer Aktionscode für den Agenten
      */
-    public long aktionTanzen(long aktCode,
+    public long aktionTanzen(long aktCode, BooleanWrapper erfolg,
             int zielX,
             int zielY,
             boolean richtung,
             boolean entfernung) {
-        return spielmeister.tanzenLassen(aktCode,
+        return spielmeister.tanzenLassen(aktCode, erfolg,
                 zielX,
                 zielY,
                 richtung,
@@ -154,6 +169,8 @@ public class BienenstockSzenarioHandler extends AbstractScenarioHandler
      * Szenarios weiter.
      *
      * @param aktCode          Aktionscode des Agenten
+     * @param erfolg        Platzhalter, der nach der Ausführung true enthält,
+     *                      fals die beabsichtigte Aktion ausgeführt wurde.
      * @param zielX                 X-Koordinate des Ziels
      * @param zielY                Y-Koordinate des Ziels
      * @param richtung          mitteilen der Richtung?
@@ -161,13 +178,13 @@ public class BienenstockSzenarioHandler extends AbstractScenarioHandler
      * @param nutzen         Nutzen der Blume
      * @return                  neuer Aktionscode für den Agenten
      */
-    public long aktionTanzen(long aktCode,
+    public long aktionTanzen(long aktCode, BooleanWrapper erfolg,
             int zielX,
             int zielY,
             boolean richtung,
             boolean entfernung,
             double nutzen) {
-        return spielmeister.tanzenLassen(aktCode,
+        return spielmeister.tanzenLassen(aktCode, erfolg,
                 zielX,
                 zielY,
                 richtung,
@@ -181,12 +198,14 @@ public class BienenstockSzenarioHandler extends AbstractScenarioHandler
      *
      * @see Scenario.aktionZuschauen
      * @param aktCode           Aktionscode des Agenten
+     * @param erfolg        Platzhalter, der nach der Ausführung true enthält,
+     *                      fals die beabsichtigte Aktion ausgeführt wurde.
      * @param tanzendeBieneID   Die ID der Biene, der der Agent zuschauen möchte
      * @return                  neuer Aktionscode für den Agenten
      */
-    public long aktionZuschauen(long aktCode,
+    public long aktionZuschauen(long aktCode, BooleanWrapper erfolg,
             int tanzendeBieneID) {
-        return spielmeister.zuschauenLassen(aktCode,
+        return spielmeister.zuschauenLassen(aktCode, erfolg,
                 tanzendeBieneID);
     }
     
@@ -196,11 +215,13 @@ public class BienenstockSzenarioHandler extends AbstractScenarioHandler
      *
      * @see Scenario.aktionHonigTanken
      * @param aktCode               Aktionscode des Agenten
+     * @param erfolg        Platzhalter, der nach der Ausführung true enthält,
+     *                      fals die beabsichtigte Aktion ausgeführt wurde.
      * @param menge                 Gewünschte Honigmenge
      * @return long                  neuer Aktionscode für den Agenten
      */
-    public long aktionHonigTanken(long aktCode, int menge) {
-        return spielmeister.honigTankenLassen(aktCode, menge);
+    public long aktionHonigTanken(long aktCode, BooleanWrapper erfolg, int menge) {
+        return spielmeister.honigTankenLassen(aktCode, erfolg, menge);
     }
     
     /**
@@ -208,10 +229,12 @@ public class BienenstockSzenarioHandler extends AbstractScenarioHandler
      * Szenarios weiter.
      *
      * @param aktCode               Aktionscode des Agenten
+     * @param erfolg        Platzhalter, der nach der Ausführung true enthält,
+     *                      fals die beabsichtigte Aktion ausgeführt wurde.
      * @return long                  neuer Aktionscode für den Agenten
      */
-    public long aktionNektarAbliefern(long aktCode) {
-        return spielmeister.nektarAbliefernLassen(aktCode);
+    public long aktionNektarAbliefern(long aktCode, BooleanWrapper erfolg) {
+        return spielmeister.nektarAbliefernLassen(aktCode, erfolg);
     }
     
     /**
@@ -219,11 +242,13 @@ public class BienenstockSzenarioHandler extends AbstractScenarioHandler
      * Szenarios weiter.
      *
      * @param aktCode                   Aktionscode des Agenten
+     * @param erfolg        Platzhalter, der nach der Ausführung true enthält,
+     *                      fals die beabsichtigte Aktion ausgeführt wurde.
      * @param menge                  Gewünschte Nektarmenge
      * @return long                  neuer Aktionscode für den Agenten
      */
-    public long aktionNektarAbbauen(long aktCode, int menge) {
-        return spielmeister.nektarAbbauenLassen(aktCode, menge);
+    public long aktionNektarAbbauen(long aktCode, BooleanWrapper erfolg, int menge) {
+        return spielmeister.nektarAbbauenLassen(aktCode, erfolg, menge);
     }
     
     /**

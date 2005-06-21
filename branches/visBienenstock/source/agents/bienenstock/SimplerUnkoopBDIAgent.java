@@ -35,6 +35,7 @@ import scenarios.bienenstock.interfaces.IBienenstockSzenarioHandler;
 import scenarios.bienenstock.einfacheUmgebung.*;
 import nereus.utils.Id;
 import nereus.agentutils.ActionTargetPair;
+import nereus.utils.BooleanWrapper;
 
 import java.util.Iterator;
 import java.util.Random;
@@ -112,7 +113,8 @@ public class SimplerUnkoopBDIAgent
     private int gesammelterNektar = 0;
     /** kurs Nektar zu Honig */
     private double kursNektarHonig=1;
-    
+    /** falls die beabsichtigte Aktion ausgeführt wurde, ist erfolg.value=true */
+    private BooleanWrapper erfolg=new BooleanWrapper(false);
     
     private boolean sofortNektarAbliefernTanken = false;
     
@@ -944,7 +946,7 @@ public class SimplerUnkoopBDIAgent
     private void tanken(){
         System.out.println(selbst.gibBienenID()+ ": tanke " + selbst.gibPosition().toString());
         int mengeZuTanken=this.startHonig-selbst.gibGeladeneHonigmenge() + this.honigTanken;
-        long neuerAktCode = handler.aktionHonigTanken(aktCode,mengeZuTanken);
+        long neuerAktCode = handler.aktionHonigTanken(aktCode, erfolg, mengeZuTanken);
         if (!(neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
         }
@@ -953,7 +955,7 @@ public class SimplerUnkoopBDIAgent
     /** lässt die Biene starten */
     private void starten(){
         System.out.println(selbst.gibBienenID()+ ": starte " + selbst.gibPosition().toString());
-        long neuerAktCode = handler.aktionStarten(aktCode);
+        long neuerAktCode = handler.aktionStarten(aktCode, erfolg);
         if (!(neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
         }
@@ -963,7 +965,7 @@ public class SimplerUnkoopBDIAgent
     /** lässt die Biene landen */
     private void landen(){
         System.out.println(selbst.gibBienenID()+ ": lande " + selbst.gibPosition().toString());
-        long neuerAktCode = handler.aktionLanden(aktCode);
+        long neuerAktCode = handler.aktionLanden(aktCode, erfolg);
         if (!(neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
         }
@@ -977,7 +979,7 @@ public class SimplerUnkoopBDIAgent
      */
     private void fliegen(Koordinate nextZiel){
         System.out.println(selbst.gibBienenID()+ ": fliege zur " + nextZiel.toString());
-        long neuerAktCode = handler.aktionFliegen(aktCode, nextZiel);
+        long neuerAktCode = handler.aktionFliegen(aktCode, erfolg, nextZiel);
         if (!(neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
         }
@@ -986,7 +988,7 @@ public class SimplerUnkoopBDIAgent
     /** lässt die Biene Nektar abbauen */
     private void nektarAbbauen(){
         System.out.println(selbst.gibBienenID()+ ": baue Nektar ab " + selbst.gibPosition().toString());
-        long neuerAktCode = handler.aktionNektarAbbauen(aktCode,MAX);
+        long neuerAktCode = handler.aktionNektarAbbauen(aktCode, erfolg,MAX);
         if (!(neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
         }
@@ -996,7 +998,7 @@ public class SimplerUnkoopBDIAgent
     private void nektarAbliefern(){
         System.out.println(selbst.gibBienenID()+ ": liefere Nektar ab " + selbst.gibPosition().toString());
         this.gesammelterNektar=this.gesammelterNektar + selbst.gibGeladeneNektarmenge();
-        long neuerAktCode = handler.aktionNektarAbliefern(aktCode);
+        long neuerAktCode = handler.aktionNektarAbliefern(aktCode, erfolg);
         if (!(neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
         }
@@ -1010,7 +1012,7 @@ public class SimplerUnkoopBDIAgent
     private void tanzen(Koordinate blumenKoordinate){
         int koordX=blumenKoordinate.gibXPosition();
         int koordY=blumenKoordinate.gibYPosition();
-        long neuerAktCode = handler.aktionTanzen(aktCode, koordX, koordY, true, true);
+        long neuerAktCode = handler.aktionTanzen(aktCode, erfolg, koordX, koordY, true, true);
         if (!(neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
         }
@@ -1027,7 +1029,7 @@ public class SimplerUnkoopBDIAgent
     private Koordinate zuschauen(int tanzendeBieneID){
         Info infoAnf=selbst.gibInformation();
         Koordinate blumenKoord=null;
-        long neuerAktCode = handler.aktionZuschauen(aktCode, tanzendeBieneID);
+        long neuerAktCode = handler.aktionZuschauen(aktCode, erfolg, tanzendeBieneID);
         if (!( neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
         }
@@ -1054,7 +1056,7 @@ public class SimplerUnkoopBDIAgent
      */
     public void warten() {
         System.out.println(id + ": warten " + selbst.gibPosition().toString());
-        long neuerAktCode = handler.aktionWarten(aktCode);
+        long neuerAktCode = handler.aktionWarten(aktCode, erfolg);
         if (!(neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
         }

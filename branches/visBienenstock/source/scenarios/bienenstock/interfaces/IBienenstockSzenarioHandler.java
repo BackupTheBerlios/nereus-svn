@@ -4,7 +4,7 @@
  * Letzte Änderung: 8. Juni 2005 durch Eugen Volk
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
- *                  
+ *
  *
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
@@ -36,6 +36,7 @@ import nereus.exceptions.InvalidElementException;
 import scenarios.bienenstock.einfacheUmgebung.EinfacheKarte;
 import nereus.utils.ActionKey;
 import nereus.utils.Id;
+import nereus.utils.BooleanWrapper;
 import scenarios.bienenstock.agenteninfo.Koordinate;
 
 /**
@@ -59,36 +60,46 @@ public interface IBienenstockSzenarioHandler {
     /**
      * lässt die Biene von Boden starten.
      * @param aktCode       Der Aktionscode des Agenten
+     * @param erfolg        Platzhalter, der nach der Ausführung true enthält,
+     *                      fals die beabsichtigte Aktion ausgeführt wurde.
      * @return              Der neue Aktionscode
      */
-    long aktionStarten(long aktCode);
+    long aktionStarten(long aktCode, BooleanWrapper erfolg);
     
     /**
      * lässt die Biene zum benachbarten Feld fliegen.
      * @param aktCode       Der Aktionscode des Agenten
+     * @param erfolg        Platzhalter, der nach der Ausführung true enthält,
+     *                      falls die beabsichtigte Aktion ausgeführt wurde.
      * @param ziel          Das gewünschte Flugziel
      * @return              Der neue Aktionscode
      */
-    long aktionFliegen(long aktCode,
+    long aktionFliegen(long aktCode, BooleanWrapper erfolg,
             Koordinate ziel);
     /**
      * lässt die Biene landen.
      * @param aktCode       Der Aktionscode des Agenten
+     * @param erfolg        Platzhalter, der nach der Ausführung true enthält,
+     *                      falls die beabsichtigte Aktion ausgeführt wurde.
      * @return              Der neue Aktionscode
      */
-    long aktionLanden(long aktCode);
+    long aktionLanden(long aktCode, BooleanWrapper erfolg);
     
     /**
      * lässt die Biene warten.
      * @param aktCode       Der Aktionscode des Agenten
+     * @param erfolg        Platzhalter, der nach der Ausführung true enthält,
+     *                      falls die beabsichtigte Aktion ausgeführt wurde.
      * @return              Der neue Aktionscode
      */
-    long aktionWarten(long aktCode);
+    long aktionWarten(long aktCode, BooleanWrapper erfolg);
     
     /**
-     * lässt die Biene tanzen, Dadurch teilt die Biene Information den 
+     * lässt die Biene tanzen, Dadurch teilt die Biene Information den
      * anderen Bienen mit.
      * @param aktCode       Der Aktionscode des Agenten
+     * @param erfolg        Platzhalter, der nach der Ausführung true enthält,
+     *                      falls die beabsichtigte Aktion ausgeführt wurde.
      * @param zielX         Die mitzuteilende X-Koordinate
      * @param zielY         Die Mitzuteilende Y-Koordinate
      * @param richtung      Gibt an, ob die Richtung mitzuteilen ist
@@ -96,15 +107,18 @@ public interface IBienenstockSzenarioHandler {
      * @return              Der neue Aktionscode
      */
     long aktionTanzen(long aktCode,
+            BooleanWrapper erfolg,
             int zielX,
             int zielY,
             boolean richtung,
             boolean entfernung);
     
     /**
-     * lässt die Biene tanzen, Dadurch teilt die Biene Information den 
+     * lässt die Biene tanzen, Dadurch teilt die Biene Information den
      * anderen Bienen mit.
      * @param aktCode       Der Aktionscode des Agenten
+     * @param erfolg        Platzhalter, der nach der Ausführung true enthält,
+     *                      falls die beabsichtigte Aktion ausgeführt wurde.
      * @param zielX         Die mitzuteilende X-Koordinate
      * @param zielY         Die Mitzuteilende Y-Koordinate
      * @param richtung      Gibt an, ob die Richtung mitzuteilen ist
@@ -113,6 +127,7 @@ public interface IBienenstockSzenarioHandler {
      * @return              Der neue Aktionscode
      */
     long aktionTanzen(long aktCode,
+            BooleanWrapper erfolg,
             int zielX,
             int zielY,
             boolean richtung,
@@ -122,35 +137,43 @@ public interface IBienenstockSzenarioHandler {
     /**
      * lässt die Biene beim einer anderen Biene beim Tanzen zuschauen.
      * @param aktCode       Der Aktionscode des Agenten
+     * @param erfolg        Platzhalter, der nach der Ausführung true enthält,
+     *                      falls die beabsichtigte Aktion ausgeführt wurde.
      * @param tanzendeBieneID   Die ID der Biene, der der Agent zuschauen möchte
      * @return              Der neue Aktionscode
      */
-    long aktionZuschauen(long aktCode,
+    long aktionZuschauen(long aktCode, BooleanWrapper erfolg,
             int tanzendeBieneID);
     
     /**
      * lässt die Biene Honig tanken.
      * @param aktCode       Der Aktionscode des Agenten
+     * @param erfolg        Platzhalter, der nach der Ausführung true enthält,
+     *                      falls die beabsichtigte Aktion ausgeführt wurde.
      * @param menge         Die gewünschte Honigmenge
      * @return              Der neue Aktionscode
      */
-    long aktionHonigTanken(long aktCode,
+    long aktionHonigTanken(long aktCode, BooleanWrapper erfolg,
             int menge);
     
     /**
      * lässt die Biene ihren gesammelten Nektar abliefern.
      * @param aktCode       Der Aktionscode des Agenten
+     * @param erfolg        Platzhalter, der nach der Ausführung true enthält,
+     *                      falls die beabsichtigte Aktion ausgeführt wurde.
      * @return              Der neue Aktionscode
      */
-    long aktionNektarAbliefern(long aktCode);
+    long aktionNektarAbliefern(long aktCode, BooleanWrapper erfolg);
     
     /**
      * lässt die Biene von der Blume Nektar abbauen.
      * @param aktCode       Der Aktionscode des Agenten
+     * @param erfolg        Platzhalter, der nach der Ausführung true enthält,
+     *                      falls die beabsichtigte Aktion ausgeführt wurde.
      * @param menge         Die gewünschte Nektarmenge
      * @return              Der neue Aktionscode
      */
-    long aktionNektarAbbauen(long aktCode,
+    long aktionNektarAbbauen(long aktCode, BooleanWrapper erfolg,
             int menge);
     
     /**

@@ -56,6 +56,7 @@ import nereus.utils.Id;
 import nereus.utils.ParameterDescription;
 import nereus.simulator.ServerInfoObject;
 import nereus.utils.GameConf;
+import nereus.utils.BooleanWrapper;
 
 import nereus.simulator.ServerInfoObject;
 
@@ -331,7 +332,7 @@ public class Scenario
                 }
             }
         }
-
+        
         if (((Integer) parameter.gibWert("endbedingungMaxHonig")).intValue() > 0) {
             Iterator stoecke = bienenStoecke.iterator();
             while (stoecke.hasNext()) {
@@ -347,18 +348,18 @@ public class Scenario
                 }
             }
         }
-
+        
         if (rundennummer
-            == ((Integer) parameter.gibWert("endbedingungMaxRunden")).intValue()) {
+                == ((Integer) parameter.gibWert("endbedingungMaxRunden")).intValue()) {
             System.out.println("endbedingungMaxRunden erreicht.");
             return true;
         }
-
+        
         if (spielkarte.alleBienenTot()) {
             System.out.println("Alle Bienen sind verstorben.");
             return true;
         }
-
+        
         return false;
     }
     
@@ -629,16 +630,20 @@ public class Scenario
      * Aktionscode an den Agenten zurückgegeben.
      *
      * @param aktCode       Der Aktionscode des Agenten
+     * @param erfolg        Platzhalter, der nach der Ausführung true enthält,
+     *                      fals die beabsichtigte Aktion ausgeführt wurde.
+     *
      * @return              Der neue Aktionscode für den Agenten.
      *                      Ist die Anfrage missglückt, so bekommt
      *                      er 0 zurück.
      */
-    public long startenLassen(long aktCode) {
+    public long startenLassen(long aktCode, BooleanWrapper erfolg) {
         
         boolean erfolgreich;
         if (synchronisiereAktion(aktCode)) {
             // AUSFÜHRENDERAKTION
             erfolgreich = spielkarte.bieneStartenLassen(aktCode);
+            erfolg.setValue(erfolgreich);
             aktionAusgefuehrt(aktCode);
             long newCode=spielkarte.aktionscodeSetzen(aktCode);
             return newCode;
@@ -656,17 +661,20 @@ public class Scenario
      * Aktionscode an den Agenten zurückgegeben.
      *
      * @param aktCode       Der Aktionscode des Agenten
+     * @param erfolg        Platzhalter, der nach der Ausführung true enthält,
+     *                      fals die beabsichtigte Aktion ausgeführt wurde.
+     *
      * @param zielFeld      Das Feld zu dem der Agent fliegen möchte
      * @return              Der neue Aktionscode für den Agenten.
      *                      Ist die Anfrage missglückt, so bekommt
      *                      er 0 zurück.
      */
-    public long fliegenLassen(long aktCode, Koordinate zielFeld) {
+    public long fliegenLassen(long aktCode, BooleanWrapper erfolg, Koordinate zielFeld) {
         boolean erfolgreich;
         if (synchronisiereAktion(aktCode)) {
             // AUSFÜHRENDERAKTION
             erfolgreich = spielkarte.bieneFliegenLassen(aktCode, zielFeld);
-            
+            erfolg.setValue(erfolgreich);
             aktionAusgefuehrt(aktCode);
             long retValue=spielkarte.aktionscodeSetzen(aktCode);
             return retValue;
@@ -685,16 +693,18 @@ public class Scenario
      * Aktionscode an den Agenten zurückgegeben.
      *
      * @param aktCode       Der Aktionscode des Agenten
+     * @param erfolg        Platzhalter, der nach der Ausführung true enthält,
+     *                      fals die beabsichtigte Aktion ausgeführt wurde.
      * @return              Der neue Aktionscode für den Agenten.
      *                      Ist die Anfrage missglückt, so bekommt
      *                      er 0 zurück.
      */
-    public long landenLassen(long aktCode) {
+    public long landenLassen(long aktCode, BooleanWrapper erfolg) {
         boolean erfolgreich;
         if (synchronisiereAktion(aktCode)) {
             // AUSFÜHRENDERAKTION
             erfolgreich = spielkarte.bieneLandenLassen(aktCode);
-            
+            erfolg.setValue(erfolgreich);
             aktionAusgefuehrt(aktCode);
             
             long retValue=spielkarte.aktionscodeSetzen(aktCode);
@@ -714,17 +724,19 @@ public class Scenario
      * Aktionscode an den Agenten zurückgegeben.
      *
      * @param aktCode       Der Aktionscode des Agenten
+     * @param erfolg        Platzhalter, der nach der Ausführung true enthält,
+     *                      fals die beabsichtigte Aktion ausgeführt wurde.
      * @return              Der neue Aktionscode für den Agenten.
      *                      Ist die Anfrage missglückt, so bekommt
      *                      er 0 zurück.
      */
-    public long wartenLassen(long aktCode) {
+    public long wartenLassen(long aktCode, BooleanWrapper erfolg) {
         boolean erfolgreich;
         if (synchronisiereAktion(aktCode)) {
             
             // AUSFÜHRENDERAKTION
             erfolgreich = spielkarte.bieneWartenLassen(aktCode);
-            
+            erfolg.setValue(erfolgreich);
             aktionAusgefuehrt(aktCode);
             
             long retValue=spielkarte.aktionscodeSetzen(aktCode);
@@ -745,15 +757,18 @@ public class Scenario
      * Aktionscode an den Agenten zurückgegeben.
      *
      * @param aktCode       Der Aktionscode des Agenten
+     * @param erfolg        Platzhalter, der nach der Ausführung true enthält,
+     *                      fals die beabsichtigte Aktion ausgeführt wurde.
      * @param zielX         Die x-Koordinate der mitgeteilten Position
      * @param zielY         Die y-Koordinate der mitgeteilten Position
      * @param richtung      Teilt mit, ob die Richtung mitgeteilt werden soll
      * @param entfernung    Teilt mit, ob die Entfernung mitgeteilt werden soll
+     *
      * @return              Der neue Aktionscode für den Agenten.
      *                      Ist die Anfrage missglückt, so bekommt
      *                      er 0 zurück.
      */
-    public long tanzenLassen(long aktCode,
+    public long tanzenLassen(long aktCode, BooleanWrapper erfolg,
             int zielX,
             int zielY,
             boolean richtung,
@@ -768,7 +783,7 @@ public class Scenario
                     richtung,
                     entfernung,
                     -1);
-            
+            erfolg.setValue(erfolgreich);
             aktionAusgefuehrt(aktCode);
             
             long retValue=spielkarte.aktionscodeSetzen(aktCode);
@@ -779,7 +794,7 @@ public class Scenario
         }
     }
     
-     /**
+    /**
      * versucht einen Agenten tanzen zu lassen.
      *
      * Der Agent wird über seinen Aktionscode identifiziert und
@@ -788,6 +803,8 @@ public class Scenario
      * Aktionscode an den Agenten zurückgegeben.
      *
      * @param aktCode       Der Aktionscode des Agenten
+     * @param erfolg        Platzhalter, der nach der Ausführung true enthält,
+     *                      fals die beabsichtigte Aktion ausgeführt wurde.
      * @param zielX         Die x-Koordinate der mitgeteilten Position
      * @param zielY         Die y-Koordinate der mitgeteilten Position
      * @param richtung      Teilt mit, ob die Richtung mitgeteilt werden soll
@@ -798,6 +815,7 @@ public class Scenario
      *                      er 0 zurück.
      */
     public long tanzenLassen(long aktCode,
+            BooleanWrapper erfolg,
             int zielX,
             int zielY,
             boolean richtung,
@@ -813,7 +831,7 @@ public class Scenario
                     richtung,
                     entfernung,
                     nutzen);
-            
+            erfolg.setValue(erfolgreich);
             aktionAusgefuehrt(aktCode);
             
             long retValue=spielkarte.aktionscodeSetzen(aktCode);
@@ -833,19 +851,21 @@ public class Scenario
      * Aktionscode an den Agenten zurückgegeben.
      *
      * @param aktCode       Der Aktionscode des Agenten
+     * @param erfolg        Platzhalter, der nach der Ausführung true enthält,
+     *                      fals die beabsichtigte Aktion ausgeführt wurde.
      * @param idBienie      Die ID der Biene, der der Agent beim Tanzen
      *                      zuschauen möchte
      * @return              Der neue Aktionscode für den Agenten.
      *                      Ist die Anfrage missglückt, so bekommt
      *                      er 0 zurück.
      */
-    public long zuschauenLassen(long aktCode, int idBienie) {
+    public long zuschauenLassen(long aktCode, BooleanWrapper erfolg, int idBienie) {
         boolean erfolgreich;
         if (synchronisiereAktion(aktCode)) {
             
             // AUSFÜHRENDERAKTION
             erfolgreich = spielkarte.bieneZuschauenLassen(aktCode, idBienie);
-            
+            erfolg.setValue(erfolgreich);
             aktionAusgefuehrt(aktCode);
             
             return spielkarte.aktionscodeSetzen(aktCode);
@@ -864,18 +884,20 @@ public class Scenario
      * Aktionscode an den Agenten zurückgegeben.
      *
      * @param aktCode       Der Aktionscode des Agenten
+     * @param erfolg        Platzhalter, der nach der Ausführung true enthält,
+     *                      fals die beabsichtigte Aktion ausgeführt wurde.
      * @param menge         Die gewünschte Honigmenge
      * @return              Der neue Aktionscode für den Agenten.
      *                      Ist die Anfrage missglückt, so bekommt
      *                      er 0 zurück.
      */
-    public long honigTankenLassen(long aktCode, int menge) {
+    public long honigTankenLassen(long aktCode, BooleanWrapper erfolg, int menge) {
         boolean erfolgreich;
         if (synchronisiereAktion(aktCode)) {
             
             // AUSFÜHRENDERAKTION
             erfolgreich = spielkarte.bieneHonigTankenLassen(aktCode, menge);
-            
+            erfolg.setValue(erfolgreich);
             aktionAusgefuehrt(aktCode);
             
             long retValue=spielkarte.aktionscodeSetzen(aktCode);
@@ -895,17 +917,19 @@ public class Scenario
      * Aktionscode an den Agenten zurückgegeben.
      *
      * @param aktCode       Der Aktionscode des Agenten
+     * @param erfolg        Platzhalter, der nach der Ausführung true enthält,
+     *                      fals die beabsichtigte Aktion ausgeführt wurde.
      * @return              Der neue Aktionscode für den Agenten.
      *                      Ist die Anfrage missglückt, so bekommt
      *                      er 0 zurück.
      */
-    public long nektarAbliefernLassen(long aktCode) {
+    public long nektarAbliefernLassen(long aktCode, BooleanWrapper erfolg) {
         boolean erfolgreich;
         if (synchronisiereAktion(aktCode)) {
             
             // AUSFÜHRENDERAKTION
             erfolgreich = spielkarte.bieneNektarAbliefernLassen(aktCode);
-            
+            erfolg.setValue(erfolgreich);
             aktionAusgefuehrt(aktCode);
             
             return spielkarte.aktionscodeSetzen(aktCode);
@@ -924,18 +948,20 @@ public class Scenario
      * Aktionscode an den Agenten zurückgegeben.
      *
      * @param aktCode       Der Aktionscode des Agenten
+     * @param erfolg        Platzhalter, der nach der Ausführung true enthält,
+     *                      falls die beabsichtigte Aktion ausgeführt wurde.
      * @param menge         Die gewünschte Nekarmenge
      * @return              Der neue Aktionscode für den Agenten.
      *                      Ist die Anfrage missglückt, so bekommt
      *                      er 0 zurück.
      */
-    public long nektarAbbauenLassen(long aktCode, int menge) {
+    public long nektarAbbauenLassen(long aktCode, BooleanWrapper erfolg, int menge) {
         boolean erfolgreich;
         if (synchronisiereAktion(aktCode)) {
             
             // AUSFÜHRENDERAKTION
             erfolgreich = spielkarte.bieneNektarAbbauenLassen(aktCode, menge);
-            
+            erfolg.setValue(erfolgreich);
             aktionAusgefuehrt(aktCode);
             
             return spielkarte.aktionscodeSetzen(aktCode);
@@ -1258,7 +1284,7 @@ public class Scenario
                 "endbedingungMaxRunden",
                 ParameterDescription.IntegerType,
                 new Integer(2000)));
-
+        
         return parameterListe;
     }
     
