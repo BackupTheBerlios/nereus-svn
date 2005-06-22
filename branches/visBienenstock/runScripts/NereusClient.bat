@@ -4,7 +4,7 @@ REM Datei in der die Rechte für den Client vergeben werden.
 set POLICY_CONF=client.policy
 
 REM die Parameter für die JVM
-set JVMPAR=-Xmx200m
+set JVMPAR=-Xms200m -Xmx200m
 set JVMPAR=%JVMPAR% -Djava.security.policy=%CONFIG_DIR%\%POLICY_CONF%
 set JVMPAR=%JVMPAR% -Djava.rmi.server.hostname=%SERVER_HOST%
 

@@ -13,7 +13,7 @@ REM MAIN=nereus.simulator.MASIMServer
 set MAIN=nereus.simulator.MASIMServer
 
 REM die Parameter für die JVM
-set JVMPAR= -Djava.security.policy=%CONFIG_DIR%\%POLICY_CONF%
+set JVMPAR=-Xms200m -Xmx200m -Djava.security.policy=%CONFIG_DIR%\%POLICY_CONF%
 set JVMPAR=%JVMPAR% -Djava.rmi.server.hostname=%SERVER_HOST%
 
 %JAVA% %JVMPAR% -cp %DIST_DIR%\Server.jar;%DIST_DIR%\BienenstockScenario.jar %MAIN% %SERVER_HOST% %BASIS_PFAD% %CONFIGFILE_SERVER% %SCENARIOS_DIR%
