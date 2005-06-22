@@ -1,7 +1,7 @@
 /*
  * Dateiname      : EinfacherPlatz.java
  * Erzeugt        : 6. Oktober 2004
- * Letzte Änderung: 14. Februar 2005 durch Philip Funck
+ * Letzte Änderung: 21. Juni 2005 durch Eugen Volk
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
  *
@@ -49,15 +49,18 @@ public class EinfacherPlatz extends EinfachesFeld {
      * @param wBienen   am Platz wartende Bienen
      * @param fBienen   am Platz fliegende Bienen
      * @param tBienen   am Platz tanzende Bienen
+     * @param sBienen   sonstige Bienen
      */
     public EinfacherPlatz(Koordinate pos,
             HashSet wBienen,
             HashSet fBienen,
-            HashSet tBienen) {
+            HashSet tBienen,
+            HashSet sBienen) {
         super(pos,
                 wBienen,
                 fBienen,
-                tBienen);
+                tBienen,
+                sBienen);
         /*position = pos;
         wartendeBienen = wBienen;
         fliegendeBienen = fBienen;

@@ -83,15 +83,18 @@ public class EinfachesFeld {
      * @param wBienen   am Feld wartende Bienen
      * @param fBienen   über dem Feld fliegende Bienen
      * @param tBienen   am Feld tanzende Bienen
+     * @param sBienen   sonstige Bienen
      */
     public EinfachesFeld(Koordinate pos,
             HashSet wBienen,
             HashSet fBienen,
-            HashSet tBienen) {
+            HashSet tBienen,
+            HashSet sBienen) {
         position = pos;
         wartendeBienen = wBienen;
         fliegendeBienen = fBienen;
         tanzendeBienen = tBienen;
+        sonstigeBienen=sBienen;
     }
     
     /**

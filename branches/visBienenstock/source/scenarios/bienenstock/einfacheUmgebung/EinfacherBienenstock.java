@@ -54,17 +54,20 @@ public class EinfacherBienenstock extends EinfachesFeld {
      * @param wBienen   am Stock wartende Bienen
      * @param fBienen   am Stock fliegende Bienen
      * @param tBienen   am Stock tanzende Bienen
+     * @param sBienen   am Stock sonstige Bienen
      * @param vID       ID des zugehörigen Bienenvolkes
      */
     public EinfacherBienenstock(Koordinate pos,
             HashSet wBienen,
             HashSet fBienen,
             HashSet tBienen,
+            HashSet sBienen,
             int vID) {
         super(pos,
                 wBienen,
                 fBienen,
-                tBienen);
+                tBienen,
+                sBienen);
         /*position = pos;
         wartendeBienen = wBienen;
         fliegendeBienen = fBienen;

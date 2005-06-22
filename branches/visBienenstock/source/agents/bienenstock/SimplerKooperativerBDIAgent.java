@@ -87,13 +87,13 @@ public class SimplerKooperativerBDIAgent
     private int id = 0;
     private Koordinate posBienenstock;
     /** falls eine beabsichtigte Aktiin tatsächlich ausgeführt wurde, wird erfold.value den Wert true haben. */
-     private BooleanWrapper erfolg=new BooleanWrapper(false);
+    private BooleanWrapper erfolg=new BooleanWrapper(false);
     
     /** zähler für die begrenzte Kooperationsbereitschaft der biene  (Z.B. Kooperatin für 5 Runden erhalten) */
     private int rundeNrKooperation=0;
     /** Konstante für die Erhaltung der Kooperation (warten auf Kommunikationspartner) über mehrere Runden */
     private int maxAnzahlKooperationsRunden=5;
-    
+    private int maxAnzahlWarteRunden=1;
     private boolean neueMitteilungErhalten=false;
     
     //   HashMap blumen = new HashMap();
@@ -144,7 +144,7 @@ public class SimplerKooperativerBDIAgent
     private boolean  bienenstockHatHonig=true;
     
     private HashSet ignorierteBienenId=new HashSet();
-
+    
     
     /**
      * Zahl zur initialisierung des Zufallsgenerators.
@@ -379,7 +379,7 @@ public class SimplerKooperativerBDIAgent
         
         switch (desire){
             case DesireIntentionPlan.G_FINDEEINEBLUME:{
-                if (selbst.gibGeladeneNektarmenge()>0) {
+                if (selbst.gibGeladeneNektarmenge()>(maxGelNektar/2)) {
                     modus.setIntention(DesireIntentionPlan.P_NEKTARABLIEFERNTANKEN);
                 } else{
                     newIntention=DesireIntentionPlan.P_FLIEGENZURKOORDINATE;
@@ -400,7 +400,7 @@ public class SimplerKooperativerBDIAgent
                 i_neuesZiel=d_Ziel;
                 if (d_Ziel.equals(myPosition)) newIntention=DesireIntentionPlan.P_NEKTARABBAUEN;
                 else {
-                    if (selbst.gibGeladeneNektarmenge()>0) {
+                    if (selbst.gibGeladeneNektarmenge()>(maxGelNektar/2)) {
                         newIntention=DesireIntentionPlan.P_NEKTARABLIEFERNTANKEN;
                         i_neuesZiel=this.posBienenstock;
                     } else{
@@ -440,7 +440,8 @@ public class SimplerKooperativerBDIAgent
                             || (this.rundeNrKooperation==0)))){
                         newIntention=DesireIntentionPlan.P_NEKTARABLIEFERNTANKEN;
                         modus.setIntention(newIntention);
-                    } else if (kooperationsBereitschaft() || (this.rundeNrKooperation<=this.maxAnzahlKooperationsRunden)){
+                    } else if ((kooperationsBereitschaft() || (this.rundeNrKooperation<=this.maxAnzahlWarteRunden))
+                    && (this.rundeNrKooperation<=this.maxAnzahlKooperationsRunden)){
                         newIntention=DesireIntentionPlan.P_COOPERATION;
                         modus.setIntention(newIntention);
                         i_neuesZiel=d_Ziel;
@@ -468,11 +469,11 @@ public class SimplerKooperativerBDIAgent
                 }
             }break;
             case DesireIntentionPlan.G_FINDEDIEBLUME:{
+                Set gespKoord=this.gespeicherteFelder.keySet();
                 modus.setIntention(DesireIntentionPlan.P_FLIEGENZURKOORDINATE);
                 i_neuesZiel=i_altesZiel;
                 // falls zur Koordinate keein Weg existiert, so werden Randknoten zur Nav verwendet.
                 if (i_altesZiel==null) {
-                    Set gespKoord=this.gespeicherteFelder.keySet();
                     if (gespKoord.contains(d_Ziel)){
                         i_neuesZiel=d_Ziel;
                         i_altesZiel=i_neuesZiel;
@@ -482,7 +483,10 @@ public class SimplerKooperativerBDIAgent
                     }
                 }
                 
-                if ((myPosition.equals(i_altesZiel)) && (!d_Ziel.equals(i_altesZiel))){
+                if (gespKoord.contains(d_Ziel)) {
+                    i_neuesZiel=d_Ziel;
+                    i_altesZiel=d_Ziel;
+                }else if ((myPosition.equals(i_altesZiel)) && (!d_Ziel.equals(i_altesZiel))){
                     i_neuesZiel=this.findeRandKoord(d_Ziel);
                     i_altesZiel=i_neuesZiel;
                 }
@@ -942,13 +946,13 @@ public class SimplerKooperativerBDIAgent
             Entry entry=(Entry)it.next();
             infoBlume=(InfoBlume)entry.getValue();
             if (infoBlume.getHatNektar()){
-                liste.add(infoBlume.getBlumenKoordinate());
                 if (infoBlume.getProbeEntnommen()) {
                     if (infoBlume.getNutzen()>0) {
                         koordWertPaar=new KoordWertPaar(infoBlume.getBlumenKoordinate(),infoBlume.getNutzen());
                         sortNutzen.add(koordWertPaar);
+                        liste.add(infoBlume.getBlumenKoordinate());
                     }
-                }
+                }else liste.add(infoBlume.getBlumenKoordinate());
             }
         }
         LinkedList gefundeneBlumenKoord=liste;

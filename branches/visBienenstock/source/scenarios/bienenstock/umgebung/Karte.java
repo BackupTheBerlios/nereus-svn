@@ -252,7 +252,8 @@ public class Karte extends AbstractEnviroment {
                 vollstFeld.gibPosition().gibYPosition()),
                 konvertiereHash(vollstFeld.gibWartendeBienen()),
                 konvertiereHash(vollstFeld.gibFliegendeBienen()),
-                konvertiereHash(vollstFeld.gibTanzendeBienen())
+                konvertiereHash(vollstFeld.gibTanzendeBienen()),
+                konvertiereHash(vollstFeld.gibSonstigeBienen())
                 );
     }
     
@@ -271,6 +272,7 @@ public class Karte extends AbstractEnviroment {
                 konvertiereHash(vollstFeld.gibWartendeBienen()),
                 konvertiereHash(vollstFeld.gibFliegendeBienen()),
                 konvertiereHash(vollstFeld.gibTanzendeBienen()),
+                konvertiereHash(vollstFeld.gibSonstigeBienen()), 
                 vollstFeld.gibMerkmal(),
                 konvertiereHash(vollstFeld.gibAbbauendeBienen()), 
                 vollstFeld.nektarAuslesbar(), 
@@ -290,6 +292,7 @@ public class Karte extends AbstractEnviroment {
                 konvertiereHash(vollstFeld.gibWartendeBienen()),
                 konvertiereHash(vollstFeld.gibFliegendeBienen()),
                 konvertiereHash(vollstFeld.gibTanzendeBienen()),
+                konvertiereHash(vollstFeld.gibSonstigeBienen()),
                 vollstFeld.gibVolksID()
                 );
     }

@@ -20,6 +20,7 @@
 -->
 
 <config>
+<gameconf name="Bienenst_L1xKoop" scenario="bienenstock" karte="luft1XKoop.gml" parameters="bienenstockconfig1.xml"/>
 <gameconf name="Bienenstock_L2_od" scenario="bienenstock" karte="luft2nektar500-od.gml" parameters="bienenstockconfig1.xml"/>
 <gameconf name="Bienenstock_L1_od" scenario="bienenstock" karte="luft1nektar500-od.gml" parameters="bienenstockconfig1.xml"/>
 <gameconf name="Bienenstock_23x15_od" scenario="bienenstock" karte="f23x15-sl2-n420-od.gml" parameters="bienenstockconfig2.xml"/>

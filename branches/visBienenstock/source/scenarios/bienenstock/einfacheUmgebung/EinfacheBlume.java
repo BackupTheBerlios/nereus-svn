@@ -73,11 +73,13 @@ public class EinfacheBlume extends EinfachesFeld {
      * @param tBienen   an dieser Blume tanzende Bienen
      * @param merk      Merkmal der Blume
      * @param aBienen   an dieser Blume abbauende Bienen
+     * @param sBienen   sonstige Bienen
      */
     public EinfacheBlume(Koordinate pos,
             HashSet wBienen,
             HashSet fBienen,
             HashSet tBienen,
+            HashSet sBienen,
             int merk,
             HashSet aBienen,
             boolean nektarAuslesbar,
@@ -85,7 +87,8 @@ public class EinfacheBlume extends EinfachesFeld {
         super(pos,
                 wBienen,
                 fBienen,
-                tBienen);
+                tBienen,
+                sBienen);
         /*position = pos;
         wartendeBienen = wBienen;
         fliegendeBienen = fBienen;
