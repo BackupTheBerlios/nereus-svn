@@ -1,7 +1,7 @@
 /*
  * Dateiname      : SimplerUnkoopBDIAgent.java
  * Erzeugt        : 6. Juni 2005
- * Letzte Änderung: 17. Juni 2005 durch Eugen Volk
+ * Letzte Änderung: 22. Juni 2005 durch Eugen Volk
  * Autoren        :  Eugen Volk
  *
  *
@@ -46,9 +46,11 @@ import java.util.Hashtable;
 import java.util.Set;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeSet;
 import nereus.agentutils.Dijkstra;
 import scenarios.bienenstock.agenteninfo.Info;
 import scenarios.bienenstock.agenteninfo.Koordinate;
+import agents.bienenstock.utils.KoordWertPaar;
 import agents.bienenstock.utils.DesireIntentionPlan;
 import agents.bienenstock.utils.InfoBlume;
 
@@ -680,8 +682,30 @@ public class SimplerUnkoopBDIAgent
         }else{
              /*   TODO    ergänzen mit der Auswahl der Koordinate, die
               sowohl der Biene als auch dem Bienenstock am nächsten ist */
-            int indexNr=(int) Math.round(Math.random()*(size-1));
-            return (Koordinate)randFelder.get(indexNr);
+          /*  int indexNr=(int) Math.round(Math.random()*(size-1));
+            return (Koordinate)randFelder.get(indexNr); */
+            LinkedList sortRandFelderBienenstock;
+            LinkedList sortRandFelder;
+            
+            sortRandFelderBienenstock=this.sortKoordinaten(randFelder,this.posBienenstock);
+            sortRandFelder=this.sortKoordinaten(sortRandFelderBienenstock,this.selbst.gibPosition());
+            
+            double zufall=Math.random();
+            int index;
+            if (zufall<0) zufall=zufall*(-1);
+            LinkedList randListe=sortRandFelder;
+            int anzBienen=this.positionFeld.gibIDsFliegendeBienen().size()+
+                    this.positionFeld.gibIDsWartendeBienen().size()+
+                    this.positionFeld.gibIDsTanzendeBienen().size()+
+                    this.positionFeld.gibIDsTanzendeBienen().size();
+            int anzRander=randListe.size();
+            int minVal;
+            minVal=anzRander;
+            minVal= Math.min(anzBienen,anzRander);
+            
+            if (minVal>0) minVal=minVal-1;
+            int myWahl=(int) Math.round((minVal) * zufall);
+            return (Koordinate)sortRandFelder.get(myWahl);
         }
         
         
@@ -938,6 +962,69 @@ public class SimplerUnkoopBDIAgent
     }
     
     
+    /**
+     * gibt die vorgegebene Koordinaten-Liste sortiert nach der Entfernung zur startKoordinate zurück.
+     * @param koordList zu sortierenden Koordinaten-Liste
+     * @param startKoordinate Start-Koordinate
+     */
+    private LinkedList sortKoordinaten(LinkedList koordList, Koordinate startKoordinate){
+        TreeSet sortSet=new TreeSet();
+        HashMap bekannteFelder=this.gespeicherteFelder;
+        HashSet knotenMenge=new HashSet(bekannteFelder.keySet());
+        HashMap nachfolgeKnotenMap=transformFelderZuNachfolgeKnoten(bekannteFelder);
+        HashMap vorgangerKnoten=Dijkstra.allShortestPath(startKoordinate, knotenMenge,nachfolgeKnotenMap);
+        Koordinate zielKoordinate;
+        LinkedList weg;
+        if (koordList.contains(startKoordinate)) koordList.remove(startKoordinate);
+        Iterator koordListIt=koordList.iterator();
+        double entfernung;
+        while (koordListIt.hasNext()){
+            zielKoordinate=(Koordinate)koordListIt.next();
+            weg=Dijkstra.shortestPath(startKoordinate, zielKoordinate, knotenMenge, nachfolgeKnotenMap);
+            if (weg!=null) entfernung=weg.size();
+            else entfernung=Double.POSITIVE_INFINITY;
+            KoordWertPaar koordEntf=new KoordWertPaar(zielKoordinate, entfernung);
+            sortSet.add(koordEntf);
+        }
+        LinkedList retValue=new LinkedList();
+        Iterator it=sortSet.iterator();
+        while (it.hasNext()){
+            KoordWertPaar koordEntf=(KoordWertPaar)it.next();
+            retValue.add(koordEntf.getKoordinate());
+        }
+        return retValue;
+    }
+    
+    /**
+     * Transformiert eine Menge von Feldern in eine KantenMenge (Knoten, seine Nachfolger).
+     * @param bekannteFelder eine Menge von Feldern.
+     * @return eine KantenMenge (Knoten, seine Nachfolger) als HashMap.
+     *
+     */
+    private HashMap transformFelderZuNachfolgeKnoten(HashMap bekannteFelder){
+        HashMap nachfolgeKnotenMap=new HashMap();
+        Iterator bFelderIt=bekannteFelder.keySet().iterator();
+        while (bFelderIt.hasNext()){
+            Koordinate keyKoord=(Koordinate)bFelderIt.next();
+            EinfachesFeld einfachesFeld=(EinfachesFeld)bekannteFelder.get(keyKoord);
+            HashSet nachfolgeKnoten=new HashSet(); // nachfolgeKnoten von keyKoord
+            if (einfachesFeld==null) {
+                nachfolgeKnotenMap.put(keyKoord,nachfolgeKnoten);
+                continue;
+            }
+            HashMap hashNachbarn=einfachesFeld.gibNachbarfelder();
+            if (hashNachbarn==null)  {
+                nachfolgeKnotenMap.put(keyKoord,nachfolgeKnoten);
+                continue;
+            }else {
+                nachfolgeKnoten.addAll(hashNachbarn.keySet());
+                nachfolgeKnotenMap.put(keyKoord,nachfolgeKnoten);
+            }
+        }
+        return nachfolgeKnotenMap;
+    }
+    
+    
     
     /* #######################   Beginn: primitive Aktionen    ######################## */
     
@@ -1061,9 +1148,9 @@ public class SimplerUnkoopBDIAgent
             aktCode = neuerAktCode;
         }
     }
-        
-        
-        /* ##################### Ende der Primitiven Aktionen ####################### */
-        
-        
-    }
+    
+    
+    /* ##################### Ende der Primitiven Aktionen ####################### */
+    
+    
+}

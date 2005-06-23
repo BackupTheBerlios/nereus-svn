@@ -27,30 +27,11 @@ graph [
         ]
     ]
 
-    node [
-        id 8
-       platz []
-        kapazitaet [
-            wartend -1
-            fliegend -1
-            tanzend 80
-            abbauend 20
-        ]
-        sichtweite [
-            boden 1
-            luft 1
-        ]
-        koordinate [
-            x 8
-            y 8
-        ]
-    ]
-
-    node [
-        id 13
-      blume [
+     node [
+        id 55
+        blume [
             nektar 50000
-            nektarProRunde 20
+            nektarProRunde 50
             merkmal 23
         ]
         kapazitaet [
@@ -64,30 +45,12 @@ graph [
             luft 1
         ]
         koordinate [
-            x 5
-            y 7
+            x 7
+            y 2
         ]
     ]
 
-    node [
-        id 18
-        platz []
-        kapazitaet [
-            wartend -1
-            fliegend -1
-            tanzend 80
-            abbauend 20
-        ]
-        sichtweite [
-            boden 1
-            luft 1
-        ]
-        koordinate [
-            x 2
-            y 6
-        ]
-    ]
-
+    
      node [
         id 42
         platz []
@@ -95,7 +58,6 @@ graph [
             wartend -1
             fliegend -1
             tanzend 80
-            abbauend 20
         ]
         sichtweite [
             boden 1
@@ -114,7 +76,6 @@ graph [
             wartend -1
             fliegend -1
             tanzend 80
-            abbauend 20
         ]
         sichtweite [
             boden 1
@@ -128,11 +89,7 @@ graph [
 
     node [
         id 58
-        blume [
-            nektar 50000
-            nektarProRunde 50
-            merkmal 23
-        ]
+        platz []
         kapazitaet [
             wartend -1
             fliegend -1
@@ -150,8 +107,31 @@ graph [
     ]
 
     node [
+        id 10
+        blume [
+            nektar 50000
+            nektarProRunde 20
+            merkmal 23
+        ]
+        kapazitaet [
+            wartend -1
+            fliegend -1
+            tanzend 80
+            abbauend 20
+        ]
+        sichtweite [
+            boden 1
+            luft 1
+        ]
+        koordinate [
+            x 2
+            y 7
+        ]
+    ]
+
+    node [
         id 64
-       platz []
+        platz []
         kapazitaet [
             wartend -1
             fliegend -1
@@ -298,6 +278,25 @@ graph [
     ]
 
     node [
+        id 8
+       platz []
+        kapazitaet [
+            wartend -1
+            fliegend -1
+            tanzend 80
+            abbauend 20
+        ]
+        sichtweite [
+            boden 1
+            luft 1
+        ]
+        koordinate [
+            x 8
+            y 8
+        ]
+    ]
+
+    node [
         id 9
         platz []
         kapazitaet [
@@ -315,24 +314,7 @@ graph [
         ]
     ]
 
-    node [
-        id 10
-        platz []
-        kapazitaet [
-            wartend -1
-            fliegend -1
-            tanzend 80
-        ]
-        sichtweite [
-            boden 1
-            luft 1
-        ]
-        koordinate [
-            x 2
-            y 7
-        ]
-    ]
-
+   
     node [
         id 11
         platz []
@@ -368,7 +350,26 @@ graph [
             y 7
         ]
     ]
-
+    
+     node [
+        id 13
+      platz []
+        kapazitaet [
+            wartend -1
+            fliegend -1
+            tanzend 80
+            abbauend 20
+        ]
+        sichtweite [
+            boden 1
+            luft 1
+        ]
+        koordinate [
+            x 5
+            y 7
+        ]
+    ]
+    
     node [
         id 14
         platz []
@@ -437,6 +438,25 @@ graph [
         ]
         koordinate [
             x 1
+            y 6
+        ]
+    ]
+
+    node [
+        id 18
+        platz []
+        kapazitaet [
+            wartend -1
+            fliegend -1
+            tanzend 80
+            abbauend 20
+        ]
+        sichtweite [
+            boden 1
+            luft 1
+        ]
+        koordinate [
+            x 2
             y 6
         ]
     ]
@@ -1035,24 +1055,6 @@ graph [
         ]
         koordinate [
             x 6
-            y 2
-        ]
-    ]
-
-    node [
-        id 55
-        platz []
-        kapazitaet [
-            wartend -1
-            fliegend -1
-            tanzend 80
-        ]
-        sichtweite [
-            boden 1
-            luft 1
-        ]
-        koordinate [
-            x 7
             y 2
         ]
     ]
