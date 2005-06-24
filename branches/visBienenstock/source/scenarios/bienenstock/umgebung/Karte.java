@@ -544,7 +544,7 @@ public class Karte extends AbstractEnviroment {
                 } else {
                     return ((Blume) zielFeld).trageAbbauendeBieneEin(zielBiene);
                 }
-            case Konstanten.TANKENABLIEFERN:
+            case Konstanten.SONSTIGER:
                 if (zielFeld.gibSonstigeBienen().contains(
                         zielBiene)) {
                     return true;
@@ -594,7 +594,7 @@ public class Karte extends AbstractEnviroment {
                 feldSuchen(zielBiene.gibPosition()).entferneWartendeBiene(
                         zielBiene);
                 break;
-            case Konstanten.TANKENABLIEFERN:{
+            case Konstanten.SONSTIGER:{
                 feldSuchen(zielBiene.gibPosition()).entferneSonstigeBiene(
                         zielBiene);
             }break;
@@ -689,7 +689,7 @@ public class Karte extends AbstractEnviroment {
                 return "zuschauend";
             case Konstanten.ABBAUEND :
                 return "abbauend";
-            case Konstanten.TANKENABLIEFERN :
+            case Konstanten.SONSTIGER :
                 return "tankenabliefern";
             default:
                 return "FEHLER";
@@ -1109,14 +1109,16 @@ public class Karte extends AbstractEnviroment {
             //ist sie in der richtigen Liste? und dann
             //ist noch Kapazität in der neuen Liste vorhanden?
             if (zielFeld.gibFliegendeBienen().contains(zielBiene)
-            && zielFeld.trageWartendeBieneEin(zielBiene)) {
+         //   && zielFeld.trageWartendeBieneEin(zielBiene)) 
+            && zielFeld.trageSonstigeBieneEin(zielBiene)){
                 
                 //Neue Werte setzen
                 zielBiene.setzeGeladeneHonigmenge(
                         zielBiene.gibGeladeneHonigmenge()
                         - ((Integer) parameter.gibWert(
                         "honigLanden")).intValue());
-                zielBiene.setzeZustand(Konstanten.WARTEND);
+       //         zielBiene.setzeZustand(Konstanten.WARTEND);
+                zielBiene.setzeZustand(Konstanten.SONSTIGER);
                 
                 //Biene aus der alten Liste entfernen
                 zielFeld.entferneFliegendeBiene(zielBiene);
@@ -1389,7 +1391,7 @@ public class Karte extends AbstractEnviroment {
                             "honigHonigTanken")).intValue();
                 /*    zielBiene.setzeZustand(Konstanten.WARTEND);
                     zielFeld.trageWartendeBieneEin(zielBiene);*/
-                    zielBiene.setzeZustand(Konstanten.TANKENABLIEFERN);
+                    zielBiene.setzeZustand(Konstanten.SONSTIGER);
                     zielFeld.trageSonstigeBieneEin(zielBiene);
                     //wieviel kann sie tanken?
                     if ((geladenerHonig + wunschmenge)
@@ -1463,7 +1465,7 @@ public class Karte extends AbstractEnviroment {
                             - ((Bienenstock) zielFeld).nektarAbnehmen(
                             zielBiene.gibGeladeneNektarmenge()));
                     //Aktion setzen
-                    zielBiene.setzeZustand(Konstanten.TANKENABLIEFERN);
+                    zielBiene.setzeZustand(Konstanten.SONSTIGER);
                     zielFeld.trageSonstigeBieneEin(zielBiene);
                     return true;
                 }

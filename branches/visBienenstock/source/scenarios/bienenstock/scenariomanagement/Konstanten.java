@@ -67,7 +67,7 @@ public class Konstanten {
     /**
      * Die Konstante für den Zustand Tanken oder Abliefern
      */
-    public static final int TANKENABLIEFERN=5;
+    public static final int SONSTIGER=5;
     /**
      * Die Konstante für die Startphase.
      */

@@ -186,7 +186,7 @@ public class SimplerUnkoopBDIAgent
         
         while(true){
             perception();
-            this.visualisiereBiene(selbst);
+      //      this.visualisiereBiene(selbst);
             evaluate(modus);
             filter(modus);
             System.out.println(id+": neuer MODUS  Desire: " + modus.getDesire() + " Intention: "+ modus.getIntention());

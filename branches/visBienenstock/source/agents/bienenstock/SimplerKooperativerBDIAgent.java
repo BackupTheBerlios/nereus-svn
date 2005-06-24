@@ -1,7 +1,7 @@
 /*
  * Dateiname      : SimplerKooperativerBDIAgent.java
  * Erzeugt        : 21. Mai 2005
- * Letzte Änderung: 16. Juni 2005 durch Eugen Volk
+ * Letzte Änderung: 23. Juni 2005 durch Eugen Volk
  * Autoren        :  Eugen Volk
  *
  *
@@ -93,7 +93,7 @@ public class SimplerKooperativerBDIAgent
     private int rundeNrKooperation=0;
     /** Konstante für die Erhaltung der Kooperation (warten auf Kommunikationspartner) über mehrere Runden */
     private int maxAnzahlKooperationsRunden=5;
-    private int maxAnzahlWarteRunden=1;
+    private int maxAnzahlWarteRunden=2;
     private boolean neueMitteilungErhalten=false;
     
     //   HashMap blumen = new HashMap();
@@ -140,11 +140,16 @@ public class SimplerKooperativerBDIAgent
     private boolean sofortNektarAbliefernTanken = false;
     /** mitgeteilte BlumenKoordinaten: (Koordinate, new Double(Nutzen))*/
     private HashMap mitgeteilteBlumenKoord=new HashMap();
-    
+    /** Honig im Bienenstock */
     private boolean  bienenstockHatHonig=true;
-    
+    /** Bienen die aktuelle Blume des Agenten mit bearbeiten, und sollen deshalb bei der Koomunikation nicht
+      berücksichtigt werden */
     private HashSet ignorierteBienenId=new HashSet();
-    
+    /** Nummer des Versuchs bei der Blumenprobeentnahme */
+    private int probeEntnahmeVersuchNr=0;
+    /** Max Anzahl des Versuchs bei der Blumenprobeentnahme, danach wird bei erfolgloser Nektarabbau, 
+     die Blume als ohne Nektar angesehen */
+    private int probeEntnahmeVersucheMax=5;
     
     /**
      * Zahl zur initialisierung des Zufallsgenerators.
@@ -216,7 +221,7 @@ public class SimplerKooperativerBDIAgent
         
         while(true){
             perception();
-            System.out.println(id+": alter MODUS  Desire: " + modus.getDesire() + " Intention: "+ modus.getIntention());
+            //      System.out.println(id+": alter MODUS  Desire: " + modus.getDesire() + " Intention: "+ modus.getIntention());
             //   visualisiereBiene(selbst);
             evaluateGoal(modus);
             modifyGoalToAbstractPlan(modus);
@@ -434,14 +439,19 @@ public class SimplerKooperativerBDIAgent
                         modus.setIntention(newIntention);
                     }
                 }else if (myPosition.equals(this.posBienenstock)){ // am Bienenstock
+                    this.positionFeld.gibIDsSonstigeBienen().remove(new Integer(id));
+                    this.positionFeld.gibIDsSonstigeBienen().removeAll(this.ignorierteBienenId);
+                    int sonstBienen=this.positionFeld.gibIDsSonstigeBienen().size();
+                    
                     if ((selbst.gibGeladeneNektarmenge()>0) ||
                             ((selbst.gibGeladeneHonigmenge()<(this.startHonig-this.honigStarten))
                             && ((this.rundeNrKooperation>this.maxAnzahlKooperationsRunden)
                             || (this.rundeNrKooperation==0)))){
                         newIntention=DesireIntentionPlan.P_NEKTARABLIEFERNTANKEN;
                         modus.setIntention(newIntention);
-                    } else if ((kooperationsBereitschaft() || (this.rundeNrKooperation<=this.maxAnzahlWarteRunden))
-                    && (this.rundeNrKooperation<=this.maxAnzahlKooperationsRunden)){
+                    } else if ((kooperationsBereitschaft() || ((this.rundeNrKooperation<=this.maxAnzahlWarteRunden)
+                    && (sonstBienen>0)))
+                    && (this.rundeNrKooperation<=this.maxAnzahlKooperationsRunden) && !this.bieneIstInDerLuft){
                         newIntention=DesireIntentionPlan.P_COOPERATION;
                         modus.setIntention(newIntention);
                         i_neuesZiel=d_Ziel;
@@ -466,7 +476,7 @@ public class SimplerKooperativerBDIAgent
                         i_neuesZiel=d_Ziel;
                         modus.setIntentionZiel(i_neuesZiel);
                     }
-                }
+                } else kooperationReset();
             }break;
             case DesireIntentionPlan.G_FINDEDIEBLUME:{
                 Set gespKoord=this.gespeicherteFelder.keySet();
@@ -613,7 +623,7 @@ public class SimplerKooperativerBDIAgent
             } break;
         }
     }
-    
+   
     /**
      * führt jeweilst erste Aktion aus der planListe aus.
      * @param modus interner Zustand des Agenten als DesireInteionPlan-Typ.
@@ -625,6 +635,7 @@ public class SimplerKooperativerBDIAgent
         act=(ActionTargetPair)planListe.getFirst();
         planListe.removeFirst();
         int aktionNr=act.getAction();
+        if (aktionNr!=DesireIntentionPlan.A_NEKTARABBAUEN) probeEntnahmeVersuchNr=0;
         Koordinate ziel=(Koordinate)act.getTarget();
         switch (aktionNr){
             case DesireIntentionPlan.A_FLIEGEN:{
@@ -645,11 +656,13 @@ public class SimplerKooperativerBDIAgent
             case DesireIntentionPlan.A_NEKTARABBAUEN:{
                 int nektarAnf=selbst.gibGeladeneNektarmenge();
                 nektarAbbauen();
+                probeEntnahmeVersuchNr++;
                 EinfacheKarte localMap = handler.infoAusschnittHolen(aktCode);
                 selbst=localMap.gibSelbst();
                 int nektarNachAbbau=selbst.gibGeladeneNektarmenge();
                 int ausbeute=nektarNachAbbau-nektarAnf;
-                if ((nektarAnf!=this.maxGelNektar)){
+                if ((nektarAnf!=this.maxGelNektar) && (erfolg.getValue() || 
+                        (probeEntnahmeVersuchNr>probeEntnahmeVersucheMax))){
                     InfoBlume infoBlume=(InfoBlume)bekannteBlumen.get(ziel);
                     if (!infoBlume.getProbeEntnommen()) {
                         infoBlume.setProbeEntnommen();
@@ -659,7 +672,7 @@ public class SimplerKooperativerBDIAgent
                     if ((ausbeute==0)) {
                         infoBlume.setHatNektar(false);
                     }
-                } else {System.out.println(" NEKTAR VOLL ");}
+                } 
             }break;
             case DesireIntentionPlan.A_NEKTARABLIEFERN:{
                 this.nektarAbliefern();
@@ -668,11 +681,11 @@ public class SimplerKooperativerBDIAgent
                 this.tanzen(ziel);
             }break;
             case DesireIntentionPlan.A_ZUSCHAUEN:{
-                Koordinate caBlumenKoordinate;
+                Koordinate caBlumenKoordinate=null;
                 int zielId=act.getZielAgentId();
                 caBlumenKoordinate=this.zuschauen(zielId);
                 Info info=selbst.gibInformation();
-                if (info!=null){
+                if ((caBlumenKoordinate!=null) && (info!=null)){
                     double nutzen=selbst.gibInformation().gibNutzen();
                     mitgeteilteBlumenKoord.put(caBlumenKoordinate,new Double(nutzen));
                     this.neueMitteilungErhalten=true;
@@ -717,9 +730,14 @@ public class SimplerKooperativerBDIAgent
         
         
         if ((this.tanzendeBienen!=null) && (this.tanzendeBienen.size()>0)){
-            LinkedList getztBienen=new LinkedList();
-            
-            tanzendeBieneId=((Integer)this.tanzendeBienen.iterator().next()).intValue();
+            LinkedList tanzBienen=new LinkedList();
+            double zufall=Math.random();
+            if (zufall<0) zufall=zufall*(-1);
+            int tztBienenSize=this.tanzendeBienen.size();
+            tztBienenSize=tztBienenSize-1;
+            int auswahl=(int)Math.round(zufall*tztBienenSize);
+            tanzBienen.addAll(tanzendeBienen);
+            tanzendeBieneId=((Integer)tanzBienen.get(auswahl)).intValue();
             planListe=new LinkedList();
             actionNr=DesireIntentionPlan.A_ZUSCHAUEN;
             getanzteBienen.addAll(this.tanzendeBienen);
@@ -733,8 +751,43 @@ public class SimplerKooperativerBDIAgent
             HashSet nichtGetanzteBienen=new HashSet(wartendeBienen);
             nichtGetanzteBienen.removeAll(getanzteBienen);
             Iterator it=nichtGetanzteBienen.iterator();
+            int nichtGetztSize=nichtGetanzteBienen.size();
             int aBieneId=10000;
-            while (it.hasNext()){
+            if (nichtGetztSize==0){
+                this.rundeNrKooperation=this.maxAnzahlKooperationsRunden+1;
+                return new LinkedList();
+            } else if (nichtGetztSize==1) {
+                planListe=new LinkedList();
+                actionNr=DesireIntentionPlan.A_TANZEN;
+                atp=new ActionTargetPair(actionNr,blumenKoord.copy());
+                planListe.add(atp);
+                getanzt=true;
+                return planListe;
+            } else {
+                double zufall=Math.random();
+                if (zufall<0) zufall=zufall*(-1);
+                double myZahl=1.5/(nichtGetztSize);
+                
+                if (zufall<=myZahl){
+                    planListe=new LinkedList();
+                    actionNr=DesireIntentionPlan.A_TANZEN;
+                    atp=new ActionTargetPair(actionNr,blumenKoord.copy());
+                    planListe.add(atp);
+                    getanzt=true;
+                    return planListe;
+                } else {
+                    planListe=new LinkedList();
+                    actionNr=DesireIntentionPlan.A_WARTEN;
+                    atp=new ActionTargetPair(actionNr,blumenKoord.copy());
+                    planListe.add(atp);
+                    getanzt=true;
+                    return planListe;
+                }
+                
+                
+            }
+            
+            /*while (it.hasNext()){
                 aBieneId=((Integer)it.next()).intValue();
                 if (aBieneId<myId) break;
             }
@@ -751,7 +804,7 @@ public class SimplerKooperativerBDIAgent
                 atp=new ActionTargetPair(actionNr,blumenKoord.copy());
                 planListe.add(atp);
                 return planListe;
-            }
+            }*/
         }else{
             planListe=new LinkedList();
             actionNr=DesireIntentionPlan.A_WARTEN;
@@ -1375,8 +1428,10 @@ public class SimplerKooperativerBDIAgent
         if (!(neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
         }
-        perception();
-        if (selbst.gibGeladeneHonigmenge()<this.startHonig) bienenstockHatHonig=false;
+        if (erfolg.getValue()){
+            perception();
+            if (selbst.gibGeladeneHonigmenge()<this.startHonig) bienenstockHatHonig=false;
+        }
     }
     
     /** lässt die Biene starten */
@@ -1386,7 +1441,8 @@ public class SimplerKooperativerBDIAgent
         if (!(neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
         }
-        bieneIstInDerLuft=true;
+        if (erfolg.getValue()) bieneIstInDerLuft=true;
+        else starten();
     }
     
     /** lässt die Biene landen */
@@ -1396,7 +1452,13 @@ public class SimplerKooperativerBDIAgent
         if (!(neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
         }
-        bieneIstInDerLuft=false;
+        if (erfolg.getValue()) bieneIstInDerLuft=false;
+        else {
+            LinkedList liste=modus.getPlanListe();
+            int actionNr=DesireIntentionPlan.A_LANDEN;
+            ActionTargetPair atp=new ActionTargetPair(actionNr,positionKoordinate.copy());
+            liste.addFirst(atp);
+        }
     }
     
     
@@ -1410,6 +1472,12 @@ public class SimplerKooperativerBDIAgent
         if (!(neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
         }
+        if (!erfolg.getValue()){
+            LinkedList liste=modus.getPlanListe();
+            int actionNr=DesireIntentionPlan.A_FLIEGEN;
+            ActionTargetPair atp=new ActionTargetPair(actionNr,nextZiel);
+            liste.addFirst(atp);
+        }
     }
     
     /** lässt die Biene Nektar abbauen */
@@ -1418,6 +1486,12 @@ public class SimplerKooperativerBDIAgent
         long neuerAktCode = handler.aktionNektarAbbauen(aktCode, erfolg,MAX);
         if (!(neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
+        }
+        if (!erfolg.getValue()){
+            LinkedList liste=modus.getPlanListe();
+            int actionNr=DesireIntentionPlan.A_NEKTARABBAUEN;
+            ActionTargetPair atp=new ActionTargetPair(actionNr,positionKoordinate);
+            liste.addFirst(atp);
         }
     }
     
@@ -1448,7 +1522,7 @@ public class SimplerKooperativerBDIAgent
         if (!(neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
         }
-        this.getanzt=true;
+        if (erfolg.getValue()) this.getanzt=true;
     }
     
     /**
@@ -1456,7 +1530,7 @@ public class SimplerKooperativerBDIAgent
      * Die Information zur mitgeteilten Blume (entfernung und richtung) steht
      * nach der aktualisierung der perception in selbst.gitInfo().
      *
-     * @param tanlzendeBieneID die Id der tanzenden Biene.
+     * @param tanzendeBieneID die Id der tanzenden Biene.
      * @return ungefäre Koordinate der Blume.
      */
     private Koordinate zuschauen(int tanzendeBieneID){
@@ -1466,6 +1540,7 @@ public class SimplerKooperativerBDIAgent
         if (!( neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
         }
+        if (!erfolg.getValue()) return null;
         perception();
         Info info=selbst.gibInformation();
         if (infoAnf==info) return null;
