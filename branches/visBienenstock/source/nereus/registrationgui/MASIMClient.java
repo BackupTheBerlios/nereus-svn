@@ -472,7 +472,7 @@ public class MASIMClient extends JFrame {
                                 this,
                                 "Spielkonfig.-Auswahl",
                                 "Spielkonfig.",
-                                tagNames);
+                                tagNames,300);
                         s2dialog.show();
                         tagName= (String)s2dialog.getSelected();
                     }

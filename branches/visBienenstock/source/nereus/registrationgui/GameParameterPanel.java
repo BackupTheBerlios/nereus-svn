@@ -1,7 +1,7 @@
 /*
  * Dateiname      : GameParameterPanel.java
  * Erzeugt        : 5. August 2003
- * Letzte Änderung: 12. Juni 2005 durch Eugen Volk
+ * Letzte Änderung: 25. Juni 2005 durch Eugen Volk
  * Autoren        : Daniel Friedrich
  *                  Eugen Volk
  *
@@ -835,7 +835,7 @@ public class GameParameterPanel
             rundenListe=VisualisationClient.gibDurchlaeufe(serverName, port, gameId);
            // für den Test wird nach szenarien Konfigurationen gefragt.
             
-            String tagName="1";
+            String tagName=new String(" ");
             if ((rundenListe!=null) && (rundenListe.size()>=1)){
                 if (false && rundenListe.size()==1){
                     tagName=(String)rundenListe.getFirst();
@@ -854,6 +854,8 @@ public class GameParameterPanel
                     tagName= (String)s2dialog.getSelected();
                 }
             }
+            if (tagName==null || tagName.equals(" ")) return;
+            
             rundenNr=new String(tagName); 
             
             visClient=new VisualisationClient(serverName, this.m_gameId.toString(), rundenNr);
