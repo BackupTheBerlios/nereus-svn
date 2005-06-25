@@ -1,7 +1,7 @@
 /*
  * Dateiname      : BienenstockVisKarte.java
  * Erzeugt        : 16. Juni 2005
- * Letzte Änderung: 17. Juni 2005 durch Dietmar Lippold
+ * Letzte Änderung: 25. Juni 2005 durch Eugen Volk
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *
  * Diese Datei gehoert zum Projekt Nereus (http://nereus.berlios.de/).
@@ -363,9 +363,15 @@ public class BienenstockVisKarte extends Panel {
                                     imagePosX, 
                                     imagePosY, 
                                     this);
+                            Color origColor=g.getColor();
                             g.drawString("" + tmpBlume.gibVorhandenerNektar(),
                                     ((x - minX) * groesseX) + links + imagePosXZentrieren,
                                     ((y - minY) * groesseY) + abstandOben + unten);
+                            g.setColor(Color.BLUE);
+                            g.drawString("" + tmpBlume.gibMaxNektarProRunde(),
+                                    ((x - minX) * groesseX) + links + imagePosXZentrieren,
+                                    ((y - minY) * groesseY) + abstandOben + oben);
+                            g.setColor(origColor);
                             if (tmpBlume.gibFliegendeBienen().size() > 0) {
                                 g.drawImage(bildBiene,
                                         ((x - minX) * groesseX) + rechts + imagePosXZentrieren,

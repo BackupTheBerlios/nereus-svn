@@ -47,6 +47,7 @@ import java.util.Set;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeSet;
+
 import nereus.agentutils.Dijkstra;
 import scenarios.bienenstock.agenteninfo.Info;
 import scenarios.bienenstock.agenteninfo.Koordinate;
@@ -84,6 +85,8 @@ public class SimplerUnkoopBDIAgent
     /** Id der Biene */
     private int id = 0;
     private Koordinate posBienenstock;
+    /** falls eine beabsichtigte Aktiin tatsächlich ausgeführt wurde, wird erfold.value den Wert true haben. */
+    private BooleanWrapper erfolg=new BooleanWrapper(false);
     
     //   HashMap blumen = new HashMap();
     /** (Koordinate, InfoBlume) */
@@ -116,9 +119,17 @@ public class SimplerUnkoopBDIAgent
     /** kurs Nektar zu Honig */
     private double kursNektarHonig=1;
     /** falls die beabsichtigte Aktion ausgeführt wurde, ist erfolg.value=true */
-    private BooleanWrapper erfolg=new BooleanWrapper(false);
     
     private boolean sofortNektarAbliefernTanken = false;
+    
+     /** Honig im Bienenstock */
+    private boolean  bienenstockHatHonig=true;
+    
+     /** Nummer des Versuchs bei der Blumenprobeentnahme */
+    private int probeEntnahmeVersuchNr=0;
+    /** Max Anzahl des Versuchs bei der Blumenprobeentnahme, danach wird bei erfolgloser Nektarabbau,
+     * die Blume als ohne Nektar angesehen */
+    private int probeEntnahmeVersucheMax=2;
     
     /**
      * Zahl zur initialisierung des Zufallsgenerators.
@@ -302,12 +313,8 @@ public class SimplerUnkoopBDIAgent
         int desire=modus.getDesire();
         
         switch (desire){
-            case DesireIntentionPlan.G_UMGEBUNGERFORSCHEN:{
-                modus.setIntention(DesireIntentionPlan.P_FLIEGENZURKOORDINATE);
-                modus.setIntentionZiel(d_Ziel);
-            }break;
             case DesireIntentionPlan.G_FINDEEINEBLUME:{
-                if (selbst.gibGeladeneNektarmenge()>0) {
+                if (selbst.gibGeladeneNektarmenge()>(maxGelNektar/2)) {
                     modus.setIntention(DesireIntentionPlan.P_NEKTARABLIEFERNTANKEN);
                 } else {
                     newIntention=DesireIntentionPlan.P_FLIEGENZURKOORDINATE;
@@ -324,7 +331,7 @@ public class SimplerUnkoopBDIAgent
                 i_neuesZiel=d_Ziel;
                 if (d_Ziel.equals(myPosition)) newIntention=DesireIntentionPlan.P_NEKTARABBAUEN;
                 else {
-                    if (selbst.gibGeladeneNektarmenge()>0) {
+                    if (selbst.gibGeladeneNektarmenge()>(maxGelNektar/2)) {
                         newIntention=DesireIntentionPlan.P_NEKTARABLIEFERNTANKEN;
                         i_neuesZiel=this.posBienenstock;
                     } else{
@@ -486,6 +493,7 @@ public class SimplerUnkoopBDIAgent
         act=(ActionTargetPair)planListe.getFirst();
         planListe.removeFirst();
         int aktionNr=act.getAction();
+         if (aktionNr!=DesireIntentionPlan.A_NEKTARABBAUEN) probeEntnahmeVersuchNr=0;
         Koordinate ziel=(Koordinate)act.getTarget();
         switch (aktionNr){
             case DesireIntentionPlan.A_FLIEGEN:{
@@ -501,13 +509,15 @@ public class SimplerUnkoopBDIAgent
                 tanken();
             }break;
             case DesireIntentionPlan.A_NEKTARABBAUEN:{
-                int nektarAnf=selbst.gibGeladeneNektarmenge();
+                 int nektarAnf=selbst.gibGeladeneNektarmenge();
                 nektarAbbauen();
+                probeEntnahmeVersuchNr++;
                 EinfacheKarte localMap = handler.infoAusschnittHolen(aktCode);
                 selbst=localMap.gibSelbst();
                 int nektarNachAbbau=selbst.gibGeladeneNektarmenge();
                 int ausbeute=nektarNachAbbau-nektarAnf;
-                if ((nektarAnf!=this.maxGelNektar)){
+                if ((nektarAnf!=this.maxGelNektar) && (erfolg.getValue() ||
+                        (probeEntnahmeVersuchNr>probeEntnahmeVersucheMax))){
                     InfoBlume infoBlume=(InfoBlume)bekannteBlumen.get(ziel);
                     if (!infoBlume.getProbeEntnommen()) {
                         infoBlume.setProbeEntnommen();
@@ -517,7 +527,7 @@ public class SimplerUnkoopBDIAgent
                     if ((ausbeute==0)) {
                         infoBlume.setHatNektar(false);
                     }
-                } else {System.out.println(" NEKTAR VOLL VOLL");}
+                }
             }break;
             case DesireIntentionPlan.A_NEKTARABLIEFERN:{
                 this.nektarAbliefern();
@@ -1029,13 +1039,18 @@ public class SimplerUnkoopBDIAgent
     /* #######################   Beginn: primitive Aktionen    ######################## */
     
     
+    
     /** lässt die Biene tanken */
     private void tanken(){
         System.out.println(selbst.gibBienenID()+ ": tanke " + selbst.gibPosition().toString());
-        int mengeZuTanken=this.startHonig-selbst.gibGeladeneHonigmenge() + this.honigTanken;
+        int mengeZuTanken=this.startHonig-selbst.gibGeladeneHonigmenge()+this.honigTanken;
         long neuerAktCode = handler.aktionHonigTanken(aktCode, erfolg, mengeZuTanken);
         if (!(neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
+        }
+        if (erfolg.getValue()){
+            perception();
+            if (selbst.gibGeladeneHonigmenge()<this.startHonig) bienenstockHatHonig=false;
         }
     }
     
@@ -1046,7 +1061,8 @@ public class SimplerUnkoopBDIAgent
         if (!(neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
         }
-        bieneIstInDerLuft=true;
+        if (erfolg.getValue()) bieneIstInDerLuft=true;
+        else starten();
     }
     
     /** lässt die Biene landen */
@@ -1056,7 +1072,13 @@ public class SimplerUnkoopBDIAgent
         if (!(neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
         }
-        bieneIstInDerLuft=false;
+        if (erfolg.getValue()) bieneIstInDerLuft=false;
+        else {
+            LinkedList liste=modus.getPlanListe();
+            int actionNr=DesireIntentionPlan.A_LANDEN;
+            ActionTargetPair atp=new ActionTargetPair(actionNr,positionKoordinate.copy());
+            liste.addFirst(atp);
+        }
     }
     
     
@@ -1070,6 +1092,12 @@ public class SimplerUnkoopBDIAgent
         if (!(neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
         }
+        if (!erfolg.getValue()){
+            LinkedList liste=modus.getPlanListe();
+            int actionNr=DesireIntentionPlan.A_FLIEGEN;
+            ActionTargetPair atp=new ActionTargetPair(actionNr,nextZiel);
+            liste.addFirst(atp);
+        }
     }
     
     /** lässt die Biene Nektar abbauen */
@@ -1078,6 +1106,12 @@ public class SimplerUnkoopBDIAgent
         long neuerAktCode = handler.aktionNektarAbbauen(aktCode, erfolg,MAX);
         if (!(neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
+        }
+        if (!erfolg.getValue()){
+            LinkedList liste=modus.getPlanListe();
+            int actionNr=DesireIntentionPlan.A_NEKTARABBAUEN;
+            ActionTargetPair atp=new ActionTargetPair(actionNr,positionKoordinate);
+            liste.addFirst(atp);
         }
     }
     
