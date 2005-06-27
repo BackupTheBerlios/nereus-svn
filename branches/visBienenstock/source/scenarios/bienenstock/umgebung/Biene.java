@@ -1,11 +1,11 @@
 /*
  * Dateiname      : Biene.java
  * Erzeugt        : 19. Mai 2004
- * Letzte Änderung: 4. Juni 2005 durch Eugen Volk
+ * Letzte Änderung: 27. Juni 2005 durch Eugen Volk
  *
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
- *
+ *                  Eugen Volk
  *
  *
  *
@@ -260,12 +260,7 @@ public class Biene {
      *                 <code>Konstanten</code>.
      */
     void setzeZustand(int liste) {
-        if (liste == Konstanten.ZUSCHAUEND) {
-            //listenKennung = Konstanten.ZUSCHAUEND;
-            listenKennung = Konstanten.WARTEND;
-        } else {
-            listenKennung = liste;
-        }
+        listenKennung = liste;
         if (liste == Konstanten.FLIEGEND) {
             amBoden = false;
         } else {

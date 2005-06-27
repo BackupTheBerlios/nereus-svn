@@ -1,7 +1,7 @@
 /*
  * Dateiname      : BienenStatistikKomponente.java
  * Erzeugt        : 20. Mai 2005
- * Letzte Änderung: 22. Mai 2005 durch Eugen Volk
+ * Letzte Änderung: 27. Juni 2005 durch Eugen Volk
  * Autoren        : Eugen Volk
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
