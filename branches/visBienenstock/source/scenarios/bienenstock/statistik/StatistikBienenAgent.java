@@ -1,7 +1,7 @@
 /*
  * Dateiname      : StatistikBiene.java
  * Erzeugt        : 20. Mai 2005
- * Letzte Änderung: 22. Mai 2005 durch Eugen Volk
+ * Letzte Änderung: 27. Juni 2005 durch Eugen Volk
  * Autoren        : Eugen Volk
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
@@ -38,10 +38,6 @@ import java.lang.*;
 
 /**
  * speichert die Werte der Biene zu jeder Runde.
- *
- * Zählt bei jedem Eintragen von Werten der Biene intern die Rundennummer hoch.
- * @author Philip Funck
- * @author Samuel Walz
  */
 public class StatistikBienenAgent {
     
@@ -60,6 +56,12 @@ public class StatistikBienenAgent {
      * Zustand der zugehörigen Biene.
      */
     private String zustand;
+    
+    private double anzTanzen=0;
+    
+    private double anzWarten=0;
+    
+    private double anzZuschauen=0;
     
     /** Enthält eine Liste aus verwendeten Parameter schlüsseln */
     private Vector statisticParameterKeys;
@@ -115,6 +117,16 @@ public class StatistikBienenAgent {
             Vector nektarWerte=(Vector)statisticValues.get(BienenStatistikKomponente.NEKTAR);
             nektarWerte.add(new Integer(wert.toString()));
         }
+        if (parameter.equals(BienenStatistikKomponente.ANZ_TANZEN)){
+            anzTanzen++;
+        }
+        if (parameter.equals(BienenStatistikKomponente.ANZ_WARTEN)){
+            anzWarten++;
+        }
+        if (parameter.equals(BienenStatistikKomponente.ANZ_ZUSCHAUEN)){
+            anzZuschauen++;
+        }
+        
     }
     
     
@@ -188,6 +200,15 @@ public class StatistikBienenAgent {
             if (parameter.equals(BienenStatistikKomponente.NEKTAR)){
                 Vector nektarWerte=(Vector)this.statisticValues.get(parameter);
                 result=gibGesamtNektar(nektarWerte);
+            }
+            if  (parameter.equals(BienenStatistikKomponente.ANZ_TANZEN)){
+                result=anzTanzen;
+            }
+            if  (parameter.equals(BienenStatistikKomponente.ANZ_ZUSCHAUEN)){
+                result=anzZuschauen;
+            }
+            if  (parameter.equals(BienenStatistikKomponente.ANZ_WARTEN)){
+                result=anzWarten;
             }
             
             this.statisticResults.put(parameter, new Double(result));

@@ -53,6 +53,13 @@ public class BienenStatistikKomponente implements IStatisticComponent {
     public static final String HONIG="HONIG";
     public static final String NEKTAR="NEKTAR";
     
+    public static final String ANZ_TANZEN="ANZ_TANZEN";
+    
+    public static final String ANZ_WARTEN="ANZ_WARTEN";
+    
+    public static final String ANZ_ZUSCHAUEN="ANZ_ZUSCHAUEN";
+    
+   
     
     /** viewiele Blumen wurden besucht */
     public static final String BLUMENBESUCHT="BlumenBesucht";
@@ -108,12 +115,18 @@ public class BienenStatistikKomponente implements IStatisticComponent {
         this.bienenIds=new Vector();
         statisticParameterKeys.add(this.NEKTAR);
         statisticParameterKeys.add(this.HONIG);
+        statisticParameterKeys.add(this.ANZ_TANZEN);
+        statisticParameterKeys.add(this.ANZ_WARTEN);
+        statisticParameterKeys.add(this.ANZ_ZUSCHAUEN);
         
         statisticValues.put(this.NEKTAR, new Vector());
         statisticValues.put(this.HONIG, new Vector());
         
         statisticParameterPrefix.put(this.NEKTAR, " Einheiten");
         statisticParameterPrefix.put(this.HONIG, " Einheiten");
+        statisticParameterPrefix.put(this.ANZ_TANZEN, " Runden");
+        statisticParameterPrefix.put(this.ANZ_WARTEN, " Runden");
+        statisticParameterPrefix.put(this.ANZ_ZUSCHAUEN, " Runden");
         
         Iterator itAgentsIds=agentsIds.iterator();
         

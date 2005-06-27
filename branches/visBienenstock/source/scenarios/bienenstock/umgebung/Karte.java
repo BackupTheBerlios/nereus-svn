@@ -1838,6 +1838,10 @@ public class Karte extends AbstractEnviroment {
                 statistik.addInformation(id, BienenStatistikKomponente.HONIG, new Integer(honig));
                 int nektar=biene.gibGeladeneNektarmenge();
                 statistik.addInformation(id, BienenStatistikKomponente.NEKTAR, new Integer(nektar));
+                int zust=biene.gibListenKennung();
+                if (zust==Konstanten.TANZEND) statistik.addInformation(id, BienenStatistikKomponente.ANZ_TANZEN, null);
+                if (zust==Konstanten.WARTEND) statistik.addInformation(id, BienenStatistikKomponente.ANZ_WARTEN, null);
+                if (zust==Konstanten.ZUSCHAUEND) statistik.addInformation(id, BienenStatistikKomponente.ANZ_ZUSCHAUEN, null);
             }catch (Exception exc){
                 System.out.println("FEHLER bei der Statistik Erfassung");
                 exc.printStackTrace();

@@ -261,6 +261,7 @@ public class Biene {
      */
     void setzeZustand(int liste) {
         if (liste == Konstanten.ZUSCHAUEND) {
+            //listenKennung = Konstanten.ZUSCHAUEND;
             listenKennung = Konstanten.WARTEND;
         } else {
             listenKennung = liste;
