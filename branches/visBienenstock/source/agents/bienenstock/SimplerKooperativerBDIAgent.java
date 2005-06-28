@@ -455,9 +455,10 @@ public class SimplerKooperativerBDIAgent
                         modus.setIntention(newIntention);
                     }
                 }else if (myPosition.equals(this.posBienenstock)){ // am Bienenstock
-                    this.positionFeld.gibIDsSonstigeBienen().remove(new Integer(id));
-                    this.positionFeld.gibIDsSonstigeBienen().removeAll(this.ignorierteBienenId);
-                    int sonstBienen=this.positionFeld.gibIDsSonstigeBienen().size();
+                    HashSet sonstBienen= this.positionFeld.gibIDsSonstigeBienen();
+                    sonstBienen.remove(new Integer(id));
+                    sonstBienen.removeAll(this.ignorierteBienenId);
+                    int sonstBienenSize=sonstBienen.size();
                     
                     if ((selbst.gibGeladeneNektarmenge()>0) ||
                             ((selbst.gibGeladeneHonigmenge()<(this.startHonig-this.honigStarten))
@@ -466,7 +467,7 @@ public class SimplerKooperativerBDIAgent
                         newIntention=DesireIntentionPlan.P_NEKTARABLIEFERNTANKEN;
                         modus.setIntention(newIntention);
                     } else if ((kooperationsBereitschaft() || ((this.rundeNrKooperation<=this.maxAnzahlWarteRunden)
-                    && (sonstBienen>0)))
+                    && (sonstBienenSize>0)))
                     && (this.rundeNrKooperation<=this.maxAnzahlKooperationsRunden) && !this.bieneIstInDerLuft){
                         newIntention=DesireIntentionPlan.P_COOPERATION;
                         modus.setIntention(newIntention);
