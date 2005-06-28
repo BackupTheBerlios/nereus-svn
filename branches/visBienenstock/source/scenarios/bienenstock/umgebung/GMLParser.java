@@ -88,6 +88,9 @@ public class GMLParser {
      */
     Hashtable szenarioKarte = new Hashtable();
     
+    
+    private int mindestBlumenAbstand=0;
+    
     /**
      * Dient der Erkennung eines korrekt formatierten GML-Schlüssels.
      */
@@ -109,7 +112,7 @@ public class GMLParser {
             Pattern.compile("[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?");
     
     
-
+    
     
     /**
      * Dient der Erkennung eines korrekt formatierten GML-Wertes
@@ -172,7 +175,7 @@ public class GMLParser {
             gmlCode = inputBuffer.toString();
         }catch (FileNotFoundException e) {
             System.out.println("Der Graph " + gmlDateiname + " konnte nicht gefunden werden.");
-            System.out.println("Die Datei sollte im Verzeichnis scenarios/bienenstock/karten/ liegen.");
+            System.out.println("Die Datei sollte im Verzeichnis scenariosconfig/bienenstock/karten/ liegen.");
         }catch(IOException ioe) {
             ioe.printStackTrace(System.out);
         }
@@ -645,7 +648,7 @@ public class GMLParser {
         Hashtable frischeKarteNachID = new Hashtable();
         Hashtable frischeKarteNachKoordinate = new Hashtable();
         HashSet frischeKanten = new HashSet();
-        
+        this.mindestBlumenAbstand=0;
         /*
          * Erstellen aller Knoten der Karte - alle gefundenen Kanten werden
          * zwischengespeichert und später in die Karte eingefügt.
@@ -659,6 +662,8 @@ public class GMLParser {
                         neuesFeld);
             } else if (((GMLBaumknoten)kartenGraph.get(i)).gibSchluessel().equals("edge")) {
                 frischeKanten.add(((GMLBaumknoten)kartenGraph.get(i)).gibListe());
+            } else if (((GMLBaumknoten)kartenGraph.get(i)).gibSchluessel().equals("blumenMindestAbstand")){
+                this.mindestBlumenAbstand=((GMLBaumknoten)kartenGraph.get(i)).gibInteger();
             } else {
                 //Sonstige Schluessel werden ignoriert
             }
@@ -758,6 +763,10 @@ public class GMLParser {
      */
     Hashtable gibSpielfeld() {
         return szenarioKarte;
+    }
+    
+    public int gibBlumenMindestAbstand(){
+        return this.mindestBlumenAbstand;
     }
     
     /**

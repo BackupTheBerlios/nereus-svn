@@ -1,7 +1,7 @@
 /*
  * Dateiname      : EinfacheKarte.java
  * Erzeugt        : 6. Oktober 2004
- * Letzte Änderung: 14. Februar 2005 durch Philip Funck
+ * Letzte Änderung: 28. Juni 2005 durch Eugen Volk
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
  *
@@ -53,6 +53,8 @@ public class EinfacheKarte {
      */
     private Hashtable spielfeldAusschnitt;
     
+    private int blumenMindestAbstand=0;
+    
     /**
      * Konstruktor.
      *
@@ -60,9 +62,10 @@ public class EinfacheKarte {
      * @param felder    die für den Agenten aktuell sichtbaren Felder der
      *                  Spielkarte
      */
-    public EinfacheKarte(EinfacheBiene selber, Hashtable felder) {
+    public EinfacheKarte(EinfacheBiene selber, Hashtable felder, int blumenMindestAbstand) {
         selbst = selber;
         spielfeldAusschnitt = felder;
+        this.blumenMindestAbstand=blumenMindestAbstand;
     }
     
     /**
@@ -83,4 +86,11 @@ public class EinfacheKarte {
         return spielfeldAusschnitt;
     }
     
+    /**
+     * gibt den Minimalen Abstand zwischen den Blumen
+     * @return Mindstabstand zwischen den Blumen
+     */
+    public int gibBlumenMindestAbstand(){
+        return blumenMindestAbstand;
+    }
 }

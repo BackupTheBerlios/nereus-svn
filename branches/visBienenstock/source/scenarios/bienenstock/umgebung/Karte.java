@@ -1,7 +1,7 @@
 /*
  * Dateiname      : Karte.java
  * Erzeugt        : 26. Juli 2004
- * Letzte Änderung: 27. Juni 2005 durch Eugen Volk
+ * Letzte Änderung: 28. Juni 2005 durch Eugen Volk
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (samuel@gmx.info)
  *                  Eugen Volk
@@ -136,6 +136,8 @@ public class Karte extends AbstractEnviroment {
      */
     private Hashtable spielfeld;
     
+    private int blumenMindestAbstand=0;
+    
     /** enthält (bienennId, rundenNr) in der getanzt wurde */
     private Hashtable getanztInRundeNr=new Hashtable();
     
@@ -160,6 +162,7 @@ public class Karte extends AbstractEnviroment {
         spielmeister = meister;
         GMLParser kartenZeichner = new GMLParser(gmlDateiname);
         spielfeld = kartenZeichner.gibSpielfeld();
+        blumenMindestAbstand=kartenZeichner.gibBlumenMindestAbstand();
         parameter = spielmeister.gibParameter();
         
         bienenstoecke = bienenstoeckeSuchen();
@@ -879,8 +882,8 @@ public class Karte extends AbstractEnviroment {
             //einface Karte instanziieren und zurückgeben
             return new EinfacheKarte(
                     einfachSelbst,
-                    einfacheSichtbareFelder
-                    );
+                    einfacheSichtbareFelder,
+                    blumenMindestAbstand);
         } else {
             System.out.println("ungueltiger aktCode: " + aktCode);
             return null;}
