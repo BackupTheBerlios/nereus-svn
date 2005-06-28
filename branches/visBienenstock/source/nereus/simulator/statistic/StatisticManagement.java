@@ -1,8 +1,9 @@
 /*
  * Dateiname      : StatisticManagement.java
  * Erzeugt        : 17. September 2003
- * Letzte Änderung:
+ * Letzte Änderung: 28. Juni 2005 durch Eugen Volk
  * Autoren        : Daniel Friedrich
+ *                  Eugen Volk
  *
  *
  *
@@ -31,10 +32,12 @@ package nereus.simulator.statistic;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
+import java.util.HashMap;
 
 import nereus.utils.Id;
 import nereus.simulatorinterfaces.statistic.IStatisticComponent;
@@ -121,6 +124,9 @@ public class StatisticManagement {
         return retval.toString();
     }
     
+    /**
+     * erzeugt eine Statistik zu mehreren Spieldurchläufen
+     */
     public void createStatistic() {
         StringBuffer buffer = new StringBuffer();
         buffer.append(this.getHead());
@@ -128,10 +134,18 @@ public class StatisticManagement {
         m_statisticText = buffer.toString();
     }
     
+    /**
+     * gibt die Statistik zurück
+     * @return Statistik
+     */
     public String getGameStatistic() {
         return m_statisticText;
     }
     
+    /**
+     * Statistik-Werte zu einzelnen Agenten
+     * @return Statistik Werte zu einzelnen Agenten.
+     */
     public String getAgentStatistics() {
         StringBuffer buffer = new StringBuffer();
         Enumeration keys = m_agents.keys();
@@ -145,6 +159,10 @@ public class StatisticManagement {
         return buffer.toString();
     }
     
+    /**
+     * erzeugt eine Header für die Statistik
+     * @return Header für die Statistik
+     */
     public String getHead() {
         IStatisticComponent component =
                 (IStatisticComponent)m_statistics.get(0);
@@ -174,12 +192,17 @@ public class StatisticManagement {
         return buffer.toString();
     }
     
-    
-    
+    /**
+     * Berechnt die statistischen Daten über mehrere Spieldurchläufe.
+     * @return statistische Daten als String
+     */
     public String calculateStatistic() {
         StringBuffer retval = new StringBuffer();
         StringBuffer csvBuffer = new StringBuffer();
-        
+        /* Mittel-Wert zur Berechnung der Varianz */
+        Hashtable mittelWerte=new Hashtable();
+        double min=Double.POSITIVE_INFINITY;
+        double max=Double.NEGATIVE_INFINITY;
         // Statistiken berechnen lassen
         for(int i=0; i < m_statistics.size();i++) {
             IStatisticComponent stat =
@@ -190,7 +213,6 @@ public class StatisticManagement {
                 e.printStackTrace(System.out);
             }
         }
-        
                 /*
                  * Neueste Statistischen Parameter abfragen und die Berechnung
                  * vorbereiten.
@@ -210,7 +232,7 @@ public class StatisticManagement {
         }
         // CSV-Header abschliessen
         csvBuffer.append("\n");
-        
+        retval.append("\nBerechnete Mittelwerte:  \n\n");
         // Werte berechnen
         Enumeration params = m_parameters.elements();
         while(params.hasMoreElements()) {
@@ -225,7 +247,8 @@ public class StatisticManagement {
                     Object sValue = stat.getParameter(param);
                     // Testen ob der überhaupt erfasst wurde
                     if(sValue != null) {
-                        amount = amount + ((Double)sValue).doubleValue();
+                        double wert=((Double)sValue).doubleValue();
+                        amount = amount + wert;
                         // mitzählen, wie oft erfasst.
                         counter++;
                     }
@@ -235,6 +258,7 @@ public class StatisticManagement {
             }
             // Die Summe noch durch die Anzahl der erfassten Daten teilen
             double result = amount / ((double)counter);
+            mittelWerte.put(param, new Double(result));
             // Daten wegspeichern
             retval.append(
                     param
@@ -247,6 +271,59 @@ public class StatisticManagement {
         // Footer nach unten
         retval.append(getLine());
         
+        /*  Standardabweichung bestimmen (sagt etwas über die Abweichung der Werte vom Mittelwert aus) */
+        
+        if (m_statistics.size()>1){
+            retval.append("\nEinzelwerte und Standardabweichungen :    \n\n");
+            params = m_parameters.elements();
+            while(params.hasMoreElements()) {
+                String param = (String)params.nextElement();
+                retval.append("\nEinzelwerte zu " + param +" :  ");
+                double sum = 0.0;
+                min=Double.POSITIVE_INFINITY;
+                max=Double.NEGATIVE_INFINITY;
+                double mittelWert=((Double)mittelWerte.get(param)).doubleValue();
+                int counter = 0;
+                for(int i=0; i < m_statistics.size(); i++) {
+                    IStatisticComponent stat =
+                            (IStatisticComponent)m_statistics.get(i);
+                    try {
+                        // Wert für Parameter abfragen
+                        Object sValue = stat.getParameter(param);
+                        // Testen ob der überhaupt erfasst wurde
+                        if(sValue != null) {
+                            double wert=((Double)sValue).doubleValue();
+                            if (wert<min) min=wert;
+                            if (wert>max) max=wert;
+                            /* Summme der quadr Abweichung vom Mittelwert bestimmen */
+                            sum = sum + ((wert - mittelWert) * (wert - mittelWert));
+                            // mitzählen, wie oft erfasst.
+                            counter++;
+                            retval.append(printDouble(wert) + " / ");
+                        }
+                    }catch(Exception e) {
+                        e.printStackTrace(System.out);
+                    }
+                }
+                
+                retval.append("\nMinimaler Wert : "+ printDouble(min));
+                retval.append(" ;  Maximaler Wert : " + printDouble(max));
+                
+                
+                /* Varianz berechnen */
+                double varianz = sum / ((double)counter);
+                double stdAbweichung=Math.sqrt(varianz);
+                retval.append("\nStandartabweichung zu  "+
+                        param
+                        + ": "
+                        + printDouble(stdAbweichung)
+                        + statComponent.getParameterPrefix(param)
+                        + "\n");
+            }
+            
+            retval.append(getLine());
+        }
+        
         // csv erstellen
         for(int index=0; index < m_statistics.size();index++) {
             IStatisticComponent sComponent =
@@ -258,6 +335,9 @@ public class StatisticManagement {
         return retval.toString();
     }
     
+    /**
+     * speichert das Ergebnis des Spiels im CSV-Format ab.
+     */
     public void saveCSVStatistic() {
         try {
             File statFile = new File("statistic" + m_gameId + ".csv");
@@ -268,4 +348,16 @@ public class StatisticManagement {
             e.printStackTrace(System.out);
         }
     }
+    
+    /**
+     * gibt den double-Wert formatiert aus, mit zwei Stellen nach der Komma.
+     * @param value zu formatierende Zahl
+     * @return formatierte Zahl als String
+     */
+    private String printDouble(double value){
+        String format="#0.00";
+        DecimalFormat df = new DecimalFormat(format);
+        return new String(df.format(value));
+    }
+    
 }
