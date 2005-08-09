@@ -72,6 +72,7 @@ public class ScenarioXMLConfigHandler  extends DefaultHandler{
      *
      * @param URI Angabe zur position der Datei
      * @param localname enthält den Namen des Elements
+     * @param name Name des Elements
      * @param atts eine Liste der zum Element gehörenden Attribute
      */
     public void startElement(String URI, String localname, String name, Attributes atts){
@@ -121,7 +122,7 @@ public class ScenarioXMLConfigHandler  extends DefaultHandler{
      * Wandelt den Typ des eingelesenen Wertes, der als String notiert ist,
      * in ein entsprechend der utils#ParameterDescription() fesgelegten Integer-Wert um.
      * @param type Type des eingelesenen Wertes
-     * @return
+     * @return Type, kodiert als int-Wert
      */
     private int getType(String type){
         if (type.equals("int")) return ParameterDescription.IntegerType;
@@ -149,7 +150,8 @@ public class ScenarioXMLConfigHandler  extends DefaultHandler{
     /**
      * Liefert eine verketete Liste von utils#ParameterDescription Werten.
      * Die verketete Liste enthält die Konfiguration des aktuellen Szenarios.
-     * @retun verketete Liste von PrameterDescription, als Konfiguration des Szenario-Werten.
+     *
+     * @return verketete Liste von PrameterDescription, als Konfiguration des Szenario-Werten.
      */
     public LinkedList getParameterListe(){
         

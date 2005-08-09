@@ -11,8 +11,10 @@
 <config>
 <scenario name="bienenstock">
     <visualisationClassName name="scenarios.bienenstock.visualisationgui.BienenstockVisSteuerung"/>
-    <agent name="SimplerKooperativerBDIAgent"/>
-    <agent name="SimplerUnkoopBDIAgent"/>
+    <agent name="MinAbstandAgent"/>
+    <agent name="NektarKooperativerAgent"/>
+    <agent name="KooperativerAgent"/>
+    <agent name="UnkooperativerAgent"/>
     <agent name="EinfacherAgent"/>
 </scenario>
 </config>

@@ -1,7 +1,7 @@
 /*
- * Dateiname      : SimplerKooperativerBDIAgent.java
- * Erzeugt        : 21. Mai 2005
- * Letzte Änderung: 24. Juni 2005 durch Eugen Volk
+ * Dateiname      : MinAbstandAgent.java
+ * Erzeugt        : 21. Juli 2005
+ * Letzte Änderung: 8. August 2005 durch Eugen Volk
  * Autoren        :  Eugen Volk
  *
  *
@@ -55,19 +55,38 @@ import scenarios.bienenstock.agenteninfo.Koordinate;
 import agents.bienenstock.utils.DesireIntentionPlan;
 import agents.bienenstock.utils.InfoBlume;
 import agents.bienenstock.utils.KoordWertPaar;
+import agents.bienenstock.utils.BlumenKommInfos;
+import agents.bienenstock.utils.KommInfo;
 
 /**
- * Die Klasse ist Agent und ist aufgebaut nach der Belief-Desire-Intention Architektur.
+ * Ein Agent, der für die Suche den minimalen Abstand zwischen den Blumenwiesen ausnutzt.
+ * Desweiteren ist dies ein kooperativer Agent, der die Information über den Nektarinhalt einer Blumenwiese
+ * für die Kommunikation und Kooperation ausnutzt.
+ * Die Klasse ist Agent und ist aufgebaut nach der deliberativen Agenten-Architektur.
+ *
  */
-public class SimplerKooperativerBDIAgent
+public class MinAbstandAgent
         extends AbstrakteBiene
         implements Runnable {
     
-    private static final int MAX=1000;
+      /**
+     * ID des Volkes, zu der die Biene gehört.
+     */
     private int volksID;
+    /**
+     * aktueller Aktionskode der Biene.
+     */
     private long aktCode;
+    /**
+     * Szenario-Handler für die Vermittlung  der Information
+     * zwischen dem  Agenten und dem SzenarioManager
+     */
     private IBienenstockSzenarioHandler handler;
-    /** spiegelt den externen Zustand der Biene */
+    /**
+     * spiegelt den externen Zustand der Biene.
+     * Ist true, falls die Biene in der Luft ist.
+     * Ist false, falls die Biene nicht in der Luft ist.
+     */
     private boolean bieneIstInDerLuft=false;
     
     /** Daten fuer die Lokalisation und Umweltwahrnehmung */
@@ -82,29 +101,69 @@ public class SimplerKooperativerBDIAgent
     private Hashtable sichtbareFelder;
     /** kritische Entfernung bis zur Blume */
     private int kritEntfernung=0;
+    /**
+     * Flag, der signalisiert ob die Biene ersten Aktionscode bekommen hat und damit im Spiel ist.
+     */
     boolean erstenAktCodeBekommen = false;
     /** Id der Biene */
     private int id = 0;
+    /**
+     * Koordinate des Bienenstocks.
+     */
     private Koordinate posBienenstock;
-    /** falls eine beabsichtigte Aktiin tatsächlich ausgeführt wurde, wird erfold.value den Wert true haben. */
+    /**
+     * falls eine beabsichtigte Aktion tatsächlich ausgeführt wurde, wird erfolg.value den Wert true haben.
+     */
     private BooleanWrapper erfolg=new BooleanWrapper(false);
     
-    /** zähler für die begrenzte Kooperationsbereitschaft der biene  (Z.B. Kooperatin für 5 Runden erhalten) */
+    /**
+     * Zähler für die begrenzte Kooperationsbereitschaft der Biene  (Z.B. Kooperatin für 5 Runden erhalten)
+     */
     private int rundeNrKooperation=0;
-    /** Konstante für die Erhaltung der Kooperation (warten auf Kommunikationspartner) über mehrere Runden */
+    /**
+     * Maximale Anzahl der Kooperationsrunden.
+     * Konstante für die Erhaltung der Kooperation (warten auf Kommunikationspartner) über mehrere Runden.
+     */
     private int maxAnzahlKooperationsRunden=5;
-    /** Max. Anzahl Kooperationsrunden bei der Suche */
+    /**
+     * Max. Anzahl Kooperationsrunden bei der Suche
+     * Konstante für die Erhaltung der Kooperation (warten auf Kommunikationspartner) über mehrere Runden
+     * bei der Suche.
+     */
     private int maxAnzahlKooperationsRundenFSuche=7;
+    /**
+     * maximale Anzahl der Warte-Runden bei der Suche
+     * um auf Kooperationspartner zu warten.
+     */
     private int maxAnzahlWarteRundenFSuche=4;
+    /**
+     * maximale Anzahl der Warte-Runden,
+     * um auf Kooperationspartner zu warten.
+     */
     private int maxAnzahlWarteRunden=2;
+    /**
+     * Ist neue Mitteilung erhalten worde,
+     * so ist der Wert=true, sonst false.
+     */
     private boolean neueMitteilungErhalten=false;
     
-    //   HashMap blumen = new HashMap();
-    /** (Koordinate, InfoBlume) */
+    /**
+     * Wird für die Ausgabe (text) der Agenten-Aktionen verwendet.
+     * soll jede Aktion des Agenten ausgegeben werden?
+     */
+    private boolean out=false;
+    
+    
+    /**
+     * Eine Datenstruktur zur speicherung der bekannten Blumen.
+     * (Koordinate, InfoBlume)
+     */
     HashMap bekannteBlumen=new HashMap();
     
     
-    /** eine Navigationskarte als Gedächtnis über die wahrgenommenen Felder */
+    /**
+     * Eine Navigationskarte als Gedächtnis für die wahrgenommenen Felder
+     */
     HashMap gespeicherteFelder=new HashMap();
     
     /** wartende Bienen auf dem aktuellen Feld (ohne die Biene selbst) */
@@ -112,7 +171,10 @@ public class SimplerKooperativerBDIAgent
     /**  tanzende Bienen auf dem aktuellen Feld (ohne die Biene selbst) */
     HashSet tanzendeBienen;
     //ein paar honigkosten
-    /** HonigMenge vor dem Start der Biene */
+    /**
+     * HonigMenge vor dem Start der Biene,
+     * bzw. maximale zuladbare Honigmenge der Biene.
+     */
     private int startHonig=0;
     /** Honigverbrauch zum Starten */
     private int honigStarten = 0;
@@ -128,31 +190,71 @@ public class SimplerKooperativerBDIAgent
     private int honigAbliefern = 0;
     /** maximale zuladbare Nektarmenge */
     private int maxGelNektar=0;
+    /**  Name der Biene.    */
     private String name = "";
-    /** gesammelter Nektar */
+    /** gesammelte Nektarmange. */
     private int gesammelterNektar = 0;
-    /** kurs Nektar zu Honig */
+    /**  Wechselkurs für die Umwandlung von Nektar zu Honig. */
     private double kursNektarHonig=1;
     /** Reserver für den Fall dass Biene Warten muss */
     private int reserve=2;
-    /** getanzte Bienen, seit kooperatinReset */
+    /** Id der getanzten Bienen, seit kooperatinReset.   */
     private HashSet getanzteBienen=new HashSet();
-    /** habe ich schon seit kooperationReset getanzt? */
+    /** hat die Biene schon seit kooperationReset getanzt?  */
     boolean getanzt=false;
     /** wird gesetzt, falls die Biene wenig Honig hat und sofort zum Bienenstock zurückkehren muss */
     private boolean sofortNektarAbliefernTanken = false;
     /** mitgeteilte BlumenKoordinaten: (Koordinate, new Double(Nutzen))*/
     private HashMap mitgeteilteBlumenKoord=new HashMap();
-    /** Honig im Bienenstock */
+    /**
+     * Gibt es noch Honig im Bienenstock?
+     */
     private boolean  bienenstockHatHonig=true;
-    /** Bienen die aktuelle Blume des Agenten mit bearbeiten, und sollen deshalb bei der Koomunikation nicht
-     * berücksichtigt werden */
+    /**
+     * Bienen, die aktuelle Blume des Agenten mit bearbeiten, und sollen deshalb bei der Koomunikation nicht
+     * berücksichtigt werden
+     */
     private HashSet ignorierteBienenId=new HashSet();
     /** Nummer des Versuchs bei der Blumenprobeentnahme */
     private int probeEntnahmeVersuchNr=0;
     /** Max Anzahl des Versuchs bei der Blumenprobeentnahme, danach wird bei erfolgloser Nektarabbau,
      * die Blume als ohne Nektar angesehen */
     private int probeEntnahmeVersucheMax=2;
+    
+    /**
+     * Enthält informationen über die empfangenen Blumenwiesen.
+     */
+    private BlumenKommInfos kommInfos=new BlumenKommInfos(bekannteBlumen);
+    
+    
+    /** Bienen die aktuelle Blume des Agenten mit bearbeiten, und sollen deshalb bei der Berechnung
+     * des alfa und beta Koeffizienten verwendet werden. */
+    private HashSet bearbBlumeAgenten=new HashSet();
+    
+    
+    /**
+     * alfa-Wert ist ein Grenztwert für die Steuerung der Kommunikation,
+     * in Abhängigkeit von der voraussichtl. Anzahl der Tours zu Blumenwiese.
+     * Wird der alfa-Wert unterschritten, so erfolgt keine Weitergabe der Blumenkoordinate
+     * an andere Bienen.
+     */
+    private double alfa=5; // 5 6
+    
+    /**
+     * beta-Wert ist ein Grenzwert für die Steuerung der Koopeartion,
+     * in Abhängigkeit von der voraussichtl. Anzahl der Tours zur Blumenwiese.
+     * Wird der beta-Wert unterschritten, so wird ein Teil der Agenten die aktuelle Blumenwiese
+     * nicht mehr bearbeiten.
+     */
+    private double beta=1; // 1
+    
+    /**
+     * beschreibt den internen Zustand des deliberativen Agenten.
+     */
+    DesireIntentionPlan modus=new DesireIntentionPlan();
+    
+    /** Liste der Blumenkoordinate, die nicht weitergegeben werden sollen */
+    HashSet noSend=new HashSet();
     
     /**
      * Zahl zur initialisierung des Zufallsgenerators.
@@ -165,7 +267,14 @@ public class SimplerKooperativerBDIAgent
     Random zufallsGenerator = new Random();
     
     
-    public SimplerKooperativerBDIAgent(String bName, AbstractScenarioHandler bHandler) {
+    /**
+     * Ein Agent der für die Suche den minimalen Abstand zwischen den Blumenwiesen ausnutzt.
+     * Desweiteren ist dies ein kooperativer Agent, der die Information über den Nektarinhalt einer Blumenwiese
+     * für die Steuerung der Kommunikation und Kooperation ausnutzt.
+     * @param bName Name des Agenten
+     * @param bHandler Handler des Agenten
+     */
+    public MinAbstandAgent(String bName, AbstractScenarioHandler bHandler) {
         super(bName, bHandler);
         name = bName;
         handler = (IBienenstockSzenarioHandler)bHandler;
@@ -174,26 +283,52 @@ public class SimplerKooperativerBDIAgent
         
     }
     
-    public SimplerKooperativerBDIAgent() {
+    /**
+     * Ein Agent der für die Suche den minimalen Abstand zwischen den Blumenwiesen ausnutzt.
+     * Desweiteren ist dies ein kooperativer Agent, der die Information über den Nektarinhalt einer Blumenwiese
+     * für die Kommunikation und Kooperation ausnutzt.
+     */
+    public MinAbstandAgent() {
         super();
         volksID = 1;
         //  zufallsGenerator.setSeed(samen);
     }
     
-    public SimplerKooperativerBDIAgent(Id bId,String bName) {
+    /**
+     * Ein Agent der für die Suche den minimalen Abstand zwischen den Blumenwiesen ausnutzt.
+     * Desweiteren ist dies ein kooperativer Agent, der die Information über den Nektarinhalt einer Blumenwiese
+     * für die Kommunikation und Kooperation ausnutzt.
+     * @param bId Id des Agenten
+     * @param bName Name des Agenten
+     */
+    public MinAbstandAgent(Id bId,String bName) {
         super(bId, bName);
         name = bName;
         volksID = 1;
     }
     
+    /**
+     * signalisert, dass der Agent eine Run-Methode enthält.
+     * @return true
+     */
     public static boolean isRunableAgent() {
         return true;
     }
     
+    /**
+     * setzt den Handler für den Agenten
+     * @param bHandler Handler für den Agenten, über den der Agent Informationen enthält und
+     * ausgeführte Aktionen weiter gibt.
+     */
     public void setHandler(AbstractScenarioHandler bHandler) {
         handler = (IBienenstockSzenarioHandler)bHandler;
     }
     
+    /**
+     * setzt den Aktionscode für den Agenten.
+     * @param aktionsCode aktueller Aktinscode
+     * @return neuer Aktionscode
+     */
     public boolean aktionscodeSetzen(long aktionsCode) {
         aktCode = aktionsCode;
         this.scenarioParameterEinlesen();
@@ -202,6 +337,10 @@ public class SimplerKooperativerBDIAgent
         return true;
     }
     
+    /**
+     * liefert die Volks-Id des Agenten
+     * @return Nummer des Bienenvolkens, zu der die Biene gehört.
+     */
     public int gibVolksID() {
         return volksID;
     }
@@ -210,14 +349,11 @@ public class SimplerKooperativerBDIAgent
     
     /* ###########################----Begin AgentenVerhalten festlegen---############################-----*/
     
-    
-    DesireIntentionPlan modus=new DesireIntentionPlan();
+
+    /**
+     * Run-Methode, zur Ausführung des Agenten-programms als Thread.
+     */
     public void run() {
-        
-        
-        
-        
-        // DesireIntentionPlan modus=new DesireIntentionPlan();
         perception();
         posBienenstock = selbst.gibPosition().copy();
         modus.setDesire(modus.G_FINDEEINEBLUME);
@@ -227,9 +363,9 @@ public class SimplerKooperativerBDIAgent
             //      System.out.println(id+": alter MODUS  Desire: " + modus.getDesire() + " Intention: "+ modus.getIntention());
             //   visualisiereBiene(selbst);
             evaluateGoal(modus);
-            modifyGoalToAbstractPlan(modus);
-            System.out.println(id+": neuer MODUS  Desire: " + modus.getDesire() + " Intention: "+ modus.getIntention());
-            if (modus.getDesireZiel()!=null) System.out.println(id+": Desire Ziel " +  modus.getDesireZiel().toString());
+            abstractPlanning(modus);
+            if (out)  System.out.println(id+": neuer MODUS  Desire: " + modus.getDesire() + " Intention: "+ modus.getIntention());
+            if (out && modus.getDesireZiel()!=null) System.out.println(id+": Desire Ziel " +  modus.getDesireZiel().toString());
             plan(modus);
             act(modus);
         }
@@ -274,6 +410,7 @@ public class SimplerKooperativerBDIAgent
         
         switch (desire){
             case DesireIntentionPlan.G_FINDEEINEBLUME:{
+                LinkedList empfangListe;
                 this.ignorierteBienenId.clear();
                 LinkedList blumen=sucheBlumeInSichtbarenFeldern();
                 LinkedList bekannteBlumenMitNektar=this.gibBekannteBlumenMitNektar();
@@ -283,11 +420,22 @@ public class SimplerKooperativerBDIAgent
                     double zufall=Math.random();
                     if (zufall<0) zufall=zufall*(-1);
                     int myZahl=(int)Math.round(zufall*anzBlumen);
-                    System.out.println(id+": MYZAHL = " + myZahl + " von max:" + blumen.size() + " zufall: " + zufall);
+                    if (out) System.out.println(id+": MYZAHL = " + myZahl + " von max:" + blumen.size() + " zufall: " + zufall);
                     neuesZiel=(Koordinate)blumen.get(myZahl);
                     modus.setDesireZiel(neuesZiel.copy());
                     
-                } else if ((bekannteBlumenMitNektar!=null) && (bekannteBlumenMitNektar.size()>0)){
+                }else if(kommInfos.getAllKoordListe().size()>0){
+                    empfangListe=kommInfos.getAllKoordListe();
+                    KommInfo kommInfo=(KommInfo)empfangListe.getFirst();
+                    Koordinate neueZielKoord=kommInfo.getKoordinate();
+                    modus.setDesireZiel(neueZielKoord);
+                    modus.setDesire(DesireIntentionPlan.G_FINDEDIEBLUME);
+                    modus.setIntentionZiel(null);
+                    if (this.positionKoordinate.equals(neueZielKoord)){
+                        neuesZiel=this.gibNextRandKoord(neueZielKoord);
+                        modus.setDesireZiel(neuesZiel.copy());
+                    }
+                }else if ((bekannteBlumenMitNektar!=null) && (bekannteBlumenMitNektar.size()>0)){
                     modus.setDesire(DesireIntentionPlan.G_BLUMENPROBEENTNEHMEN);
                     int anzBlumen=bekannteBlumenMitNektar.size()-1;
                     if (anzBlumen>=3) anzBlumen=3;
@@ -295,9 +443,14 @@ public class SimplerKooperativerBDIAgent
                     int myZahl=(int)Math.round(zufall*anzBlumen);
                     neuesZiel=(Koordinate)bekannteBlumenMitNektar.get(myZahl);
                     modus.setDesireZiel(neuesZiel.copy());
+                    
                 }else{
                     if ((altesZiel==null) || (altesZiel.equals(myPosition))){ // || (myPosition.equals(this.posBienenstock))){
                         neuesZiel=this.gibtRandFeld();
+                        LinkedList newRandfelder=gibNeueRandfelder();
+                        if (newRandfelder.size()>0){
+                            neuesZiel=(Koordinate)newRandfelder.getFirst();
+                        }
                         modus.setDesireZiel(neuesZiel.copy());
                     }
                 }
@@ -346,16 +499,14 @@ public class SimplerKooperativerBDIAgent
         }
     }
     
-    
-    
     /**
      * Wandelt das Ziel des Agenten in einen abstrakten Plan (Intention) um.
      * @param modus interner Zustand des Agenten als DesireInteionPlan-Typ.
      */
-    public void modifyGoalToAbstractPlan(DesireIntentionPlan modus){
+    public void abstractPlanning(DesireIntentionPlan modus){
         // verlasse filter ohne neue Intention auszuwählen
         if (this.sofortNektarAbliefernTanken){
-            System.out.println(id +": sofortNektarAbliefern ");
+            if (out) System.out.println(id +": sofortNektarAbliefern ");
             return;
         }
         
@@ -378,7 +529,7 @@ public class SimplerKooperativerBDIAgent
                     HashSet sonstBienen=positionFeld.gibIDsSonstigeBienen();
                     if (sonstBienen.contains(new Integer(id))) sonstBienen.remove(new Integer(id));
                     int sonstBienenSize=sonstBienen.size();
-                    if ((kooperationsBereitschaft() || (sonstBienenSize>0) || ((this.rundeNrKooperation<=this.maxAnzahlWarteRundenFSuche)))
+                    if ((kooperationsBereitschaft() || ((sonstBienenSize>0) && (this.rundeNrKooperation<=this.maxAnzahlWarteRundenFSuche)))
                     && ((this.rundeNrKooperation<=this.maxAnzahlKooperationsRundenFSuche) && (this.selbst.gibRundennummer()>5) )){
                         newIntention=DesireIntentionPlan.P_COOPERATION;
                         modus.setIntention(newIntention);
@@ -395,6 +546,9 @@ public class SimplerKooperativerBDIAgent
                         }  else {
                             this.neueMitteilungErhalten=false;
                             Koordinate neuesZiel=gibtRandFeld();
+                            if (gibNeueRandfelder().size()>0){
+                                neuesZiel=(Koordinate)this.gibNeueRandfelder().getFirst();
+                            }
                             modus.setDesireZiel(neuesZiel.copy());
                             newIntention=DesireIntentionPlan.P_FLIEGENZURKOORDINATE;
                             modus.setIntention(newIntention);
@@ -409,7 +563,7 @@ public class SimplerKooperativerBDIAgent
                         if (selbst.gibGeladeneHonigmenge()<(this.startHonig-this.honigStarten)) {
                             modus.setIntention(DesireIntentionPlan.P_NEKTARABLIEFERNTANKEN);
                         } else {
-                            System.out.println(" KANN NICHT FLIEGEN");
+                            if (out) System.out.println(" KANN NICHT FLIEGEN");
                         }
                     }else{
                         modus.setIntention(newIntention);
@@ -419,15 +573,14 @@ public class SimplerKooperativerBDIAgent
             }break;
             case DesireIntentionPlan.G_BLUMENPROBEENTNEHMEN:{
                 i_neuesZiel=d_Ziel;
-                if (d_Ziel.equals(myPosition)) newIntention=DesireIntentionPlan.P_NEKTARABBAUEN;
+                
+                if (selbst.gibGeladeneNektarmenge()>(maxGelNektar/2)) {
+                    newIntention=DesireIntentionPlan.P_NEKTARABLIEFERNTANKEN;
+                    i_neuesZiel=this.posBienenstock;
+                } else if (d_Ziel.equals(myPosition)) newIntention=DesireIntentionPlan.P_NEKTARABBAUEN;
                 else {
-                    if (selbst.gibGeladeneNektarmenge()>(maxGelNektar/2)) {
-                        newIntention=DesireIntentionPlan.P_NEKTARABLIEFERNTANKEN;
-                        i_neuesZiel=this.posBienenstock;
-                    } else{
-                        newIntention=DesireIntentionPlan.P_FLIEGENZURKOORDINATE;
-                        i_neuesZiel=d_Ziel;
-                    }
+                    newIntention=DesireIntentionPlan.P_FLIEGENZURKOORDINATE;
+                    i_neuesZiel=d_Ziel;
                 }
                 if (!nextIntentionOK(newIntention, i_neuesZiel)) {
                     newIntention=DesireIntentionPlan.P_NEKTARABLIEFERNTANKEN;
@@ -436,6 +589,8 @@ public class SimplerKooperativerBDIAgent
                 modus.setIntention(newIntention);
                 modus.setIntentionZiel(i_neuesZiel);
             }break;
+            
+            /*   Bearbeitung einer Blume                */
             case DesireIntentionPlan.G_BLUMEBEARBEITEN:{
                 if (i_altesZiel==null)  {
                     modus.setIntentionZiel(d_Ziel);
@@ -455,6 +610,10 @@ public class SimplerKooperativerBDIAgent
                         modus.setIntention(newIntention);
                     }
                 }else if (myPosition.equals(this.posBienenstock)){ // am Bienenstock
+                    InfoBlume blume=(InfoBlume) this.bekannteBlumen.get(d_Ziel);
+                    double vorsAnzTours=getVoraussichtlAnzTours(blume);
+                    int anzAgenten=getAnzAgenten(blume);
+                    
                     HashSet sonstBienen= this.positionFeld.gibIDsSonstigeBienen();
                     sonstBienen.remove(new Integer(id));
                     sonstBienen.removeAll(this.ignorierteBienenId);
@@ -464,40 +623,90 @@ public class SimplerKooperativerBDIAgent
                             ((selbst.gibGeladeneHonigmenge()<(this.startHonig-this.honigStarten))
                             && ((this.rundeNrKooperation>this.maxAnzahlKooperationsRunden)
                             || (this.rundeNrKooperation==0)))){
+                        //System.out.println(id+": Nektar abliefertn tanken  Nr.Coop" + rundeNrKooperation );
                         newIntention=DesireIntentionPlan.P_NEKTARABLIEFERNTANKEN;
                         modus.setIntention(newIntention);
+                        /*   KOOPERATION   */
                     } else if ((kooperationsBereitschaft() || ((this.rundeNrKooperation<=this.maxAnzahlWarteRunden)
-                    && (sonstBienenSize>0)))
+                    && (sonstBienenSize>0))) // sonstBienenSize>0 wenn es andere Bienen gibt die gerade tanken, oder nektarabliefern
                     && (this.rundeNrKooperation<=this.maxAnzahlKooperationsRunden) && !this.bieneIstInDerLuft){
                         newIntention=DesireIntentionPlan.P_COOPERATION;
                         modus.setIntention(newIntention);
-                        i_neuesZiel=d_Ziel;
-                        modus.setIntentionZiel(i_neuesZiel);
-                        // this.rundeNrKooperation++;
-                        //     System.out.println(" RUNDEN NR: " + this.rundeNrKooperation);
-                    }else if ((this.rundeNrKooperation>this.maxAnzahlKooperationsRunden) && this.neueMitteilungErhalten){
-                        Koordinate neueZielKoord=this.findeBesteMitgeteteilteBlume(d_Ziel);
-                        this.neueMitteilungErhalten=false;
-                        if (neueZielKoord.equals(d_Ziel)){ // fliege zurück zur Blume
-                            newIntention=DesireIntentionPlan.P_FLIEGENZURKOORDINATE;
-                            modus.setIntention(newIntention);
-                            modus.setIntentionZiel(d_Ziel);
-                        } else{ // suche neue mitgeteilte Koordinate
-                            modus.setDesireZiel(neueZielKoord);
-                            modus.setDesire(DesireIntentionPlan.G_FINDEDIEBLUME);
+                        if ((vorsAnzTours<alfa) || noSend.contains(d_Ziel)) { // keine Weitergabe der Blumenkoord
+                            System.out.println(id + ": voraussichtl ANZAHL der TOURS " + vorsAnzTours + "  zu " + blume.getBlumenKoordinate()  );
                             modus.setIntentionZiel(null);
+                        } else modus.setIntentionZiel(d_Ziel);
+                    }else {
+                        if (this.neueMitteilungErhalten){
+                            // String my="false";
+                            // if (this.kooperationsBereitschaft()) my="true";
+                            // System.out.println(id+ ": neue mitteilung : KOOPERATIONSBEREITSCHAFT--------------> " + my);
+                            Koordinate neueZielKoord;
+                            Koordinate alteZielKoord;
+                            System.out.println(id + ": voraussichtl ANZAHL der TOURS " + vorsAnzTours + "  zu " + blume.getBlumenKoordinate()  );
+                            /* 1/2 der Agenten sollen eine andere Blume wählen, da Nektar wird knapp */
+                            if (vorsAnzTours<beta) {
+                                // die Hälfte der Agenten sollen ihr Ziel wechseln
+                                double zufall=Math.random();
+                                if (zufall<=0.5 || anzAgenten<4) {
+                                    alteZielKoord=d_Ziel;
+                                    noSend.add(d_Ziel);
+                                } else{ // wechsle Ziel
+                                    alteZielKoord=null;
+                                    blume.setHatNektar(false);
+                                    // System.out.println(id+ ":+ set NONEKTAR "  + blume.getBlumenKoordinate());
+                                }
+                            } else alteZielKoord=d_Ziel;
+                            
+                            neueZielKoord=this.findeBesteMitgeteteilteBlume(alteZielKoord);
+                            this.neueMitteilungErhalten=false;
+                            if (neueZielKoord.equals(d_Ziel)){ // fliege zurück zur Blume
+                                newIntention=DesireIntentionPlan.P_FLIEGENZURKOORDINATE;
+                                modus.setIntention(newIntention);
+                                modus.setIntentionZiel(d_Ziel);
+                            } else{ // suche neue mitgeteilte Koordinate
+                                modus.setDesireZiel(neueZielKoord);
+                                modus.setDesire(DesireIntentionPlan.G_FINDEDIEBLUME);
+                                modus.setIntentionZiel(null);
+                            }
+                        } else{ // wenn keine neue Mitteilung erhalten
+                            
+                            double zufall=Math.random();
+                            if ((vorsAnzTours<beta)  && ((zufall>0.5) && (anzAgenten>3))) {
+                                /*  Suche eine andere Blume  */
+                                blume.setHatNektar(false);
+                                LinkedList empfangListe;
+                                empfangListe=kommInfos.getReducedKoordListe();
+                                if (empfangListe.size()>0){
+                                    KommInfo kommInfo=(KommInfo)empfangListe.getFirst();
+                                    Koordinate neueZielKoord=kommInfo.getKoordinate();
+                                    modus.setDesireZiel(neueZielKoord);
+                                    modus.setDesire(DesireIntentionPlan.G_FINDEDIEBLUME);
+                                    modus.setIntentionZiel(null);
+                                    
+                                }else{
+                                    modus.setDesire(DesireIntentionPlan.G_FINDEEINEBLUME);
+                                    modus.setDesireZiel(null);
+                                    modus.setIntentionZiel(null);
+                                }
+                                
+                                this.evaluateGoal(modus);
+                                this.abstractPlanning(modus);
+                            }else{// fliege zur Blume
+                                newIntention=DesireIntentionPlan.P_FLIEGENZURKOORDINATE;
+                                modus.setIntention(newIntention);
+                                i_neuesZiel=d_Ziel;
+                                modus.setIntentionZiel(i_neuesZiel);
+                                
+                            }
                         }
-                    } else{ // fliege zur Blume
-                        newIntention=DesireIntentionPlan.P_FLIEGENZURKOORDINATE;
-                        modus.setIntention(newIntention);
-                        i_neuesZiel=d_Ziel;
-                        modus.setIntentionZiel(i_neuesZiel);
                     }
                 } else kooperationReset();
             }break;
             case DesireIntentionPlan.G_FINDEDIEBLUME:{
                 Set gespKoord=this.gespeicherteFelder.keySet();
-                modus.setIntention(DesireIntentionPlan.P_FLIEGENZURKOORDINATE);
+                newIntention=DesireIntentionPlan.P_FLIEGENZURKOORDINATE;
+                modus.setIntention(newIntention);
                 i_neuesZiel=i_altesZiel;
                 // falls zur Koordinate keein Weg existiert, so werden Randknoten zur Nav verwendet.
                 if (i_altesZiel==null) {
@@ -518,6 +727,10 @@ public class SimplerKooperativerBDIAgent
                     i_altesZiel=i_neuesZiel;
                 }
                 modus.setIntentionZiel(i_neuesZiel);
+                if (!nextIntentionOK(newIntention, i_neuesZiel) ||
+                        (selbst.gibGeladeneNektarmenge()> this.maxGelNektar/2)){
+                    modus.setIntention(DesireIntentionPlan.P_NEKTARABLIEFERNTANKEN);
+                }
                 
             }break;
         }
@@ -550,7 +763,7 @@ public class SimplerKooperativerBDIAgent
                     actionNr=DesireIntentionPlan.A_FLIEGEN;
                     if (weg==null) { /* darf nicht passieren, da nur Koordinate mitgeteilt
                      werden zu denen ein Weg existierr*/
-                        System.out.println(id+" KEIN WEG zum fliegen nach " + i_ziel.toString() );
+                        if (out) System.out.println(id+" KEIN WEG zum fliegen nach " + i_ziel.toString() );
                     } else{
                         Iterator it=weg.iterator();
                         while(it.hasNext()){
@@ -704,6 +917,7 @@ public class SimplerKooperativerBDIAgent
                 if ((caBlumenKoordinate!=null) && (info!=null)){
                     double nutzen=selbst.gibInformation().gibNutzen();
                     mitgeteilteBlumenKoord.put(caBlumenKoordinate,new Double(nutzen));
+                    kommInfos.addKommInfo(caBlumenKoordinate.copy(), nutzen, selbst.gibRundennummer());
                     this.neueMitteilungErhalten=true;
                 }
             }
@@ -723,6 +937,7 @@ public class SimplerKooperativerBDIAgent
      */
     private void kooperationReset(){
         if (getanzteBienen.size()>0 )this.getanzteBienen.clear();
+        this.mitgeteilteBlumenKoord.clear();
         this.getanzt=false;
         this.rundeNrKooperation=0;
         this.neueMitteilungErhalten=false;
@@ -755,6 +970,8 @@ public class SimplerKooperativerBDIAgent
             planListe=new LinkedList();
             actionNr=DesireIntentionPlan.A_ZUSCHAUEN;
             getanzteBienen.addAll(this.tanzendeBienen);
+            if (getanzt) this.ignorierteBienenId.addAll(getanzteBienen);
+            
             // getanzteBienen.add(new Integer(tanzendeBieneId));
             atp=new ActionTargetPair(actionNr,tanzendeBieneId);
             planListe.add(atp);
@@ -767,10 +984,7 @@ public class SimplerKooperativerBDIAgent
             Iterator it=nichtGetanzteBienen.iterator();
             int nichtGetztSize=nichtGetanzteBienen.size();
             int aBieneId=10000;
-            if (nichtGetztSize==0){
-                this.rundeNrKooperation=this.maxAnzahlKooperationsRunden+1;
-                return new LinkedList();
-            } else if (nichtGetztSize==1) {
+            if (nichtGetztSize<=1) {
                 planListe=new LinkedList();
                 actionNr=DesireIntentionPlan.A_TANZEN;
                 atp=new ActionTargetPair(actionNr,blumenKoord.copy());
@@ -800,34 +1014,23 @@ public class SimplerKooperativerBDIAgent
                 
                 
             }
+        } else {
+            HashSet nichtGetanzteBienen=new HashSet(wartendeBienen);
+            nichtGetanzteBienen.removeAll(getanzteBienen);
             
-            /*while (it.hasNext()){
-                aBieneId=((Integer)it.next()).intValue();
-                if (aBieneId<myId) break;
-            }
-            if ((myId<aBieneId)){
-                planListe=new LinkedList();
-                actionNr=DesireIntentionPlan.A_TANZEN;
-                atp=new ActionTargetPair(actionNr,blumenKoord.copy());
-                planListe.add(atp);
-                getanzt=true;
-                return planListe;
-            } else {
+            if (getanzt && (nichtGetanzteBienen.size()==0)){
+                /* Beenede die Kooperation, da alle haben getanzt */
+                this.rundeNrKooperation=this.maxAnzahlKooperationsRunden+1;
+                return new LinkedList();
+            } else{
                 planListe=new LinkedList();
                 actionNr=DesireIntentionPlan.A_WARTEN;
-                atp=new ActionTargetPair(actionNr,blumenKoord.copy());
+                atp=new ActionTargetPair(actionNr,blumenKoord);
                 planListe.add(atp);
                 return planListe;
-            }*/
-        }else{
-            planListe=new LinkedList();
-            actionNr=DesireIntentionPlan.A_WARTEN;
-            atp=new ActionTargetPair(actionNr,blumenKoord);
-            planListe.add(atp);
-            return planListe;
-            
+                
+            }
         }
-        
     }
     
     
@@ -896,7 +1099,7 @@ public class SimplerKooperativerBDIAgent
     
     /**
      * sucht aus den übermittelten Blumenkoordinaten die bessere (als seine eigene) aus.
-     * Falls es keien Bessere gibt, so wird die Koordinate der aktuellen Blume übermittelt.
+     * Falls es keine Bessere gibt, so wird die Koordinate der aktuellen Blume übermittelt.
      * @param aktuelleBlume Koordinate der aktuellen zu bearbeitenden Blume
      * @return Koordinate der ausgewählten Blume
      */
@@ -912,10 +1115,23 @@ public class SimplerKooperativerBDIAgent
         double maxNutzen=0;
         LinkedList kandidaten=new LinkedList();
         TreeSet sortKoord=new TreeSet();
+        boolean noNektar;
         Iterator setIt=this.mitgeteilteBlumenKoord.entrySet().iterator();
         while(setIt.hasNext()){
+            noNektar=false;
             Entry entry=(Entry)setIt.next();
             Koordinate koord=((Koordinate)entry.getKey()).copy();
+          /*  Iterator blumenIt=bekannteBlumen.values().iterator();
+            while(blumenIt.hasNext()){
+                InfoBlume aBlume=(InfoBlume)blumenIt.next();
+                Koordinate blumenKoord=aBlume.getBlumenKoordinate();
+                if ((!aBlume.getHatNektar()) && abstand(koord,blumenKoord)<1.5) {
+                    noNektar=true;
+                    break;
+                }
+            }
+            if (noNektar) continue; // falls die mitgeteilte Blume kein kein Nektar mehr hat
+           */
             double nutzen=((Double)entry.getValue()).doubleValue();
             KoordWertPaar koordWertPaar=new KoordWertPaar(koord,nutzen);
             if (nutzen>myNutzen) sortKoord.add(koordWertPaar);
@@ -945,11 +1161,12 @@ public class SimplerKooperativerBDIAgent
     }
     
     
-    /**
-     * gibt die Kosten an, um von der aktuellen Position zurück zum Bienenstock zu fliegen
+     /**
+     * gibt die Kosten an, um von der vorgegebenen Position zurück zum Bienenstock zu fliegen
      * und dort zu tanken.
-     *
      * @return Kosten um zum Bienenstock zurück zu kehren und zu tanken.
+     * @param vonPosition Berechnung der Kosten von der vorgebenen Position
+     * @param bieneIstInLuft externer Zustand des Agenten.
      */
     private int kostenNachHauseTanken(Koordinate vonPosition, boolean bieneIstInLuft){
         int kosten;
@@ -1079,7 +1296,7 @@ public class SimplerKooperativerBDIAgent
             return nachbarFelder;
         }else{
              /*  Koordinaten sortiert, nach der Entfernung
-              sowohl der Biene als auch zum Bienenstock  */
+              sowohl zur Biene als auch zum Bienenstock  */
             
             LinkedList sortRandFelderBienenstock;
             LinkedList sortRandFelder;
@@ -1091,7 +1308,7 @@ public class SimplerKooperativerBDIAgent
         }
     }
     
-    /** 
+    /**
      * sucht aus den Randfeldern ein Feld raus.
      * @return Koordinate eines Rand-Feldes.
      */
@@ -1129,8 +1346,12 @@ public class SimplerKooperativerBDIAgent
         InfoBlume infoBlume;
         Koordinate posBlume=blume.gibPosition();
         if (!(blume instanceof EinfacheBlume)) return false;
+        EinfacheBlume eBlume=((EinfacheBlume)blume);
         if (bekannteBlumen.keySet().contains(posBlume)){
             infoBlume=(InfoBlume)bekannteBlumen.get(posBlume);
+            if (this.positionKoordinate.equals(posBlume) && eBlume.gibNektarAuslesbar()){
+                infoBlume.aktualisiereNektarInhalt(eBlume.gibVorhandenerNektar(), this.selbst.gibRundennummer());
+            }
             if (infoBlume.getHatNektar()){
                 if (infoBlume.getProbeEntnommen()) return (infoBlume.getNutzen()>0);
                 else return true;
@@ -1138,6 +1359,9 @@ public class SimplerKooperativerBDIAgent
         }else {
             int entfernung=kuerzesterWeg(this.posBienenstock,posBlume, this.gespeicherteFelder).size();
             infoBlume=new InfoBlume(posBlume, entfernung);
+            if (this.positionKoordinate.equals(posBlume) && eBlume.gibNektarAuslesbar()){
+                infoBlume.aktualisiereNektarInhalt(eBlume.gibVorhandenerNektar(), this.selbst.gibRundennummer());
+            }
             bekannteBlumen.put(posBlume.copy(), infoBlume);
             if (entfernung>this.kritEntfernung) {
                 infoBlume.setProbeEntnommen();
@@ -1153,7 +1377,7 @@ public class SimplerKooperativerBDIAgent
     /**
      * Berechnet den Nutzen der Blume in abhängigkeit von ihrer Ausbeute und Enfernung zum Bienenstock.
      *
-     * @blume Informationen zu einer Blume, wobei die Probe entnommen sein muss,
+     * @param blume Informationen zu einer Blume, wobei die Probe entnommen sein muss,
      * Ausbeute-NektarProRunde und die Entfernung zum Bienenstock bereits eingetragen sein muessen.
      */
     private void berechneSetzeNutzen(InfoBlume blume){
@@ -1164,11 +1388,11 @@ public class SimplerKooperativerBDIAgent
             return;
         }
         int entfernung=blume.getEntfernungZumBienenstock();
-        int kosten0=2*(honigStarten + honigLanden + entfernung*honigFliegen);
-        int maxAnzAbbau=(int)(maxGelNektar/ausbeute);
-        int anzMoeglAbbau=(int)((this.startHonig-kosten0)/honigAbbauen);
+        int kosten0=2*(honigStarten + honigLanden + entfernung*honigFliegen)+ honigTanken + honigAbliefern;
+        int maxAnzAbbau=(int) Math.ceil(maxGelNektar/ausbeute);
+        int anzMoeglAbbau=(int) Math.floor((this.startHonig-kosten0)/honigAbbauen);
         int tatsAbbau=Math.min(anzMoeglAbbau, maxAnzAbbau);
-        int tatsKosten=kosten0 + honigAbliefern + (tatsAbbau * honigAbbauen);
+        int tatsKosten=kosten0  + (tatsAbbau * honigAbbauen);
         double nutzen=(tatsAbbau * ausbeute * kursNektarHonig) - tatsKosten;
         blume.setNutzen(nutzen);
     }
@@ -1199,7 +1423,7 @@ public class SimplerKooperativerBDIAgent
      * genommen wurde.
      */
     private void exodus(){
-        System.out.println(id + ": ich bin nicht mehr im Spiel! ");
+        if (out) System.out.println(id + ": ich bin nicht mehr im Spiel! ");
         synchronized (selbst) {
             try {
                 selbst.wait();
@@ -1229,9 +1453,13 @@ public class SimplerKooperativerBDIAgent
      */
     private void addIgnoredBienen(){
         if (this.positionFeld instanceof EinfacheBlume){
-            if (selbst.gibGeladeneNektarmenge()==0) this.ignorierteBienenId.clear();
+            if (selbst.gibGeladeneNektarmenge()==0) {
+                this.ignorierteBienenId.clear();
+                this.bearbBlumeAgenten.clear();
+            }
             EinfacheBlume blume=(EinfacheBlume)positionFeld;
             this.ignorierteBienenId.addAll(blume.gibIDsAbbauendeBienen());
+            this.bearbBlumeAgenten=(HashSet) this.ignorierteBienenId.clone();
         }
     }
     
@@ -1281,6 +1509,10 @@ public class SimplerKooperativerBDIAgent
         }
     }
     
+    /**
+     * Hilfsfunktion zur Ausgabe des Agenten-Status.
+     * @param ich Biene bzw. Abbild der Biene mit allen Informationen über die Biene.
+     */
     private void visualisiereBiene(EinfacheBiene ich) {
         Koordinate pos = (Koordinate)ich.gibPosition();
         
@@ -1364,10 +1596,10 @@ public class SimplerKooperativerBDIAgent
     
     
     
-    /**
+   /**
      * aktulisiert die gespeicherten Felder mit den lokalen aktuellen Daten
      *
-     * @lokaleFelder gegenwärtige Sicht des Agenten
+     * @param lokaleFelder gegenwärtige Sicht des Agenten
      */
     private void gespeicherteFelderAktualisieren(Hashtable lokaleFelder){
         
@@ -1391,10 +1623,11 @@ public class SimplerKooperativerBDIAgent
     }
     
     
-    /**
+   /**
      * gibt die vorgegebene Koordinaten-Liste sortiert nach der Entfernung zur startKoordinate zurück.
      * @param koordList zu sortierenden Koordinaten-Liste
      * @param startKoordinate Start-Koordinate
+     * @return eine KoordinatenListe, sortiert nach der Entfernung.
      */
     private LinkedList sortKoordinaten(LinkedList koordList, Koordinate startKoordinate){
         TreeSet sortSet=new TreeSet();
@@ -1459,13 +1692,190 @@ public class SimplerKooperativerBDIAgent
     }
     
     
+    /**
+     * liefert die Nektarabbaumenge die pro Tour und Agenten zu Blume abgebaut werden kann.
+     * @param blume zu betrachtende Blume
+     * @return AbbauMenge an Nektar pro Tour
+     */
+    private int getAbbauMenge(InfoBlume blume){
+        if (!blume.getProbeEntnommen()) return 0;
+        
+        int ausbeute=blume.getAusbeuteProRunde();
+        int entfernung=blume.getEntfernungZumBienenstock();
+        
+        int kosten0=2*(honigStarten + honigLanden + entfernung*honigFliegen)+ honigTanken + honigAbliefern;
+        int maxAnzAbbau=(int) Math.ceil(maxGelNektar/ausbeute);
+        int anzMoeglAbbau=(int) Math.floor((this.startHonig-kosten0)/honigAbbauen);
+        int tatsAbbau=Math.min(anzMoeglAbbau, maxAnzAbbau);
+        int abbauMenge=tatsAbbau * ausbeute;
+        return abbauMenge;
+        
+    }
+    
+    /**
+     * gibt die voraussichtliche Anzahl der Tours zu der Blume,
+     * unter Berücksichtigung der Agenten, die diese Blume bearbeiten und der Nektarmenge, die diese Blumen hat.
+     *
+     * @param blume zu betrachtende Blume
+     * @return voraussichtliche Anzahl der Tours zur Blume
+     */
+    private double getVoraussichtlAnzTours(InfoBlume blume){
+        int abbauMenge=getAbbauMenge(blume);
+        int actualNektar=blume.getNektarInhalt();
+        int anzTours=0;
+        
+        anzTours=actualNektar/(abbauMenge *  getAnzAgenten(blume));
+        return anzTours;
+        
+    }
+    
+    /**
+     * gibt die Anzahl der Agenten, die die aktuelle Blume bearbeiten
+     * @param blume aktuelle Blume
+     * @return Anzahl der Agenten, die die aktuelle Blume bearbeiten
+     */
+    private int getAnzAgenten(InfoBlume blume){
+        int nektarDiff=blume.getNektarDifferenz();
+        int abbauMenge=getAbbauMenge(blume);
+        int actualNektar=blume.getNektarInhalt();
+        int anzAgenten0=1; // Anz der Agenten die aus den die Blume bearbeitenden Agenten abgeleitet sind
+        int anzAgenten1=1; // Anz der Agenten, die aus der Differenz der Nektarmenge und der Abbaumenge abgeleitet sind.
+        int tatsAnzAgenten=1; // durch max zw. anzAgenten0 und anzAgenten1
+        
+        if (bearbBlumeAgenten.contains(new Integer(id))) anzAgenten0=this.bearbBlumeAgenten.size();
+        else anzAgenten0=bearbBlumeAgenten.size() + 1;
+        anzAgenten1= (int) Math.ceil(nektarDiff/abbauMenge);
+        tatsAnzAgenten=Math.max(anzAgenten0, anzAgenten1);
+        return tatsAnzAgenten;
+    }
+    
+    
+    /**
+     * berechnet den euklidischen Abstand zwischen zwei Koordinaten
+     * @param koord1 erste Koordinate
+     * @param koord2 zweite Koordinate
+     * @return Abstand zwischen zwei Koordinaten.
+     */
+    private double abstand(Koordinate koord1, Koordinate koord2){
+        double abstand;
+        double xDiff=koord1.gibXPosition()- koord2.gibXPosition();
+        double yDiff=koord1.gibYPosition() - koord2.gibYPosition();
+        abstand=Math.sqrt((xDiff * xDiff) + (yDiff * yDiff));
+        return abstand;
+    }
+    
+    /**
+     * liefert neue Randfelder, nachdem aus den altenRandfeldern alle Randfelder die innerhalb der
+     * bekannten Blumen oder mitgeteilten Koordinaten entfernt wurden.
+     * @return eine Liste aus neuen Randfeldern
+     */
+    private LinkedList gibNeueRandfelder(){
+        
+        LinkedList alteRandfelder=this.sucheRandFeld();
+        LinkedList neueRandfelder=(LinkedList)alteRandfelder.clone();
+        LinkedList komKoord=this.kommInfos.getReducedKoordListe();
+        int minAbstand=this.lokaleKarte.gibBlumenMindestAbstand();
+        
+        /* Entferne Randkoordinaten, die innerhalb des mindestAbstand von bekannte Blumenkoordinaten liegen */
+        Iterator alteRandFelderIt= alteRandfelder.iterator();
+        while (alteRandFelderIt.hasNext()){
+            Koordinate altKoord=(Koordinate)alteRandFelderIt.next();
+            
+            Iterator blumenIt=bekannteBlumen.values().iterator();
+            while (blumenIt.hasNext()){
+                InfoBlume aBlume=(InfoBlume)blumenIt.next();
+                Koordinate blumenKoord=aBlume.getBlumenKoordinate();
+                if (abstand(blumenKoord,altKoord)<minAbstand) {
+                    neueRandfelder.remove(altKoord);
+                    break;
+                }
+            }
+        }
+        /* Entferne Randkoordinaten, die innerhalb des mindestAbstand von mitegeteilten Koordinaten liegen */
+        Iterator kommIt=komKoord.iterator();
+        while (kommIt.hasNext()){
+            Koordinate kommKoord=(Koordinate)kommIt.next();
+            Iterator altRandIt=((LinkedList)neueRandfelder.clone()).iterator();
+            while (altRandIt.hasNext()){
+                Koordinate altKoord=(Koordinate)altRandIt.next();
+                if (abstand(altKoord,altKoord)<minAbstand) {
+                    neueRandfelder.remove(altKoord);
+                    break;
+                }
+            }
+        }
+        /* sortiere restliche Randfelder nach der Entfernung zum Bienenstock */
+        LinkedList sortBS=sortKoordinaten(neueRandfelder,this.posBienenstock);
+        /* dann nach der Entfernung zur Position der Biene */
+        LinkedList retValue=this.sortKoordinaten(sortBS,this.selbst.gibPosition());
+        if (retValue.size()==0){
+                        
+            /* FALLS alle Randfelder sind überdeckt von bekannten Blumenwiesen, dann suche ein Randfeld aus,
+                das am weitesten von den Blumenwiesen entfern ist.*/
+            TreeSet sortKoord=new TreeSet();
+            
+            alteRandfelder=this.sucheRandFeld();
+            alteRandFelderIt= alteRandfelder.iterator();
+            while (alteRandFelderIt.hasNext()){
+                Koordinate altKoord=(Koordinate)alteRandFelderIt.next();
+                
+                Iterator blumenIt=bekannteBlumen.values().iterator();
+                double minimum=Integer.MAX_VALUE;
+                double abstand;
+                
+                while (blumenIt.hasNext()){
+                    InfoBlume aBlume=(InfoBlume)blumenIt.next();
+                    Koordinate blumenKoord=aBlume.getBlumenKoordinate();
+                    
+                    abstand=abstand(blumenKoord,altKoord);
+                    if (abstand<minimum) minimum=abstand;
+                }
+                
+                KoordWertPaar kwp=new KoordWertPaar(altKoord,minimum);
+                sortKoord.add(kwp);
+            }
+            Iterator itSort=sortKoord.iterator();
+            LinkedList newRetValue=new LinkedList();
+            while (itSort.hasNext()){
+                Koordinate myKoord=((KoordWertPaar)itSort.next()).getKoordinate();
+                newRetValue.addFirst(myKoord);
+                
+            }
+            
+            // falls es keine Randfelder gibt.
+            if (newRetValue.size()==0) newRetValue.add(posBienenstock);
+            
+            retValue=newRetValue;
+        }
+        return retValue;
+        
+    }
+    
+    
+    
+    
+    /**
+     * gibt die Randkoordinate, die der nextKoord am nächsten ist
+     * @param nextKoord Koordinate
+     * @return die Randkoordinate, die der nextKoord am nächsten ist
+     */
+    private Koordinate gibNextRandKoord(Koordinate nextKoord){
+        LinkedList randListe=sucheRandFeld();
+        
+        LinkedList liste=sortKoordinaten(randListe, nextKoord);
+        if (liste.size()>0) return ((Koordinate)liste.getFirst());
+        else return nextKoord;
+        
+        
+    }
+    
     
     /* #######################   Beginn: primitive Aktionen    ######################## */
     
     
     /** lässt die Biene tanken */
     private void tanken(){
-        System.out.println(selbst.gibBienenID()+ ": tanke " + selbst.gibPosition().toString());
+        if (out) System.out.println(selbst.gibBienenID()+ ": tanke " + selbst.gibPosition().toString());
         int mengeZuTanken=this.startHonig-selbst.gibGeladeneHonigmenge()+this.honigTanken;
         long neuerAktCode = handler.aktionHonigTanken(aktCode, erfolg, mengeZuTanken);
         if (!(neuerAktCode == 0L)) {
@@ -1479,7 +1889,7 @@ public class SimplerKooperativerBDIAgent
     
     /** lässt die Biene starten */
     private void starten(){
-        System.out.println(selbst.gibBienenID()+ ": starte " + selbst.gibPosition().toString());
+        if (out) System.out.println(selbst.gibBienenID()+ ": starte " + selbst.gibPosition().toString());
         long neuerAktCode = handler.aktionStarten(aktCode, erfolg);
         if (!(neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
@@ -1490,7 +1900,7 @@ public class SimplerKooperativerBDIAgent
     
     /** lässt die Biene landen */
     private void landen(){
-        System.out.println(selbst.gibBienenID()+ ": lande " + selbst.gibPosition().toString());
+        if (out) System.out.println(selbst.gibBienenID()+ ": lande " + selbst.gibPosition().toString());
         long neuerAktCode = handler.aktionLanden(aktCode, erfolg);
         if (!(neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
@@ -1510,7 +1920,7 @@ public class SimplerKooperativerBDIAgent
      * @param nextZiel nächste ZielPosition
      */
     private void fliegen(Koordinate nextZiel){
-        System.out.println(selbst.gibBienenID()+ ": fliege zur " + nextZiel.toString());
+        if (out) System.out.println(selbst.gibBienenID()+ ": fliege zur " + nextZiel.toString());
         long neuerAktCode = handler.aktionFliegen(aktCode, erfolg, nextZiel);
         if (!(neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
@@ -1525,8 +1935,9 @@ public class SimplerKooperativerBDIAgent
     
     /** lässt die Biene Nektar abbauen */
     private void nektarAbbauen(){
-        System.out.println(selbst.gibBienenID()+ ": baue Nektar ab " + selbst.gibPosition().toString());
-        long neuerAktCode = handler.aktionNektarAbbauen(aktCode, erfolg,MAX);
+        int max=1000;
+        if (out) System.out.println(selbst.gibBienenID()+ ": baue Nektar ab " + selbst.gibPosition().toString());
+        long neuerAktCode = handler.aktionNektarAbbauen(aktCode, erfolg,max);
         if (!(neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
         }
@@ -1540,7 +1951,7 @@ public class SimplerKooperativerBDIAgent
     
     /** lässt die Biene Nektar abliefern */
     private void nektarAbliefern(){
-        System.out.println(selbst.gibBienenID()+ ": liefere Nektar ab " + selbst.gibPosition().toString());
+        if (out) System.out.println(selbst.gibBienenID()+ ": liefere Nektar ab " + selbst.gibPosition().toString());
         this.gesammelterNektar=this.gesammelterNektar + selbst.gibGeladeneNektarmenge();
         long neuerAktCode = handler.aktionNektarAbliefern(aktCode, erfolg);
         if (!(neuerAktCode == 0L)) {
@@ -1560,7 +1971,7 @@ public class SimplerKooperativerBDIAgent
         InfoBlume infoBlume=(InfoBlume)this.bekannteBlumen.get(blumenKoordinate);
         if (infoBlume.getProbeEntnommen()) nutzen=infoBlume.getNutzen();
         long neuerAktCode = handler.aktionTanzen(aktCode, erfolg, koordX, koordY, true, true,nutzen);
-        System.out.println(selbst.gibBienenID()+ ": TANZE: habe übermittelt Koordinate : "+ blumenKoordinate.toString() +
+        if (out) System.out.println(selbst.gibBienenID()+ ": TANZE: habe übermittelt Koordinate : "+ blumenKoordinate.toString() +
                 " Nutzen " + nutzen);
         if (!(neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
@@ -1598,7 +2009,7 @@ public class SimplerKooperativerBDIAgent
             yKoord=(int) Math.round(dY) + selbst.gibPosition().gibYPosition();
             blumenKoord=new Koordinate(xKoord, yKoord);
         }
-        if (blumenKoord!=null) System.out.println(id+": MITGETEILTE BLUMENKOORDINATE: " + blumenKoord.toString());
+        if (out && blumenKoord!=null) System.out.println(id+": MITGETEILTE BLUMENKOORDINATE: " + blumenKoord.toString());
         return blumenKoord;
     }
     
@@ -1607,7 +2018,7 @@ public class SimplerKooperativerBDIAgent
      * versetzt die Biene in den Warte-Zustand.
      */
     public void warten() {
-        System.out.println(id + ": warten " + selbst.gibPosition().toString() );
+        if (out) System.out.println(id + ": warten " + selbst.gibPosition().toString() );
         long neuerAktCode = handler.aktionWarten(aktCode, erfolg);
         if (!(neuerAktCode == 0L)) {
             aktCode = neuerAktCode;

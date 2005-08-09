@@ -50,7 +50,16 @@ public class GameConf implements Serializable {
      * zu finden in scenario/<scenario-Name>/parameters/xxxxx.xml */
     private String parameterDateiName;
     
-    /** Creates a new instance of GameConf */
+    
+   /**
+     * Eine DatenStruktur zur Verwaltung der Eingelesenen Eintrags aus
+     * der KonfigurationsDatei fuer den Simulator.
+     * 
+     * @param tagName Neme des Tags
+     * @param scenarioName Name des Szenario
+     * @param kartenDateiName Name der Kartendatei
+     * @param parameterDateiName Name der Parameter-Datei
+     */
     public GameConf(String tagName, String scenarioName, String kartenDateiName,
             String parameterDateiName) {
         this.tagName=new String(tagName);

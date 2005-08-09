@@ -109,6 +109,7 @@ public class ActionTargetPair {
     
     /**
      * setzt den Id des ZielAgenten
+     * @param zielAgentId Id des Zeilagenten
      */
     public void setZielAgtenId(int zielAgentId){
         this.zielAgentId=zielAgentId;

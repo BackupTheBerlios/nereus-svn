@@ -46,8 +46,9 @@ public class BooleanWrapper {
     public BooleanWrapper() {
     }
     
-    /** Creates a new instance of BooleanWrapper 
-     * @ param value boolean-Wert
+    /** 
+     * Wrapper um den Boolean-Wert. 
+     * @param value boolean-Wert
      */
     public BooleanWrapper(boolean value) {
         this.wert=value;

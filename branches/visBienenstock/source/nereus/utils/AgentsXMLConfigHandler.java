@@ -57,7 +57,7 @@ public class AgentsXMLConfigHandler extends DefaultHandler{
     
     /** HashMap mit (scenarioName,VisualisationKlassenName) paaren. */
     private HashMap visClassNames=new HashMap();
-    
+    /** zuletzt eingelesene Szenario-Namen */
     private String lastScenarioName;
     
     /**
@@ -75,6 +75,7 @@ public class AgentsXMLConfigHandler extends DefaultHandler{
      *
      * @param URI Angabe zur position der Datei
      * @param localname enthält den Namen des Elements
+     * @param name Name des Elements
      * @param atts eine Liste der zum Element gehörenden Attribute
      */
     public void startElement(String URI, String localname, String name, Attributes atts){

@@ -1,7 +1,7 @@
 /*
- * Dateiname      : BienenstockAgent.java
+ * Dateiname      : EinfacherAgent.java
  * Erzeugt        : 20. Januar 2004
- * Letzte Änderung: 21. Mai 2005 durch Eugen Volk
+ * Letzte Änderung: 8. August 2005 durch Eugen Volk
  * Autoren        : Philip Funck (mango.3@gmx.de)
  *                  Samuel Walz (felix-kinkowski@gmx.net)
  *                  Eugen Volk
@@ -47,50 +47,70 @@ import scenarios.bienenstock.agenteninfo.Info;
 import scenarios.bienenstock.agenteninfo.Koordinate;
 import agents.bienenstock.utils.InfoBlumeEinfach;
 
-
-
-
-
-
-
-
 /**
- *
- * @author Philip Funck
- * @author Samuel Walz
- *
+ * Einfacher reaktiver Agent
  *
  */
 public class EinfacherAgent
         extends AbstrakteBiene
         implements Runnable {
     
+    /**
+     * ID des Volkes, zu der die Biene gehört.
+     */
     private int volksID;
-    private long aktCode;
-    private EinfacheKarte karte;
-    private EinfacheBiene selbst;
-    private IBienenstockSzenarioHandler handler;
-    private EinfachesFeld position;
-    boolean erstenAktCodeBekommen = false;
     
+    /**
+     * aktueller Aktionskode der Biene.
+     */
+    private long aktCode;
+    /** Daten fuer die Lokalisation und Umweltwahrnehmung */
+    private EinfacheKarte karte;
+    /** Abbild der Biene  */
+    private EinfacheBiene selbst;
+    /**
+     * Szenario-Handler für die Vermittlung  der Information
+     * zwischen dem  Agenten und dem SzenarioManager
+     */
+    private IBienenstockSzenarioHandler handler;
+    /** position der Biene als Feld */
+    private EinfachesFeld position;
+    /**
+     * Flag, der signalisiert ob die Biene ersten Aktionscode bekommen hat und damit im Spiel ist.
+     */
+    boolean erstenAktCodeBekommen = false;
+    /** Id der Biene */
     private int id = 0;
+     /** Koordinate des Bienenstocks.  */
     private Koordinate posBienenstock = new Koordinate(100, 100);
+    /** Weg von der Blume zum Bienenstock */
     LinkedList weg = new LinkedList();
+    /** bekannte blumen */
     HashMap blumen = new HashMap();
     //ein paar honigkosten
+    /** Honigverbrauch zum Starten */
     private int honigStarten = 0;
+    /** Honigverbrauch zum Fliegen */
     private int honigFliegen = 0;
+    /** Honigverbrauch zum  Landen */
     private int honigLanden = 0;
+    /** Honigverbrauch zum  Abbauen */
     private int honigAbbauen = 0;
+    /** Honigverbrauch zum  Tanken */
     private int honigTanken = 0;
+    /** Honigverbrauch zum  Abliefern des gesammelten Nektars */
     private int honigAbliefern = 0;
+    /** Name des Agenten */
     private String name = "";
+    /** gesammleter Nektar */
     private int gesammelterNektar = 0;
-    
+    /**
+     * falls eine beabsichtigte Aktion tatsächlich ausgeführt wurde, wird erfolg.value den Wert true haben.
+     */
     private BooleanWrapper erfolg=new BooleanWrapper(false);
-    
+    /** Information über die zu bearbeitende Blume     */
     private InfoBlumeEinfach zuBearbeitendeBlume;
-    
+    /** vom Bienenstock hinweg */
     private boolean hinweg = true;
     
     /**
@@ -103,7 +123,10 @@ public class EinfacherAgent
      */
     Random zufallsGenerator = new Random();
     
-    
+    /** Einfacher Agent -- reaktiver Agent
+     * @param bName Name des Agenten
+     * @param bHandler Handler des Agenten
+     */
     public EinfacherAgent(String bName, AbstractScenarioHandler bHandler) {
         super(bName, bHandler);
         name = bName;
@@ -112,26 +135,44 @@ public class EinfacherAgent
         zufallsGenerator.setSeed(samen);
     }
     
+    /** Einfacher Agent -- reaktiver Agent */
     public EinfacherAgent() {
         super();
         volksID = 1;
         zufallsGenerator.setSeed(samen);
     }
-    
+    /**
+     * Einfacher Agent -- reaktiver Agent
+     * @param bId Id des Agenten
+     * @param bName Namen des Agenten
+     */
     public EinfacherAgent(Id bId,String bName) {
         super(bId, bName);
         name = bName;
         volksID = 1;
     }
     
+    /**
+     * signalisert, dass der Agent eine Run-Methode enthält.
+     * @return true
+     */
     public static boolean isRunableAgent() {
         return true;
     }
     
+    /**
+     * setzt den Handler, der für den Agenten zuständig ist.
+     * @param bHandler Handler des Agenten.
+     */
     public void setHandler(AbstractScenarioHandler bHandler) {
         handler = (IBienenstockSzenarioHandler)bHandler;
     }
     
+    /**
+     * setzt den Aktionscode für den Agenten
+     * @param aktionsCode alter Aktionscode
+     * @return neuer Aktionscode
+     */
     public boolean aktionscodeSetzen(long aktionsCode) {
         aktCode = aktionsCode;
         this.start();
@@ -140,59 +181,13 @@ public class EinfacherAgent
     }
     
     
-    
+    /**
+     * Run-Methode, zur Ausführung des Agenten-programms als Thread.
+     */
     public void run() {
         int i;
-        //System.out.println("Agent " + id + " will Aktion starten");
-      //  zufallsGenerator.setSeed(1999);
         ausschnittHolen();
         posBienenstock = selbst.gibPosition();
-       /* 
-        visualisiereBiene(selbst);
-        starten();
-        landen();
-        visualisiereBiene(selbst);
-        if (id == 1) {
-          //  visualisiereFelder(karte);
-            
-             for (i = 0; i < 1; i++) {
-                 ausschnittHolen();
-                tanzen();
-                 ausschnittHolen();
-                visualisiereBiene(selbst);
-            }
-        }
-        if (id == 2) {
-           
-            for (i = 0; i <2; i++) {
-                ausschnittHolen();
-                visualisiereBiene(selbst);
-                zuschauen();
-                ausschnittHolen();
-                visualisiereBiene(selbst);
-            }
-        }
-        if (id == 3) {
-            fliegen(3, 1);
-            landen();
-            for(i = 0; i < 20; i++) {
-                zuschauen();
-            }
-            starten();
-        } */
-        
-        
-        /*while (true) {
-            starten();
-            visualisiereBiene(selbst);
-            fliegeIntelligent();
-            visualisiereBiene(selbst);
-            visualisiereFelder(karte);
-            landen();
-            visualisiereBiene(selbst);
-            aktionWaehlen();
-            visualisiereBiene(selbst);
-        }*/
         
         while (true) {
             starten();
@@ -210,7 +205,7 @@ public class EinfacherAgent
             heimFliegen();
         }
     }
-    
+    /** Aktionen, die am Bienenstock ausgeführt werden */
     private void amBienenstock() {
         if (selbst.gibGeladeneHonigmenge() < (honigTanken + honigAbliefern)) {
             tanken(1000);
@@ -221,6 +216,7 @@ public class EinfacherAgent
         tanken(10000);
     }
     
+    /** aktione für Nektar ablifern */
     private void abliefernGehen() {
         System.out.println(id + ": kehre heim (nektar voll / honig leer)");
         visualisiereBiene(selbst);
@@ -241,7 +237,7 @@ public class EinfacherAgent
         }
         landen();
     }
-    
+    /** Funktion für Heimfliegen */
     private void heimFliegen() {
         System.out.println(id + ": kehre Heim (blume leer)");
         starten();
@@ -256,7 +252,11 @@ public class EinfacherAgent
         landen();
         amBienenstock();
     }
-    
+    /**
+     * Funktion für weiter fliegen
+     * @param offset Offset
+     * @return true, falls weiterfliegen OK ist.
+     */
     private boolean weiterfliegen(int offset) {
         
         boolean weiter;
@@ -271,17 +271,20 @@ public class EinfacherAgent
         }
     }
     
+    /**
+     * baut Nektar ab, bis die nektartank voll ist.
+     */
     private void vielAbbauen() {
         int alterNektar = 0;
         boolean nektarBekommen = true;
-        while (zuBearbeitendeBlume.besitztHonig()) {
+        while (zuBearbeitendeBlume.besitztNektar()) {
             while (nektarBekommen && weiterfliegen(honigAbbauen)) {
                 alterNektar = selbst.gibGeladeneNektarmenge();
                 abbauen(100000);
                 nektarBekommen = !(alterNektar == selbst.gibGeladeneNektarmenge());
             }
             if ((!nektarBekommen) && (selbst.gibGeladeneNektarmenge() < 100)) {
-                zuBearbeitendeBlume.hatKeinenHonigMehr();
+                zuBearbeitendeBlume.hatKeinenNektarMehr();
                 heimFliegen();
             } else {
                 abliefernGehen();
@@ -289,14 +292,23 @@ public class EinfacherAgent
         }
     }
     
+    /**
+     * enthält die Blume noch Nektar?
+     * @param blume Blume
+     * @return true, falls Blume Nektar enthält.
+     */
     private boolean blumeVoll(EinfachesFeld blume) {
         if (blumen.containsKey(blume.gibPosition())) {
-            return ((InfoBlumeEinfach)blumen.get(blume.gibPosition())).besitztHonig();
+            return ((InfoBlumeEinfach)blumen.get(blume.gibPosition())).besitztNektar();
         } else {
             return true;
         }
     }
     
+    /**
+     * sucht aus den sichtbaren Feldern eine Blume
+     * @return true, falls Blume gefunden wurde
+     */
     private boolean sucheBlume() {
         //visualisiereFelder(karte);
         boolean blumeGefunden = false;
@@ -321,6 +333,10 @@ public class EinfacherAgent
         }
     }
     
+    /**
+     * Hat die Blume noch Nektar?
+     * @return true, falls die Blume noch Nektar enthält.
+     */
     private boolean blumeHatNektar() {
         int nektarVorher = selbst.gibGeladeneNektarmenge();
         abbauen(10000000);
@@ -328,6 +344,9 @@ public class EinfacherAgent
         return (nektarVorher < selbst.gibGeladeneNektarmenge());
     }
     
+    /**
+     * fliegt intelligent.
+     */
     private void fliegeIntelligent() {
         
         ausschnittHolen();
@@ -375,7 +394,7 @@ public class EinfacherAgent
     }
     
     
-    
+    /** fliegt zufälllig */
     public void fliegenZufaellig() {
         double zufall;
         //zufall=zufallsGenerator.nextDouble();
@@ -421,6 +440,11 @@ public class EinfacherAgent
         }
     }
     
+    /**
+     * ausführen der atomaren Aktion fliegen.
+     * @param x X-Koordinate
+     * @param y Y-Koordinate
+     */
     public void fliegen(int x, int y) {
         Koordinate ziel = new Koordinate(x, y);
         int honigAlt = selbst.gibGeladeneHonigmenge();
@@ -439,8 +463,13 @@ public class EinfacherAgent
         //visualisiereBiene(selbst);
     }
     
+    /**
+     * ausführen der atomaren Aktion fliegen.
+     * @param ziel Koordinate
+     *
+     */
     public void fliegen(Koordinate ziel) {
-      //  try{
+        //  try{
         //visualisiereBiene(selbst);
         int honigAlt = selbst.gibGeladeneHonigmenge();
         System.out.println(id + ": fliege nach (" + ziel.gibXPosition() + ", " + ziel.gibYPosition() + " )");
@@ -455,14 +484,12 @@ public class EinfacherAgent
         if ((honigFliegen == 0) && !(neuerAktCode == 0L)) {
             honigFliegen = honigAlt - selbst.gibGeladeneHonigmenge();
         }
-       /* }
-        //visualisiereBiene(selbst);
-        catch (Exception excep){
-            System.out.println("myExceptin in fliegen bienen-Agent");
-            System.out.println(" FEHLER : "+excep.getMessage());
-                 
-        }*/
     }
+    
+    /**
+     * ausführen der atomaren Aktion abbauen.
+     * @param menge gewünschte Nektarmenge
+     */
     public void abbauen(int menge) {
         int alterHonig = selbst.gibGeladeneHonigmenge();
         System.out.println(id + ": baue ab (" + position.gibPosition().gibXPosition() + ", " + position.gibPosition().gibYPosition() + " )");
@@ -477,6 +504,9 @@ public class EinfacherAgent
         //visualisiereBiene(selbst);
     }
     
+    /**
+     * ausführen der atomaren Aktion starten.
+     */
     public void starten() {
         System.out.println(id + ": starte (" + position.gibPosition().gibXPosition() + ", " + position.gibPosition().gibYPosition() + " )");
         int honigAlt = selbst.gibGeladeneHonigmenge();
@@ -493,13 +523,16 @@ public class EinfacherAgent
         //visualisiereBiene(selbst);
     }
     
+    /**
+     * ausführen der atomaren Aktion landen.
+     */
     public void landen() {
         System.out.println(id + ": lande (" + position.gibPosition().gibXPosition() + ", " + position.gibPosition().gibYPosition() + " )");
         int honigAlt = selbst.gibGeladeneHonigmenge();
         long neuerAktCode = handler.aktionLanden(aktCode, erfolg);
         if (!(neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
-        } 
+        }
         ausschnittHolen();
         if (honigLanden == 0 && (!(neuerAktCode == 0L))) {
             honigLanden = honigAlt - selbst.gibGeladeneHonigmenge();
@@ -508,6 +541,9 @@ public class EinfacherAgent
         //visualisiereBiene(selbst);
     }
     
+    /**
+     * ausführen der Atomaren Aktion landen.
+     */
     public void warten() {
         System.out.println(id + ": daeumchendrehen... (" + position.gibPosition().gibXPosition() + ", " + position.gibPosition().gibYPosition() + " )");
         long neuerAktCode = handler.aktionWarten(aktCode, erfolg);
@@ -520,6 +556,10 @@ public class EinfacherAgent
         //visualisiereBiene(selbst);
     }
     
+    /**
+     * ausführen der atomaren Aktion tanken
+     * @param menge zu tankende Menge
+     */
     public void tanken(int menge) {
         int honigAlt = selbst.gibGeladeneHonigmenge();
         System.out.println(id + ": tanke (" + position.gibPosition().gibXPosition() + ", " + position.gibPosition().gibYPosition() + " )");
@@ -536,6 +576,9 @@ public class EinfacherAgent
         //visualisiereBiene(selbst);
     }
     
+    /**
+     * ausführen der atomaren Aktion abliefern
+     */
     public void abliefern() {
         System.out.println(id + ": liefere Nektar ab (" + position.gibPosition().gibXPosition() + ", " + position.gibPosition().gibYPosition() + " )");
         int honigAlt = selbst.gibGeladeneHonigmenge();
@@ -557,6 +600,7 @@ public class EinfacherAgent
         //visualisiereBiene(selbst);
     }
     
+    /** nimmt die Umwelt wahr */
     public void ausschnittHolen() {
         
         EinfacheKarte map;
@@ -586,6 +630,7 @@ public class EinfacherAgent
         
     }
     
+    /** tanzt, um Informationen zu übermitteln */
     public void tanzen() {
         System.out.println(id + ": tanze (" + position.gibPosition().gibXPosition() + ", " + position.gibPosition().gibYPosition() + " )");
         long neuerAktCode = handler.aktionTanzen(aktCode, erfolg, 2, 1, true, true);
@@ -595,6 +640,8 @@ public class EinfacherAgent
         ausschnittHolen();
         //visualisiereBiene(selbst);
     }
+    
+    /** schaut den tanzenden Bienen zu */
     public void zuschauen() {
         //visualisiereFelder(karte);
         ausschnittHolen();
@@ -609,7 +656,7 @@ public class EinfacherAgent
             ausschnittHolen();
             visualisiereBiene(selbst);
             System.out.println(id + ": visualisation abgeschlossen");
-         //   System.out.println(" INFO :" + "richtung " + selbst.gibInformation().gibRichtung());
+            //   System.out.println(" INFO :" + "richtung " + selbst.gibInformation().gibRichtung());
         } else {
             System.out.println(id + "keine tanzenden Bienen anwesend!!!");
             long nAktCode = handler.aktionZuschauen(aktCode, erfolg, 111);
@@ -619,6 +666,7 @@ public class EinfacherAgent
         }
     }
     
+    /** wählt eine Aktion */
     private void aktionWaehlen() {
         if (!(position == null)) {
             if (position.gibIDsTanzendeBienen().size() > 0) {
@@ -640,6 +688,10 @@ public class EinfacherAgent
         }
     }
     
+    /**
+     * gibt den Status über die Biene aus
+     * @param ich Abbild der Biene
+     */
     private void visualisiereBiene(EinfacheBiene ich) {
         Koordinate pos = (Koordinate)ich.gibPosition();
         
@@ -684,9 +736,11 @@ public class EinfacherAgent
         }
     }
     
+    /**
+     * gibt den Status der Felder aus
+     * @param zuVis einfache Karte
+     */
     private void visualisiereFelder(EinfacheKarte zuVis) {
-        
-        
         Koordinate pos;
         System.out.println(id + ": Die Felder\n");
         
@@ -766,6 +820,10 @@ public class EinfacherAgent
         }
     }
     
+    /**
+     * VolksId der Biene
+     * @return Id des Bienevolkes
+     */
     public int gibVolksID() {
         return volksID;
     }

@@ -1,7 +1,7 @@
 /*
  * Dateiname      : KartenErzeugung.java
  * Erzeugt        : 16. Juni 2005
- * Letzte Änderung: 17. Juni 2005 durch Samuel Walz
+ * Letzte Änderung: 1. August 2005 durch Eugen Volk
  * Autoren        : Dietmar Lippold
  *
  * Diese Datei gehört zum Projekt Nereus (http://nereus.berlios.de/).
@@ -38,12 +38,12 @@ public class KartenErzeugung {
     /**
      * Die Anzahl der Felder in der Breite.
      */
-    private static final int BREITE = 23;
+    private static final int BREITE = 19;
 
     /**
      * Die Anzahl der Felder in der Höhe.
      */
-    private static final int HOEHE = 15;
+    private static final int HOEHE = 19;
 
     /**
      * Der Name der Karte.
@@ -63,12 +63,12 @@ public class KartenErzeugung {
     /**
      * Die Kapazität für tanzende Bienen.
      */
-    private static final int KAP_TANZEND = 3;
+    private static final int KAP_TANZEND =-1;
 
     /**
      * Die Kapazität für abbauende Bienen auf einer Blume.
      */
-    private static final int KAP_ABBAUEND = 1;
+    private static final int KAP_ABBAUEND = -1;
 
     /**
      * Die Sichtweite am Boden.
@@ -78,7 +78,7 @@ public class KartenErzeugung {
     /**
      * Die Sichtweite in der Luft;
      */
-    private static final int SICHT_LUFT = 2;
+    private static final int SICHT_LUFT = 1;
 
     /**
      * Die Nummer des Volkes des Bienenstocks.
@@ -93,12 +93,12 @@ public class KartenErzeugung {
     /**
      * Die maximale Menge des Nektars im Bienenstock.
      */
-    private static final int MAX_NEKTAR = 10000;
+    private static final int MAX_NEKTAR = 100000;
 
     /**
      * Die Anfangsmenge des Honigs im Bienenstock.
      */
-    private static final int STOCK_HONIG = 500;
+    private static final int STOCK_HONIG = 50000;
 
     /**
      * Die maximale Menge des Honigs im Bienenstock.
@@ -108,51 +108,55 @@ public class KartenErzeugung {
     /**
      * Die Menge des Nektars, die pro Runde zu Honig verarbeitet werden kann.
      */
-    private static final int NEKTAR_ZU_HONIG = 20;
+    private static final int NEKTAR_ZU_HONIG = 2000;
 
     /**
      * Die Anfangsmenge des Nektars einer Blume.
      */
-    private static final int BLUME_NEKTAR = 300;
+    private static final int BLUME_NEKTAR = 100;
 
     /**
      * Die Menge des Nektars, die pro Runde von einer Biene abgebaut werden
      * kann.
      */
-    private static final int NEKTAR_PRO_RUNDE = 25;
+    private static final int NEKTAR_PRO_RUNDE = 100;
 
     /**
      * Das Merkmal einer Blume.
      */
     private static final int BLUME_MERKMAL = 0;
+    
+    /**
+     * ist der der Nektarinhalt einer Blume auslesbar ?
+     */
+    private static final boolean NEKTAR_AUSLESBAR=true;
+
 
     /**
      * Die ID des Feldes des Bienenstocks.
      */
-    private static final int STOCK_FELD = 216;
+    private static final int STOCK_FELD = 181;
 
     /**
      * Die IDs von Felder, auf denen sich Blumen befinden. Die Felder müssen
      * aufsteigend geordnet sein.
      */
-    private static final int[] BLUMEN_FELDER = new int[] {26, 44, 56, 86,
-                                                          99, 106, 143, 154,
-                                                          205, 260, 273, 280,
-                                                          290};
+    private static final int[] BLUMEN_FELDER = new int[] {61,67,73,175,187,289,295,301};// {14,53,56};
 
     /**
      * Die IDs von Felder, die leer sind. Diese müssen aufsteigend geordnet
      * sein.
      */
-    private static final int[] LEERE_FELDER = new int[] {104, 127, 128, 151,
-                                                         174, 186, 247, 263,
-                                                         270};
+    private static final int[] LEERE_FELDER = new int[] {};//{104, 127, 128, 151,174, 186, 247, 263,270};
 
     /**
      * Gibt an, ob Kanten zwischen diagonal zueinander gelegenen Feldern
      * vorhanden sein sollen.
      */
     private static final boolean DIAGONAL_KANTEN = true;
+    
+    /** Mindestabstand zwischen den Blumenwiesen */
+    private static final int blumenMindestAbstand=5;
 
     /**
      * Gibt den Header der Datei aus.VOLKS_ID
@@ -161,6 +165,7 @@ public class KartenErzeugung {
         System.out.println("graph [");
         System.out.println("    label " + NAME);
         System.out.println("    directed  0");
+        System.out.println("    blumenMindestAbstand " + blumenMindestAbstand);
         System.out.println();
     }
 
@@ -212,6 +217,7 @@ public class KartenErzeugung {
         System.out.println("        blume [");
         System.out.println("            merkmal " + BLUME_MERKMAL);
         System.out.println("            nektar " + BLUME_NEKTAR);
+        System.out.println("            nektarAuslesbar " + NEKTAR_AUSLESBAR);
         System.out.println("            nektarProRunde " + NEKTAR_PRO_RUNDE);
         System.out.println("        ]");
         System.out.println("        kapazitaet [");
@@ -385,4 +391,3 @@ public class KartenErzeugung {
         printGraph();
     }
 }
-

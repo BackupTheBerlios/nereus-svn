@@ -67,6 +67,7 @@ public class GameXMLConfigHandler extends DefaultHandler{
      *
      * @param URI Angabe zur position der Datei
      * @param localname enthält den Namen des Elements
+     * @param name des Elements
      * @param atts eine Liste der zum Element gehörenden Attribute
      */
     public void startElement(String URI, String localname, String name, Attributes atts){

@@ -1,7 +1,7 @@
 /*
  * Dateiname      : AbstractScenario.java
  * Erzeugt        : 13. Mai 2003
- * Letzte Änderung: 13. Juni 2005 durch Samuel Walz
+ * Letzte Änderung: 13. Juli 2005 durch Eugen Volk
  * Autoren        : Daniel Friedrich
  *                  Eugen Volk
  *
@@ -293,37 +293,38 @@ public abstract class AbstractScenario implements Serializable {
      *                  angemeldet werden soll.
      */
     public final void registerAtVisualisation(int runNumer) {
-
+        
         for (int counter = m_runCounter + 1;
-             counter < m_runCounter + 1 + runNumer;
-             counter++) {
+        counter < m_runCounter + 1 + runNumer;
+        counter++) {
             // Anmelden an der Server-Vis-Komponente
             try {
                 m_visualisationServer.spielAnmelden(m_gameId.toString(),
-                                                    Integer.toString(counter));
+                        Integer.toString(counter));
             } catch(DoppelterDurchlaufException fehler) {
                 System.out.println(fehler.getMessage());
             }
         }
     }
-
+    
     /**
      * Erhöht den Wert von m_runCounter um 1.
      */
     public final void incrementRunCounter() {
         m_runCounter = m_runCounter + 1;
     }
-
+    
     /**
      * Übergibt Spielinformationen an die Server-Vis-Komponente
      *
      * @param information    Die Spielinformation
      */
     protected final void saveGameInformation(Serializable information) {
-        m_visualisationServer.speichereSpielInformation(m_gameId.toString(), 
-                                                Integer.toString(m_runCounter),
-                                                information);
-        
+        if (m_visualisationServer!=null){
+            m_visualisationServer.speichereSpielInformation(m_gameId.toString(),
+                    Integer.toString(m_runCounter),
+                    information);
+        }
     }
     
     /**
@@ -333,9 +334,11 @@ public abstract class AbstractScenario implements Serializable {
      * @param empfohleneWartezeit     die Zeit in Millisekunden
      */
     protected final void setVisClientWaittime(int empfohleneWartezeit) {
-        m_visualisationServer.setzeWartezeit(m_gameId.toString(),
-                                             Integer.toString(m_runCounter),
-                                             empfohleneWartezeit);
+        if (m_visualisationServer!=null){
+            m_visualisationServer.setzeWartezeit(m_gameId.toString(),
+                    Integer.toString(m_runCounter),
+                    empfohleneWartezeit);
+        }
     }
     
     /**
@@ -344,9 +347,10 @@ public abstract class AbstractScenario implements Serializable {
      * @params spielKennung     die Kennung des Spiels
      */
     public final void unegisterAtVisualisation() {
-        m_visualisationServer.spielAbmelden(m_gameId.toString(),
-                                            Integer.toString(m_runCounter));
-        
+        if (m_visualisationServer!=null){
+            m_visualisationServer.spielAbmelden(m_gameId.toString(),
+                    Integer.toString(m_runCounter));
+        }
     }
     
 }

@@ -33,25 +33,47 @@
 package agents.bienenstock.utils;
 import java.util.LinkedList;
 
+/** enthält Informationen über eine Blume */
 public class InfoBlumeEinfach {
-    private boolean hatHonig;
+    /** Zeigt an, ob die Blume noch Nektar hat. */
+    private boolean hatNektar;
+    /** Weg von der Blume zum Bienenstock     */
     private LinkedList weg;
-
-    public InfoBlumeEinfach(LinkedList daLang, boolean honig) {
+    
+    /**
+     * @param daLang Weg zum Bienenstock
+     * @param nektar enthält die Blume noch Nektar
+     */
+    public InfoBlumeEinfach(LinkedList daLang, boolean nektar) {
         weg = daLang;
-        hatHonig = honig;
+        hatNektar = nektar;
     }
-
+    
+    /**
+     * liefert den Weg
+     * @return Weg
+     */
     public LinkedList gibWeg() {
         return weg;
     }
-    public boolean besitztHonig() {
-        return hatHonig;
+    /**
+     * hat die Blume noch Nektar
+     * @return true, falls die Blume noch Nektar enthält.
+     */
+    public boolean besitztNektar() {
+        return hatNektar;
     }
-    public void hatKeinenHonigMehr() {
-        hatHonig = false;
+    
+    /**
+     * setzt die Blume auf: hat kein Nektar mehr
+     */
+    public void hatKeinenNektarMehr() {
+        hatNektar = false;
     }
-    public void hatNochHonig() {
-        hatHonig = true;
+    /**
+     * setzt die Blume auf: hat noch Nektar 
+     */
+    public void hatNochNektar() {
+        hatNektar = true;
     }
 }

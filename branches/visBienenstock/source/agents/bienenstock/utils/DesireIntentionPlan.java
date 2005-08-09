@@ -1,7 +1,7 @@
 /*
  * Dateiname      : DesireIntentionPlan.java
  * Erzeugt        : 29. Mai 2005
- * Letzte Änderung: 6. Juni 2005 durch Eugen Volk
+ * Letzte Änderung: 8. August 2005 durch Eugen Volk
  * Autoren        :  Eugen Volk
  *
  *
@@ -33,8 +33,8 @@ import scenarios.bienenstock.agenteninfo.Koordinate;
 import java.util.*;
 
 /**
- * Die Klasse stelt eine Datenstruktur für einen Belief Desire Inteiontion (BDI)-Agenten
- * dar.
+ * Die Klasse stelt eine Datenstruktur für einen deliberativen-Agenten
+ * zur Speicherung dess internen Zustands.
  * @author Eugen Volk
  */
 public class DesireIntentionPlan {
@@ -49,23 +49,23 @@ public class DesireIntentionPlan {
     public static final int G_BLUMEBEARBEITEN=3;
     /** Konstante für Ziel: mit anderen Agenten kooperieren bzw. Inforamation austauschen */
     public static final int G_COOPERATION=4;
-    
+    /** Konstante für Ziel: Finden einer bestimmten Blume */
     public static final int G_FINDEDIEBLUME=5;
     
-    // Absichten des Agenten
+    // Absichten bzw. abstakte Pläne des Agenten
     /** Konstante für Absicht: zurück zum Bienenstock kehren und tanken */
     public static final int P_NACHHAUSETANKEN=10;
-    /** Konstante für Absicht: fliegen zur bestimmten Koordinate */
+    /** Konstante für abstakten Plan: fliegen zur bestimmten Koordinate */
     public static final int P_FLIEGENZURKOORDINATE=11;
-    /** Konstante für Absicht: Nektar abbauen */
+    /** Konstante für abstakten Plan: Nektar abbauen */
     public static final int P_NEKTARABBAUEN=12;
-    /** Konstante für Absicht: Nekar abliefern */
+    /** Konstante für abstakten Plan: Nekar abliefern */
     public static final int P_NEKTARABLIEFERNTANKEN=14;
-    /** Konstante für Absicht: zurück zur blume kehren */
+    /** Konstante für abstakten Plan: zurück zur blume kehren */
     public static final int P_ZURUECKZURBLUME=15;
-    /** Konstante für Absicht: Kooperieren: tanzen oder zuschauen */
+    /** Konstante für abstakten Plan: Kooperieren: tanzen oder zuschauen */
     public static final int P_COOPERATION=17;
-    
+    /** Konstante für abstrakten Plan: Finde eine bestimmte Blume */
     public static final int P_FINDEBLUME=18;
     
     
@@ -86,12 +86,12 @@ public class DesireIntentionPlan {
     public static final int A_ZUSCHAUEN=106;
     /** Konstante für atomare Aktion: warten */
     public static final int A_WARTEN=107;
-    
+    /** Konstante für atomare Aktion: nektar Ablifern */
     public static final int A_NEKTARABLIEFERN=108;
-    
+    /** Konstante für  nicht gesetztes Attribut.*/
     public static final int NOTSET=-1;
     
-    /** Ziel des Agenten, codiert über DesireIntentionPlan.D_... */
+    /** Ziel des Agenten, codiert über Klassenkonstanten */
     private int desireName;
     /** Koordinate für das Ziel */
     private Koordinate desireZiel;
@@ -114,17 +114,25 @@ public class DesireIntentionPlan {
     
     /**
      * Erzeugt eine Instanz von DesireIntentionPlan. DesireIntentionPlan beschreibt den
-     * internen Zustand eines Belief-Desire-Intention Agenten.
+     * internen Zustand eines deliberativen Agenten.
      */
     public DesireIntentionPlan() {
     }
     
     
+    /**
+     * setzt den Ziel-Zustand des Agenten.
+     * @param desireName Zielzustand des Agenten, codiert nach den Konstanten.
+     */
     public void setDesire(int desireName){
         this.intentionZiel=null;   
         this.desireName=desireName;
     }
     
+    /**
+     * Setzt die Ziel-Koordinate für den Agenten.
+     * @param zielKoordinate Ziel-Koordinate
+     */
     public void setDesireZiel(Koordinate zielKoordinate){
         this.desireZiel=zielKoordinate;
     }
@@ -145,6 +153,10 @@ public class DesireIntentionPlan {
         this.intentionZiel=intentionKoordinate;
     }
     
+    /**
+     * setzt den abstakten Plan-Zustand für den Agenten.
+     * @param planName Name des abstakten Plans.
+     */
     public void setPlan(int planName){
         this.planName=planName;
     }
@@ -190,6 +202,10 @@ public class DesireIntentionPlan {
     }
     
     
+    /**
+     * liefert den abstakten Plan-Namen
+     * @return abstakten Plan-Namen
+     */
     public int getPlanName(){
         return this.planName;
     }
@@ -202,31 +218,6 @@ public class DesireIntentionPlan {
         return this.planListe;
     }
     
-    public Iterator getPlanIterator(){
-        return this.planIt;
-    }
-    
-    public void setPlanIterator(Iterator planIterator){
-        this.planIt=planIterator;
-    }
-    
-    /**
-     * gibt an ob die Biene auf dem Weg nach Hause ist.
-     * @return true, falls die Biene auf dem Weg zurück zum Bienenstock ist,
-     * false sonst.
-     */
-    public boolean getAufDemRueckweg(){
-        return this.zurueck;
-    }
-    
-    /**
-     * setzt den Status des Agenten: ob dieser auf dem Weg  nach Hause ist.
-     * @param zurueck Ist der Agent auf dem Rueckweg zum Bienenstock?
-     */
-    public void setAufDemRueckweg(boolean zurueck){
-        this.zurueck=zurueck;
-    }
-    
-    
+       
     
 }

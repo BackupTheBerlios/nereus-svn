@@ -56,17 +56,31 @@ import agents.bienenstock.utils.DesireIntentionPlan;
 import agents.bienenstock.utils.InfoBlume;
 
 /**
- * Die Klasse ist Agent und ist aufgebaut nach der Belief-Desire-Intention Architektur.
+ * Ein unkooperativer Bienen-Agent für Szenario Bienenstock.
+ * Die Klasse ist ein Agent und ist aufgebaut nach der deliberativen Agenten-Architektur.
  */
-public class SimplerUnkoopBDIAgent
+public class UnkooperativerAgent
         extends AbstrakteBiene
         implements Runnable {
     
-    private static final int MAX=1000;
+  /**
+     * ID des Volkes, zu der die Biene gehört.
+     */
     private int volksID;
+    /**
+     * aktueller Aktionskode der Biene.
+     */
     private long aktCode;
+    /**
+     * Szenario-Handler für die Vermittlung  der Information
+     * zwischen dem  Agenten und dem SzenarioManager
+     */
     private IBienenstockSzenarioHandler handler;
-    /** spiegelt den externen Zustand der Biene */
+    /**
+     * spiegelt den externen Zustand der Biene.
+     * Ist true, falls die Biene in der Luft ist.
+     * Ist false, falls die Biene nicht in der Luft ist.
+     */
     private boolean bieneIstInDerLuft=false;
     
     /** Daten fuer die Lokalisation und Umweltwahrnehmung */
@@ -81,23 +95,32 @@ public class SimplerUnkoopBDIAgent
     private Hashtable sichtbareFelder;
     /** kritische Entfernung bis zur Blume */
     private int kritEntfernung=0;
+    /**
+     * Flag, der signalisiert ob die Biene ersten Aktionscode bekommen hat und damit im Spiel ist.
+     */
     boolean erstenAktCodeBekommen = false;
     /** Id der Biene */
     private int id = 0;
+    /**
+     * Koordinate des Bienenstocks.
+     */
     private Koordinate posBienenstock;
     /** falls eine beabsichtigte Aktiin tatsächlich ausgeführt wurde, wird erfold.value den Wert true haben. */
     private BooleanWrapper erfolg=new BooleanWrapper(false);
     
-    //   HashMap blumen = new HashMap();
-    /** (Koordinate, InfoBlume) */
-    HashMap bekannteBlumen=new HashMap();
-    
-    
+    /**
+     * Eine Datenstruktur zur Speicherung der bekannten Blumen.
+     * (Koordinate, InfoBlume)
+     */
+    HashMap bekannteBlumen=new HashMap();;
+        
     /** eine Navigationskarte als Gedächtnis über die wahrgenommenen Felder */
     HashMap gespeicherteFelder=new HashMap();
     
-    //ein paar honigkosten
-    /** HonigMenge vor dem Start der Biene */
+    /**
+     * HonigMenge vor dem Start der Biene,
+     * bzw. maximale zuladbare Honigmenge der Biene.
+     */
     private int startHonig=0;
     /** Honigverbrauch zum Starten */
     private int honigStarten = 0;
@@ -113,20 +136,27 @@ public class SimplerUnkoopBDIAgent
     private int honigAbliefern = 0;
     /** maximale zuladbare Nektarmenge */
     private int maxGelNektar=0;
+    /**  Name der Biene.    */
     private String name = "";
-    /** gesammelter Nektar */
+    /** gesammelte Nektarmange. */
     private int gesammelterNektar = 0;
-    /** kurs Nektar zu Honig */
+    /**  Wechselkurs für die Umwandlung von Nektar zu Honig. */
     private double kursNektarHonig=1;
-    /** falls die beabsichtigte Aktion ausgeführt wurde, ist erfolg.value=true */
-    
+    /** Reserver für den Fall dass Biene Warten muss */
+    private int reserve=2;
+    /** Id der getanzten Bienen, seit kooperatinReset.   */
+    private HashSet getanzteBienen=new HashSet();
+    /** hat die Biene schon seit kooperationReset getanzt?  */
+    boolean getanzt=false;
+    /** wird gesetzt, falls die Biene wenig Honig hat und sofort zum Bienenstock zurückkehren muss */
     private boolean sofortNektarAbliefernTanken = false;
     
-     /** Honig im Bienenstock */
+     /** gibt es noch Honig im Bienenstock */
     private boolean  bienenstockHatHonig=true;
     
      /** Nummer des Versuchs bei der Blumenprobeentnahme */
     private int probeEntnahmeVersuchNr=0;
+    
     /** Max Anzahl des Versuchs bei der Blumenprobeentnahme, danach wird bei erfolgloser Nektarabbau,
      * die Blume als ohne Nektar angesehen */
     private int probeEntnahmeVersucheMax=2;
@@ -142,7 +172,13 @@ public class SimplerUnkoopBDIAgent
     Random zufallsGenerator = new Random();
     
     
-    public SimplerUnkoopBDIAgent(String bName, AbstractScenarioHandler bHandler) {
+    /**
+     * Ein unkooperativer Bienen-Agent für
+     * das Szenario Bienenstock.
+     * @param bName Name des Agenten
+     * @param bHandler Handler des Agenten
+     */
+    public UnkooperativerAgent(String bName, AbstractScenarioHandler bHandler) {
         super(bName, bHandler);
         name = bName;
         handler = (IBienenstockSzenarioHandler)bHandler;
@@ -151,26 +187,49 @@ public class SimplerUnkoopBDIAgent
         
     }
     
-    public SimplerUnkoopBDIAgent() {
+    /**
+     * Ein unkooperativer Bienen-Agent für
+     * das Szenario Bienenstock.
+     */
+    public UnkooperativerAgent() {
         super();
         volksID = 1;
         zufallsGenerator.setSeed(samen);
     }
     
-    public SimplerUnkoopBDIAgent(Id bId,String bName) {
+    /**
+     * Ein unkooperativer Bienen-Agent für
+     * das Szenario Bienenstock.
+     * @param bId Id des Agenten
+     * @param bName Name des Agenten
+     */
+    public UnkooperativerAgent(Id bId,String bName) {
         super(bId, bName);
         name = bName;
         volksID = 1;
     }
     
+    /**
+     * signalisert, dass der Agent eine Run-Methode enthält.
+     * @return true
+     */
     public static boolean isRunableAgent() {
         return true;
     }
     
+    /**
+     * setzt den Handler, der für den Agenten zuständig ist.
+     * @param bHandler Handler des Agenten
+     */
     public void setHandler(AbstractScenarioHandler bHandler) {
         handler = (IBienenstockSzenarioHandler)bHandler;
     }
     
+    /**
+     * setzt den Aktionskode für den Agenten
+     * @param aktionsCode alter Aktionskode
+     * @return neuer Aktionskode
+     */
     public boolean aktionscodeSetzen(long aktionsCode) {
         aktCode = aktionsCode;
         this.scenarioParameterEinlesen();
@@ -179,6 +238,11 @@ public class SimplerUnkoopBDIAgent
         return true;
     }
     
+    /**
+     * Id des Volkes, zu der die Biene gehört.
+     * @return Nummer des Bienenvolkes, zu
+     * der der Agent gehört.
+     */
     public int gibVolksID() {
         return volksID;
     }
@@ -188,7 +252,13 @@ public class SimplerUnkoopBDIAgent
     /* ###########################----Begin AgentenVerhalten festlegen---############################-----*/
     
     
+    /**
+     * beschreibt den internen Zustand des deliberativen Agenten.
+     */
     DesireIntentionPlan modus=new DesireIntentionPlan();
+    /**
+     * Run-Methode, zur Ausführung des Agenten-programms als Thread.
+     */
     public void run() {
         // DesireIntentionPlan modus=new DesireIntentionPlan();
         perception();
@@ -430,6 +500,7 @@ public class SimplerUnkoopBDIAgent
                 modus.setPlanListe(planListe);
             }break;
             case DesireIntentionPlan.P_NEKTARABLIEFERNTANKEN:{
+                
                 this.sofortNektarAbliefernTanken=true;
                 boolean nektarAbgeliefert=false;
                 boolean getankt=false;
@@ -445,18 +516,15 @@ public class SimplerUnkoopBDIAgent
                         atp=new ActionTargetPair(actionNr,myPosition.copy());
                         planListe.add(atp);
                         getankt=true;
-                    }
-                    if (selbst.gibGeladeneNektarmenge() > 0) {
+                    } else if (selbst.gibGeladeneNektarmenge() > 0) {
                         actionNr=DesireIntentionPlan.A_NEKTARABLIEFERN;
                         atp=new ActionTargetPair(actionNr,myPosition.copy());
                         planListe.add(atp);
-                        nektarAbgeliefert=true;
-                    }
-                    if (nektarAbgeliefert || (selbst.gibGeladeneHonigmenge()<(this.startHonig-honigStarten))){
+                    } else if ((selbst.gibGeladeneHonigmenge()<(this.startHonig-honigStarten))){
                         actionNr=DesireIntentionPlan.A_TANKEN;
                         atp=new ActionTargetPair(actionNr,myPosition.copy());
                         planListe.add(atp);
-                    }
+                    } else sofortNektarAbliefernTanken=false;
                     modus.setPlanListe(planListe);
                     // notfall zurücksetzen
                     if (sofortNektarAbliefernTanken && (selbst.gibGeladeneNektarmenge()==0) &&
@@ -581,9 +649,11 @@ public class SimplerUnkoopBDIAgent
     
     
     /**
-     * gibt die Kosten an, um von der aktuellen Position zurück zum Bienenstock zu fliegen
+     * gibt die Kosten an, um von der vorgebenen Position zurück zum Bienenstock zu fliegen
      * und dort zu tanken.
-     *
+     * 
+     * @param vonPosition Berechnung der Kosten von der vorgegebenen Position
+     * @param bieneIstInLuft ist die Biene in der Luft?
      * @return Kosten um zum Bienenstock zurück zu kehren und zu tanken.
      */
     private int kostenNachHauseTanken(Koordinate vonPosition, boolean bieneIstInLuft){
@@ -669,8 +739,11 @@ public class SimplerUnkoopBDIAgent
     }
     
     
-    /** sucht nach einem Feld das nicht erforscht wurde und am nächsten zur Biene
-     * und am nächsten zum Bienenstock sich befindet. */
+    /**
+     * sucht nach einem Feld das nicht erforscht wurde und am nächsten zur Biene
+     * und am nächsten zum Bienenstock sich befindet.
+     * @return Koordinate des Randfeldes als nächster Navigationspunkt.
+     */
     private Koordinate sucheRandFeld(){
         //  Suche RandFelder
         LinkedList randFelder=new LinkedList();
@@ -756,10 +829,10 @@ public class SimplerUnkoopBDIAgent
     
     
     /**
-     * Berechnet den Nutzen der Blume in abhängigkeit von ihrer Ausbeute und Enfernung zum Bienenstock.
-     *
+     * Berechnet den Nutzen der Blume in Abhängigkeit von ihrer Ausbeute und Enfernung zum Bienenstock.
      * @blume Informationen zu einer Blume, wobei die Probe entnommen sein muss,
      * Ausbeute-NektarProRunde und die Entfernung zum Bienenstock bereits eingetragen sein muessen.
+     * @param blume Blume, deren Nutzen berechnet werden soll.
      */
     private void berechneSetzeNutzen(InfoBlume blume){
         if (!blume.getProbeEntnommen()) return;
@@ -877,6 +950,10 @@ public class SimplerUnkoopBDIAgent
         }
     }
     
+    /**
+     * gibt den Status des Agenten als Text aus.
+     * @param ich Abbild der Biene mit den zugehörigen Informationen.
+     */
     private void visualisiereBiene(EinfacheBiene ich) {
         Koordinate pos = (Koordinate)ich.gibPosition();
         
@@ -948,8 +1025,9 @@ public class SimplerUnkoopBDIAgent
     /**
      * aktulisiert die gespeicherten Felder mit den lokalen aktuellen Daten
      *
-     * @lokaleFelder gegenwärtige Sicht des Agenten
-     */
+     * @param lokaleFelder gegenwärtige Sicht des Agenten
+     */ 
+     
     private void gespeicherteFelderAktualisieren(Hashtable lokaleFelder){
         
         HashMap randFelder=new HashMap(); // Felder deren Nachbarn null sind
@@ -976,6 +1054,7 @@ public class SimplerUnkoopBDIAgent
      * gibt die vorgegebene Koordinaten-Liste sortiert nach der Entfernung zur startKoordinate zurück.
      * @param koordList zu sortierenden Koordinaten-Liste
      * @param startKoordinate Start-Koordinate
+     * @return Koordinaten-Liste, sortiert nach der Entfernung zur startKoordinate
      */
     private LinkedList sortKoordinaten(LinkedList koordList, Koordinate startKoordinate){
         TreeSet sortSet=new TreeSet();
@@ -1102,8 +1181,9 @@ public class SimplerUnkoopBDIAgent
     
     /** lässt die Biene Nektar abbauen */
     private void nektarAbbauen(){
+        int max=1000;
         System.out.println(selbst.gibBienenID()+ ": baue Nektar ab " + selbst.gibPosition().toString());
-        long neuerAktCode = handler.aktionNektarAbbauen(aktCode, erfolg,MAX);
+        long neuerAktCode = handler.aktionNektarAbbauen(aktCode, erfolg,max);
         if (!(neuerAktCode == 0L)) {
             aktCode = neuerAktCode;
         }
@@ -1143,8 +1223,8 @@ public class SimplerUnkoopBDIAgent
      * Lässt die Biene einer anderen Biene beim Tanzen zuschauen.
      * Die Information zur mitgeteilten Blume (entfernung und richtung) steht
      * nach der aktualisierung der perception in selbst.gitInfo().
-     *
-     * @param tanlzendeBieneID die Id der tanzenden Biene.
+     * 
+     * @param tanzendeBieneID Id der tanzenden Biene
      * @return ungefäre Koordinate der Blume.
      */
     private Koordinate zuschauen(int tanzendeBieneID){

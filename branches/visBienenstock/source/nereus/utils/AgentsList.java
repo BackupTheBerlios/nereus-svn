@@ -40,7 +40,7 @@ public class AgentsList {
      * Erzeugt eine Datenstruktur in der
      * Szenario-Name und eine Liste der verfügbaren Agenten gespeichert sind.
      *
-     * @param name Name des Scenario
+     * @param scenarioName Name des Scenario
      */
     public AgentsList(String scenarioName) {
         this.scenarioName=scenarioName;

@@ -192,7 +192,7 @@ public class Game extends Thread {
         m_scenario.reset();
         // Anmelden des Spiels an der Server-Vis-Komponente
         int runNumber = ((Integer) m_params.get("numExps")).intValue();
-        m_scenario.registerAtVisualisation(runNumber);
+       m_scenario.registerAtVisualisation(runNumber);
 
         // Agenten neu erzeugen.
         Hashtable tmpAgents = (Hashtable)oldGame.getAgents().clone();

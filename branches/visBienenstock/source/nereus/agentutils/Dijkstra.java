@@ -102,12 +102,13 @@ public class Dijkstra {
     
     /**
      * Ermittelt den kuerzesten Weg (als Liste) von dem Start-Knoten zum Ziel-Knoten.
-     *
-     * @param startKnoten Start-Knoten 
-     * @param zielKnoten Ziel-Knoten 
-     * @param nachfolgeKnoten HashMap die zu jedem Knoten alle seine Nachfolger enthält
+     * 
      * @return Weg von startKnoten nach zeilKnoten, wobei der startKnoten nicht in der
      * Liste enthalten ist. Falls der weg nicht existiert, so wird null zurückgeliefert.
+     * @param knotenMenge Knotenmenge mit bekannten Knoten
+     * @param startKnoten Start-Knoten
+     * @param zielKnoten Ziel-Knoten
+     * @param nachfolgeKnoten HashMap die zu jedem Knoten alle seine Nachfolger enthält
      */
     public static LinkedList shortestPath(Object startKnoten, Object zielKnoten, Set knotenMenge, HashMap nachfolgeKnoten){
         HashMap vorgaengerKnotenMap;
@@ -131,12 +132,12 @@ public class Dijkstra {
     
      /**
      * Ermittelt den kuerzesten Weg (als Liste) von dem Start-Knoten zum Ziel-Knoten.
-     *
-     * @param startKnoten Start-Knoten 
-     * @param zielKnoten Ziel-Knoten 
+     * 
+     * @param startKnoten Start-Knoten
+     * @param zielKnoten Ziel-Knoten
      * @param vorgaengerKnoten eine HashMap, die zu jedem Knoten seinen Vorganger angibt;
      * nach der Bestimmung von allen kürzesten Pfaden (z.B. mittels Dijkstra#allShortestPath() )
-     * @param nachfolgeKnoten HashMap die zu jedem Knoten alle seine Nachfolger enthält
+     *
      * @return Weg von startKnoten zum zeilKnoten, wobei der startKnoten nicht in der
      * Liste enthalten ist. Falls der weg nicht existiert, so wird null zurückgeliefert.
      */

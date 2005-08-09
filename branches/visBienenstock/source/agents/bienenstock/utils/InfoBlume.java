@@ -51,7 +51,23 @@ public class InfoBlume {
     private boolean hatNektar=true;
     /** Welchen Nutzen hat die Blume. Errechnet sich aus: Gewinn(gesamelter Nektar * FaktorNektarHonig) 
      * - Aufwand(Honigverbrauch für hinfliegen, zurückfliegen und wie oft Nektar abgebaut wurde) */
-    private double nutzen=0;
+    private double nutzen=0;   
+     
+    /**
+     * in der Blume enthaltene Nektarmenge
+     */
+    private int actualNektarInhalt=-1;
+    /**
+     * Nektarmenge ausgelesen in Runde Nr.
+     */
+    private int nektarAusgelesenInRundeNr=-1;
+    
+    /** nektarInhalt der zuletzt ausgelesen wurde */
+    private int lastNektarInhalt=0;
+    
+    /** Differenz zwischen dem zuletzt ausgelesenen und dem aktuellen Nektar Wert. */
+     private int nektarDifferenz=0; 
+    
     
     /** InfoBlume ist eine Datenstruktur zur Verwaltung der Informatinen über eine Blume */
     public InfoBlume() {
@@ -68,8 +84,8 @@ public class InfoBlume {
     }
     /**
      * InfoBlume ist eine Datenstruktur zur Verwaltung der Informatinen über eine Blume 
-     *
-     * @param blemenKoordinate Koordinate der Blume
+     * 
+     * @param blumenKoordinate Koordinate der Blume
      * @param entfernungZumBienenstock Entfernung (Anzahl der Felder) zum Bienenstock
      */
     public InfoBlume(Koordinate blumenKoordinate, int entfernungZumBienenstock){
@@ -78,7 +94,11 @@ public class InfoBlume {
         this.entfernungZumBienenstock=entfernungZumBienenstock;
     }
     
-    /** gibt an, ob von der Blume eine Probe entnommen und damit die Ausbeute bestimmt wurde. */
+    /**
+     * gibt an, ob von der Blume eine Probe entnommen und damit die Ausbeute bestimmt wurde.
+     * @return true, falls Probe entnommen wurde,
+     * false sonst.
+     */
     public boolean getProbeEntnommen(){
         return this.probeEntnommen;
     }
@@ -160,4 +180,53 @@ public class InfoBlume {
     public Koordinate getBlumenKoordinate(){
         return this.blumenKoordinate.copy();
     }
+        
+    /**
+     * gibt in der Blume enthaltene Nektarmenge zurück
+     * @return Nektarinhalt der Blume
+     */
+    public int getNektarInhalt(){
+        return this.actualNektarInhalt;
+    }
+    
+     /**
+     * setzt den Nektarinhalt aud den Wert der in der Blume enthaltene Nektarmenge und
+     * aktualisiert die Differenz zwischen der Nektarmengen zeischen dem aktuellen und dem letzten Besuch bei der Blume
+     *
+     * @param nektarInhalt NektarInhalt der Blume
+     * @param rundenNr Nummer der aktuellen Runde
+     */
+    public void aktualisiereNektarInhalt(int nektarInhalt, int rundenNr){
+        if (nektarInhalt<=-1) return;
+        if (nektarInhalt==0) this.hatNektar=false;
+        int rundenDiff=rundenNr-nektarAusgelesenInRundeNr;
+        this.nektarAusgelesenInRundeNr=rundenNr;
+        
+        if (rundenDiff>=7){ // lastNektarInhalt aktualisieren
+            lastNektarInhalt=this.actualNektarInhalt;
+        }
+        this.actualNektarInhalt=nektarInhalt;            
+        
+        this.nektarDifferenz=lastNektarInhalt-actualNektarInhalt;
+    }
+        
+        
+    
+    /**
+     * gibt die RundenNr, in der zuletzt Nektar ausgelesen wurde
+     * @return RundenNr in der zuletzt Nektar ausgelesen wurde
+     */
+    public int getNektarausleseRundenNr(){
+        return this.nektarAusgelesenInRundeNr;
+    }
+    
+    
+    /**
+     * gibt die Differenz zwischen den Nektarwerten, bei den letzten beiden Besuchen der Blume
+     * @return Differenz zwischen den Nektarwerten, bei den letzten beiden Besuchen der Blume
+     */
+   public int getNektarDifferenz(){
+        return this.nektarDifferenz;
+    }
+            
 }

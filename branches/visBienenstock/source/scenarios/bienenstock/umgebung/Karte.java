@@ -265,10 +265,16 @@ public class Karte extends AbstractEnviroment {
      *
      * @return EinfacheBlume
      * @param vollstFeld die vollständige Blume
+     * @param aktuellesFeld akutelles Feld 
      */
-    private EinfacheBlume konvertiereBlume(Blume vollstFeld) {
+    private EinfacheBlume konvertiereBlume(Blume vollstFeld, Feld aktuellesFeld) {
         int nektarmenge=-1;
-        if (vollstFeld.nektarAuslesbar()) nektarmenge=vollstFeld.gibVorhandenerNektar();
+        boolean nektarAuslesbar=vollstFeld.nektarAuslesbar() ;
+        Koordinate vFeldKoord=vollstFeld.gibPosition();
+        Koordinate aktFeldKoord=aktuellesFeld.gibPosition();
+        if (nektarAuslesbar && (vFeldKoord.equals(aktFeldKoord))) {
+            nektarmenge=vollstFeld.gibVorhandenerNektar();
+        } else nektarAuslesbar=false;
         return new EinfacheBlume(
                 new Koordinate(vollstFeld.gibPosition().gibXPosition(),
                 vollstFeld.gibPosition().gibYPosition()),
@@ -278,7 +284,7 @@ public class Karte extends AbstractEnviroment {
                 konvertiereHash(vollstFeld.gibSonstigeBienen()),
                 vollstFeld.gibMerkmal(),
                 konvertiereHash(vollstFeld.gibAbbauendeBienen()),
-                vollstFeld.nektarAuslesbar(),
+                nektarAuslesbar,
                 nektarmenge);
     }
     
@@ -787,7 +793,7 @@ public class Karte extends AbstractEnviroment {
                 if (feldTmp instanceof Blume) {
                     einfacheSichtbareFelder.put(
                             feldTmp.gibPosition(),
-                            konvertiereBlume((Blume) feldTmp));
+                            konvertiereBlume(((Blume) feldTmp), aktuellesFeld));
                 } else if (feldTmp instanceof Bienenstock) {
                     einfacheSichtbareFelder.put(
                             feldTmp.gibPosition(),
@@ -1755,11 +1761,12 @@ public class Karte extends AbstractEnviroment {
         
         Hashtable neueAusstehendeAktionen = new Hashtable();
         Iterator iterKeyAusstehendeAktionen
-                = ausstehendeAktionen.keySet().iterator();
+                = ((Hashtable)ausstehendeAktionen.clone()).keySet().iterator();
         boolean tmpVal;
         int tmpKey;
         synchronized (ausstehendeAktionen) {
             while (iterKeyAusstehendeAktionen.hasNext()) {
+               // System.out.println("iterKeyAusstehendeAktionen:  "+ ausstehendeAktionen.size());
                 tmpKey
                         = ((Integer) iterKeyAusstehendeAktionen.next()).intValue();
                 tmpVal
@@ -1768,8 +1775,9 @@ public class Karte extends AbstractEnviroment {
                 if (tmpVal) {
                     alternativeAktionAusfuehrenLassen(bieneSuchen(tmpKey));
                 }
-                neueAusstehendeAktionen.put(new Integer(tmpKey), Boolean.TRUE);
+                if (bieneSuchen(tmpKey)!=null) neueAusstehendeAktionen.put(new Integer(tmpKey), Boolean.TRUE);
             }
+            //ausstehendeAktionen = neueAusstehendeAktionen;
         }
         
         ausstehendeAktionen = neueAusstehendeAktionen;

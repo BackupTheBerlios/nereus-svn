@@ -1118,6 +1118,9 @@ public class Scenario
     
     /**
      * Liest die Scenario-Parameter aus der XML-Datei aus.
+     *
+     * @param gameConf Konfigurationsdatei des Spiels
+     * @return Szenario-Parameter als verkettete Liste
      */
     public LinkedList getScenarioParameter(GameConf gameConf){
         if (gameConf==null) return getScenarioParameter();
@@ -1318,6 +1321,7 @@ public class Scenario
     public Hashtable getEnviromentStatisticParameters() {
         Hashtable rueckgabe = new Hashtable();
         rueckgabe.put("Szenario", parameter.gibWert("ScenarioName"));
+        rueckgabe.put("Karte", new String(this.KARTENDATEINAME));
         rueckgabe.putAll(this.m_parameter);
         return rueckgabe;
     }

@@ -2,7 +2,7 @@
 <!--
     Document   : serverconfig.xml
     Created on : 11. Mai 2005, 12:45
-    Last change: 19. Juni 2005 by Dietmar Lippold
+    Last change: 8. August 2005 by Eugen Volk
     Author     : Eugen Volk
     Description:
         Diese Datei dient zur Konfiguration der Parameter-Werte für
@@ -20,10 +20,16 @@
 -->
 
 <config>
-<gameconf name="Bienenst_L1xKoop" scenario="bienenstock" karte="luft1XKoop.gml" parameters="bienenstockconfig1.xml"/>
-<gameconf name="Bienenstock_L2_od" scenario="bienenstock" karte="luft2nektar500-od.gml" parameters="bienenstockconfig1.xml"/>
-<gameconf name="Bienenstock_L1_od" scenario="bienenstock" karte="luft1nektar500-od.gml" parameters="bienenstockconfig1.xml"/>
-<gameconf name="Bienenstock_23x15_od" scenario="bienenstock" karte="f23x15-sl2-n420-od.gml" parameters="bienenstockconfig2.xml"/>
-<gameconf name="Bienenstock_23x15_md" scenario="bienenstock" karte="f23x15-sl2-n420-md.gml" parameters="bienenstockconfig2.xml"/>
+    <gameconf name="DA_minAbstand5_19x19_md" scenario="bienenstock" karte="L1_19x19_md_minAbst.gml" parameters="bienenstockconfig0b.xml"/>
+    <gameconf name="DA_Nekt_vs_Koop_11x11_od" scenario="bienenstock" karte="L1_11x11_4F_od.gml" parameters="bienenstockconfig0a.xml"/>
+    <gameconf name="DA_Komm_50_34" scenario="bienenstock" karte="luft1XKoop_50_34.gml" parameters="bienenstockconfig0.xml"/>
+    <gameconf name="DA_Komm_50_50" scenario="bienenstock" karte="luft1XKoop_50_50.gml" parameters="bienenstockconfig0.xml"/>
+    <gameconf name="DA_Koop_50_10" scenario="bienenstock" karte="luft1XKoop_50_10.gml" parameters="bienenstockconfig0.xml"/>
+    <gameconf name="Bienenstock_L2_od" scenario="bienenstock" karte="luft2nektar500-od.gml" parameters="bienenstockconfig1.xml"/>
+    <gameconf name="Bienenstock_L1_od" scenario="bienenstock" karte="luft1nektar500-od.gml" parameters="bienenstockconfig1.xml"/>
+    <gameconf name="Bienenstock_23x15_od" scenario="bienenstock" karte="f23x15-sl2-n420-od.gml" parameters="bienenstockconfig2.xml"/>
+    <gameconf name="Bienenstock_23x15_md" scenario="bienenstock" karte="f23x15-sl2-n420-md.gml" parameters="bienenstockconfig2.xml"/>
+    <gameconf name="Bienenstock_23x15_md_L2" scenario="bienenstock" karte="f23x15-sl2-n2000-md_K.gml" parameters="bienenstockconfig2.xml"/>
+    <gameconf name="Bienenstock_23x15_md_L1" scenario="bienenstock" karte="f23x15-sl1-n2000-md_K.gml" parameters="bienenstockconfig2.xml"/>
 </config>
 
